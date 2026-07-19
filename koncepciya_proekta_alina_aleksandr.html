@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Концепция совместного проекта — Алина × Александр</title>
+  <meta name="description" content="Концепция компании по запуску, росту, автоматизации и масштабированию бизнеса." />
+  <style>
+    :root{--bg:#0a0a0a;--panel:#111;--text:#f5f5f5;--muted:#a7a7a7;--line:#292929;--accent:#d8ff3e;--radius:24px;--shadow:0 24px 70px rgba(0,0,0,.38)}
+    *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:radial-gradient(circle at 10% 0%,rgba(216,255,62,.1),transparent 26%),radial-gradient(circle at 90% 10%,rgba(255,255,255,.05),transparent 22%),var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;line-height:1.55}
+    a{color:inherit;text-decoration:none}.container{width:min(1160px,calc(100% - 32px));margin:0 auto}
+    .nav{position:sticky;top:0;z-index:20;backdrop-filter:blur(18px);background:rgba(10,10,10,.74);border-bottom:1px solid rgba(255,255,255,.06)}
+    .nav-inner{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{font-weight:850;letter-spacing:-.04em;font-size:21px}.brand span{color:var(--accent)}.nav-links{display:flex;gap:22px;color:var(--muted);font-size:14px}.nav-links a:hover{color:var(--text)}
+    .hero{padding:88px 0 52px}.eyebrow{display:inline-flex;align-items:center;gap:9px;padding:8px 13px;border:1px solid var(--line);border-radius:999px;color:#d9d9d9;background:rgba(255,255,255,.025);font-size:13px}.dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 18px var(--accent)}
+    h1{margin:24px 0 20px;max-width:1000px;font-size:clamp(46px,8vw,102px);line-height:.94;letter-spacing:-.075em}.hero-accent{color:var(--accent)}.hero-grid{display:grid;grid-template-columns:1.4fr .6fr;gap:36px;align-items:end;margin-top:30px}.lead{font-size:clamp(18px,2vw,24px);color:#d5d5d5;max-width:760px}.hero-note{border-left:2px solid var(--accent);padding-left:18px;color:var(--muted);font-size:15px}
+    .section{padding:56px 0}.section-head{display:grid;grid-template-columns:.45fr 1fr;gap:40px;margin-bottom:28px}.kicker{color:var(--accent);font-weight:800;text-transform:uppercase;letter-spacing:.12em;font-size:12px}h2{font-size:clamp(30px,5vw,60px);line-height:1.02;letter-spacing:-.055em;margin:0}h3{font-size:22px;margin:0 0 12px;letter-spacing:-.025em}p{margin:0}.muted{color:var(--muted)}
+    .card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018));border:1px solid var(--line);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow)}.card-number{font-size:13px;color:var(--accent);font-weight:800;margin-bottom:32px}.card p{color:var(--muted)}.card strong{color:var(--text)}
+    .statement{background:var(--accent);color:#0b0b0b;border-radius:32px;padding:34px;font-size:clamp(26px,4vw,54px);font-weight:850;line-height:1.05;letter-spacing:-.05em}
+    .products{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.product{min-height:300px;display:flex;flex-direction:column;justify-content:space-between;border:1px solid var(--line);border-radius:22px;padding:24px;background:var(--panel)}.product:nth-child(2){background:#141414}.product:nth-child(3){background:#181818}.product:nth-child(4){background:#1c1c1c}.product .label{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:.12em}.product ul{margin:20px 0 0;padding-left:18px;color:var(--muted)}.product li{margin:7px 0}
+    .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.price-card{position:relative;border:1px solid var(--line);border-radius:26px;padding:28px;background:var(--panel)}.price-card.featured{border-color:var(--accent);transform:translateY(-8px)}.badge{display:inline-block;border-radius:999px;background:var(--accent);color:#111;padding:7px 11px;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;margin-bottom:18px}.price{font-size:40px;font-weight:900;letter-spacing:-.05em;margin:14px 0}.price-card ul{padding-left:18px;color:var(--muted)}.price-card li{margin:8px 0}.small{font-size:13px}
+    .roles{display:grid;grid-template-columns:1fr 1fr;gap:18px}.role{border:1px solid var(--line);border-radius:28px;padding:30px;background:var(--panel)}.role-name{font-size:34px;font-weight:900;letter-spacing:-.05em;margin-bottom:4px}.role-tag{color:var(--accent);font-weight:700;margin-bottom:20px}.role ul{padding-left:18px;color:var(--muted)}.role li{margin:9px 0}
+    .process{counter-reset:step;display:grid;gap:12px}.step{counter-increment:step;display:grid;grid-template-columns:70px 1fr .8fr;gap:20px;align-items:center;padding:20px 22px;border:1px solid var(--line);border-radius:20px;background:var(--panel)}.step:before{content:"0" counter(step);color:var(--accent);font-weight:900;font-size:16px}.step-owner{color:var(--muted);font-size:14px}
+    .model-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.model-box{border-radius:26px;border:1px solid var(--line);padding:28px;background:var(--panel)}.model-box ul{padding-left:18px;color:var(--muted)}.model-box li{margin:8px 0}
+    .footer{padding:62px 0 76px;border-top:1px solid var(--line);margin-top:40px}.footer-big{font-size:clamp(34px,6vw,74px);font-weight:900;letter-spacing:-.06em;line-height:1}.footer-note{margin-top:18px;color:var(--muted);max-width:720px}
+    @media(max-width:900px){.nav-links{display:none}.hero-grid,.section-head,.roles,.model-grid{grid-template-columns:1fr}.card-grid,.pricing{grid-template-columns:1fr}.products{grid-template-columns:1fr 1fr}.step{grid-template-columns:50px 1fr}.step-owner{grid-column:2}}
+    @media(max-width:620px){.hero{padding-top:60px}.products{grid-template-columns:1fr}.product{min-height:0}.statement{padding:26px}}
+  </style>
+</head>
+<body>
+  <nav class="nav"><div class="container nav-inner"><div class="brand">Алина <span>×</span> Александр</div><div class="nav-links"><a href="#idea">Идея</a><a href="#products">Продукты</a><a href="#pricing">Пакеты</a><a href="#roles">Роли</a><a href="#process">Процесс</a></div></div></nav>
+  <main>
+    <section class="hero"><div class="container"><div class="eyebrow"><span class="dot"></span> Рабочая концепция совместного проекта</div><h1>Не агентство.<br><span class="hero-accent">Система запуска и роста бизнеса.</span></h1><div class="hero-grid"><p class="lead">Мы не продаём клиенту разрозненные сайты, рекламу или CRM. Мы разбираем бизнес, находим слабые места и собираем работающую связку: продукт, позиционирование, упаковка, продажи, маркетинг, автоматизация и аналитика.</p><p class="hero-note">Рабочее название пока не фиксируем. «АпоЛи» можно оставить как временный внутренний вариант.</p></div></div></section>
+
+    <section class="section" id="idea"><div class="container"><div class="section-head"><div class="kicker">01 — Позиционирование</div><h2>Мы не подрядчики на одну задачу. Мы собираем бизнес целиком.</h2></div><div class="card-grid"><article class="card"><div class="card-number">01</div><h3>Начинаем с диагностики</h3><p>Не предлагаем сайт или рекламу вслепую. Сначала выясняем, <strong>где именно бизнес теряет деньги</strong>.</p></article><article class="card"><div class="card-number">02</div><h3>Создаём единую систему</h3><p>Стратегия, упаковка, трафик, CRM и продажи должны работать <strong>как один механизм</strong>.</p></article><article class="card"><div class="card-number">03</div><h3>Доводим до результата</h3><p>Не заканчиваем работу на передаче сайта. Настраиваем, тестируем, измеряем и улучшаем.</p></article></div></div></section>
+
+    <section class="section"><div class="container"><div class="statement">Клиент покупает не набор услуг. Он покупает переход из хаоса в понятную, управляемую систему.</div></div></section>
+
+    <section class="section" id="products"><div class="container"><div class="section-head"><div class="kicker">02 — Продуктовая линейка</div><h2>Четыре понятных сценария под разные этапы бизнеса.</h2></div><div class="products">
+      <article class="product"><div><div class="label">01 / ЗАПУСК</div><h3>Запуск бизнеса</h3></div><ul><li>анализ рынка и конкурентов</li><li>позиционирование и оффер</li><li>сайт или лендинг</li><li>базовая реклама</li><li>простая CRM</li><li>первичная аналитика</li></ul></article>
+      <article class="product"><div><div class="label">02 / РОСТ</div><h3>Рост бизнеса</h3></div><ul><li>пересборка продукта</li><li>усиление упаковки</li><li>расширение каналов</li><li>воронки и квизы</li><li>контроль заявок</li><li>аналитика эффективности</li></ul></article>
+      <article class="product"><div><div class="label">03 / АВТОМАТИЗАЦИЯ</div><h3>Автоматизация</h3></div><ul><li>CRM и этапы сделки</li><li>роботы и уведомления</li><li>ИИ-инструменты</li><li>автоматизация рутины</li><li>отчётность</li><li>контроль команды</li></ul></article>
+      <article class="product"><div><div class="label">04 / МАСШТАБ</div><h3>Масштабирование</h3></div><ul><li>стратегия роста</li><li>новые сегменты и регионы</li><li>расширенная реклама</li><li>регламенты и процессы</li><li>управленческая аналитика</li><li>сопровождение команды</li></ul></article>
+    </div></div></section>
+
+    <section class="section" id="pricing"><div class="container"><div class="section-head"><div class="kicker">03 — Пакеты</div><h2>Понятный вход без бесконечной сметы на каждое действие.</h2></div><div class="pricing">
+      <article class="price-card"><div class="badge">Лайт</div><h3>Быстрый запуск</h3><div class="price">30 000 ₽</div><ul><li>лендинг 4–5 блоков</li><li>базовая настройка рекламы</li><li>простая CRM</li><li>анализ конкурентов</li><li>позиционирование и оффер</li><li>формы и первичная аналитика</li></ul></article>
+      <article class="price-card featured"><div class="badge">Стандарт</div><h3>Полноценная система</h3><div class="price">45 000 ₽</div><ul><li>сайт 6–8 блоков</li><li>расширенное позиционирование</li><li>несколько рекламных связок</li><li>CRM с этапами и автоматизацией</li><li>квиз или воронка</li><li>аналитика и первые корректировки</li></ul></article>
+      <article class="price-card"><div class="badge">Про</div><h3>Запуск под ключ</h3><div class="price">60 000 ₽</div><ul><li>расширенный сайт и упаковка</li><li>полная рекламная архитектура</li><li>CRM и автоматизация процессов</li><li>скрипты и логика продаж</li><li>ИИ-инструменты</li><li>сопровождение после запуска</li></ul></article>
+    </div><p class="muted small" style="margin-top:18px">Дополнительно можно сохранить простой входной продукт от 30 000 ₽ и отдельный премиальный пакет около 150 000 ₽ для проектов с глубокой стратегией, сложной автоматизацией, несколькими каналами и длительным сопровождением.</p></div></section>
+
+    <section class="section" id="roles"><div class="container"><div class="section-head"><div class="kicker">04 — Роли партнёров</div><h2>Разделение ответственности без дублирования и хаоса.</h2></div><div class="roles">
+      <article class="role"><div class="role-name">Алина</div><div class="role-tag">Стратегия, продукт, упаковка и система</div><ul><li>позиционирование и уникальное торговое предложение</li><li>структура продукта и пакетов</li><li>сайты, визуальная концепция и упаковка</li><li>CRM, автоматизация и ИИ</li><li>логика продаж, скрипты и контроль качества</li><li>стратегические решения по проекту</li></ul></article>
+      <article class="role"><div class="role-name">Александр</div><div class="role-tag">Трафик, коммуникация, финансы и ведение</div><ul><li>первичная диагностика и бриф клиента</li><li>анализ рынка и конкурентов</li><li>Яндекс Директ, Google Ads, Avito, 2ГИС и Яндекс Бизнес</li><li>текущая коммуникация с клиентом</li><li>документы, договоры, счета и закрывающие</li><li>сопровождение проекта и контроль сроков</li></ul></article>
+    </div></div></section>
+
+    <section class="section" id="process"><div class="container"><div class="section-head"><div class="kicker">05 — Процесс работы</div><h2>Один маршрут от первого контакта до работающего результата.</h2></div><div class="process">
+      <div class="step"><strong>Диагностика и анкета</strong><span class="step-owner">Александр</span></div>
+      <div class="step"><strong>Анализ рынка, конкурентов и текущей ситуации</strong><span class="step-owner">Александр + Алина</span></div>
+      <div class="step"><strong>Позиционирование, оффер и структура решения</strong><span class="step-owner">Алина</span></div>
+      <div class="step"><strong>Коммерческое предложение и согласование состава работ</strong><span class="step-owner">Совместно</span></div>
+      <div class="step"><strong>Сайт, упаковка, CRM и автоматизация</strong><span class="step-owner">Алина</span></div>
+      <div class="step"><strong>Настройка рекламных каналов и запуск трафика</strong><span class="step-owner">Александр</span></div>
+      <div class="step"><strong>Проверка заявок, продаж и аналитики</strong><span class="step-owner">Совместно</span></div>
+      <div class="step"><strong>Сопровождение, корректировки и развитие</strong><span class="step-owner">Александр + Алина</span></div>
+    </div></div></section>
+
+    <section class="section"><div class="container"><div class="section-head"><div class="kicker">06 — Партнёрство</div><h2>Работаем вместе, в связке, на равных условиях.</h2></div>
+      <div class="model-box"><p class="muted" style="font-size:18px;line-height:1.7">Партнёрство строится в формате 50/50. Документально проект оформляется на Александра, поскольку у Алины пока остаётся параллельный проект <strong style="color:var(--text)">(работа у Элины)</strong>. При этом работа ведётся совместно, в связке, а все расходы и доходы делятся поровну — 50/50.</p></div>
+    </div></section>
+
+    <section class="section"><div class="container"><div class="statement">Главная отстройка: мы не продаём маркетинг. Мы проектируем и запускаем работающую коммерческую систему.</div></div></section>
+  </main>
+  <footer class="footer"><div class="container"><div class="footer-big">Алина × Александр<br><span style="color:var(--accent)">рабочая версия концепции</span></div><p class="footer-note">Следующий шаг — утвердить позиционирование, окончательный состав пакетов, правила партнёрства и только после этого выбирать название и собирать публичный сайт.</p></div></footer>
+</body>
+</html>
