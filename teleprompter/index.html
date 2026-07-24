@@ -30,7 +30,7 @@
       return [...defaultScenes];
     }
     const app=document.querySelector('#app'),result=document.querySelector('#result');
-    let scenes=loadScenes(),activeScene=0,text=scenes[0]||'',size=38,sensitivity=55,voiceMode=true,stream,recorder,chunks=[],recognition,currentWord=0,recording=false,listening=false,manualOffset=0,lastHeard='',speechDebounce=0,orientation='portrait',zoomLevel=1,videoTrack=null;
+    let scenes=loadScenes(),activeScene=0,text=scenes[0]||'',size=38,sensitivity=55,voiceMode=true,stream,recorder,chunks=[],recognition,currentWord=0,recording=false,listening=false,manualOffset=0,lastHeard='',speechDebounce=0,orientation='portrait',zoomLevel=1,videoTrack=null,recordTimer=0,recordStartedAt=0,audioContext=null,audioAnalyser=null,audioFrame=0,lastVoiceStep=0;
     const clean=s=>(s||'').toLowerCase().replace(/ё/g,'е').replace(/[^\p{L}\p{N}\s]/gu,' ').replace(/\s+/g,' ').trim();
     const words=()=>text.match(/\S+/g)||[];
     function esc(s){return s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')}
@@ -128,6 +128,28 @@
         if(next>currentWord){currentWord=next;renderWords()}
       }
     }
+    function startAudioFollow(){
+      stopAudioFollow();const AudioCtx=window.AudioContext||window.webkitAudioContext;if(!AudioCtx||!stream?.getAudioTracks().length)return;
+      try{
+        audioContext=new AudioCtx();const source=audioContext.createMediaStreamSource(stream);audioAnalyser=audioContext.createAnalyser();audioAnalyser.fftSize=512;audioAnalyser.smoothingTimeConstant=.72;source.connect(audioAnalyser);
+        const data=new Uint8Array(audioAnalyser.fftSize);
+        const listen=now=>{
+          if(!recording||!audioAnalyser)return;audioAnalyser.getByteTimeDomainData(data);
+          let sum=0;for(let i=0;i<data.length;i++){const v=(data[i]-128)/128;sum+=v*v}
+          const level=Math.sqrt(sum/data.length),threshold=.018+(90-sensitivity)*.00022;
+          if(level>threshold&&now-lastVoiceStep>390){
+            lastVoiceStep=now;
+            if(currentWord<words().length-1){currentWord++;renderWords()}
+            updateStatus('recording','Запись • '+formatTime(Date.now()-recordStartedAt));
+          }
+          audioFrame=requestAnimationFrame(listen);
+        };audioFrame=requestAnimationFrame(listen);
+      }catch(e){}
+    }
+    function stopAudioFollow(){if(audioFrame)cancelAnimationFrame(audioFrame);audioFrame=0;audioAnalyser=null;if(audioContext){try{audioContext.close()}catch(e){}audioContext=null}}
+    function formatTime(ms){const total=Math.floor(ms/1000),m=String(Math.floor(total/60)).padStart(2,'0'),s=String(total%60).padStart(2,'0');return m+':'+s}
+    function startRecordTimer(){clearInterval(recordTimer);recordStartedAt=Date.now();updateStatus('recording','Запись • 00:00');recordTimer=setInterval(()=>updateStatus('recording','Запись • '+formatTime(Date.now()-recordStartedAt)),250)}
+    function stopRecordTimer(){clearInterval(recordTimer);recordTimer=0}
     function startSpeech(){
       const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){showToast('На этом iPhone слежение за голосом недоступно. Текст можно двигать ползунком.');return}
       stopSpeech();recognition=new SR();recognition.lang='ru-RU';recognition.continuous=true;recognition.interimResults=true;
@@ -143,15 +165,15 @@
       if(!window.MediaRecorder){showToast('Эта версия Safari не умеет сохранять запись. Обнови iOS или открой ссылку в Safari.');return}
       chunks=[];const mime=supportedMime();try{recorder=new MediaRecorder(stream,mime?{mimeType:mime}:undefined)}catch(e){recorder=new MediaRecorder(stream)}
       recorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};recorder.onstop=finishVideo;recorder.start(1000);recording=true;
-      app.querySelector('#record').classList.add('on');updateStatus('recording','Запись');if(voiceMode)startSpeech();
+      app.querySelector('#record').classList.add('on');startRecordTimer();startAudioFollow();if(voiceMode)startSpeech();
     }
-    function stopRecord(){recording=false;stopSpeech();if(recorder&&recorder.state!=='inactive')recorder.stop();app.querySelector('#record')?.classList.remove('on');updateStatus('','Готов')}
+    function stopRecord(){recording=false;stopSpeech();stopAudioFollow();stopRecordTimer();if(recorder&&recorder.state!=='inactive')recorder.stop();app.querySelector('#record')?.classList.remove('on');updateStatus('','Готов')}
     function finishVideo(){
       const type=recorder?.mimeType||'video/mp4',blob=new Blob(chunks,{type}),url=URL.createObjectURL(blob),ext=type.includes('mp4')?'mp4':'webm';
       document.querySelector('#save').href=url;document.querySelector('#save').download=`video-aliny-${new Date().toISOString().slice(0,10)}.${ext}`;result.classList.remove('hidden');
     }
     function showToast(message){let t=app.querySelector('#toast');if(!t){t=document.createElement('div');t.id='toast';t.className='toast';app.appendChild(t)}t.textContent=message;setTimeout(()=>t.remove(),5000)}
-    function stopEverything(){recording=false;stopSpeech();if(recorder&&recorder.state!=='inactive')try{recorder.stop()}catch(e){}if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;videoTrack=null}}
+    function stopEverything(){recording=false;stopSpeech();stopAudioFollow();stopRecordTimer();if(recorder&&recorder.state!=='inactive')try{recorder.stop()}catch(e){}if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;videoTrack=null}}
     document.querySelector('#again').onclick=()=>{result.classList.add('hidden');setup()};window.addEventListener('beforeunload',stopEverything);setup();
   </script>
 </body>
