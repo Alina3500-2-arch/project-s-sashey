@@ -64,9 +64,9 @@
     }
     function cameraUI(){
       currentWord=0;manualOffset=0;lastHeard='';clearTimeout(completionTimer);app.className='camera '+orientation+(displayMode==='all'?' allText':'');
-      app.innerHTML=`<video autoplay playsinline muted></video><div class="shade"></div><div id="timer" class="timer hidden">00:00</div><div class="guide"><div class="script" style="font-size:${size}px"></div><div class="focusLine"></div></div><div class="topbar"><button id="back" class="pill">← Текст</button><button id="orientation" class="pill">↕ Вертикально</button></div><div class="readToolbar"><button id="modeAll" class="${displayMode==='all'?'active':''}">Весь текст</button><button id="modeFollow" class="${displayMode==='follow'?'active':''}">За голосом</button><button class="sizeBtn ${size===18?'active':''}" data-font="18">S</button><button class="sizeBtn ${size===24?'active':''}" data-font="24">M</button><button class="sizeBtn ${size===32?'active':''}" data-font="32">L</button></div><div class="bottom"><span></span><button id="record" class="record" aria-label="Начать или остановить запись"></button><span></span></div>`;
+      app.innerHTML=`<video autoplay playsinline muted></video><div class="shade"></div><div id="timer" class="timer hidden">00:00</div><div class="guide"><div class="script" style="font-size:${size}px"></div><div class="focusLine"></div></div><div class="topbar"><button id="back" class="pill">← Текст</button><button id="orientation" class="pill">↕ Вертикально</button></div><div class="readToolbar"><button id="modeAll" class="${displayMode==='all'?'active':''}">Весь текст</button><button id="modeFollow" class="${displayMode==='follow'?'active':''}">За голосом</button><button class="sizeBtn ${size===18?'active':''}" data-font="18">S</button><button class="sizeBtn ${size===24?'active':''}" data-font="24">M</button><button class="sizeBtn ${size===32?'active':''}" data-font="32">L</button></div><div class="bottom"><button id="prevScene" class="sideBtn">← Назад</button><button id="record" class="record" aria-label="Начать или остановить запись"></button><button id="nextScene" class="sideBtn">Далее →</button></div>`;
       app.querySelector('video').srcObject=stream;renderWords();setTimeout(()=>app.querySelector('#toast')?.remove(),4200);
-      app.querySelector('#back').onclick=setup;app.querySelector('#record').onclick=toggleRecord;app.querySelector('#orientation').onclick=switchOrientation;app.querySelector('#modeAll').onclick=()=>setDisplayMode('all');app.querySelector('#modeFollow').onclick=()=>setDisplayMode('follow');app.querySelectorAll('[data-font]').forEach(b=>b.onclick=()=>setFontPreset(+b.dataset.font));
+      app.querySelector('#back').onclick=setup;app.querySelector('#record').onclick=toggleRecord;app.querySelector('#orientation').onclick=switchOrientation;app.querySelector('#prevScene').onclick=manualPreviousScene;app.querySelector('#nextScene').onclick=manualNextScene;app.querySelector('#modeAll').onclick=()=>setDisplayMode('all');app.querySelector('#modeFollow').onclick=()=>setDisplayMode('follow');app.querySelectorAll('[data-font]').forEach(b=>b.onclick=()=>setFontPreset(+b.dataset.font));
       enableTextDrag();
     }
     function setDisplayMode(mode){
@@ -94,6 +94,13 @@
       activeScene=next;text=scenes[activeScene]||'';clearTimeout(completionTimer);completionTimer=0;currentWord=0;lastHeard='';manualOffset=0;
       const count=app.querySelector('#sceneCount');if(count)count.textContent='Кадр '+(activeScene+1)+'/'+scenes.length;
       renderWords();
+    }
+    function manualPreviousScene(){
+      if(activeScene>0){clearTimeout(completionTimer);completionTimer=0;sceneTransitioning=false;switchScene(-1)}
+    }
+    function manualNextScene(){
+      clearTimeout(completionTimer);completionTimer=0;sceneTransitioning=false;
+      if(activeScene<scenes.length-1)switchScene(1);else if(recording)stopRecord();
     }
     function renderWords(){
       const list=words(),box=app.querySelector('.script');if(!box)return;
