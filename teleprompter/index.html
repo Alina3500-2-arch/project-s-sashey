@@ -16,7 +16,7 @@
 </head>
 <body>
   <main id="app" class="setup"></main>
-  <section id="result" class="result hidden"><h2>Все кадры готовы</h2><p>Сохрани каждый записанный фрагмент на iPhone.</p><div id="clipList" class="clipList"></div><button id="again" class="again">Снять всё заново</button></section>
+  <section id="result" class="result hidden"><h2>Запись готова</h2><p>Одно общее видео со всеми фразами.</p><div id="clipList" class="clipList"></div><button id="again" class="again">Снять всё заново</button></section>
   <script>
     const defaultScenes=[
       'Я решила сразу проверить ИИ-менеджера на живом клиенте. Это была ошибка.',
@@ -31,7 +31,7 @@
       return [...defaultScenes];
     }
     const app=document.querySelector('#app'),result=document.querySelector('#result');
-    let scenes=loadScenes(),activeScene=0,text=scenes[0]||'',size=20,sensitivity=55,voiceMode=true,stream,recorder,chunks=[],recognition,currentWord=0,recording=false,listening=false,manualOffset=0,lastHeard='',speechDebounce=0,orientation='portrait',zoomLevel=1,videoTrack=null,recordTimer=0,recordStartedAt=0,audioContext=null,audioAnalyser=null,audioFrame=0,lastVoiceStep=0,clips=[],transitionTimer=0,transitionPaused=false,displayMode='all',leadWords=11,completionTimer=0,touchStartY=0,touchStartOffset=0,lastVoiceAt=0,speechHasResults=false,lastSpeechResultAt=0;
+    let scenes=loadScenes(),activeScene=0,text=scenes[0]||'',size=20,sensitivity=55,voiceMode=true,stream,recorder,chunks=[],recognition,currentWord=0,recording=false,listening=false,manualOffset=0,lastHeard='',speechDebounce=0,orientation='portrait',zoomLevel=1,videoTrack=null,recordTimer=0,recordStartedAt=0,audioContext=null,audioAnalyser=null,audioFrame=0,lastVoiceStep=0,clips=[],transitionTimer=0,transitionPaused=false,displayMode='all',leadWords=11,completionTimer=0,touchStartY=0,touchStartOffset=0,lastVoiceAt=0,speechHasResults=false,lastSpeechResultAt=0,sceneTransitioning=false;
     const clean=s=>(s||'').toLowerCase().replace(/ё/g,'е').replace(/[^\p{L}\p{N}\s]/gu,' ').replace(/\s+/g,' ').trim();
     const words=()=>text.match(/\S+/g)||[];
     function esc(s){return s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')}
@@ -39,7 +39,7 @@
     function setup(){
       stopEverything();result.classList.add('hidden');app.className='setup';
       const cards=scenes.map((scene,i)=>`<div class="sceneCard"><div class="sceneHead"><span class="sceneTitle">Кадр ${i+1}</span>${scenes.length>1?'<button class="deleteScene" data-delete="'+i+'">Удалить</button>':''}</div><textarea class="sceneText" data-scene="${i}" aria-label="Текст кадра ${i+1}">${esc(scene)}</textarea></div>`).join('');
-      app.innerHTML=`<div class="panel"><div class="eyebrow">СУФЛЁР АЛИНЫ</div><h1>Текст по кадрам</h1><p class="hint">Каждый фрагмент — отдельный кадр. В камере переключай их стрелками.</p><div id="scenes">${cards}</div><button class="addScene" id="addScene">＋ Добавить кадр</button><div class="controls"><label class="control">Слов впереди <b id="lv">${leadWords}</b><input id="lead" type="range" min="2" max="14" value="${leadWords}"></label><label class="control">Режим<select id="displayMode" class="modeSelect"><option value="follow" ${displayMode==='follow'?'selected':''}>Следить за голосом</option><option value="all" ${displayMode==='all'?'selected':''}>Показать весь текст</option></select></label><label class="control">Чувствительность <b id="cv">${sensitivity}</b><input id="sense" type="range" min="25" max="90" value="${sensitivity}"></label></div><label class="switch"><input id="voice" type="checkbox" ${voiceMode?'checked':''}><span>Двигать текст за моим голосом</span></label><button class="primary" id="open">Открыть камеру с кадра 1</button><div class="permission">При первом запуске разреши доступ к камере и микрофону.</div></div>`;
+      app.innerHTML=`<div class="panel"><div class="eyebrow">СУФЛЁР АЛИНЫ</div><h1>Одна запись — все фразы</h1><p class="hint">Суфлёр сам сделает паузу 2 секунды и покажет следующую фразу. В конце получится одно видео.</p><div id="scenes">${cards}</div><button class="addScene" id="addScene">＋ Добавить кадр</button><div class="controls"><label class="control">Слов впереди <b id="lv">${leadWords}</b><input id="lead" type="range" min="2" max="14" value="${leadWords}"></label><label class="control">Режим<select id="displayMode" class="modeSelect"><option value="follow" ${displayMode==='follow'?'selected':''}>Следить за голосом</option><option value="all" ${displayMode==='all'?'selected':''}>Показать весь текст</option></select></label><label class="control">Чувствительность <b id="cv">${sensitivity}</b><input id="sense" type="range" min="25" max="90" value="${sensitivity}"></label></div><label class="switch"><input id="voice" type="checkbox" ${voiceMode?'checked':''}><span>Двигать текст за моим голосом</span></label><button class="primary" id="open">Открыть камеру</button><div class="permission">При первом запуске разреши доступ к камере и микрофону.</div></div>`;
       app.querySelectorAll('[data-scene]').forEach(ta=>ta.oninput=e=>{const i=+e.target.dataset.scene;scenes[i]=e.target.value;saveScenes()});
       app.querySelectorAll('[data-delete]').forEach(btn=>btn.onclick=e=>{scenes.splice(+e.currentTarget.dataset.delete,1);saveScenes();setup()});
       app.querySelector('#addScene').onclick=()=>{scenes.push('');saveScenes();setup();setTimeout(()=>{const all=app.querySelectorAll('.sceneText');all[all.length-1]?.focus();all[all.length-1]?.scrollIntoView({behavior:'smooth',block:'center'})},50)};
@@ -64,12 +64,10 @@
     }
     function cameraUI(){
       currentWord=0;manualOffset=0;lastHeard='';clearTimeout(completionTimer);app.className='camera '+orientation+(displayMode==='all'?' allText':'');
-      app.innerHTML=`<video autoplay playsinline muted></video><div class="shade"></div><div id="timer" class="timer hidden">00:00</div><div class="guide"><div class="script" style="font-size:${size}px"></div><div class="focusLine"></div></div><div class="topbar"><button id="back" class="pill">← Текст</button><button id="orientation" class="pill">${orientation==='portrait'?'↕ Верт.':'↔ Гор.'}</button><div id="status" class="pill status"><i class="dot"></i><span>Готов</span></div></div><div class="readToolbar"><button id="modeAll" class="${displayMode==='all'?'active':''}">Весь текст</button><button id="modeFollow" class="${displayMode==='follow'?'active':''}">За голосом</button><button class="sizeBtn ${size===18?'active':''}" data-font="18">S</button><button class="sizeBtn ${size===24?'active':''}" data-font="24">M</button><button class="sizeBtn ${size===32?'active':''}" data-font="32">L</button></div><div class="zoomBar"><button id="zoomOut">−</button><button id="zoomReset" class="zoomNow">${zoomLevel.toFixed(1)}×</button><button id="zoomIn">+</button><button id="sceneCount">Кадр ${activeScene+1}/${scenes.length}</button></div><div class="bottom"><button id="prevScene" class="sideBtn">← Кадр</button><button id="record" class="record" aria-label="Запись"></button><button id="nextScene" class="sideBtn">Кадр →</button></div><div id="transition" class="transition hidden"><div class="transitionCard"><h2>Кадр <span id="doneScene">1</span> записан</h2><div class="countdown" id="countdown">5</div><p id="transitionText">Следующий кадр откроется автоматически</p><div class="transitionActions"><a class="saveCurrent hidden" id="saveCurrent">Сохранить этот кадр</a><button class="nextNow" id="nextNow">Следующий сейчас</button><button class="waitBtn" id="waitTransition">Подождать</button><button class="redoBtn" id="redoScene">↶ Перезаписать этот кадр</button></div></div></div>`;
+      app.innerHTML=`<video autoplay playsinline muted></video><div class="shade"></div><div id="timer" class="timer hidden">00:00</div><div class="guide"><div class="script" style="font-size:${size}px"></div><div class="focusLine"></div></div><div class="topbar"><button id="back" class="pill">← Текст</button><div id="status" class="pill status"><i class="dot"></i><span>Готов</span></div></div><div class="readToolbar"><button id="modeAll" class="${displayMode==='all'?'active':''}">Весь текст</button><button id="modeFollow" class="${displayMode==='follow'?'active':''}">За голосом</button><button class="sizeBtn ${size===18?'active':''}" data-font="18">S</button><button class="sizeBtn ${size===24?'active':''}" data-font="24">M</button><button class="sizeBtn ${size===32?'active':''}" data-font="32">L</button></div><div class="bottom"><span></span><button id="record" class="record" aria-label="Начать или остановить запись"></button><span></span></div>`;
       app.querySelector('video').srcObject=stream;renderWords();setTimeout(()=>app.querySelector('#toast')?.remove(),4200);
-      app.querySelector('#back').onclick=setup;app.querySelector('#record').onclick=toggleRecord;app.querySelector('#modeAll').onclick=()=>setDisplayMode('all');app.querySelector('#modeFollow').onclick=()=>setDisplayMode('follow');app.querySelectorAll('[data-font]').forEach(b=>b.onclick=()=>setFontPreset(+b.dataset.font));app.querySelector('#orientation').onclick=switchOrientation;app.querySelector('#zoomOut').onclick=()=>changeZoom(-.1);app.querySelector('#zoomIn').onclick=()=>changeZoom(.1);app.querySelector('#zoomReset').onclick=()=>setZoom(1);
-      app.querySelector('#prevScene').onclick=()=>switchScene(-1);
-      app.querySelector('#nextScene').onclick=()=>switchScene(1);
-      enableTextDrag();app.querySelector('#nextNow').onclick=goNextScene;app.querySelector('#waitTransition').onclick=toggleTransitionPause;app.querySelector('#redoScene').onclick=redoScene;
+      app.querySelector('#back').onclick=setup;app.querySelector('#record').onclick=toggleRecord;app.querySelector('#modeAll').onclick=()=>setDisplayMode('all');app.querySelector('#modeFollow').onclick=()=>setDisplayMode('follow');app.querySelectorAll('[data-font]').forEach(b=>b.onclick=()=>setFontPreset(+b.dataset.font));
+      enableTextDrag();
     }
     function setDisplayMode(mode){
       displayMode=mode;app.classList.toggle('allText',mode==='all');app.querySelector('#modeAll')?.classList.toggle('active',mode==='all');app.querySelector('#modeFollow')?.classList.toggle('active',mode==='follow');manualOffset=0;renderWords();
@@ -116,12 +114,25 @@
       guide.addEventListener('touchmove',e=>{if(displayMode==='all')return;const dy=e.touches[0].clientY-touchStartY;manualOffset=Math.max(-120,Math.min(320,touchStartOffset-dy/2.2));scrollToWord();e.preventDefault()},{passive:false});
     }
     function scheduleSceneFinish(){
-      if(completionTimer||!recording)return;
+      if(completionTimer||!recording||sceneTransitioning)return;
       completionTimer=setTimeout(function checkSilence(){
-        completionTimer=0;if(!recording)return;
+        completionTimer=0;if(!recording||sceneTransitioning)return;
         const silentFor=performance.now()-lastVoiceAt;
-        if(silentFor>=2500)stopRecord();else completionTimer=setTimeout(checkSilence,Math.max(350,2550-silentFor));
+        if(silentFor>=2500)advanceToNextScene();else completionTimer=setTimeout(checkSilence,Math.max(350,2550-silentFor));
       },700);
+    }
+    function advanceToNextScene(){
+      if(!recording||sceneTransitioning)return;
+      if(activeScene>=scenes.length-1){stopRecord();return}
+      sceneTransitioning=true;
+      updateStatus('recording','Пауза 2 секунды');
+      setTimeout(()=>{
+        if(!recording)return;
+        switchScene(1);
+        lastVoiceAt=performance.now();
+        sceneTransitioning=false;
+        updateStatus('recording','Запись');
+      },2000);
     }
     function updateStatus(mode,label){const s=app.querySelector('#status');if(!s)return;s.className='pill status '+mode;s.querySelector('span').textContent=label}
     function wordScore(a,b){
@@ -194,8 +205,8 @@
     function stopRecord(){recording=false;clearTimeout(completionTimer);completionTimer=0;stopSpeech();stopAudioFollow();stopRecordTimer();if(recorder&&recorder.state!=='inactive')recorder.stop();app.querySelector('#record')?.classList.remove('on');updateStatus('','Готов')}
     function finishVideo(){
       const type=recorder?.mimeType||'video/mp4',blob=new Blob(chunks,{type}),url=URL.createObjectURL(blob),ext=type.includes('mp4')?'mp4':'webm';
-      clips[activeScene]={url,ext};
-      if(activeScene<scenes.length-1)startSceneTransition();else showAllResults();
+      clips=[{url,ext}];
+      showAllResults();
     }
     function startSceneTransition(){
       clearInterval(transitionTimer);transitionPaused=false;let remaining=5;
@@ -210,9 +221,12 @@
     }
     function redoScene(){closeTransition();clips[activeScene]=null;clearTimeout(completionTimer);completionTimer=0;currentWord=0;lastHeard='';speechHasResults=false;renderWords();showToast('Перезаписываем кадр '+(activeScene+1));setTimeout(()=>{if(!recording)startRecord()},450)}
     function showAllResults(){
-      stopEverything();const list=document.querySelector('#clipList');list.innerHTML=clips.map((clip,i)=>clip?`<a class="save" href="${clip.url}" download="video-aliny-kadr-${i+1}.${clip.ext}">Сохранить кадр ${i+1}</a>`:'').join('');result.classList.remove('hidden');
+      stopEverything();
+      const list=document.querySelector('#clipList'),clip=clips[0];
+      list.innerHTML=clip?`<a class="save" href="${clip.url}" download="video-aliny-obshchaya-zapis.${clip.ext}">Сохранить видео</a>`:'';
+      result.classList.remove('hidden');
     }
-    function showToast(message){let t=app.querySelector('#toast');if(!t){t=document.createElement('div');t.id='toast';t.className='toast';app.appendChild(t)}t.textContent=message;setTimeout(()=>t.remove(),5000)}
+    function showToast(message){}
     function stopEverything(){recording=false;clearTimeout(completionTimer);completionTimer=0;clearInterval(transitionTimer);transitionTimer=0;stopSpeech();stopAudioFollow();stopRecordTimer();if(recorder&&recorder.state!=='inactive')try{recorder.stop()}catch(e){}if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;videoTrack=null}}
     let lastTapTime=0;
     document.addEventListener('gesturestart',e=>e.preventDefault(),{passive:false});
