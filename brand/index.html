@@ -1,0 +1,1832 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Аполлонов и Шигапова — фирменный стиль</title>
+
+  <meta
+    name="description"
+    content="Фирменный стиль: знак АШ, цветовые решения логотипа, палитра, шрифты и правила применения."
+  />
+
+  <link rel="icon" href="logo/ash-favicon.svg" type="image/svg+xml" />
+
+  <style>
+    :root {
+      --bg: #0b0b0b;
+      --panel: #121212;
+      --panel-2: #171717;
+      --line: #232323;
+      --text: #f4f4f1;
+      --muted: #8f8f8a;
+      --green: #a8dc28;
+      --green-deep: #5f7d10;
+      --paper: #f4f4f1;
+      --radius: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+
+      background: var(--bg);
+      color: var(--text);
+
+      font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+      font-size: 16px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ---------- шапка ---------- */
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+
+      background: rgba(11, 11, 11, 0.86);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
+      padding: 14px 0;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-brand img {
+      width: 34px;
+      height: 34px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 22px;
+
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .nav-links a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .nav-links a:hover {
+      color: var(--green);
+    }
+
+    /* ---------- общее ---------- */
+
+    .section {
+      padding: 72px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .kicker {
+      margin-bottom: 14px;
+
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0 0 18px;
+
+      font-size: clamp(38px, 6.2vw, 76px);
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      line-height: 0.98;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+
+      font-size: clamp(26px, 3.4vw, 40px);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1.06;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    p {
+      margin: 0 0 14px;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .lead {
+      max-width: 700px;
+      font-size: 18px;
+      color: var(--muted);
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 30px;
+      align-items: end;
+
+      margin-bottom: 34px;
+    }
+
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12.5px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ---------- герой ---------- */
+
+    .hero {
+      padding: 64px 0 70px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 44px;
+      align-items: center;
+    }
+
+    .hero-mark {
+      width: 100%;
+      max-width: 300px;
+    }
+
+    .badge-approved {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+
+      margin-bottom: 20px;
+      padding: 7px 14px;
+
+      border: 1px solid var(--line);
+      border-radius: 999px;
+
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    .hero-desc {
+      margin-top: 8px;
+
+      font-size: clamp(18px, 2.4vw, 26px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--green);
+    }
+
+    /* ---------- карточки ---------- */
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .card {
+      padding: 26px;
+
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+    }
+
+    .card .label {
+      margin-bottom: 10px;
+
+      color: var(--muted);
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .card p:last-child {
+      margin-bottom: 0;
+    }
+
+    .fixed-value {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+
+    /* ---------- цветовые решения ---------- */
+
+    .swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .swatch {
+      overflow: hidden;
+
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+    }
+
+    .swatch-canvas {
+      display: grid;
+      place-items: center;
+
+      min-height: 190px;
+      padding: 26px;
+    }
+
+    .bg-ink {
+      background: #0b0b0b;
+    }
+
+    .bg-paper {
+      background: var(--paper);
+    }
+
+    .bg-green {
+      background: var(--green);
+    }
+
+    .bg-photo {
+      background:
+        linear-gradient(135deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.15)),
+        repeating-linear-gradient(
+          45deg,
+          #3a4a2a 0 18px,
+          #55663a 18px 36px
+        );
+    }
+
+    .swatch-canvas img {
+      width: 118px;
+      height: auto;
+    }
+
+    .swatch-canvas.wide img {
+      width: 100%;
+      max-width: 260px;
+    }
+
+    .swatch-meta {
+      padding: 16px 18px;
+      border-top: 1px solid var(--line);
+    }
+
+    .swatch-meta strong {
+      display: block;
+      font-size: 15px;
+      letter-spacing: -0.01em;
+    }
+
+    .swatch-meta span {
+      display: block;
+      margin-top: 3px;
+
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .swatch-meta code {
+      display: block;
+      margin-top: 8px;
+
+      color: var(--green-deep);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 11.5px;
+    }
+
+    .swatch-meta a {
+      color: var(--green);
+      text-decoration: none;
+    }
+
+    /* ---------- палитра ---------- */
+
+    .palette {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .color {
+      overflow: hidden;
+
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+    }
+
+    .color-chip {
+      height: 108px;
+    }
+
+    .color-body {
+      padding: 16px 18px;
+    }
+
+    .color-body strong {
+      display: block;
+      font-size: 15px;
+    }
+
+    .color-body .hex {
+      margin-top: 4px;
+
+      color: var(--green);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 13px;
+      text-transform: uppercase;
+    }
+
+    .color-body .role {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* ---------- типографика ---------- */
+
+    .type-row {
+      display: grid;
+      grid-template-columns: 190px 1fr;
+      gap: 24px;
+      align-items: baseline;
+
+      padding: 22px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .type-row:last-child {
+      border-bottom: 0;
+    }
+
+    .type-spec {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .t-h1 {
+      font-size: 46px;
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      line-height: 1;
+    }
+
+    .t-h2 {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -0.035em;
+    }
+
+    .t-lead {
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    .t-body {
+      font-size: 16px;
+    }
+
+    .t-caps {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--green);
+    }
+
+    /* ---------- правила ---------- */
+
+    .rule-canvas {
+      display: grid;
+      place-items: center;
+
+      min-height: 220px;
+      padding: 24px;
+
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+    }
+
+    .clearspace {
+      position: relative;
+      padding: 46px;
+      outline: 1px dashed #3a3a3a;
+    }
+
+    .clearspace::after {
+      content: "";
+      position: absolute;
+      inset: 46px;
+      outline: 1px dashed var(--green-deep);
+    }
+
+    .clearspace img {
+      display: block;
+      width: 150px;
+    }
+
+    .sizes {
+      display: flex;
+      align-items: flex-end;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+
+    .size-item {
+      text-align: center;
+    }
+
+    .size-item span {
+      display: block;
+      margin-top: 8px;
+
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .dont-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .dont {
+      overflow: hidden;
+
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+    }
+
+    .dont-canvas {
+      display: grid;
+      place-items: center;
+
+      min-height: 160px;
+      padding: 20px;
+      background: #0b0b0b;
+    }
+
+    .dont-canvas img {
+      width: 96px;
+    }
+
+    .dont-canvas.bg-photo {
+      background:
+        linear-gradient(135deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.15)),
+        repeating-linear-gradient(45deg, #3a4a2a 0 18px, #55663a 18px 36px);
+    }
+
+    .dont-meta {
+      display: flex;
+      gap: 10px;
+
+      padding: 14px 16px;
+      border-top: 1px solid var(--line);
+
+      color: var(--muted);
+      font-size: 13.5px;
+    }
+
+    .dont-meta b {
+      color: #ff6b5e;
+      font-weight: 800;
+    }
+
+    .stretch {
+      transform: scaleX(1.45);
+    }
+
+    .rotate {
+      transform: rotate(-14deg);
+    }
+
+    .recolor {
+      filter: hue-rotate(190deg) saturate(2.4);
+    }
+
+    .shadowed {
+      filter: drop-shadow(4px 6px 3px rgba(255, 255, 255, 0.55));
+    }
+
+    .lowcontrast {
+      opacity: 0.28;
+    }
+
+    /* ---------- применение ---------- */
+
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .app {
+      overflow: hidden;
+
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+    }
+
+    .app-body {
+      padding: 16px 18px;
+      border-top: 1px solid var(--line);
+
+      color: var(--muted);
+      font-size: 13.5px;
+    }
+
+    .app-body strong {
+      display: block;
+      margin-bottom: 2px;
+
+      color: var(--text);
+      font-size: 15px;
+    }
+
+    .mock {
+      display: grid;
+      place-items: center;
+      min-height: 180px;
+      padding: 22px;
+    }
+
+    .mock-doc {
+      width: 100%;
+      max-width: 260px;
+      padding: 18px;
+
+      border-radius: 8px;
+      background: var(--paper);
+      color: #0b0b0b;
+    }
+
+    .mock-doc img {
+      width: 150px;
+    }
+
+    .mock-doc .doc-lines {
+      margin-top: 14px;
+    }
+
+    .mock-doc .doc-lines i {
+      display: block;
+      height: 6px;
+      margin-bottom: 7px;
+
+      border-radius: 3px;
+      background: #dedad0;
+    }
+
+    .mock-doc .doc-lines i:nth-child(3) {
+      width: 62%;
+    }
+
+    .mock-avatars {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .mock-avatars img {
+      width: 68px;
+
+      border: 1px solid var(--line);
+      border-radius: 16px;
+    }
+
+    .mock-avatars img.round {
+      border-radius: 50%;
+    }
+
+    .mock-site {
+      width: 100%;
+      max-width: 280px;
+
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      background: #0e0e0e;
+    }
+
+    .mock-site .bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .mock-site .bar img {
+      width: 118px;
+    }
+
+    .mock-site .bar em {
+      padding: 5px 10px;
+
+      border-radius: 999px;
+      background: var(--green);
+      color: #0b0b0b;
+
+      font-size: 10px;
+      font-style: normal;
+      font-weight: 800;
+    }
+
+    .mock-site .hero-mini {
+      padding: 18px 12px 24px;
+    }
+
+    .mock-site .hero-mini b {
+      display: block;
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+
+    .mock-site .hero-mini span {
+      display: block;
+      margin-top: 6px;
+
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    /* ---------- файлы и чеклист ---------- */
+
+    table.files {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    table.files th,
+    table.files td {
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    table.files th {
+      color: var(--muted);
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    table.files td:first-child {
+      white-space: nowrap;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12.5px;
+    }
+
+    table.files a {
+      color: var(--green);
+      text-decoration: none;
+    }
+
+    .checklist {
+      display: grid;
+      gap: 10px;
+    }
+
+    .check {
+      display: grid;
+      grid-template-columns: 26px 1fr auto;
+      gap: 14px;
+      align-items: start;
+
+      padding: 16px 18px;
+
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--panel);
+    }
+
+    .check .num {
+      color: var(--green);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+      padding-top: 3px;
+    }
+
+    .check strong {
+      display: block;
+      font-size: 15.5px;
+      letter-spacing: -0.01em;
+    }
+
+    .check span {
+      display: block;
+      margin-top: 3px;
+
+      color: var(--muted);
+      font-size: 13.5px;
+    }
+
+    .check .who {
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+      padding-top: 4px;
+    }
+
+    .note {
+      margin-top: 18px;
+      padding: 18px 20px;
+
+      border-left: 2px solid var(--green);
+      border-radius: 0 12px 12px 0;
+      background: var(--panel-2);
+
+      color: var(--muted);
+      font-size: 14.5px;
+    }
+
+    .note strong {
+      color: var(--text);
+    }
+
+    .footer {
+      padding: 56px 0 70px;
+      border-top: 1px solid var(--line);
+    }
+
+    .footer-big {
+      font-size: clamp(28px, 5vw, 58px);
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      line-height: 1;
+    }
+
+    .footer-note {
+      max-width: 640px;
+      margin-top: 16px;
+
+      color: var(--muted);
+      font-size: 14.5px;
+    }
+
+    @media (max-width: 940px) {
+      .hero-grid,
+      .section-head,
+      .grid-3,
+      .grid-4,
+      .grid-2,
+      .swatch-grid,
+      .palette,
+      .dont-grid,
+      .app-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .type-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .grid-3,
+      .grid-4,
+      .grid-2,
+      .swatch-grid,
+      .palette,
+      .dont-grid,
+      .app-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section {
+        padding: 52px 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <div class="nav-brand">
+        <img src="logo/ash-mark-primary.svg" alt="Знак АШ" />
+        Фирменный стиль
+      </div>
+
+      <div class="nav-links">
+        <a href="#fixed">Зафиксировано</a>
+        <a href="#mark">Знак</a>
+        <a href="#colors">Цветовые решения</a>
+        <a href="#palette">Палитра</a>
+        <a href="#type">Шрифты</a>
+        <a href="#rules">Правила</a>
+        <a href="#files">Файлы</a>
+        <a href="#register">Регистрируем</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <img
+            class="hero-mark"
+            src="logo/ash-mark-primary.svg"
+            alt="Логотип Аполлонов и Шигапова"
+          />
+
+          <div>
+            <div class="badge-approved">
+              <span class="dot"></span>
+              Утверждено 2 августа 2026 · спринт 1, задача 1
+            </div>
+
+            <h1>
+              Аполлонов<br />
+              и Шигапова
+            </h1>
+
+            <div class="hero-desc">
+              Пересобираем продажи в малом бизнесе
+            </div>
+
+            <p class="lead" style="margin-top: 18px">
+              Знак — монограмма АШ в круге: две фамилии в одной замкнутой
+              системе. Ниже — утверждённый вариант 19, цветовые решения,
+              палитра, шрифты и правила, по которым логотип живёт везде:
+              от аватарки до договора.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="fixed">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="kicker">00 — Зафиксировано</div>
+
+            <h2>
+              Больше не выбираем.
+              Дальше только применяем.
+            </h2>
+          </div>
+
+          <p class="muted" style="margin: 0">
+            Эти четыре строки — основа всего: сайта, рекламы, договоров,
+            соцсетей. Меняются только по общему решению, не по ходу дела.
+          </p>
+        </div>
+
+        <div class="grid-4">
+          <article class="card">
+            <div class="label">Название</div>
+            <div class="fixed-value">Аполлонов и Шигапова</div>
+            <p class="muted" style="margin-top: 10px; font-size: 14px">
+              Две фамилии. Не агентство и не студия — партнёрская практика,
+              где у работы есть авторы.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="label">Дескриптор</div>
+            <div class="fixed-value">Пересобираем продажи в малом бизнесе</div>
+            <p class="muted" style="margin-top: 10px; font-size: 14px">
+              Идёт рядом с логотипом и в шапке сайта. Слово «пересобираем» —
+              ключевое: приходим туда, где уже что-то есть, и чиним систему.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="label">Город</div>
+            <div class="fixed-value">Казань</div>
+            <p class="muted" style="margin-top: 10px; font-size: 14px">
+              Указываем в подписи и в контактах. Работаем удалённо,
+              но с понятной точкой на карте.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="label">Знак</div>
+            <div class="fixed-value">Монограмма АШ, вариант 19</div>
+            <p class="muted" style="margin-top: 10px; font-size: 14px">
+              Круг, разделённый вертикалью: слева белая А, справа зелёная Ш.
+              Перерисован в вектор, толщины выровнены.
+            </p>
+          </article>
+        </div>
+
+        <div class="note">
+          <strong>Что это закрывает.</strong>
+          Задачу 1 спринта — «утвердить концепцию, название, купить домен» —
+          в части концепции и названия. Осталась регистрация: список внизу страницы.
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="mark">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="kicker">01 — Знак</div>
+
+            <h2>Что в нём заложено</h2>
+          </div>
+
+          <p class="muted" style="margin: 0">
+            Знак работает без подписи: круг с монограммой узнаётся
+            в аватарке 40×40 и на баннере.
+          </p>
+        </div>
+
+        <div class="grid-3">
+          <article class="card">
+            <div class="label">Смысл</div>
+            <h3>Две фамилии — один контур</h3>
+            <p class="muted">
+              А и Ш делят круг пополам вертикалью. Это два партнёра
+              с разными зонами: сайт и тексты — Алина, трафик и цифры — Саша.
+              Круг общий.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="label">Форма</div>
+            <h3>Замкнутая система</h3>
+            <p class="muted">
+              Круг — это воронка, которая не рвётся: трафик, сайт, заявка,
+              разбор, продажа, ведение. Мы продаём именно замкнутость,
+              а не отдельные услуги.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="label">Цвет</div>
+            <h3>Зелёный на стороне роста</h3>
+            <p class="muted">
+              Зелёным всегда закрашена правая половина — Ш и её дуга.
+              Белое — то, что уже есть у клиента. Зелёное — то, что растёт.
+            </p>
+          </article>
+        </div>
+
+        <div class="grid-2" style="margin-top: 16px">
+          <article class="card">
+            <div class="label">Построение</div>
+
+            <div class="rule-canvas" style="border: 0; padding: 10px 0 18px">
+              <img
+                src="logo/ash-mark-primary.svg"
+                alt="Построение знака"
+                style="width: 220px"
+              />
+            </div>
+
+            <p class="muted mono" style="margin: 0">
+              Поле 200×200 · окружность r=85 · кольцо 8 · буквы 10<br />
+              А: вершина в верхней точке круга, перекладина на y=88<br />
+              Ш: три штриха, база y=166, правый штрих сливается с дугой
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="label">Что изменено при отрисовке</div>
+
+            <h3>Чистка, а не редизайн</h3>
+
+            <p class="muted">
+              Композиция варианта 19 сохранена полностью. Приведено в порядок
+              то, что в растровой картинке было неровным:
+            </p>
+
+            <ul class="muted" style="margin: 0; padding-left: 18px">
+              <li>обе дуги кольца — одной толщины (в исходнике зелёная была толще);</li>
+              <li>три штриха Ш — одной высоты (в исходнике средний начинался ниже);</li>
+              <li>зазор между А и Ш — ровно один штрих;</li>
+              <li>цвет зелёного зафиксирован пипеткой с исходника — #A8DC28.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="colors">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="kicker">02 — Цветовые решения</div>
+
+            <h2>Шесть версий знака под любую подложку</h2>
+          </div>
+
+          <p class="muted" style="margin: 0">
+            Правило простое: сначала пробуем основной, если фон мешает —
+            берём моно. Придумывать новые сочетания нельзя.
+          </p>
+        </div>
+
+        <div class="swatch-grid">
+          <article class="swatch">
+            <div class="swatch-canvas bg-ink">
+              <img src="logo/ash-mark-primary.svg" alt="Основной знак" />
+            </div>
+
+            <div class="swatch-meta">
+              <strong>Основной</strong>
+              <span>Тёмный фон: сайт, презентации, реклама, соцсети</span>
+              <code>ash-mark-primary.svg</code>
+            </div>
+          </article>
+
+          <article class="swatch">
+            <div class="swatch-canvas bg-paper">
+              <img src="logo/ash-mark-inverse.svg" alt="Инверсный знак" />
+            </div>
+
+            <div class="swatch-meta">
+              <strong>Инверсный</strong>
+              <span>Светлый фон: документы, КП, счета, печать</span>
+              <code>ash-mark-inverse.svg</code>
+            </div>
+          </article>
+
+          <article class="swatch">
+            <div class="swatch-canvas bg-ink">
+              <img src="logo/ash-mark-green.svg" alt="Моно-зелёный знак" />
+            </div>
+
+            <div class="swatch-meta">
+              <strong>Моно-зелёный</strong>
+              <span>Акцентные носители: стикеры, мерч, обложки видео</span>
+              <code>ash-mark-green.svg</code>
+            </div>
+          </article>
+
+          <article class="swatch">
+            <div class="swatch-canvas bg-photo">
+              <img src="logo/ash-mark-white.svg" alt="Моно-белый знак" />
+            </div>
+
+            <div class="swatch-meta">
+              <strong>Моно-белый</strong>
+              <span>Фото и пёстрые подложки, где цвет не читается</span>
+              <code>ash-mark-white.svg</code>
+            </div>
+          </article>
+
+          <article class="swatch">
+            <div class="swatch-canvas bg-green">
+              <img src="logo/ash-mark-black.svg" alt="Моно-чёрный знак" />
+            </div>
+
+            <div class="swatch-meta">
+              <strong>Моно-чёрный</strong>
+              <span>Зелёная плашка, факс, гравировка, штамп</span>
+              <code>ash-mark-black.svg</code>
+            </div>
+          </article>
+
+          <article class="swatch">
+            <div class="swatch-canvas bg-paper">
+              <img src="logo/ash-mark-grey.svg" alt="Знак в градациях серого" />
+            </div>
+
+            <div class="swatch-meta">
+              <strong>Градации серого</strong>
+              <span>Ч/б печать: договор, акт, приложение к смете</span>
+              <code>ash-mark-grey.svg</code>
+            </div>
+          </article>
+        </div>
+
+        <div class="section-head" style="margin: 54px 0 24px">
+          <div>
+            <div class="kicker">03 — Локапы</div>
+            <h2>Знак с названием</h2>
+          </div>
+
+          <p class="muted" style="margin: 0">
+            Полный локап — там, где нас видят впервые. Короткий — там,
+            где нас уже знают. Знак отдельно — в аватарках и фавиконе.
+          </p>
+        </div>
+
+        <div class="swatch-grid">
+          <article class="swatch">
+            <div class="swatch-canvas wide bg-ink">
+              <img src="logo/ash-logo-primary.svg" alt="Горизонтальный логотип" />
+            </div>
+
+            <div class="swatch-meta">
+              <strong>Горизонтальный с дескриптором</strong>
+              <span>Основной вариант: шапка сайта, презентация, бланк</span>
+              <code>ash-logo-primary.svg · ash-logo-inverse.svg</code>
+            </div>
+          </article>
+
+          <article class="swatch">
+            <div class="swatch-canvas wide bg-paper">
+              <img src="logo/ash-logo-short-inverse.svg" alt="Короткий логотип" />
+            </div>
+
+            <div class="swatch-meta">
+              <strong>Короткий</strong>
+              <span>Когда места мало: подвал, счёт, подпись в письме</span>
+              <code>ash-logo-short-primary.svg · ash-logo-short-inverse.svg</code>
+            </div>
+          </article>
+
+          <article class="swatch">
+            <div class="swatch-canvas wide bg-ink">
+              <img
+                src="logo/ash-logo-vertical-primary.svg"
+                alt="Вертикальный логотип"
+                style="max-width: 200px"
+              />
+            </div>
+
+            <div class="swatch-meta">
+              <strong>Вертикальный</strong>
+              <span>Квадратные форматы: обложки, сторис, печатная реклама</span>
+              <code>ash-logo-vertical-primary.svg · -inverse.svg</code>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="palette">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="kicker">04 — Палитра</div>
+            <h2>Четыре рабочих цвета и три служебных</h2>
+          </div>
+
+          <p class="muted" style="margin: 0">
+            Зелёный — только акцент: кнопка, цифра, одно слово. Как только
+            зелёного становится много, он перестаёт работать.
+          </p>
+        </div>
+
+        <div class="palette">
+          <article class="color">
+            <div class="color-chip" style="background: #0b0b0b; border-bottom: 1px solid var(--line)"></div>
+            <div class="color-body">
+              <strong>Графит</strong>
+              <div class="hex">#0B0B0B</div>
+              <div class="role">Основной фон, текст на светлом</div>
+            </div>
+          </article>
+
+          <article class="color">
+            <div class="color-chip" style="background: #a8dc28"></div>
+            <div class="color-body">
+              <strong>Зелёный</strong>
+              <div class="hex">#A8DC28</div>
+              <div class="role">Акцент: кнопки, цифры, половина знака</div>
+            </div>
+          </article>
+
+          <article class="color">
+            <div class="color-chip" style="background: #f4f4f1"></div>
+            <div class="color-body">
+              <strong>Бумага</strong>
+              <div class="hex">#F4F4F1</div>
+              <div class="role">Светлый фон документов и печати</div>
+            </div>
+          </article>
+
+          <article class="color">
+            <div class="color-chip" style="background: #5f7d10"></div>
+            <div class="color-body">
+              <strong>Тёмно-зелёный</strong>
+              <div class="hex">#5F7D10</div>
+              <div class="role">Зелёный текст на светлом фоне — читаемый</div>
+            </div>
+          </article>
+
+          <article class="color">
+            <div class="color-chip" style="background: #121212; border-bottom: 1px solid var(--line)"></div>
+            <div class="color-body">
+              <strong>Панель</strong>
+              <div class="hex">#121212</div>
+              <div class="role">Карточки и блоки на тёмном фоне</div>
+            </div>
+          </article>
+
+          <article class="color">
+            <div class="color-chip" style="background: #232323"></div>
+            <div class="color-body">
+              <strong>Линия</strong>
+              <div class="hex">#232323</div>
+              <div class="role">Границы, разделители, обводки</div>
+            </div>
+          </article>
+
+          <article class="color">
+            <div class="color-chip" style="background: #8f8f8a"></div>
+            <div class="color-body">
+              <strong>Серый</strong>
+              <div class="hex">#8F8F8A</div>
+              <div class="role">Второстепенный текст, подписи</div>
+            </div>
+          </article>
+
+          <article class="color">
+            <div class="color-chip" style="background: #ffffff"></div>
+            <div class="color-body">
+              <strong>Белый</strong>
+              <div class="hex">#FFFFFF</div>
+              <div class="role">Половина знака, текст на тёмном</div>
+            </div>
+          </article>
+        </div>
+
+        <div class="note">
+          <strong>Про контраст.</strong>
+          Зелёный #A8DC28 на белом фоне не читается — для текста
+          на светлом всегда берём тёмно-зелёный #5F7D10. Сам зелёный
+          на светлом остаётся только как заливка плашки с чёрным текстом.
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="type">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="kicker">05 — Шрифты</div>
+            <h2>Один гротеск, четыре роли</h2>
+          </div>
+
+          <p class="muted" style="margin: 0">
+            Inter — на сайте и в презентациях. В документах и на чужих
+            компьютерах — системный Arial: подмена не ломает вёрстку.
+          </p>
+        </div>
+
+        <div class="card" style="padding: 8px 26px">
+          <div class="type-row">
+            <div class="type-spec">
+              Заголовок экрана<br />
+              900 · трекинг −5% · интерлиньяж 1.0
+            </div>
+            <div class="t-h1">Пересобираем продажи</div>
+          </div>
+
+          <div class="type-row">
+            <div class="type-spec">
+              Заголовок блока<br />
+              800 · трекинг −3.5%
+            </div>
+            <div class="t-h2">Сначала цифры, потом красота</div>
+          </div>
+
+          <div class="type-row">
+            <div class="type-spec">
+              Подзаголовок<br />
+              500 · серый
+            </div>
+            <div class="t-lead">
+              Разбираем воронку по цифрам и показываем, где именно теряются деньги.
+            </div>
+          </div>
+
+          <div class="type-row">
+            <div class="type-spec">
+              Основной текст<br />
+              400 · интерлиньяж 1.55
+            </div>
+            <div class="t-body">
+              Мы не берём проект, пока не увидели цифры. Аудит за 30 000 ₽ —
+              это пять дней работы и план на три месяца, а не презентация
+              с общими словами.
+            </div>
+          </div>
+
+          <div class="type-row">
+            <div class="type-spec">
+              Надзаголовок и дескриптор<br />
+              700 · капс · трекинг +18%
+            </div>
+            <div class="t-caps">Пересобираем продажи в малом бизнесе</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="rules">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="kicker">06 — Правила</div>
+            <h2>Охранное поле, размеры и запреты</h2>
+          </div>
+
+          <p class="muted" style="margin: 0">
+            Три правила, которые держат знак в форме там, где им пользуются
+            быстро и без дизайнера.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <div class="label">Охранное поле</div>
+
+            <div class="rule-canvas" style="border: 0; background: transparent">
+              <div class="clearspace">
+                <img src="logo/ash-mark-primary.svg" alt="Охранное поле" />
+              </div>
+            </div>
+
+            <p class="muted" style="margin: 0">
+              Свободное поле вокруг знака — не меньше четверти его диаметра.
+              В это поле не заходят текст, кнопки, края макета и другие логотипы.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="label">Минимальные размеры</div>
+
+            <div class="rule-canvas" style="border: 0; background: transparent">
+              <div class="sizes">
+                <div class="size-item">
+                  <img src="logo/ash-mark-primary.svg" alt="Знак 96 px" style="width: 96px" />
+                  <span>свободно</span>
+                </div>
+
+                <div class="size-item">
+                  <img src="logo/ash-mark-primary.svg" alt="Знак 40 px" style="width: 40px" />
+                  <span>40 px — аватар</span>
+                </div>
+
+                <div class="size-item">
+                  <img src="logo/ash-mark-primary.svg" alt="Знак 24 px" style="width: 24px" />
+                  <span>24 px — минимум</span>
+                </div>
+              </div>
+            </div>
+
+            <p class="muted" style="margin: 0">
+              Знак — от 24 px на экране и от 8 мм в печати.
+              Локап с дескриптором — от 180 px и от 45 мм, иначе строку
+              под названием не прочитать: берём короткий вариант.
+            </p>
+          </article>
+        </div>
+
+        <h3 style="margin: 34px 0 16px">Так — нельзя</h3>
+
+        <div class="dont-grid">
+          <article class="dont">
+            <div class="dont-canvas">
+              <img class="stretch" src="logo/ash-mark-primary.svg" alt="Растянутый знак" />
+            </div>
+            <div class="dont-meta"><b>Нет</b> Растягивать и сжимать</div>
+          </article>
+
+          <article class="dont">
+            <div class="dont-canvas">
+              <img class="rotate" src="logo/ash-mark-primary.svg" alt="Повёрнутый знак" />
+            </div>
+            <div class="dont-meta"><b>Нет</b> Поворачивать под углом</div>
+          </article>
+
+          <article class="dont">
+            <div class="dont-canvas">
+              <img class="recolor" src="logo/ash-mark-primary.svg" alt="Перекрашенный знак" />
+            </div>
+            <div class="dont-meta"><b>Нет</b> Менять цвета на свои</div>
+          </article>
+
+          <article class="dont">
+            <div class="dont-canvas">
+              <img class="shadowed" src="logo/ash-mark-primary.svg" alt="Знак с тенью" />
+            </div>
+            <div class="dont-meta"><b>Нет</b> Добавлять тени, обводки, градиенты</div>
+          </article>
+
+          <article class="dont">
+            <div class="dont-canvas bg-photo">
+              <img class="lowcontrast" src="logo/ash-mark-primary.svg" alt="Знак без контраста" />
+            </div>
+            <div class="dont-meta"><b>Нет</b> Ставить на фон без контраста</div>
+          </article>
+
+          <article class="dont">
+            <div class="dont-canvas" style="background: #f4f4f1">
+              <img src="logo/ash-mark-primary.svg" alt="Белый знак на светлом" />
+            </div>
+            <div class="dont-meta"><b>Нет</b> Белую версию — на светлое. Есть инверсная</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="apply">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="kicker">07 — Применение</div>
+            <h2>Как это выглядит на носителях</h2>
+          </div>
+
+          <p class="muted" style="margin: 0">
+            Три места, где логотип нужен уже на этой неделе:
+            сайт, соцсети и документы.
+          </p>
+        </div>
+
+        <div class="app-grid">
+          <article class="app">
+            <div class="mock bg-ink">
+              <div class="mock-site">
+                <div class="bar">
+                  <img src="logo/ash-logo-short-primary.svg" alt="Шапка сайта" />
+                  <em>Разбор за 20 минут</em>
+                </div>
+
+                <div class="hero-mini">
+                  <b>Пересобираем продажи в малом бизнесе</b>
+                  <span>Казань · аудит за 5 дней · план на 3 месяца</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="app-body">
+              <strong>Сайт</strong>
+              Короткий локап в шапке, знак — в фавиконе.
+            </div>
+          </article>
+
+          <article class="app">
+            <div class="mock bg-ink">
+              <div class="mock-avatars">
+                <img src="logo/ash-badge-dark.svg" alt="Аватар тёмный" />
+                <img src="logo/ash-badge-green.svg" alt="Аватар зелёный" />
+                <img class="round" src="logo/ash-badge-circle.svg" alt="Аватар круглый" />
+              </div>
+            </div>
+
+            <div class="app-body">
+              <strong>Соцсети и мессенджеры</strong>
+              Плашка со знаком: квадрат или круг, без подписи.
+            </div>
+          </article>
+
+          <article class="app">
+            <div class="mock bg-ink">
+              <div class="mock-doc">
+                <img src="logo/ash-logo-inverse.svg" alt="Бланк документа" />
+
+                <div class="doc-lines">
+                  <i></i><i></i><i></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="app-body">
+              <strong>Документы и КП</strong>
+              Инверсный локап сверху, дальше — только чёрный текст.
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="files">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="kicker">08 — Файлы</div>
+            <h2>Что лежит в папке</h2>
+          </div>
+
+          <p class="muted" style="margin: 0">
+            Все файлы — SVG: не теряют качество, весят килобайты,
+            открываются в браузере, Figma и Canva.
+          </p>
+        </div>
+
+        <table class="files">
+          <thead>
+            <tr>
+              <th>Файл</th>
+              <th>Что это</th>
+              <th>Где применять</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td><a href="logo/ash-mark-primary.svg">ash-mark-primary.svg</a></td>
+              <td>Знак, основной</td>
+              <td>Тёмный фон — везде по умолчанию</td>
+            </tr>
+            <tr>
+              <td><a href="logo/ash-mark-inverse.svg">ash-mark-inverse.svg</a></td>
+              <td>Знак, инверсный</td>
+              <td>Светлый фон, печать</td>
+            </tr>
+            <tr>
+              <td><a href="logo/ash-mark-green.svg">ash-mark-green.svg</a></td>
+              <td>Знак, моно-зелёный</td>
+              <td>Акцентные носители</td>
+            </tr>
+            <tr>
+              <td><a href="logo/ash-mark-white.svg">ash-mark-white.svg</a></td>
+              <td>Знак, моно-белый</td>
+              <td>Фото и цветные подложки</td>
+            </tr>
+            <tr>
+              <td><a href="logo/ash-mark-black.svg">ash-mark-black.svg</a></td>
+              <td>Знак, моно-чёрный</td>
+              <td>Зелёная плашка, штамп, гравировка</td>
+            </tr>
+            <tr>
+              <td><a href="logo/ash-mark-grey.svg">ash-mark-grey.svg</a></td>
+              <td>Знак, градации серого</td>
+              <td>Ч/б печать документов</td>
+            </tr>
+            <tr>
+              <td><a href="logo/ash-logo-primary.svg">ash-logo-primary.svg</a></td>
+              <td>Локап с дескриптором</td>
+              <td>Шапка сайта, презентация, бланк</td>
+            </tr>
+            <tr>
+              <td><a href="logo/ash-logo-inverse.svg">ash-logo-inverse.svg</a></td>
+              <td>Локап с дескриптором, светлый фон</td>
+              <td>Документы, КП, счета</td>
+            </tr>
+            <tr>
+              <td><a href="logo/ash-logo-short-primary.svg">ash-logo-short-primary.svg</a></td>
+              <td>Короткий локап</td>
+              <td>Подвал, подпись в письме</td>
+            </tr>
+            <tr>
+              <td><a href="logo/ash-logo-short-inverse.svg">ash-logo-short-inverse.svg</a></td>
+              <td>Короткий локап, светлый фон</td>
+              <td>Счета, приложения к договору</td>
+            </tr>
+            <tr>
+              <td><a href="logo/ash-logo-white.svg">ash-logo-white.svg</a></td>
+              <td>Локап, моно-белый</td>
+              <td>Фото-подложки, видео</td>
+            </tr>
+            <tr>
+              <td><a href="logo/ash-logo-black.svg">ash-logo-black.svg</a></td>
+              <td>Локап, моно-чёрный</td>
+              <td>Ч/б печать</td>
+            </tr>
+            <tr>
+              <td><a href="logo/ash-logo-green.svg">ash-logo-green.svg</a></td>
+              <td>Локап, моно-зелёный</td>
+              <td>Тёмные акцентные макеты</td>
+            </tr>
+            <tr>
+              <td><a href="logo/ash-logo-vertical-primary.svg">ash-logo-vertical-primary.svg</a></td>
+              <td>Вертикальный локап</td>
+              <td>Квадратные форматы, сторис</td>
+            </tr>
+            <tr>
+              <td><a href="logo/ash-logo-vertical-inverse.svg">ash-logo-vertical-inverse.svg</a></td>
+              <td>Вертикальный локап, светлый фон</td>
+              <td>Печать, обложки</td>
+            </tr>
+            <tr>
+              <td><a href="logo/ash-badge-dark.svg">ash-badge-dark.svg</a></td>
+              <td>Плашка тёмная</td>
+              <td>Аватар соцсетей</td>
+            </tr>
+            <tr>
+              <td><a href="logo/ash-badge-green.svg">ash-badge-green.svg</a></td>
+              <td>Плашка зелёная</td>
+              <td>Аватар, когда нужен акцент в ленте</td>
+            </tr>
+            <tr>
+              <td><a href="logo/ash-badge-light.svg">ash-badge-light.svg</a></td>
+              <td>Плашка светлая</td>
+              <td>Каталоги и площадки со светлым интерфейсом</td>
+            </tr>
+            <tr>
+              <td><a href="logo/ash-badge-circle.svg">ash-badge-circle.svg</a></td>
+              <td>Плашка круглая</td>
+              <td>Telegram, WhatsApp, Авито</td>
+            </tr>
+            <tr>
+              <td><a href="logo/ash-favicon.svg">ash-favicon.svg</a></td>
+              <td>Фавикон</td>
+              <td>Вкладка браузера, закладки</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" id="register">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="kicker">09 — Регистрируем</div>
+            <h2>Что занять сегодня, пока имя свободно</h2>
+          </div>
+
+          <p class="muted" style="margin: 0">
+            Порядок именно такой: сначала домен, потом почта на этом домене,
+            потом соцсети под тем же именем.
+          </p>
+        </div>
+
+        <div class="checklist">
+          <div class="check">
+            <div class="num">01</div>
+            <div>
+              <strong>Домен — ashpartners.ru</strong>
+              <span>
+                Рекомендуемый: короткий, читается голосом, не привязан
+                к услуге. Запасные, если занят: apollonov-shigapova.ru
+                (длинный, зато точный) и ash-kazan.ru.
+                Регистратор — reg.ru или timeweb, 200–400 ₽ в год.
+              </span>
+            </div>
+            <div class="who">Алина</div>
+          </div>
+
+          <div class="check">
+            <div class="num">02</div>
+            <div>
+              <strong>Почта на домене</strong>
+              <span>
+                privet@ и alina@ / sasha@. Бесплатно через Яндекс 360
+                для бизнеса. С gmail в КП выходить уже нельзя.
+              </span>
+            </div>
+            <div class="who">Алина</div>
+          </div>
+
+          <div class="check">
+            <div class="num">03</div>
+            <div>
+              <strong>Ники в соцсетях — одинаковые</strong>
+              <span>
+                Telegram-канал, ВК, Instagram*, YouTube: @ashpartners.
+                Занять даже те, которые пока не ведём.
+              </span>
+            </div>
+            <div class="who">Алина</div>
+          </div>
+
+          <div class="check">
+            <div class="num">04</div>
+            <div>
+              <strong>Аватары и обложки</strong>
+              <span>
+                Файлы готовы: ash-badge-circle.svg для Telegram и WhatsApp,
+                ash-badge-dark.svg для остальных.
+              </span>
+            </div>
+            <div class="who">Алина</div>
+          </div>
+
+          <div class="check">
+            <div class="num">05</div>
+            <div>
+              <strong>Подпись в письмах и мессенджерах</strong>
+              <span>
+                Короткий локап + строка: «Аполлонов и Шигапова ·
+                Пересобираем продажи в малом бизнесе · Казань».
+              </span>
+            </div>
+            <div class="who">Оба</div>
+          </div>
+
+          <div class="check">
+            <div class="num">06</div>
+            <div>
+              <strong>Проверить имя на занятость как товарный знак</strong>
+              <span>
+                Фамилии как бренд регистрировать не срочно, но проверить
+                совпадения в реестре Роспатента стоит до первых вложений в рекламу.
+              </span>
+            </div>
+            <div class="who">Саша</div>
+          </div>
+        </div>
+
+        <div class="note">
+          <strong>Доступность доменов не проверена отсюда.</strong>
+          Проверяется за две минуты на reg.ru: вводим ashpartners.ru,
+          если занят — берём следующий из списка. Домен покупаем сразу
+          на два года, чтобы не потерять по забывчивости.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-big">
+        Имя есть. Знак есть.<br />
+        Дальше — продажи.
+      </div>
+
+      <p class="footer-note">
+        Фирменный стиль зафиксирован 2 августа 2026, спринт 1
+        (25 июля — 8 августа). Изменения в знак, цвета и дескриптор
+        вносятся только совместным решением — и сразу здесь,
+        а не в отдельных макетах.
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
