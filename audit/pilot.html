@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Бесплатный аудит — пилотный сценарий</title>
+<style>
+  :root{
+    --bg:#0a0a0a;
+    --panel:#111111;
+    --panel2:#161616;
+    --text:#f5f5f5;
+    --muted:#a7a7a7;
+    --line:#292929;
+    --accent:#d8ff3e;
+    --red:#ff6b6b;
+    --yellow:#ffd166;
+    --green:#8ee39a;
+    --radius:20px;
+    --shadow:0 20px 60px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 10% 0%, rgba(216,255,62,.08), transparent 26%),
+      radial-gradient(circle at 90% 10%, rgba(255,255,255,.04), transparent 22%),
+      var(--bg);
+    color:var(--text);
+    font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+    line-height:1.55;
+  }
+  a{color:inherit}
+  .container{width:min(1080px, calc(100% - 32px)); margin:0 auto}
+
+  .nav{
+    position:sticky; top:0; z-index:20;
+    backdrop-filter:blur(18px);
+    background:rgba(10,10,10,.82);
+    border-bottom:1px solid rgba(255,255,255,.06);
+  }
+  .nav-inner{
+    min-height:64px;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:16px; flex-wrap:wrap; padding:8px 0;
+  }
+  .brand{font-weight:850; letter-spacing:-.03em; font-size:18px}
+  .brand span{color:var(--accent)}
+  .nav-links{display:flex; gap:16px; color:var(--muted); font-size:13px; flex-wrap:wrap}
+  .nav-links a{text-decoration:none}
+  .nav-links a:hover{color:var(--text)}
+
+  .hero{padding:56px 0 32px}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:7px 12px; border:1px solid var(--line); border-radius:999px;
+    color:#d9d9d9; background:rgba(255,255,255,.025); font-size:12px;
+  }
+  .dot{width:7px; height:7px; border-radius:50%; background:var(--accent); box-shadow:0 0 14px var(--accent)}
+  h1{
+    margin:20px 0 12px; max-width:820px;
+    font-size:clamp(32px,5.5vw,54px); line-height:1.02; letter-spacing:-.04em;
+  }
+  h1 .accent{color:var(--accent)}
+  .lead{max-width:680px; color:#d5d5d5; font-size:clamp(15px,1.6vw,18px)}
+
+  .section{padding:44px 0}
+  .section-head{margin-bottom:24px}
+  .kicker{
+    color:var(--accent); font-weight:800; text-transform:uppercase;
+    letter-spacing:.1em; font-size:11px; margin-bottom:8px;
+  }
+  h2{margin:0 0 8px; font-size:clamp(24px,3.4vw,36px); letter-spacing:-.03em}
+  .section-note{color:var(--muted); max-width:680px; font-size:14.5px}
+
+  h3{margin:0 0 8px; font-size:18px; letter-spacing:-.01em}
+  p{margin:0}
+  .muted{color:var(--muted)}
+  .small{font-size:13px}
+
+  /* Логика — процесс */
+  .flow{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:10px;
+  }
+  .flow-step{
+    padding:16px 14px;
+    border:1px solid var(--line); border-radius:16px;
+    background:var(--panel);
+    font-size:13px;
+  }
+  .flow-step .n{color:var(--accent); font-weight:900; font-size:12px; margin-bottom:6px}
+  .flow-step .t{font-weight:700; margin-bottom:4px}
+  .flow-step .d{color:var(--muted); font-size:12px}
+
+  /* Типы клиентов */
+  .types{display:grid; grid-template-columns:repeat(4,1fr); gap:14px}
+  .type-card{
+    padding:20px;
+    border:1px solid var(--line); border-radius:var(--radius);
+    background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015));
+    box-shadow:var(--shadow);
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .type-letter{
+    width:36px; height:36px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--accent); color:#0b0b0b; font-weight:900; font-size:16px;
+  }
+  .type-card h3{font-size:16px}
+  .type-signal{
+    font-size:12.5px; color:var(--muted);
+    border-left:2px solid var(--accent); padding-left:10px;
+  }
+  .type-meta{display:flex; gap:8px; flex-wrap:wrap; margin-top:auto}
+  .chip{
+    font-size:11px; padding:5px 9px; border-radius:999px;
+    border:1px solid var(--line); color:var(--muted);
+  }
+  .type-next{
+    font-size:12.5px; padding-top:10px; border-top:1px dashed var(--line);
+    color:var(--text);
+  }
+  .type-next b{color:var(--accent)}
+
+  /* Скрипты */
+  .timeline{display:grid; gap:14px}
+  .msg-block{
+    border:1px solid var(--line); border-radius:18px;
+    background:var(--panel); overflow:hidden;
+  }
+  .msg-head{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:12px 18px; border-bottom:1px solid var(--line);
+    background:var(--panel2);
+  }
+  .msg-title{font-weight:800; font-size:14px}
+  .msg-when{color:var(--muted); font-size:12px}
+  .msg-body{padding:16px 18px; display:grid; gap:10px}
+  .bubble{
+    max-width:640px; padding:12px 16px; border-radius:14px;
+    font-size:14px; line-height:1.55;
+  }
+  .bubble.voice{
+    background:rgba(216,255,62,.08); border:1px solid rgba(216,255,62,.25);
+  }
+  .bubble.voice::before{content:"🎙 голосовое · "; color:var(--accent); font-weight:800; font-size:11px; text-transform:uppercase; letter-spacing:.06em; display:block; margin-bottom:6px}
+  .bubble.text{
+    background:rgba(255,255,255,.04); border:1px solid var(--line);
+  }
+  .bubble.text::before{content:"💬 текст"; color:var(--muted); font-weight:800; font-size:11px; text-transform:uppercase; letter-spacing:.06em; display:block; margin-bottom:6px}
+
+  /* Анкета */
+  .form-sheet{
+    border:1px solid var(--line); border-radius:var(--radius);
+    background:var(--panel);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  .form-sheet-head{
+    padding:22px 26px; border-bottom:1px solid var(--line);
+    background:var(--panel2);
+  }
+  .form-sheet-head .ft{font-weight:900; font-size:20px; letter-spacing:-.02em}
+  .form-sheet-head .fs{color:var(--muted); font-size:13px; margin-top:4px}
+  .form-body{padding:26px}
+  .form-group{margin-bottom:22px}
+  .form-group:last-child{margin-bottom:0}
+  .form-group-title{
+    color:var(--accent); font-weight:800; font-size:11px;
+    text-transform:uppercase; letter-spacing:.1em; margin-bottom:12px;
+  }
+  .q{
+    padding:14px 16px; border:1px solid var(--line); border-radius:14px;
+    background:var(--panel2); margin-bottom:8px;
+  }
+  .q:last-child{margin-bottom:0}
+  .q-num{color:var(--accent); font-weight:800; font-size:12px; margin-right:6px}
+  .q-text{font-weight:600; font-size:14.5px}
+  .q-input{
+    margin-top:8px; height:16px; border-bottom:1px solid var(--line);
+    max-width:420px;
+  }
+  .q-options{margin-top:8px; display:flex; gap:8px; flex-wrap:wrap}
+  .q-opt{
+    font-size:12px; padding:6px 10px; border-radius:8px;
+    border:1px solid var(--line); color:var(--muted);
+  }
+  .q-logic{
+    margin-top:8px; font-size:12px; color:#c7d98a;
+    background:rgba(216,255,62,.06); border-left:2px solid var(--accent);
+    padding:6px 10px; border-radius:6px;
+  }
+
+  /* Что в отчёте */
+  .report-blocks{display:grid; gap:10px}
+  .rb{
+    display:grid; grid-template-columns:32px 1fr auto;
+    gap:14px; align-items:start;
+    padding:16px 18px;
+    border:1px solid var(--line); border-radius:14px;
+    background:var(--panel);
+  }
+  .rb-n{color:var(--accent); font-weight:900}
+  .rb-title{font-weight:700; margin-bottom:3px; font-size:14.5px}
+  .rb-desc{color:var(--muted); font-size:13px}
+  .rb-types{display:flex; gap:6px}
+  .rb-type{
+    width:24px; height:24px; border-radius:7px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:11px; font-weight:800;
+    border:1px solid var(--line); color:var(--muted);
+  }
+  .rb-type.on{background:var(--accent); color:#0b0b0b; border-color:var(--accent)}
+
+  .example{
+    margin-top:18px;
+    border:1px solid var(--line); border-radius:var(--radius);
+    background:var(--panel); padding:22px 26px;
+  }
+  .example-tag{
+    display:inline-block; padding:5px 10px; border-radius:999px;
+    background:var(--accent); color:#0b0b0b; font-size:11px; font-weight:900;
+    text-transform:uppercase; letter-spacing:.06em; margin-bottom:12px;
+  }
+  .traffic{font-size:13.5px; margin:8px 0; padding-left:2px}
+  .traffic b{display:inline-block; min-width:170px}
+
+  .callout{
+    padding:18px 22px; border-radius:18px;
+    background:rgba(216,255,62,.06); border:1px solid rgba(216,255,62,.2);
+    font-size:14px; color:#d9d9d9;
+  }
+  .callout b{color:var(--accent)}
+
+  .footer{
+    margin-top:20px; padding:40px 0 60px;
+    border-top:1px solid var(--line);
+    color:var(--muted); font-size:13.5px;
+  }
+
+  @media (max-width:960px){
+    .flow{grid-template-columns:repeat(3,1fr)}
+    .types{grid-template-columns:1fr 1fr}
+    .rb{grid-template-columns:24px 1fr; }
+    .rb-types{grid-column:1/-1; padding-top:8px}
+  }
+  @media (max-width:620px){
+    .flow{grid-template-columns:1fr 1fr}
+    .types{grid-template-columns:1fr}
+    .form-body{padding:18px}
+    .nav-links{display:none}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <div class="brand">Аполлон <span>Студия</span> · пилот</div>
+    <div class="nav-links">
+      <a href="#logic">Логика</a>
+      <a href="#types">Типы клиентов</a>
+      <a href="#scripts">Скрипты</a>
+      <a href="#form">Анкета</a>
+      <a href="#report">Что в отчёте</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <section class="hero">
+    <div class="container">
+      <div class="eyebrow"><span class="dot"></span> Рабочий черновик · бесплатный аудит</div>
+      <h1>Бесплатный аудит.<br><span class="accent">Весь сценарий в одном месте.</span></h1>
+      <p class="lead">
+        От заявки на лендинге до отправки отчёта — без созвона.
+        Ниже: логика процесса, ветвление по типам клиентов, готовые тексты сообщений,
+        анкета целиком и структура того, что отдаём в конце.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" id="logic">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">00 — Логика</div>
+        <h2>Один маршрут, шесть шагов</h2>
+        <p class="section-note">Всё внутри бесплатного аудита. Платный разбор и пакеты — следующие этапы, здесь не рассматриваются.</p>
+      </div>
+
+      <div class="flow">
+        <div class="flow-step">
+          <div class="n">01</div>
+          <div class="t">Заявка</div>
+          <div class="d">Имя, мессенджер, одна строка «чем занимаетесь». С лендинга под Директ.</div>
+        </div>
+        <div class="flow-step">
+          <div class="n">02</div>
+          <div class="t">Первый контакт</div>
+          <div class="d">Голосовое + текст, в течение 10–15 минут. Анкета — следующим сообщением.</div>
+        </div>
+        <div class="flow-step">
+          <div class="n">03</div>
+          <div class="t">Анкета</div>
+          <div class="d">Клиент отвечает сам. Занимает 5 минут. Не заполнил — аудита нет.</div>
+        </div>
+        <div class="flow-step">
+          <div class="n">04</div>
+          <div class="t">Определяем тип</div>
+          <div class="d">По трём ответам — А / Б / В / Г. От типа зависит, что смотрим и сколько это займёт.</div>
+        </div>
+        <div class="flow-step">
+          <div class="n">05</div>
+          <div class="t">Разбор</div>
+          <div class="d">15–30 минут по чек-листу, без доступов, только то, что видно снаружи.</div>
+        </div>
+        <div class="flow-step">
+          <div class="n">06</div>
+          <div class="t">Отчёт + фоллоуап</div>
+          <div class="d">Ссылка/PDF в течение 2 рабочих дней. Через 2 дня — один вопрос, не предложение.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="types">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">01 — Ветвление</div>
+        <h2>Четыре типа клиентов</h2>
+        <p class="section-note">
+          Определяются тремя вопросами анкеты: есть ли сайт, откуда сейчас идут клиенты, сколько заявок в месяц.
+          Каркас отчёта у всех один, разница — в том, какие блоки включены.
+        </p>
+      </div>
+
+      <div class="types">
+        <div class="type-card">
+          <div class="type-letter">А</div>
+          <h3>Сайт есть, трафик есть</h3>
+          <div class="type-signal">Реклама крутится или площадки работают, заявки идут.</div>
+          <p class="small muted">Полный разбор: сайт, путь заявки, реклама, CRM, аналитика.</p>
+          <div class="type-meta">
+            <span class="chip">~30 мин</span>
+            <span class="chip">6 блоков</span>
+          </div>
+          <div class="type-next">Дальше: <b>платный разбор</b> — есть доступы и цифры, есть что копать.</div>
+        </div>
+
+        <div class="type-card">
+          <div class="type-letter">Б</div>
+          <h3>Сайт есть, но мёртвый</h3>
+          <div class="type-signal">Сделан давно, не обновляется, реклама не крутится.</div>
+          <p class="small muted">Не начинаем с критики сайта — начинаем с того, что на него никто не идёт.</p>
+          <div class="type-meta">
+            <span class="chip">~25 мин</span>
+            <span class="chip">4–5 блоков</span>
+          </div>
+          <div class="type-next">Дальше: чаще сразу <b>пакет</b> — разбирать почти нечего.</div>
+        </div>
+
+        <div class="type-card">
+          <div class="type-letter">В</div>
+          <h3>Сайта нет, бизнес живой</h3>
+          <div class="type-signal">Работают через Авито / 2ГИС / соцсети / сарафан, заявки есть.</div>
+          <p class="small muted">Смотрим упаковку площадок и путь до покупки без сайта.</p>
+          <div class="type-meta">
+            <span class="chip">~25 мин</span>
+            <span class="chip">4 блока</span>
+          </div>
+          <div class="type-next">Дальше: сразу <b>пакет Лайт/Стандарт</b> — часто самые платёжеспособные.</div>
+        </div>
+
+        <div class="type-card">
+          <div class="type-letter">Г</div>
+          <h3>Нет ничего</h3>
+          <div class="type-signal">Идея или самый старт, аудировать нечего.</div>
+          <p class="small muted">Вместо аудита — разбор ниши: рынок, конкуренты, с чего начать.</p>
+          <div class="type-meta">
+            <span class="chip">~15 мин</span>
+            <span class="chip">2 блока</span>
+          </div>
+          <div class="type-next">Дальше: <b>пакет Лайт</b> — запуск с нуля.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="scripts">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">02 — Скрипты</div>
+        <h2>Что и когда пишем клиенту</h2>
+        <p class="section-note">Голосовое снимает ощущение «мне пишет бот», текст рядом — чтобы можно было кликнуть по ссылке и вернуться позже.</p>
+      </div>
+
+      <div class="timeline">
+        <div class="msg-block">
+          <div class="msg-head">
+            <div class="msg-title">1. Первый контакт</div>
+            <div class="msg-when">в течение 10–15 минут после заявки</div>
+          </div>
+          <div class="msg-body">
+            <div class="bubble voice">
+              Сергей, здравствуйте, это Александр, Аполлон Студия, вы оставляли заявку на разбор.
+              Сейчас скину анкету, там восемь вопросов, минут на пять. Мы специально не зовём на созвон —
+              сначала сами посмотрим ваш сайт, рекламу, конкурентов, и пришлём отчёт: что работает, что нет,
+              и где теряются деньги. Два рабочих дня. Если после отчёта появятся вопросы — вот тогда уже созвонимся.
+            </div>
+            <div class="bubble text">
+              Анкета: [ссылка]<br>
+              8 вопросов, ~5 минут. Чем подробнее ответите — тем точнее разбор.<br>
+              Как заполните, напишите — поставлю в работу.
+            </div>
+          </div>
+        </div>
+
+        <div class="msg-block">
+          <div class="msg-head">
+            <div class="msg-title">2. Если тишина</div>
+            <div class="msg-when">через 24 часа после заявки</div>
+          </div>
+          <div class="msg-body">
+            <div class="bubble text">
+              Сергей, анкету видели? Если какие-то вопросы непонятны — спрашивайте.
+              Если сейчас не до этого, скажите, вернусь через неделю.
+            </div>
+          </div>
+        </div>
+
+        <div class="msg-block">
+          <div class="msg-head">
+            <div class="msg-title">3. Анкета получена</div>
+            <div class="msg-when">сразу после заполнения</div>
+          </div>
+          <div class="msg-body">
+            <div class="bubble text">
+              Спасибо, всё получил! Беру в работу, отчёт пришлю в течение двух рабочих дней.
+            </div>
+          </div>
+        </div>
+
+        <div class="msg-block">
+          <div class="msg-head">
+            <div class="msg-title">4. Отправка отчёта</div>
+            <div class="msg-when">день 2</div>
+          </div>
+          <div class="msg-body">
+            <div class="bubble text">
+              Сергей, готово: [ссылка / файл]<br><br>
+              Коротко главное: заявки у вас есть, теряются они уже после того, как пришли.
+              Тестовую отправили — письмо дошло на почту через 40 минут и упало в «Промоакции».
+              Это первое, что надо чинить, и стоит вам это дороже всего.<br><br>
+              В конце три пункта, которые закрываются своими силами за пару вечеров.
+              Правда сделайте, это бесплатно и даст эффект.
+            </div>
+          </div>
+        </div>
+
+        <div class="msg-block">
+          <div class="msg-head">
+            <div class="msg-title">5. Фоллоуап</div>
+            <div class="msg-when">через 2 дня после отчёта</div>
+          </div>
+          <div class="msg-body">
+            <div class="bubble text">
+              Посмотрели? Какой из трёх пунктов больше всего откликнулся?
+            </div>
+            <p class="small muted" style="margin-top:4px">
+              Это вопрос, а не предложение. Продажа платного разбора / пакета — отдельный шаг, здесь не разбираем.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="form">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">03 — Анкета</div>
+        <h2>Полный список вопросов</h2>
+        <p class="section-note">
+          Отдаётся клиенту как отдельная страница или PDF. Первые три вопроса — служебные, по ним определяется тип (А/Б/В/Г);
+          отмечены пометкой ниже.
+        </p>
+      </div>
+
+      <div class="form-sheet">
+        <div class="form-sheet-head">
+          <div class="ft">Анкета для бесплатного аудита</div>
+          <div class="fs">8 вопросов · займёт около 5 минут</div>
+        </div>
+
+        <div class="form-body">
+          <div class="form-group">
+            <div class="form-group-title">О бизнесе</div>
+
+            <div class="q">
+              <span class="q-num">1</span><span class="q-text">Ссылка на сайт / соцсети / Авито / 2ГИС — что есть</span>
+              <div class="q-input"></div>
+              <div class="q-logic">↳ определяет тип: работает / есть, но заброшен / нет сайта</div>
+            </div>
+
+            <div class="q">
+              <span class="q-num">2</span><span class="q-text">Что продаёте и кому (в двух предложениях)</span>
+              <div class="q-input"></div>
+            </div>
+
+            <div class="q">
+              <span class="q-num">3</span><span class="q-text">Средний чек</span>
+              <div class="q-input" style="max-width:200px"></div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-group-title">Текущая ситуация</div>
+
+            <div class="q">
+              <span class="q-num">4</span><span class="q-text">Сколько заявок в месяц сейчас</span>
+              <div class="q-options">
+                <span class="q-opt">0</span>
+                <span class="q-opt">до 10</span>
+                <span class="q-opt">10–50</span>
+                <span class="q-opt">больше 50</span>
+              </div>
+              <div class="q-logic">↳ определяет тип: влияет на глубину разбора обработки заявок</div>
+            </div>
+
+            <div class="q">
+              <span class="q-num">5</span><span class="q-text">Откуда сейчас идут клиенты</span>
+              <div class="q-options">
+                <span class="q-opt">реклама</span>
+                <span class="q-opt">площадки (Авито/2ГИС)</span>
+                <span class="q-opt">соцсети</span>
+                <span class="q-opt">сарафан</span>
+                <span class="q-opt">пока никак</span>
+              </div>
+              <div class="q-logic">↳ определяет тип: указывает, что смотреть вместо сайта</div>
+            </div>
+
+            <div class="q">
+              <span class="q-num">6</span><span class="q-text">Есть ли CRM, куда попадают заявки</span>
+              <div class="q-input"></div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-group-title">Рынок и боль</div>
+
+            <div class="q">
+              <span class="q-num">7</span><span class="q-text">2–3 конкурента, которых считаете сильными</span>
+              <div class="q-input"></div>
+            </div>
+
+            <div class="q">
+              <span class="q-num">8</span><span class="q-text">Что бесит больше всего в текущей ситуации</span>
+              <div class="q-input"></div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-group-title">Контакт</div>
+            <div class="q">
+              <span class="q-text">Куда прислать отчёт (мессенджер / почта)</span>
+              <div class="q-input" style="max-width:320px"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="report">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">04 — Что отдаём</div>
+        <h2>Структура отчёта</h2>
+        <p class="section-note">
+          Одинаковый каркас для всех, но набор блоков зависит от типа клиента.
+          Заполненные квадраты — блок включён в отчёт для этого типа.
+        </p>
+      </div>
+
+      <div class="report-blocks">
+        <div class="rb">
+          <div class="rb-n">01</div>
+          <div><div class="rb-title">Оффер и позиционирование</div><div class="rb-desc">Чем вы отличаетесь от конкурентов, или ничем.</div></div>
+          <div class="rb-types">
+            <div class="rb-type on">А</div><div class="rb-type on">Б</div><div class="rb-type on">В</div><div class="rb-type on">Г</div>
+          </div>
+        </div>
+        <div class="rb">
+          <div class="rb-n">02</div>
+          <div><div class="rb-title">Первый экран сайта</div><div class="rb-desc">Что видно за 5 секунд с телефона.</div></div>
+          <div class="rb-types">
+            <div class="rb-type on">А</div><div class="rb-type on">Б</div><div class="rb-type">В</div><div class="rb-type">Г</div>
+          </div>
+        </div>
+        <div class="rb">
+          <div class="rb-n">03</div>
+          <div><div class="rb-title">Путь заявки</div><div class="rb-desc">Сколько шагов до формы, доходит ли заявка и куда.</div></div>
+          <div class="rb-types">
+            <div class="rb-type on">А</div><div class="rb-type on">Б</div><div class="rb-type on">В</div><div class="rb-type">Г</div>
+          </div>
+        </div>
+        <div class="rb">
+          <div class="rb-n">04</div>
+          <div><div class="rb-title">Конкуренты</div><div class="rb-desc">Как выглядят 2–3 сильных конкурента рядом.</div></div>
+          <div class="rb-types">
+            <div class="rb-type on">А</div><div class="rb-type on">Б</div><div class="rb-type on">В</div><div class="rb-type on">Г</div>
+          </div>
+        </div>
+        <div class="rb">
+          <div class="rb-n">05</div>
+          <div><div class="rb-title">Реклама и присутствие на площадках</div><div class="rb-desc">Директ, Авито, 2ГИС, Яндекс Бизнес — что настроено и как выглядит.</div></div>
+          <div class="rb-types">
+            <div class="rb-type on">А</div><div class="rb-type on">Б</div><div class="rb-type on">В</div><div class="rb-type on">Г</div>
+          </div>
+        </div>
+        <div class="rb">
+          <div class="rb-n">06</div>
+          <div><div class="rb-title">Обработка заявок и CRM</div><div class="rb-desc">Куда падают заявки и что с ними происходит дальше.</div></div>
+          <div class="rb-types">
+            <div class="rb-type on">А</div><div class="rb-type">Б</div><div class="rb-type on">В</div><div class="rb-type">Г</div>
+          </div>
+        </div>
+        <div class="rb">
+          <div class="rb-n">07</div>
+          <div><div class="rb-title">Аналитика</div><div class="rb-desc">Стоит ли Метрика, видно ли, где отваливаются клиенты.</div></div>
+          <div class="rb-types">
+            <div class="rb-type on">А</div><div class="rb-type">Б</div><div class="rb-type">В</div><div class="rb-type">Г</div>
+          </div>
+        </div>
+        <div class="rb">
+          <div class="rb-n">08</div>
+          <div><div class="rb-title">Три точки потери денег</div><div class="rb-desc">Конкретно, с приоритетом — что чинить первым.</div></div>
+          <div class="rb-types">
+            <div class="rb-type on">А</div><div class="rb-type on">Б</div><div class="rb-type on">В</div><div class="rb-type on">Г</div>
+          </div>
+        </div>
+        <div class="rb">
+          <div class="rb-n">09</div>
+          <div><div class="rb-title">Что сделать самим бесплатно</div><div class="rb-desc">1–2 простых совета. Главный элемент доверия во всём отчёте.</div></div>
+          <div class="rb-types">
+            <div class="rb-type on">А</div><div class="rb-type on">Б</div><div class="rb-type on">В</div><div class="rb-type on">Г</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="example">
+        <span class="example-tag">Пример · тип А</span>
+        <h3 style="font-size:20px; margin-bottom:4px">Кухни на заказ, город N</h3>
+        <p class="small muted" style="margin-bottom:14px">Средний чек 250 000 ₽ · 12–15 заявок/мес · продаж 2–3</p>
+
+        <div class="traffic"><b>Оффер</b> 🟡 — совпадает с конкурентами дословно, клиент выбирает по цене</div>
+        <div class="traffic"><b>Первый экран</b> 🔴 — нет цены и «от», кнопка заявки после третьего скролла</div>
+        <div class="traffic"><b>Путь заявки</b> 🔴 — тестовая заявка дошла за 40 минут, упала в «Промоакции»</div>
+        <div class="traffic"><b>Реклама и площадки</b> 🟡 — Директ отключён, в 2ГИС рейтинг 4.3 против 4.8 у конкурента</div>
+        <div class="traffic"><b>Обработка заявок</b> 🔴 — CRM нет, заявки в почте и WhatsApp вперемешку</div>
+        <div class="traffic"><b>Аналитика</b> 🔴 — Метрика не установлена</div>
+
+        <p class="small muted" style="margin-top:14px">
+          Полный текст этого примера — в переписке выше, как образец готовых формулировок для библиотеки.
+        </p>
+      </div>
+
+      <div class="callout" style="margin-top:20px">
+        <b>Дальше не входит в бесплатный аудит:</b> платный разбор и переход на пакеты — отдельные этапы,
+        прорабатываем их после того, как этот сценарий будет утверждён целиком.
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    Пилотный документ · Аполлон Студия · черновик для внутреннего обсуждения, не публичная страница.
+  </div>
+</footer>
+
+</body>
+</html>
