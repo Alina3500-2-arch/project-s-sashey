@@ -268,6 +268,84 @@
       text-transform: uppercase;
     }
 
+    /* ---------- основная идея ---------- */
+
+    .statement {
+      padding: 32px 36px;
+
+      border: 1px solid var(--line);
+      border-left: 2px solid var(--green);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      background: var(--panel);
+
+      font-family: Cormorant, Georgia, serif;
+      font-size: clamp(21px, 2.5vw, 31px);
+      line-height: 1.34;
+    }
+
+    .proof {
+      margin-top: 18px;
+      padding: 4px 30px;
+
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+    }
+
+    .proof-row {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 28px;
+      align-items: baseline;
+
+      padding: 20px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .proof-row:last-child {
+      border-bottom: 0;
+    }
+
+    .proof-who {
+      display: block;
+      margin-bottom: 4px;
+
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .proof-fact {
+      font-size: 16px;
+    }
+
+    .proof-mean {
+      color: var(--muted);
+      font-size: 14.5px;
+    }
+
+    .idea-close {
+      margin-top: 18px;
+      padding: 30px 36px;
+
+      border-radius: var(--radius);
+      background: var(--green);
+      color: #0b0b0b;
+
+      font-family: Cormorant, Georgia, serif;
+      font-size: clamp(22px, 2.7vw, 34px);
+      line-height: 1.25;
+    }
+
+    @media (max-width: 720px) {
+      .proof-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+    }
+
     /* ---------- сетки и карточки ---------- */
 
     .grid-3 {
@@ -918,6 +996,7 @@
       </div>
 
       <div class="nav-links">
+        <a href="#idea">Идея</a>
         <a href="#fixed">Зафиксировано</a>
         <a href="#mark">Знак</a>
         <a href="#colors">Цвет</a>
@@ -926,7 +1005,6 @@
         <a href="#type">Шрифты</a>
         <a href="#rules">Правила</a>
         <a href="#files">Файлы</a>
-        <a href="#register">Регистрируем</a>
       </div>
     </div>
   </nav>
@@ -944,7 +1022,7 @@
           <div>
             <div class="badge-approved">
               <span class="dot"></span>
-              Утверждено 2 августа 2026 · спринт 1, задача 1
+              Фирменный стиль · версия 1.0
             </div>
 
             <h1>Аполлонов и Шигапова</h1>
@@ -962,11 +1040,85 @@
       </div>
     </section>
 
+    <section class="section" id="idea">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="kicker">00 — Основная идея</div>
+            <h2>Чем мы отличаемся от подрядчика</h2>
+          </div>
+
+          <p class="muted" style="margin: 0">
+            Всё остальное в этом документе — знак, цвет, шрифты — существует
+            только чтобы эту мысль было видно с первого касания.
+          </p>
+        </div>
+
+        <div class="statement">
+          Подрядчик делает кусок работы и уходит. Мы отвечаем за то, чтобы
+          система продаж работала, и разбираемся в бизнесе клиента,
+          а не в своём инструменте.
+        </div>
+
+        <div class="proof">
+          <div class="proof-row">
+            <div class="proof-fact">
+              <span class="proof-who">Алина</span>
+              Три года внутри бизнеса: продавала, вела клиентов,
+              знает цифры изнутри
+            </div>
+
+            <div class="proof-mean">
+              Не внешний маркетолог — сидела по другую сторону стола
+            </div>
+          </div>
+
+          <div class="proof-row">
+            <div class="proof-fact">
+              <span class="proof-who">Алина</span>
+              Выручка Элины выросла в два раза, работа идёт третий год
+            </div>
+
+            <div class="proof-mean">
+              Не разовый запуск, а долгая ответственность за результат
+            </div>
+          </div>
+
+          <div class="proof-row">
+            <div class="proof-fact">
+              <span class="proof-who">Саша</span>
+              Десять лет в Директе, ведёт клиентов годами
+            </div>
+
+            <div class="proof-mean">
+              Не эксперименты, а ремесло
+            </div>
+          </div>
+
+          <div class="proof-row">
+            <div class="proof-fact">
+              <span class="proof-who">Вместе</span>
+              Перестроили весь путь: оффер → сайт → трафик → CRM → менеджер
+            </div>
+
+            <div class="proof-mean">
+              Никто из подрядчиков так не делает — каждый закрывает
+              только свой кусок
+            </div>
+          </div>
+        </div>
+
+        <div class="idea-close">
+          Мы восстанавливаем управляемость продаж в малом бизнесе.
+        </div>
+      </div>
+    </section>
+
     <section class="section" id="fixed">
       <div class="container">
         <div class="section-head">
           <div>
-            <div class="kicker">00 — Зафиксировано</div>
+            <div class="kicker">01 — Зафиксировано</div>
             <h2>Больше не выбираем. Дальше только применяем.</h2>
           </div>
 
@@ -1020,7 +1172,7 @@
       <div class="container">
         <div class="section-head">
           <div>
-            <div class="kicker">01 — Знак</div>
+            <div class="kicker">02 — Знак</div>
             <h2>Как он устроен</h2>
           </div>
 
@@ -1112,7 +1264,7 @@
       <div class="container">
         <div class="section-head">
           <div>
-            <div class="kicker">02 — Цветовые решения</div>
+            <div class="kicker">03 — Цветовые решения</div>
             <h2>Три зелёных, два чёрно-белых, два строгих серых</h2>
           </div>
 
@@ -1247,7 +1399,7 @@
       <div class="container">
         <div class="section-head">
           <div>
-            <div class="kicker">03 — Локапы</div>
+            <div class="kicker">04 — Локапы</div>
             <h2>Знак с написанием</h2>
           </div>
 
@@ -1315,7 +1467,7 @@
       <div class="container">
         <div class="section-head">
           <div>
-            <div class="kicker">04 — Палитра</div>
+            <div class="kicker">05 — Палитра</div>
             <h2>Четыре рабочих цвета и четыре служебных</h2>
           </div>
 
@@ -1412,7 +1564,7 @@
       <div class="container">
         <div class="section-head">
           <div>
-            <div class="kicker">05 — Шрифты</div>
+            <div class="kicker">06 — Шрифты</div>
             <h2>Антиква для имени, гротеск для дела</h2>
           </div>
 
@@ -1456,9 +1608,9 @@
               интерлиньяж 1,6
             </div>
             <div class="t-body">
-              Мы не берём проект, пока не увидели цифры. Аудит за 30 000 ₽ —
-              это пять дней работы и план на три месяца, а не презентация
-              с общими словами.
+              Мы не берём проект, пока не увидели цифры. Сначала разбираем,
+              где именно теряются деньги, и только потом предлагаем,
+              что и в каком порядке чинить.
             </div>
           </div>
 
@@ -1485,7 +1637,7 @@
       <div class="container">
         <div class="section-head">
           <div>
-            <div class="kicker">06 — Правила</div>
+            <div class="kicker">07 — Правила</div>
             <h2>Охранное поле, размеры и запреты</h2>
           </div>
 
@@ -1599,7 +1751,7 @@
       <div class="container">
         <div class="section-head">
           <div>
-            <div class="kicker">07 — Применение</div>
+            <div class="kicker">08 — Применение</div>
             <h2>Как это выглядит на носителях</h2>
           </div>
 
@@ -1665,7 +1817,7 @@
       <div class="container">
         <div class="section-head">
           <div>
-            <div class="kicker">08 — Файлы</div>
+            <div class="kicker">09 — Файлы</div>
             <h2>Что лежит в папке</h2>
           </div>
 
@@ -1821,103 +1973,6 @@
       </div>
     </section>
 
-    <section class="section" id="register">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <div class="kicker">09 — Регистрируем</div>
-            <h2>Что занять сегодня, пока имя свободно</h2>
-          </div>
-
-          <p class="muted" style="margin: 0">
-            Порядок такой: сначала домен, потом почта на этом домене,
-            потом соцсети под тем же именем.
-          </p>
-        </div>
-
-        <div class="checklist">
-          <div class="check">
-            <div class="num">01</div>
-            <div>
-              <strong>Домен — ashpartners.ru</strong>
-              <span>
-                Рекомендуемый: короткий, читается голосом, не привязан
-                к услуге. Запасные, если занят: apollonov-shigapova.ru
-                и ash-kazan.ru. Регистратор — reg.ru или timeweb,
-                200–400 ₽ в год, берём сразу на два года.
-              </span>
-            </div>
-            <div class="who">Алина</div>
-          </div>
-
-          <div class="check">
-            <div class="num">02</div>
-            <div>
-              <strong>Почта на домене</strong>
-              <span>
-                privet@ и alina@ / sasha@. Бесплатно через Яндекс 360
-                для бизнеса. С gmail в КП выходить уже нельзя.
-              </span>
-            </div>
-            <div class="who">Алина</div>
-          </div>
-
-          <div class="check">
-            <div class="num">03</div>
-            <div>
-              <strong>Ники в соцсетях — одинаковые</strong>
-              <span>
-                Telegram, ВК, Instagram, YouTube: @ashpartners.
-                Занять даже те, которые пока не ведём.
-              </span>
-            </div>
-            <div class="who">Алина</div>
-          </div>
-
-          <div class="check">
-            <div class="num">04</div>
-            <div>
-              <strong>Аватары и обложки</strong>
-              <span>
-                Файлы готовы: ash-badge-circle.svg для Telegram и WhatsApp,
-                ash-badge-dark.svg для остальных.
-              </span>
-            </div>
-            <div class="who">Алина</div>
-          </div>
-
-          <div class="check">
-            <div class="num">05</div>
-            <div>
-              <strong>Подпись в письмах и мессенджерах</strong>
-              <span>
-                Горизонтальный локап + строка: «Аполлонов и Шигапова ·
-                Пересобираем продажи в малом бизнесе · Казань».
-              </span>
-            </div>
-            <div class="who">Оба</div>
-          </div>
-
-          <div class="check">
-            <div class="num">06</div>
-            <div>
-              <strong>Проверить имя в реестре Роспатента</strong>
-              <span>
-                Фамилии как бренд регистрировать не срочно, но совпадения
-                проверить стоит до первых вложений в рекламу.
-              </span>
-            </div>
-            <div class="who">Саша</div>
-          </div>
-        </div>
-
-        <div class="note">
-          <strong>Доступность доменов отсюда не проверена.</strong>
-          Две минуты на reg.ru: вводим ashpartners.ru, если занят —
-          берём следующий из списка.
-        </div>
-      </div>
-    </section>
   </main>
 
   <footer class="footer">
@@ -1929,8 +1984,7 @@
       />
 
       <p class="footer-note">
-        Фирменный стиль зафиксирован 2 августа 2026, спринт 1
-        (25 июля — 8 августа). Знак и написание — по утверждённому эталону.
+        Знак и написание перенесены из эталонного макета один в один.
         Изменения вносятся только совместным решением и сразу здесь,
         а не в отдельных макетах.
       </p>
