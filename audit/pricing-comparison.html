@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Сравнение тарифов — рабочая справка</title>
+<style>
+  :root{
+    --bg:#0a0a0a;
+    --panel:#111111;
+    --panel2:#161616;
+    --text:#f5f5f5;
+    --muted:#a7a7a7;
+    --line:#292929;
+    --accent:#d8ff3e;
+    --radius:20px;
+    --shadow:0 20px 60px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 10% 0%, rgba(216,255,62,.08), transparent 26%),
+      var(--bg);
+    color:var(--text);
+    font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+    line-height:1.55;
+  }
+  .container{width:min(1100px, calc(100% - 32px)); margin:0 auto; padding:44px 0 70px}
+
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:7px 12px; border:1px solid var(--line); border-radius:999px;
+    color:#d9d9d9; background:rgba(255,255,255,.025); font-size:12px;
+  }
+  .dot{width:7px; height:7px; border-radius:50%; background:var(--accent); box-shadow:0 0 14px var(--accent)}
+  h1{margin:18px 0 8px; font-size:clamp(26px,4vw,38px); letter-spacing:-.03em}
+  .lead{color:var(--muted); max-width:640px; font-size:14.5px; margin-bottom:34px}
+
+  .table-scroll{
+    overflow-x:auto;
+    border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    background:var(--panel);
+  }
+  table{border-collapse:collapse; width:100%; min-width:760px}
+  thead th{
+    position:sticky; top:0;
+    background:var(--panel2);
+    text-align:left;
+    padding:16px 18px;
+    font-size:13px;
+    border-bottom:1px solid var(--line);
+    white-space:nowrap;
+  }
+  thead th:first-child{
+    position:sticky; left:0; z-index:2;
+    background:var(--panel2);
+  }
+  thead th.tier{
+    color:var(--text);
+  }
+  thead th .price{
+    display:block; margin-top:6px;
+    font-size:18px; font-weight:900; color:var(--accent);
+    letter-spacing:-.02em;
+  }
+  thead th .duration{
+    display:block; margin-top:2px;
+    font-size:11.5px; color:var(--muted); font-weight:400;
+  }
+  tbody td, tbody th{
+    padding:13px 18px;
+    border-bottom:1px solid var(--line);
+    font-size:13.5px;
+    vertical-align:top;
+  }
+  tbody th{
+    text-align:left; color:var(--text); font-weight:600;
+    white-space:nowrap;
+    position:sticky; left:0;
+    background:var(--panel);
+  }
+  tbody tr:last-child td, tbody tr:last-child th{border-bottom:none}
+  tbody tr:hover td, tbody tr:hover th{background:rgba(255,255,255,.02)}
+
+  .yes{color:var(--accent); font-weight:800}
+  .no{color:#4a4a4a}
+  .val{color:var(--text)}
+  .sub{color:var(--muted); font-size:12px}
+
+  .row-section td, .row-section th{
+    background:var(--panel2) !important;
+    color:var(--accent);
+    font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.08em;
+    padding:9px 18px;
+  }
+
+  .notes{margin-top:16px; display:grid; gap:8px}
+  .note{
+    font-size:13px; color:var(--muted);
+    padding:12px 16px; border-left:2px solid var(--accent);
+    background:rgba(216,255,62,.04); border-radius:8px;
+  }
+  .note b{color:var(--text)}
+
+  .explain{margin-top:44px}
+  .explain h2{font-size:20px; margin-bottom:16px; letter-spacing:-.02em}
+  .explain-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:12px}
+  .explain-card{
+    padding:18px 16px;
+    border:1px solid var(--line); border-radius:16px;
+    background:var(--panel);
+  }
+  .explain-card .tag{
+    font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.06em;
+    color:var(--accent); margin-bottom:8px;
+  }
+  .explain-card p{margin:0; font-size:13px; color:var(--muted)}
+  .explain-card p+p{margin-top:8px}
+
+  @media (max-width:900px){
+    .explain-grid{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:560px){
+    .explain-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="eyebrow"><span class="dot"></span> Рабочая справка</div>
+  <h1>Сравнение тарифов</h1>
+  <p class="lead">
+    От бесплатного разбора до ведения — что входит в каждый шаг и чем один отличается от следующего.
+    Собрано из текста концепции, без изменений по сути.
+  </p>
+
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>&nbsp;</th>
+          <th class="tier">
+            Бесплатный разбор
+            <span class="price">0 ₽</span>
+            <span class="duration">20 минут, звонок</span>
+          </th>
+          <th class="tier">
+            Аудит
+            <span class="price">30 000 ₽</span>
+            <span class="duration">5 рабочих дней</span>
+          </th>
+          <th class="tier">
+            Запуск
+            <span class="price">150 000 ₽</span>
+            <span class="duration">3–4 недели</span>
+          </th>
+          <th class="tier">
+            Перезапуск продаж
+            <span class="price">350 000 ₽</span>
+            <span class="duration">6 недель</span>
+          </th>
+          <th class="tier">
+            Ведение
+            <span class="price">от 50 000 ₽</span>
+            <span class="duration">в месяц, постоянно</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="row-section">
+          <td colspan="6">Что это по сути</td>
+        </tr>
+        <tr>
+          <th>Формат</th>
+          <td class="val">Устный разбор ваших цифр, без документа на выходе</td>
+          <td class="val">Разбор воронки по цифрам с письменным планом</td>
+          <td class="val">Пересборка системы с нуля или почти с нуля</td>
+          <td class="val">Полная пересборка + автоматизация и аналитика</td>
+          <td class="val">Постоянное сопровождение уже собранной системы</td>
+        </tr>
+        <tr>
+          <th>Главная цель</th>
+          <td class="val">Понять, есть ли смысл работать дальше</td>
+          <td class="val">Показать, где именно теряются деньги</td>
+          <td class="val">Собрать рабочую систему продаж заново</td>
+          <td class="val">Собрать систему + снять её с ручного управления</td>
+          <td class="val">Не дать системе снова развалиться</td>
+        </tr>
+
+        <tr class="row-section">
+          <td colspan="6">Что входит</td>
+        </tr>
+        <tr>
+          <th>Разбор воронки по цифрам</th>
+          <td class="sub">устно, поверхностно</td>
+          <td class="yes">✓</td>
+          <td class="yes">✓</td>
+          <td class="yes">✓</td>
+          <td class="sub">продолжение из Запуска/Перезапуска</td>
+        </tr>
+        <tr>
+          <th>План на 3 месяца</th>
+          <td class="no">—</td>
+          <td class="yes">✓</td>
+          <td class="yes">✓</td>
+          <td class="yes">✓</td>
+          <td class="no">—</td>
+        </tr>
+        <tr>
+          <th>Оффер и позиционирование</th>
+          <td class="no">—</td>
+          <td class="no">—</td>
+          <td class="yes">✓</td>
+          <td class="yes">✓</td>
+          <td class="sub">по необходимости</td>
+        </tr>
+        <tr>
+          <th>Сайт</th>
+          <td class="no">—</td>
+          <td class="no">—</td>
+          <td class="yes">✓</td>
+          <td class="yes">✓</td>
+          <td class="sub">доработки</td>
+        </tr>
+        <tr>
+          <th>Реклама — настройка и запуск</th>
+          <td class="no">—</td>
+          <td class="no">—</td>
+          <td class="yes">✓</td>
+          <td class="yes">✓</td>
+          <td class="yes">✓</td>
+        </tr>
+        <tr>
+          <th>CRM</th>
+          <td class="no">—</td>
+          <td class="no">—</td>
+          <td class="val">базовая</td>
+          <td class="val">полная настройка</td>
+          <td class="sub">поддержка</td>
+        </tr>
+        <tr>
+          <th>ИИ-обработка заявок</th>
+          <td class="no">—</td>
+          <td class="no">—</td>
+          <td class="no">—</td>
+          <td class="yes">✓</td>
+          <td class="sub">поддержка</td>
+        </tr>
+        <tr>
+          <th>Сквозная аналитика</th>
+          <td class="no">—</td>
+          <td class="no">—</td>
+          <td class="no">—</td>
+          <td class="yes">✓</td>
+          <td class="yes">✓</td>
+        </tr>
+        <tr>
+          <th>Регламенты для менеджеров</th>
+          <td class="no">—</td>
+          <td class="no">—</td>
+          <td class="no">—</td>
+          <td class="yes">✓</td>
+          <td class="sub">обновление</td>
+        </tr>
+        <tr>
+          <th>Еженедельный отчёт</th>
+          <td class="no">—</td>
+          <td class="no">—</td>
+          <td class="no">—</td>
+          <td class="no">—</td>
+          <td class="yes">✓</td>
+        </tr>
+
+        <tr class="row-section">
+          <td colspan="6">Кому подходит</td>
+        </tr>
+        <tr>
+          <th>Подходит, если</th>
+          <td class="val">не уверены, есть ли вообще смысл начинать</td>
+          <td class="val">хотите сначала понять картину, не тратя 150–350к</td>
+          <td class="val">почти ничего не настроено, нужна база с нуля</td>
+          <td class="val">часть уже работает, нужно снять ручное управление</td>
+          <td class="val">система уже собрана (нами), нужно, чтобы работала дальше</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="notes">
+    <div class="note"><b>Аудит не теряется:</b> его стоимость (30 000 ₽) вычитается из цены Запуска или Перезапуска, если клиент продолжает работу.</div>
+    <div class="note"><b>Бесплатный разбор без отчёта:</b> на выходе только устный вывод «есть смысл / нет смысла», документа клиенту не остаётся.</div>
+    <div class="note"><b>Уточнить:</b> идёт ли Ведение только после Запуска/Перезапуска, или его можно купить отдельно, без предыдущих шагов — в тексте концепции это прямо не оговорено.</div>
+  </div>
+
+  <div class="explain">
+    <h2>Коротко, в чём разница</h2>
+    <div class="explain-grid">
+      <div class="explain-card">
+        <div class="tag">0 ₽</div>
+        <p>Просто разговор. Мы смотрим на ваши цифры и честно говорим, есть ли смысл работать вместе. Ничего не считаем на бумаге, ничего не отдаём.</p>
+      </div>
+      <div class="explain-card">
+        <div class="tag">30 000 ₽</div>
+        <p>Уже настоящая работа: считаем воронку целиком, находим, где утекают деньги, и отдаём план на 3 месяца.</p>
+        <p>Но сами руки ничего не трогаем — ни сайт, ни рекламу, ни CRM.</p>
+      </div>
+      <div class="explain-card">
+        <div class="tag">150 000 ₽</div>
+        <p>Берём план из Аудита и реализуем: оффер, сайт, реклама, базовая CRM. Подходит, когда у клиента почти пусто и нужно собрать с нуля.</p>
+      </div>
+      <div class="explain-card">
+        <div class="tag">350 000 ₽</div>
+        <p>То же самое, что Запуск, плюс автоматизация: ИИ на заявках, сквозная аналитика и регламенты для менеджеров. Система перестаёт держаться на ручном контроле.</p>
+      </div>
+      <div class="explain-card">
+        <div class="tag">от 50 000 ₽/мес</div>
+        <p>После того как система собрана — её нельзя бросить, иначе она снова развалится. Ведение — это реклама, аналитика, доработки и отчёт каждую неделю.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
