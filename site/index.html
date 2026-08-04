@@ -151,11 +151,12 @@ a{color:inherit;text-decoration:none;}
   line-height:1.24;letter-spacing:.19em;text-transform:uppercase;
 }
 .topbar-right{display:flex;align-items:center;gap:clamp(14px,2vw,32px);}
-/* номер стоит слева, на пустой стене: так он не попадает на лицо
-   ни при какой ширине окна — кадр по cover сдвигается, а номер нет */
+/* Номер стоит вплотную слева от головы. Кадр по cover при смене
+   пропорций окна подъезжает вбок, поэтому положение считает скрипт
+   по геометрии самого кадра, а не в процентах от экрана. */
 .phone{
+  position:absolute;top:50%;translate:0 -50%;left:0;
   font-size:clamp(14px,1.15vw,17px);white-space:nowrap;
-  margin-inline:auto;            /* по центру между логотипом и кнопкой */
   transition:color .3s var(--ease);
 }
 .phone:hover{color:var(--green);}
@@ -279,6 +280,14 @@ h1 .l3,h1 .l4{font-size:.84em;}
   content:"";display:block;width:26px;height:1px;
   background:var(--green);margin-bottom:14px;
 }
+
+/* выезжает справа последней, через паузу после всей остальной загрузки —
+   так на неё падает отдельный акцент */
+.note{
+  opacity:0;transform:translateX(56px);
+  transition:opacity 1.05s var(--ease) 2.7s, transform 1.2s var(--ease) 2.7s;
+}
+.ready .note{opacity:1;transform:none;}
 
 /* ── БЛОКИ НИЖЕ ПЕРВОГО ЭКРАНА ───────────────────────────── */
 .page{
@@ -503,7 +512,7 @@ h1 .l > span{
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none !important;transition-duration:.01ms !important;}
-  .rise,h1 .l > span,.reveal{opacity:1;transform:none;}
+  .rise,h1 .l > span,.reveal,.note{opacity:1;transform:none;}
   .orbit path,.mk-arc{stroke-dashoffset:0;}
   .mk-ltr{opacity:1;}
   html{scroll-behavior:auto;}
@@ -620,7 +629,7 @@ h1 .l > span{
       <span class="who"><b>Алина —</b> <span>упаковка и визуал</span></span>
     </p>
 
-    <p class="note rise" style="--d:1260ms">
+    <p class="note">
       За агентством прятаться удобно, за фамилиями — нет.
       У нашей работы есть авторы.
     </p>
@@ -710,6 +719,34 @@ h1 .l > span{
     }, { rootMargin: '0px 0px -12% 0px', threshold: 0.12 });
     blocks.forEach(function (el) { io.observe(el); });
   }
+
+  // Номер прижимаем к тому месту, где голова становится видна.
+  // Геометрически волосы начинаются раньше, но там их гасит затемнение,
+  // а его градиент задан в долях ширины — поэтому и считаем в долях.
+  var HEAD_EDGE = 0.79, GAP = 22, BTN_GAP = 26;
+
+  function placePhone() {
+    var phone = document.querySelector('.phone');
+    var bar = document.querySelector('.topbar');
+    var brand = document.querySelector('.brand');
+    var pill = document.querySelector('.pill');
+    if (!phone || !bar || !brand) return;
+    if (getComputedStyle(phone).display === 'none') { phone.style.left = ''; return; }
+
+    var b = bar.getBoundingClientRect();
+    var left = window.innerWidth * HEAD_EDGE - GAP - phone.offsetWidth - b.left;
+
+    var minLeft = brand.getBoundingClientRect().right - b.left + 28;
+    if (pill) {
+      var maxLeft = pill.getBoundingClientRect().left - b.left - BTN_GAP - phone.offsetWidth;
+      left = Math.min(left, maxLeft);
+    }
+    phone.style.left = Math.max(minLeft, left) + 'px';
+  }
+
+  placePhone();
+  window.addEventListener('resize', placePhone, { passive: true });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(placePhone);
 
 })();
 </script>
