@@ -79,7 +79,6 @@ a{color:inherit;text-decoration:none;}
   position:absolute;inset:-5% -3%;
   background-image:url("assets/hero-duo-wide.jpg");
   background-size:cover;background-position:72% center;
-  will-change:transform;
 }
 .photo-in{position:absolute;inset:0;animation:photoIn 1800ms var(--ease) both;}
 @keyframes photoIn{from{transform:scale(1.07);opacity:0}to{transform:scale(1);opacity:1}}
@@ -124,11 +123,11 @@ a{color:inherit;text-decoration:none;}
 }
 .rail-dot{
   width:7px;height:7px;border-radius:50%;background:var(--green);
-  animation:pulse 3.4s ease-in-out infinite;
+  animation:blink 1.7s ease-in-out infinite;
 }
-@keyframes pulse{
-  0%,100%{box-shadow:0 0 0 5px rgba(168,220,40,.08),0 0 14px rgba(168,220,40,.55)}
-  50%{box-shadow:0 0 0 9px rgba(168,220,40,.03),0 0 22px rgba(168,220,40,.9)}
+@keyframes blink{
+  0%,100%{opacity:1;box-shadow:0 0 0 5px rgba(168,220,40,.10),0 0 16px rgba(168,220,40,.85)}
+  50%{opacity:.2;box-shadow:0 0 0 5px rgba(168,220,40,.02),0 0 5px rgba(168,220,40,.2)}
 }
 .rail-text{
   writing-mode:vertical-rl;transform:rotate(180deg);
@@ -542,10 +541,10 @@ h1 .l > span{
   </header>
 
   <div class="media" aria-hidden="true">
-    <div class="photo-in"><div class="photo" data-depth="1" data-scroll="0.12"></div></div>
+    <div class="photo-in"><div class="photo"></div></div>
     <div class="scrim"></div>
     <div class="vignette"></div>
-    <div class="orbit" data-depth="2.4">
+    <div class="orbit">
       <svg viewBox="0 0 800 800" fill="none">
         <path pathLength="100" d="M400 70 A330 330 0 0 1 400 730" stroke-width="1" opacity=".18"/>
         <path pathLength="100" d="M180 250 A290 290 0 1 0 650 310" stroke-width=".9" opacity=".1"
@@ -560,7 +559,7 @@ h1 .l > span{
   </div>
 
   <section class="hero">
-    <div class="hero-text" data-depth="0.3">
+    <div class="hero-text">
       <p class="eyebrow rise" style="--d:320ms">Системный маркетинг для роста выручки</p>
 
       <h1>
@@ -703,40 +702,6 @@ h1 .l > span{
     blocks.forEach(function (el) { io.observe(el); });
   }
 
-  if (reduce) return;
-
-  var layers = [].slice.call(document.querySelectorAll('[data-depth]'));
-  var tx = 0, ty = 0, cx = 0, cy = 0, sy = 0, csy = 0, running = false;
-
-  window.addEventListener('pointermove', function (e) {
-    if (e.pointerType === 'touch') return;
-    tx = e.clientX / window.innerWidth - 0.5;
-    ty = e.clientY / window.innerHeight - 0.5;
-    start();
-  }, { passive: true });
-
-  window.addEventListener('scroll', function () { sy = window.scrollY; start(); }, { passive: true });
-
-  function start() { if (!running) { running = true; requestAnimationFrame(tick); } }
-
-  function tick() {
-    cx += (tx - cx) * 0.055;
-    cy += (ty - cy) * 0.055;
-    csy += (sy - csy) * 0.1;
-    var narrow = window.innerWidth <= 860;
-
-    for (var i = 0; i < layers.length; i++) {
-      var el = layers[i];
-      var d = parseFloat(el.dataset.depth) || 0;
-      var s = parseFloat(el.dataset.scroll) || 0;
-      var x = -cx * d * 24;
-      var y = -cy * d * 16 + csy * s * (narrow ? 0.4 : 1);
-      el.style.transform = 'translate3d(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px,0)';
-    }
-
-    if (Math.abs(tx - cx) < 0.0004 && Math.abs(ty - cy) < 0.0004 && Math.abs(sy - csy) < 0.4) running = false;
-    else requestAnimationFrame(tick);
-  }
 })();
 </script>
 
