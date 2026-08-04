@@ -518,8 +518,8 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   position:relative;margin-top:clamp(30px,3.8vw,54px);
   border:1px solid rgba(168,220,40,.5);border-radius:var(--radius);
   padding:clamp(36px,4.2vw,58px) clamp(24px,3.2vw,50px) clamp(30px,3.4vw,48px);
-  display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,1fr);
-  gap:clamp(24px,3.4vw,54px);align-items:center;
+  display:grid;grid-template-columns:auto minmax(0,1fr);
+  gap:clamp(18px,2.4vw,38px);align-items:center;
 }
 /* подпись врезана в верхнюю рамку, по бокам — короткие штрихи */
 .control-label{
@@ -559,11 +559,11 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 .seen .link{clip-path:inset(0 0 0 0);}
 .link svg{width:100%;height:100%;overflow:visible;}
 .link path{
-  fill:none;stroke:var(--green);stroke-width:1.7;
-  stroke-dasharray:3.6 3.2;stroke-linecap:round;
+  fill:none;stroke:var(--green);stroke-width:2;
+  stroke-dasharray:1.6 2.8;stroke-linecap:round;
 }
 .chain-arrow{
-  flex:none;width:clamp(44px,4.6vw,68px);height:14px;margin-left:clamp(14px,1.8vw,26px);
+  flex:none;width:clamp(38px,3.6vw,54px);height:14px;margin-left:clamp(10px,1.1vw,16px);
   opacity:0;transform:translateX(-12px);
   transition:opacity .7s var(--ease) 3.1s,transform .8s var(--ease) 3.1s;
 }
