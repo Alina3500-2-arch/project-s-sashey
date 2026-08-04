@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Аполлонов и Шигапова — пересобираем продажи в малом бизнесе</title>
+<meta name="description" content="Показываем, где бизнес теряет деньги, даём конкретные шаги и собираем систему продаж: оффер, сайт, трафик, CRM, работа менеджера." />
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect width='200' height='200' fill='%23171614'/><path d='M96 19.6 A80.5 80.5 0 1 0 96 180.4' stroke='%23F1E9DC' stroke-width='11' fill='none'/><path d='M104 19.6 A80.5 80.5 0 1 1 104 180.4' stroke='%23A8DC28' stroke-width='11' fill='none'/></svg>" />
+<link rel="preload" as="image" href="assets/hero-duo.jpg" media="(min-width: 861px)" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<style>
+:root{
+  /* палитра из брендбука */
+  --graphite:#171614;
+  --cream:#F1E9DC;
+  --green:#A8DC28;
+  --green-dark:#5F7D10;
+  --grey:#9F9485;
+  --line:#2A2723;
+
+  --serif:"Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --sans:"Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --gutter:clamp(20px, 4.2vw, 64px);
+  --rail:clamp(0px, 5vw, 74px);
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--graphite);
+  color:var(--cream);
+  font-family:var(--sans);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none;}
+
+/* ── КАРКАС ЭКРАНА ───────────────────────────────────────── */
+.hero{
+  position:relative;
+  min-height:100svh;
+  display:flex;
+  flex-direction:column;
+  padding:clamp(20px,2.4vw,34px) var(--gutter) clamp(24px,3vw,40px);
+  padding-left:calc(var(--gutter) + var(--rail));
+  overflow:hidden;
+  isolation:isolate;
+}
+
+/* ── ФОН: ФОТО + СЛОИ ────────────────────────────────────── */
+.media{position:absolute;inset:0;z-index:-1;}
+
+.photo{
+  position:absolute;
+  inset:-6% -4%;
+  background-image:url("assets/hero-duo.jpg");
+  background-size:cover;
+  background-position:72% center;
+  will-change:transform;
+  transform:translate3d(0,0,0);
+}
+/* мягкое появление фото на загрузке */
+.photo-in{
+  position:absolute;inset:0;
+  animation:photoIn 1900ms var(--ease) both;
+}
+@keyframes photoIn{from{transform:scale(1.09);opacity:0;}to{transform:scale(1);opacity:1;}}
+
+/* затемнение слева, чтобы текст читался поверх стены */
+.scrim{
+  position:absolute;inset:0;
+  background:
+    linear-gradient(100deg,
+      rgba(23,22,20,.97) 0%,
+      rgba(23,22,20,.93) 26%,
+      rgba(23,22,20,.72) 44%,
+      rgba(23,22,20,.28) 58%,
+      rgba(23,22,20,.06) 72%),
+    linear-gradient(to top, rgba(23,22,20,.85) 0%, rgba(23,22,20,0) 34%);
+}
+.vignette{
+  position:absolute;inset:0;
+  background:radial-gradient(120% 90% at 60% 45%, transparent 42%, rgba(0,0,0,.55) 100%);
+}
+/* зерно — снимает «пластиковость» градиентов */
+.grain{
+  position:absolute;inset:-50%;
+  opacity:.05;
+  pointer-events:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
+  animation:grainShift 7s steps(6) infinite;
+}
+@keyframes grainShift{
+  0%{transform:translate(0,0)}   16%{transform:translate(-3%,2%)}
+  33%{transform:translate(2%,-3%)} 50%{transform:translate(-2%,-2%)}
+  66%{transform:translate(3%,1%)}  83%{transform:translate(-1%,3%)}
+  100%{transform:translate(0,0)}
+}
+
+/* орбита — эхо дуг, которые уже есть на фото. Круг = воронка, которая не рвётся */
+.orbit{
+  position:absolute;
+  top:50%;left:64%;
+  width:min(78vw,980px);aspect-ratio:1;
+  translate:-50% -50%;
+  will-change:transform;
+  pointer-events:none;
+}
+.orbit svg{width:100%;height:100%;overflow:visible;animation:spin 74s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.orbit .arc{
+  fill:none;stroke:var(--green);stroke-linecap:round;
+  stroke-dasharray:100;stroke-dashoffset:100;
+  animation:draw 2600ms var(--ease) 500ms forwards;
+}
+@keyframes draw{to{stroke-dashoffset:0}}
+
+.spark{
+  position:absolute;
+  width:7px;height:7px;
+  translate:-50% -50%;
+  background:
+    linear-gradient(var(--green),var(--green)) center/1.2px 100% no-repeat,
+    linear-gradient(var(--green),var(--green)) center/100% 1.2px no-repeat;
+  filter:drop-shadow(0 0 5px var(--green));
+  animation:twinkle 4.2s ease-in-out infinite;
+}
+@keyframes twinkle{0%,100%{opacity:.25;scale:.7}50%{opacity:1;scale:1.25}}
+
+/* ── ЛЕВЫЙ РЕЙЛ ──────────────────────────────────────────── */
+.rail{
+  position:absolute;
+  left:var(--gutter);top:0;bottom:0;
+  width:var(--rail);
+  display:flex;flex-direction:column;align-items:center;
+  gap:22px;
+  padding:clamp(90px,13vh,150px) 0 clamp(24px,4vh,48px);
+}
+.rail::before{
+  content:"";width:1px;flex:0 0 clamp(40px,9vh,96px);
+  background:linear-gradient(to bottom, transparent, var(--line));
+}
+.rail-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 0 5px rgba(168,220,40,.1), 0 0 16px rgba(168,220,40,.75);
+  animation:pulse 3.4s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 0 5px rgba(168,220,40,.08), 0 0 14px rgba(168,220,40,.55)}
+  50%{box-shadow:0 0 0 9px rgba(168,220,40,.03), 0 0 22px rgba(168,220,40,.9)}
+}
+.rail-text{
+  writing-mode:vertical-rl;
+  transform:rotate(180deg);
+  font-size:11px;font-weight:600;
+  letter-spacing:.26em;text-transform:uppercase;
+  color:var(--grey);
+  white-space:nowrap;
+}
+
+/* ── ШАПКА ───────────────────────────────────────────────── */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:24px;
+  position:relative;z-index:3;
+}
+.brand{display:flex;align-items:center;gap:16px;}
+.brand svg{width:clamp(42px,4.2vw,58px);height:auto;flex:none;}
+.brand-name{
+  font-family:var(--serif);
+  font-size:clamp(13px,1.32vw,18px);
+  line-height:1.24;
+  letter-spacing:.19em;
+  text-transform:uppercase;
+  color:var(--cream);
+}
+.topbar-right{display:flex;align-items:center;gap:clamp(14px,2vw,32px);}
+.phone{
+  font-size:clamp(14px,1.15vw,17px);
+  letter-spacing:.02em;
+  white-space:nowrap;
+  transition:color .3s var(--ease);
+}
+.phone:hover{color:var(--green);}
+
+.pill{
+  --pad:clamp(13px,1.1vw,17px) clamp(22px,2vw,32px);
+  display:inline-flex;align-items:center;gap:14px;
+  padding:var(--pad);
+  border:1px solid var(--green);
+  border-radius:999px;
+  font-size:12px;font-weight:600;
+  letter-spacing:.17em;text-transform:uppercase;
+  color:var(--green);
+  background:transparent;
+  cursor:pointer;
+  transition:background .35s var(--ease), color .35s var(--ease), box-shadow .35s var(--ease);
+  white-space:nowrap;
+}
+.pill:hover{background:var(--green);color:var(--graphite);box-shadow:0 0 30px rgba(168,220,40,.35);}
+.pill .arr{transition:transform .35s var(--ease);}
+.pill:hover .arr{transform:translate(3px,-3px);}
+
+/* ── КОНТЕНТ ─────────────────────────────────────────────── */
+.wrap{
+  flex:1;
+  display:flex;align-items:center;
+  position:relative;z-index:2;
+  padding:clamp(28px,4vh,56px) 0;
+}
+/* ширина в vw/px, не в ch: ch считается по Manrope (~8px) и режет заголовок */
+.content{max-width:min(880px,57vw);will-change:transform;}
+
+h1{
+  font-family:var(--serif);
+  font-weight:300;
+  text-transform:uppercase;
+  margin:0 0 clamp(18px,2.1vw,30px);
+  line-height:.9;
+  letter-spacing:.012em;
+  font-size:clamp(38px,5.7vw,92px);
+}
+/* маска для «выезда» строки: padding даёт запас на выносные,
+   отрицательный margin возвращает исходную высоту строки */
+h1 .l{display:block;overflow:hidden;padding-block:.09em;margin-block:-.09em;}
+h1 .l > span{display:block;}
+h1 .l2{font-size:1.19em;color:var(--green);}
+h1 .l3,h1 .l4{font-size:.84em;}
+
+.lead{
+  margin:0 0 clamp(24px,2.6vw,34px);
+  max-width:clamp(300px,32vw,500px);
+  font-size:clamp(15px,1.15vw,18px);
+  line-height:1.6;
+  color:rgba(241,233,220,.82);
+}
+
+.cta{
+  display:inline-flex;align-items:center;justify-content:center;gap:18px;
+  padding:clamp(17px,1.55vw,23px) clamp(34px,3.6vw,58px);
+  border:none;border-radius:999px;
+  background:linear-gradient(180deg,#c2f03f,#8fc714);
+  color:#101410;
+  font-family:var(--sans);
+  font-size:clamp(12px,1.05vw,14px);font-weight:600;
+  letter-spacing:.19em;text-transform:uppercase;
+  cursor:pointer;
+  box-shadow:0 0 0 rgba(168,220,40,0);
+  animation:glow 3.6s ease-in-out infinite;
+  transition:transform .35s var(--ease);
+}
+@keyframes glow{
+  0%,100%{box-shadow:0 10px 34px rgba(168,220,40,.22), 0 0 0 1px rgba(168,220,40,.28), 0 0 46px rgba(168,220,40,.16)}
+  50%{box-shadow:0 12px 46px rgba(168,220,40,.4), 0 0 0 1px rgba(168,220,40,.5), 0 0 78px rgba(168,220,40,.3)}
+}
+.cta:hover{transform:translateY(-2px);}
+.cta .arr{transition:transform .35s var(--ease);}
+.cta:hover .arr{transform:translate(4px,-4px);}
+
+/* отсечка по бюджету — фильтрует нецелевые заявки до анкеты */
+.micro{
+  margin:16px 0 0;
+  font-size:13px;
+  letter-spacing:.02em;
+  color:var(--grey);
+}
+.micro b{color:rgba(241,233,220,.9);font-weight:500;}
+
+.features{
+  display:flex;flex-wrap:wrap;
+  margin:clamp(24px,2.8vw,38px) 0 0;
+  padding:0;list-style:none;
+  border-top:1px solid var(--line);
+  padding-top:clamp(18px,1.9vw,24px);
+  gap:0;
+}
+.features li{
+  display:flex;align-items:center;gap:13px;
+  padding:0 clamp(18px,2vw,30px);
+  border-left:1px solid var(--line);
+}
+.features li:first-child{padding-left:0;border-left:none;}
+.features svg{width:26px;height:26px;flex:none;stroke:var(--green);fill:none;stroke-width:1.4;}
+.features span{
+  font-size:11px;font-weight:600;
+  letter-spacing:.15em;text-transform:uppercase;
+  line-height:1.42;
+  color:rgba(241,233,220,.88);
+}
+
+.authors{
+  margin:clamp(18px,2vw,26px) 0 0;
+  font-size:clamp(13px,1.02vw,15px);
+  color:var(--grey);
+}
+.authors b{color:var(--green);font-weight:500;}
+.authors .sep{opacity:.45;margin:0 10px;}
+
+/* ── ЗАМЕТКА СПРАВА ──────────────────────────────────────── */
+/* внешний слой держит параллакс, внутренний — появление,
+   иначе JS-transform затирает transform анимации */
+.note{
+  position:absolute;
+  right:var(--gutter);top:44%;
+  translate:0 -50%;
+  width:clamp(150px,13.5vw,196px);
+  z-index:2;
+  font-size:clamp(12px,.92vw,14px);
+  line-height:1.62;
+  color:rgba(241,233,220,.72);
+  /* тень держит читаемость там, где под текстом светлый пиджак */
+  text-shadow:0 1px 14px rgba(23,22,20,.95), 0 0 30px rgba(23,22,20,.8);
+  will-change:transform;
+}
+.note-in{display:block;}
+.note-in::before{
+  content:"";display:block;
+  width:26px;height:1px;
+  background:var(--green);
+  margin-bottom:14px;
+}
+
+/* ── ПОДСКАЗКА СКРОЛЛА ───────────────────────────────────── */
+.scroll-hint{
+  position:absolute;
+  left:50%;bottom:clamp(14px,2vh,26px);
+  translate:-50% 0;
+  z-index:2;
+  display:flex;flex-direction:column;align-items:center;gap:9px;
+  font-size:10px;font-weight:600;
+  letter-spacing:.24em;text-transform:uppercase;
+  color:var(--grey);
+}
+.scroll-hint i{
+  display:block;width:1px;height:34px;
+  background:linear-gradient(to bottom,var(--green),transparent);
+  animation:drop 2.1s ease-in-out infinite;
+}
+@keyframes drop{0%{opacity:0;transform:scaleY(.2);transform-origin:top}
+  40%{opacity:1}100%{opacity:0;transform:scaleY(1);transform-origin:top}}
+
+/* ── ЗАГЛУШКА СЛЕДУЮЩЕГО БЛОКА (даёт ход параллаксу) ─────── */
+.next{
+  min-height:62vh;
+  display:grid;place-items:center;
+  padding:80px var(--gutter);
+  background:linear-gradient(to bottom, var(--graphite), #101010);
+  border-top:1px solid var(--line);
+  text-align:center;
+}
+.next p{
+  margin:0;max-width:52ch;
+  font-family:var(--serif);
+  font-size:clamp(22px,3vw,42px);
+  line-height:1.24;
+  color:rgba(241,233,220,.34);
+}
+
+/* ── ПОЯВЛЕНИЕ ЭЛЕМЕНТОВ ─────────────────────────────────── */
+.rise{
+  opacity:0;
+  transform:translateY(26px);
+  transition:opacity 1s var(--ease), transform 1.1s var(--ease);
+  transition-delay:var(--d,0ms);
+}
+h1 .l > span{
+  opacity:0;
+  transform:translateY(100%);
+  transition:opacity .9s var(--ease), transform 1.15s var(--ease);
+  transition-delay:var(--d,0ms);
+}
+.ready .rise{opacity:1;transform:none;}
+.ready h1 .l > span{opacity:1;transform:none;}
+
+/* ── АДАПТИВ ─────────────────────────────────────────────── */
+@media (max-width:1180px){
+  .note{display:none;}
+  .content{max-width:min(62ch,66vw);}
+}
+@media (max-width:860px){
+  :root{--rail:0px;}
+  .rail{display:none;}
+  .hero{padding-left:var(--gutter);min-height:100svh;}
+  .photo{
+    background-image:url("assets/hero-duo-mobile.jpg");
+    background-position:62% top;
+    background-size:cover;
+    inset:-4% -3%;
+  }
+  /* на мобильном фото уходит вверх, текст живёт под ним */
+  .scrim{
+    background:
+      linear-gradient(to bottom,
+        rgba(23,22,20,.42) 0%,
+        rgba(23,22,20,.62) 34%,
+        rgba(23,22,20,.94) 58%,
+        var(--graphite) 78%);
+  }
+  .wrap{align-items:flex-end;padding-top:34vh;}
+  .content{max-width:none;}
+  h1{font-size:clamp(38px,10.6vw,60px);}
+  .lead{font-size:15px;}
+  .cta{width:100%;}
+  .phone{display:none;}
+  .pill{--pad:11px 18px;font-size:11px;gap:10px;}
+  .features{flex-direction:column;align-items:flex-start;gap:16px;}
+  .features li{padding:0;border-left:none;}
+  .orbit{left:50%;top:26%;width:130vw;}
+  .scroll-hint{display:none;}
+}
+@media (max-width:400px){
+  .brand-name{font-size:12px;letter-spacing:.14em;}
+  .brand{gap:11px;}
+}
+
+/* ── БЕЗ АНИМАЦИЙ ────────────────────────────────────────── */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation:none !important;
+    transition-duration:.01ms !important;
+  }
+  .rise{opacity:1;transform:none;}
+  h1 .l > span{opacity:1;transform:none;}
+  .orbit .arc{stroke-dashoffset:0;}
+  .photo-in{opacity:1;}
+  html{scroll-behavior:auto;}
+}
+</style>
+</head>
+
+<body>
+
+<section class="hero">
+
+  <!-- фон -->
+  <div class="media" aria-hidden="true">
+    <div class="photo-in">
+      <div class="photo" data-depth="1" data-scroll="0.14"></div>
+    </div>
+    <div class="scrim"></div>
+    <div class="vignette"></div>
+
+    <div class="orbit" data-depth="2.6" data-scroll="-0.05">
+      <svg viewBox="0 0 800 800" fill="none">
+        <path class="arc" pathLength="100" d="M400 60 A340 340 0 0 1 400 740" stroke-width="1" opacity=".34"/>
+        <path class="arc" pathLength="100" d="M170 250 A290 290 0 1 0 640 300" stroke-width=".9" opacity=".2"
+              style="animation-delay:900ms"/>
+      </svg>
+      <span class="spark" style="left:31%;top:20%;"></span>
+      <span class="spark" style="left:76%;top:66%;animation-delay:1.6s;"></span>
+    </div>
+
+    <div class="grain"></div>
+  </div>
+
+  <!-- левый рейл -->
+  <div class="rail" aria-hidden="true">
+    <span class="rail-dot"></span>
+    <span class="rail-text">Без воды · По делу · С результатом</span>
+  </div>
+
+  <!-- шапка -->
+  <header class="topbar">
+    <a class="brand rise" style="--d:120ms" href="/" aria-label="Аполлонов и Шигапова">
+      <!-- ВРЕМЕННАЯ отрисовка монограммы по параметрам брендбука
+           (поле 200×200, r=80,5, штрих 9, разрыв 8).
+           Перед публикацией заменить на эталонный ash-logo-*.svg —
+           брендбук запрещает перерисовывать знак. -->
+      <svg viewBox="0 0 200 200" fill="none" stroke-linecap="butt">
+        <path d="M96 19.6 A80.5 80.5 0 1 0 96 180.4" stroke="#F1E9DC" stroke-width="9"/>
+        <path d="M96 19.6 L96 180.4 M96 19.6 L46 160 M69.4 94.3 L96 94.3" stroke="#F1E9DC" stroke-width="9"/>
+        <path d="M104 19.6 A80.5 80.5 0 1 1 104 180.4" stroke="#A8DC28" stroke-width="9"/>
+        <path d="M110 70 L110 179.9 M140 86.3 L140 169.9 M170 70 L170 139.8" stroke="#A8DC28" stroke-width="9"/>
+      </svg>
+      <span class="brand-name">Аполлонов<br />и Шигапова</span>
+    </a>
+
+    <div class="topbar-right">
+      <!-- TODO: подставить рабочий номер -->
+      <a class="phone rise" style="--d:220ms" href="tel:+79991234567">+7 999 123-45-67</a>
+      <a class="pill rise" style="--d:300ms" href="#call">
+        Позвонить
+        <svg class="arr" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <path d="M2 10L10 2M10 2H3.5M10 2V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- основной текст -->
+  <div class="wrap">
+    <div class="content" data-depth="0.35">
+
+      <h1>
+        <span class="l l1"><span style="--d:420ms">Пересобираем</span></span>
+        <span class="l l2"><span style="--d:540ms">Продажи</span></span>
+        <span class="l l3"><span style="--d:640ms">в малом</span></span>
+        <span class="l l4"><span style="--d:720ms">бизнесе</span></span>
+      </h1>
+
+      <p class="lead rise" style="--d:860ms">
+        Без воды и лишней теории. Показываем, где бизнес теряет деньги,
+        даём конкретные шаги и собираем систему, которую можно применить сразу.
+      </p>
+
+      <a class="cta rise" style="--d:960ms" href="#audit">
+        Бесплатный аудит
+        <svg class="arr" width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <path d="M2 10L10 2M10 2H3.5M10 2V8.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </a>
+
+      <p class="micro rise" style="--d:1040ms">
+        Ответ за 2 суток. Ничего не продаём на этом шаге.
+        <b>Работаем с проектами от 80 000 ₽.</b>
+      </p>
+
+      <ul class="features rise" style="--d:1140ms">
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.6"/>
+            <path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3"/>
+          </svg>
+          <span>Конкретные<br />шаги</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M13.4 2.5 4.6 13.4h6.2l-1.2 8.1 8.8-10.9h-6.2l1.2-8.1Z" stroke-linejoin="round"/>
+          </svg>
+          <span>Применимо<br />сразу</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2.6 21 7.5v9L12 21.4 3 16.5v-9L12 2.6Z" stroke-linejoin="round"/>
+            <path d="M3 7.5 12 12.4 21 7.5M12 12.4v9"/>
+          </svg>
+          <span>Система +<br />упаковка</span>
+        </li>
+      </ul>
+
+      <p class="authors rise" style="--d:1240ms">
+        <b>Александр</b> — цифры и система
+        <span class="sep">·</span>
+        <b>Алина</b> — упаковка и визуал
+      </p>
+
+    </div>
+  </div>
+
+  <!-- заметка справа -->
+  <aside class="note" data-depth="0.9">
+    <span class="note-in rise" style="--d:1340ms">
+      За агентством приятно и удобно, за фамилиями — нет.
+      У нашей работы есть авторы.
+    </span>
+  </aside>
+
+  <div class="scroll-hint rise" style="--d:1500ms" aria-hidden="true">
+    <i></i>
+    <span>Дальше</span>
+  </div>
+
+</section>
+
+<!-- заглушка: сюда встанет блок 2 «Все делают свой кусок» -->
+<section class="next">
+  <p>Дальше — блок 2: «Все делают свой кусок»</p>
+</section>
+
+<script>
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // появление
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () { document.body.classList.add('ready'); });
+  });
+
+  if (reduce) return;
+
+  // параллакс: мышь + скролл, слои двигаются с разной глубиной
+  var layers = [].slice.call(document.querySelectorAll('[data-depth]'));
+  var tx = 0, ty = 0, cx = 0, cy = 0, sy = 0, csy = 0, running = false;
+
+  window.addEventListener('pointermove', function (e) {
+    if (e.pointerType === 'touch') return;
+    tx = e.clientX / window.innerWidth - 0.5;
+    ty = e.clientY / window.innerHeight - 0.5;
+    start();
+  }, { passive: true });
+
+  window.addEventListener('scroll', function () {
+    sy = window.scrollY;
+    start();
+  }, { passive: true });
+
+  function start() { if (!running) { running = true; requestAnimationFrame(tick); } }
+
+  function tick() {
+    cx += (tx - cx) * 0.055;
+    cy += (ty - cy) * 0.055;
+    csy += (sy - csy) * 0.1;
+
+    for (var i = 0; i < layers.length; i++) {
+      var el = layers[i];
+      var d = parseFloat(el.dataset.depth) || 0;
+      var s = parseFloat(el.dataset.scroll) || 0;
+      var x = -cx * d * 26;
+      var y = -cy * d * 18 + csy * s;
+      el.style.transform = 'translate3d(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px,0)';
+    }
+
+    // затухание, когда всё почти догнало цель
+    if (Math.abs(tx - cx) < 0.0004 && Math.abs(ty - cy) < 0.0004 && Math.abs(sy - csy) < 0.4) {
+      running = false;
+    } else {
+      requestAnimationFrame(tick);
+    }
+  }
+})();
+</script>
+
+</body>
+</html>
