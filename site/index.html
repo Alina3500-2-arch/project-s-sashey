@@ -238,7 +238,7 @@ h1 .l3,h1 .l4{font-size:.84em;}
 .features{
   grid-column:1;grid-row:2;
   display:flex;flex-wrap:wrap;margin:0;padding:clamp(18px,2vw,26px) 0 0;
-  list-style:none;border-top:1px solid var(--line);
+  list-style:none;
 }
 .features li{
   display:flex;align-items:center;gap:13px;
@@ -577,45 +577,46 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 .control p{margin:0;font-size:clamp(13px,1.05vw,16px);line-height:1.6;color:rgba(241,233,220,.76);}
 
 /* ═══ 02. ЧЕТЫРЕ ШАГА ════════════════════════════════════ */
+/* Подписи посажены на реальные грани ступеней снимка:
+   верх ступеней — 62.4 / 48.4 / 33.6 / 18.7 % высоты,
+   левые края — 7.2 / 25.1 / 50.2 / 71.8 % ширины. */
 .stairs{
-  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
-  align-items:end;gap:clamp(10px,1.4vw,20px);
-  margin-top:clamp(20px,2.6vw,36px);
+  position:relative;margin-top:clamp(16px,2.2vw,30px);
+  aspect-ratio:1672/941;
+  background:url("assets/stairs.jpg") center/cover no-repeat;
 }
-.stair{
-  position:relative;
-  background:linear-gradient(170deg,#242320,#141311);
-  border:1px solid var(--line);border-top-color:rgba(168,220,40,.5);
-  border-radius:14px;
-  padding:clamp(14px,1.7vw,24px);
-  box-shadow:0 -1px 0 rgba(168,220,40,.25), 0 18px 40px rgba(0,0,0,.45);
-  opacity:0;transform:translateY(34px);
-  transition:opacity .75s var(--ease),transform .85s var(--ease);
-  transition-delay:calc(var(--i) * 150ms);
+.stair-cap{
+  position:absolute;left:var(--l);top:var(--t);width:var(--w,20%);
+  opacity:0;transform:translateY(22px);
+  transition:opacity .8s var(--ease),transform .9s var(--ease);
+  transition-delay:calc(var(--i) * 260ms + 300ms);
 }
-.seen .stair{opacity:1;transform:none;}
-.stair:nth-child(1){min-height:clamp(150px,15vw,196px);}
-.stair:nth-child(2){min-height:clamp(186px,19vw,250px);}
-.stair:nth-child(3){min-height:clamp(222px,23vw,304px);}
-.stair:nth-child(4){min-height:clamp(258px,27vw,358px);}
+.seen .stair-cap{opacity:1;transform:none;}
 .stair-n{
-  position:absolute;top:calc(-1 * clamp(30px,3.4vw,48px));left:clamp(12px,1.6vw,22px);
-  font-family:var(--serif);font-size:clamp(28px,3.6vw,50px);line-height:1;
-  color:rgba(241,233,220,.9);
+  display:block;font-family:var(--serif);
+  font-size:clamp(18px,3.1vw,46px);line-height:1;
+  color:rgba(241,233,220,.92);margin-bottom:.12em;
 }
-.stair:nth-child(4) .stair-n{color:var(--green);}
-.stair h3{
-  margin:0 0 8px;font-size:clamp(12px,1.15vw,16px);font-weight:600;
-  letter-spacing:.06em;
+.stair-cap:last-child .stair-n{color:var(--green);}
+.stair-cap h3{
+  margin:0 0 .35em;font-size:clamp(9px,1.25vw,17px);font-weight:600;
+  letter-spacing:.04em;line-height:1.2;
 }
-.stair p{margin:0;font-size:clamp(11.5px,.95vw,13.5px);line-height:1.5;color:rgba(241,233,220,.66);}
-.stairs-rise{
-  grid-column:1/-1;height:2px;margin-top:18px;
-  background:linear-gradient(90deg,rgba(168,220,40,0),var(--green));
-  transform-origin:left;scale:0 1;
-  transition:scale 1.4s var(--ease) .5s;
+.stair-cap p{
+  margin:0;font-size:clamp(7px,.92vw,13px);line-height:1.42;
+  color:rgba(241,233,220,.66);
 }
-.seen .stairs-rise{scale:1 1;}
+.steps-list{display:none;list-style:none;margin:0;padding:0;}
+.steps-list li{
+  background:var(--card);border:1px solid var(--line);
+  border-radius:14px;padding:clamp(14px,3.4vw,20px);
+}
+.steps-list b{
+  display:block;font-family:var(--serif);font-weight:400;
+  font-size:clamp(24px,7vw,34px);line-height:1;color:var(--green);margin-bottom:6px;
+}
+.steps-list h3{margin:0 0 6px;font-size:clamp(12px,3.4vw,15px);font-weight:600;letter-spacing:.04em;}
+.steps-list p{margin:0;font-size:clamp(12px,3.2vw,14px);line-height:1.5;color:rgba(241,233,220,.68);}
 
 /* ═══ 03. ЧЕГО МЫ НЕ ДЕЛАЕМ ══════════════════════════════ */
 .principles{
@@ -854,12 +855,22 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
     background:linear-gradient(180deg,rgba(23,22,20,0) 45%,rgba(29,28,25,.96) 100%);
   }
   .principles-body{padding:0 clamp(18px,4vw,32px) clamp(24px,5vw,40px);}
-  .stairs{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:clamp(40px,9vw,60px);}
-  .stair:nth-child(1),.stair:nth-child(2),
-  .stair:nth-child(3),.stair:nth-child(4){min-height:0;}
+  /* На узком экране подписи на ступенях становятся нечитаемыми
+     (ступень шириной 18% от 390 px — это 70 px), поэтому снимок
+     остаётся картинкой, а шаги идут списком под ним. */
+  .stairs{aspect-ratio:1672/700;background-position:center;}
+  .stair-cap{
+    position:static;width:auto;opacity:1;transform:none;
+    display:none;
+  }
+  .steps-list{
+    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:clamp(12px,3vw,18px);margin-top:clamp(14px,3vw,20px);
+  }
+  .stairs{margin-bottom:0;}
 }
 @media (max-width:560px){
-  .stairs{grid-template-columns:1fr;}
+  .steps-list{grid-template-columns:1fr;}
   .tariff-grid{grid-template-columns:1fr;gap:clamp(14px,4vw,22px);}
   .tariff{border-left:none;padding-left:0;border-top:1px solid rgba(18,20,12,.28);padding-top:14px;}
   .tariff:first-child{border-top:none;padding-top:0;}
@@ -1161,23 +1172,33 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
     <p class="sec-lead">Каждый следующий шаг начинается только тогда, когда предыдущий дал цифры.</p>
 
     <div class="stairs">
-      <article class="stair" style="--i:0">
-        <span class="stair-n">01</span><h3>Разбор</h3>
+      <div class="stair-cap" style="--l:7.6%;--t:55.4%;--w:17%;--i:0">
+        <span class="stair-n">01</span>
+        <h3>Разбор</h3>
         <p>Короткий созвон: смотрим, что происходит с продажами сейчас.</p>
-      </article>
-      <article class="stair" style="--i:1">
-        <span class="stair-n">02</span><h3>Аудит</h3>
+      </div>
+      <div class="stair-cap" style="--l:25.5%;--t:41.4%;--w:21%;--i:1">
+        <span class="stair-n">02</span>
+        <h3>Аудит</h3>
         <p>Разбираем воронку по цифрам, отдаём план: что чинить и в каком порядке.</p>
-      </article>
-      <article class="stair" style="--i:2">
-        <span class="stair-n">03</span><h3>Сборка</h3>
-        <p>Оффер, сайт, трафик, CRM, работа менеджера — собираем в одну связку и запускаем.</p>
-      </article>
-      <article class="stair" style="--i:3">
-        <span class="stair-n">04</span><h3>Ведение</h3>
+      </div>
+      <div class="stair-cap" style="--l:50.6%;--t:26.6%;--w:17%;--i:2">
+        <span class="stair-n">03</span>
+        <h3>Сборка</h3>
+        <p>Оффер, сайт, трафик, CRM, работа менеджера — собираем в одну связку.</p>
+      </div>
+      <div class="stair-cap" style="--l:72.2%;--t:11.7%;--w:18%;--i:3">
+        <span class="stair-n">04</span>
+        <h3>Ведение</h3>
         <p>Управляем продажами дальше и отвечаем за цифры каждый месяц.</p>
-      </article>
-      <span class="stairs-rise"></span>
+      </div>
+
+      <ol class="steps-list">
+        <li><b>01</b><h3>Разбор</h3><p>Короткий созвон: смотрим, что происходит с продажами сейчас.</p></li>
+        <li><b>02</b><h3>Аудит</h3><p>Разбираем воронку по цифрам, отдаём план: что чинить и в каком порядке.</p></li>
+        <li><b>03</b><h3>Сборка</h3><p>Оффер, сайт, трафик, CRM, работа менеджера — собираем в одну связку.</p></li>
+        <li><b>04</b><h3>Ведение</h3><p>Управляем продажами дальше и отвечаем за цифры каждый месяц.</p></li>
+      </ol>
     </div>
   </section>
 
