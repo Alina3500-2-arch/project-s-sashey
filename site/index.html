@@ -7,7 +7,7 @@
 <meta name="description" content="Показываем, где бизнес теряет деньги, даём конкретные шаги и собираем систему продаж: оффер, сайт, трафик, CRM, работа менеджера." />
 
 <link rel="icon" href="assets/favicon.svg" />
-<link rel="preload" as="image" href="assets/hero-duo.jpg" media="(min-width: 861px)" />
+<link rel="preload" as="image" href="assets/hero-duo-portrait.jpg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -22,616 +22,577 @@
   --grey:#9F9485;
   --line:#2A2723;
 
+  --card:#1D1C19;
+  --card-2:#211F1C;
+
   --serif:"Cormorant Garamond", Georgia, "Times New Roman", serif;
   --sans:"Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
 
   --ease:cubic-bezier(.22,.61,.36,1);
-  --gutter:clamp(20px, 4.2vw, 64px);
-  --rail:clamp(0px, 5vw, 74px);
+  --pad:clamp(16px, 3.4vw, 34px);
+  --radius:20px;
+  --gap:clamp(12px, 1.8vw, 18px);
 
-  /* цвета знака: знак взят из брендбука как есть, красим только через них */
   --ash-cream:var(--cream);
   --ash-green:var(--green);
 }
 
 *{box-sizing:border-box;}
-html{scroll-behavior:smooth;}
+html{scroll-behavior:smooth;overflow-x:hidden;}
 body{
   margin:0;
   background:var(--graphite);
   color:var(--cream);
   font-family:var(--sans);
+  font-size:16px;
   line-height:1.55;
   -webkit-font-smoothing:antialiased;
   overflow-x:hidden;
 }
 a{color:inherit;text-decoration:none;}
+:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:6px;}
 
-/* ── КАРКАС ЭКРАНА ───────────────────────────────────────── */
-.hero{
-  position:relative;
-  min-height:100svh;
-  display:flex;
-  flex-direction:column;
-  padding:clamp(20px,2.4vw,34px) var(--gutter) clamp(24px,3vw,40px);
-  padding-left:calc(var(--gutter) + var(--rail));
-  overflow:hidden;
-  isolation:isolate;
-}
-
-/* ── ФОН: ФОТО + СЛОИ ────────────────────────────────────── */
-.media{position:absolute;inset:0;z-index:-1;}
-
-.photo{
-  position:absolute;
-  inset:-6% -4%;
-  background-image:url("assets/hero-duo.jpg");
-  background-size:cover;
-  background-position:72% center;
-  will-change:transform;
-  transform:translate3d(0,0,0);
-}
-/* мягкое появление фото на загрузке */
-.photo-in{
-  position:absolute;inset:0;
-  animation:photoIn 1900ms var(--ease) both;
-}
-@keyframes photoIn{from{transform:scale(1.09);opacity:0;}to{transform:scale(1);opacity:1;}}
-
-/* затемнение слева, чтобы текст читался поверх стены */
-.scrim{
-  position:absolute;inset:0;
-  background:
-    linear-gradient(100deg,
-      rgba(23,22,20,.97) 0%,
-      rgba(23,22,20,.93) 26%,
-      rgba(23,22,20,.72) 44%,
-      rgba(23,22,20,.28) 58%,
-      rgba(23,22,20,.06) 72%),
-    linear-gradient(to top, rgba(23,22,20,.85) 0%, rgba(23,22,20,0) 34%);
-}
-.vignette{
-  position:absolute;inset:0;
-  background:radial-gradient(120% 90% at 60% 45%, transparent 42%, rgba(0,0,0,.55) 100%);
-}
-/* зерно — снимает «пластиковость» градиентов */
-.grain{
-  position:absolute;inset:-50%;
-  opacity:.05;
-  pointer-events:none;
-  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
-  animation:grainShift 7s steps(6) infinite;
-}
-@keyframes grainShift{
-  0%{transform:translate(0,0)}   16%{transform:translate(-3%,2%)}
-  33%{transform:translate(2%,-3%)} 50%{transform:translate(-2%,-2%)}
-  66%{transform:translate(3%,1%)}  83%{transform:translate(-1%,3%)}
-  100%{transform:translate(0,0)}
-}
-
-/* орбита — эхо дуг, которые уже есть на фото. Круг = воронка, которая не рвётся */
-.orbit{
-  position:absolute;
-  top:50%;left:64%;
-  width:min(78vw,980px);aspect-ratio:1;
-  translate:-50% -50%;
-  will-change:transform;
-  pointer-events:none;
-}
-.orbit svg{width:100%;height:100%;overflow:visible;animation:spin 74s linear infinite;}
-@keyframes spin{to{transform:rotate(360deg)}}
-.orbit .arc{
-  fill:none;stroke:var(--green);stroke-linecap:round;
-  stroke-dasharray:100;stroke-dashoffset:100;
-  animation:draw 2600ms var(--ease) 500ms forwards;
-}
-@keyframes draw{to{stroke-dashoffset:0}}
-
-.spark{
-  position:absolute;
-  width:7px;height:7px;
-  translate:-50% -50%;
-  background:
-    linear-gradient(var(--green),var(--green)) center/1.2px 100% no-repeat,
-    linear-gradient(var(--green),var(--green)) center/100% 1.2px no-repeat;
-  filter:drop-shadow(0 0 5px var(--green));
-  animation:twinkle 4.2s ease-in-out infinite;
-}
-@keyframes twinkle{0%,100%{opacity:.25;scale:.7}50%{opacity:1;scale:1.25}}
-
-/* ── ЛЕВЫЙ РЕЙЛ ──────────────────────────────────────────── */
-.rail{
-  position:absolute;
-  left:var(--gutter);top:0;bottom:0;
-  width:var(--rail);
-  display:flex;flex-direction:column;align-items:center;
-  gap:22px;
-  padding:clamp(90px,13vh,150px) 0 clamp(24px,4vh,48px);
-}
-.rail::before{
-  content:"";width:1px;flex:0 0 clamp(40px,9vh,96px);
-  background:linear-gradient(to bottom, transparent, var(--line));
-}
-.rail-dot{
-  width:7px;height:7px;border-radius:50%;
-  background:var(--green);
-  box-shadow:0 0 0 5px rgba(168,220,40,.1), 0 0 16px rgba(168,220,40,.75);
-  animation:pulse 3.4s ease-in-out infinite;
-}
-@keyframes pulse{
-  0%,100%{box-shadow:0 0 0 5px rgba(168,220,40,.08), 0 0 14px rgba(168,220,40,.55)}
-  50%{box-shadow:0 0 0 9px rgba(168,220,40,.03), 0 0 22px rgba(168,220,40,.9)}
-}
-.rail-text{
-  writing-mode:vertical-rl;
-  transform:rotate(180deg);
-  font-size:11px;font-weight:600;
-  letter-spacing:.26em;text-transform:uppercase;
-  color:var(--grey);
-  white-space:nowrap;
+.page{
+  max-width:1020px;
+  margin:0 auto;
+  padding:clamp(14px,2.4vw,26px) var(--pad) clamp(30px,5vw,60px);
+  display:flex;flex-direction:column;
+  gap:var(--gap);
 }
 
 /* ── ШАПКА ───────────────────────────────────────────────── */
 .topbar{
   display:flex;align-items:center;justify-content:space-between;
-  gap:24px;
-  position:relative;z-index:3;
+  gap:16px;
+  padding-block:clamp(4px,1vw,10px) clamp(10px,2vw,18px);
 }
-.brand{display:flex;align-items:center;gap:16px;}
-.brand svg{width:clamp(44px,4.4vw,60px);height:auto;flex:none;overflow:visible;}
-
-/* знак собирается на загрузке: сначала обводится круг, потом проступают буквы */
-.mk-arc{stroke-dasharray:100;stroke-dashoffset:100;}
-.ready .mk-arc{animation:draw 1500ms var(--ease) 250ms forwards;}
-/* только opacity: CSS-transform здесь перебил бы transform-атрибут группы,
-   которым буквы посажены в круг */
-.mk-ltr{opacity:0;}
-.ready .mk-ltr{animation:markLetters 900ms var(--ease) 1000ms forwards;}
-@keyframes markLetters{from{opacity:0;}to{opacity:1;}}
+.brand{display:flex;align-items:center;gap:clamp(10px,1.4vw,16px);}
+.brand svg.mark{width:clamp(42px,4.6vw,56px);height:auto;flex:none;overflow:visible;}
 .brand-name{
   font-family:var(--serif);
-  font-size:clamp(13px,1.32vw,18px);
-  line-height:1.24;
-  letter-spacing:.19em;
+  font-size:clamp(12px,1.5vw,17px);
+  line-height:1.26;
+  letter-spacing:.17em;
   text-transform:uppercase;
-  color:var(--cream);
 }
-.topbar-right{display:flex;align-items:center;gap:clamp(14px,2vw,32px);}
-.phone{
-  font-size:clamp(14px,1.15vw,17px);
-  letter-spacing:.02em;
-  white-space:nowrap;
-  transition:color .3s var(--ease);
-}
-.phone:hover{color:var(--green);}
 
-.pill{
-  --pad:clamp(13px,1.1vw,17px) clamp(22px,2vw,32px);
-  display:inline-flex;align-items:center;gap:14px;
-  padding:var(--pad);
-  border:1px solid var(--green);
-  border-radius:999px;
-  font-size:12px;font-weight:600;
-  letter-spacing:.17em;text-transform:uppercase;
-  color:var(--green);
-  background:transparent;
-  cursor:pointer;
-  transition:background .35s var(--ease), color .35s var(--ease), box-shadow .35s var(--ease);
-  white-space:nowrap;
+/* кнопка звонка — только иконка, как в макете */
+.call{
+  display:grid;place-items:center;
+  width:clamp(46px,5vw,58px);height:clamp(38px,4vw,46px);
+  border:1px solid var(--green);border-radius:999px;
+  color:var(--green);flex:none;
+  transition:background .3s var(--ease), color .3s var(--ease), box-shadow .3s var(--ease);
 }
-.pill:hover{background:var(--green);color:var(--graphite);box-shadow:0 0 30px rgba(168,220,40,.35);}
-.pill .arr{transition:transform .35s var(--ease);}
-.pill:hover .arr{transform:translate(3px,-3px);}
+.call svg{width:20px;height:20px;}
+.call:hover{background:var(--green);color:var(--graphite);box-shadow:0 0 24px rgba(168,220,40,.35);}
 
-/* ── КОНТЕНТ ─────────────────────────────────────────────── */
-.wrap{
-  flex:1;
-  display:flex;align-items:center;
-  position:relative;z-index:2;
-  padding:clamp(10px,1.8vh,26px) 0;
+/* ── ГЕРОЙ ───────────────────────────────────────────────── */
+.hero{
+  position:relative;
+  display:grid;
+  grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);
+  align-items:center;
+  gap:clamp(16px,2.6vw,30px);
+  min-height:min(70vh,560px);
 }
-/* ширина в vw/px, не в ch: ch считается по Manrope (~8px) и режет заголовок */
-.content{max-width:min(880px,57vw);will-change:transform;}
+
+.eyebrow{
+  margin:0 0 clamp(12px,1.6vw,18px);
+  font-size:clamp(13px,1.5vw,16px);
+  color:var(--grey);
+}
 
 h1{
+  margin:0 0 clamp(16px,2vw,24px);
   font-family:var(--serif);
   font-weight:300;
   text-transform:uppercase;
-  margin:0 0 clamp(18px,2.1vw,30px);
-  line-height:.9;
-  letter-spacing:.012em;
-  font-size:clamp(34px,5.3vw,86px);
+  font-size:clamp(30px,5.9vw,60px);
+  line-height:.94;
+  letter-spacing:.01em;
 }
-/* маска для «выезда» строки: padding даёт запас на выносные,
-   отрицательный margin возвращает исходную высоту строки */
-h1 .l{display:block;overflow:hidden;padding-block:.09em;margin-block:-.09em;}
+h1 .l{display:block;overflow:hidden;padding-block:.07em;margin-block:-.07em;}
 h1 .l > span{display:block;}
-h1 .l2{font-size:1.19em;color:var(--green);}
-h1 .l3,h1 .l4{font-size:.84em;}
+h1 .green{color:var(--green);}
 
 .lead{
-  margin:0 0 clamp(24px,2.6vw,34px);
-  max-width:clamp(300px,32vw,500px);
-  font-size:clamp(15px,1.15vw,18px);
-  line-height:1.6;
-  color:rgba(241,233,220,.82);
+  margin:0 0 clamp(20px,2.6vw,30px);
+  max-width:34ch;
+  font-size:clamp(14px,1.6vw,17px);
+  line-height:1.62;
+  color:rgba(241,233,220,.84);
 }
 
 .cta{
-  display:inline-flex;align-items:center;justify-content:center;gap:18px;
-  padding:clamp(17px,1.55vw,23px) clamp(34px,3.6vw,58px);
+  display:inline-flex;align-items:center;justify-content:center;gap:16px;
+  padding:clamp(15px,1.7vw,20px) clamp(24px,3vw,40px);
   border:none;border-radius:999px;
-  background:linear-gradient(180deg,#c2f03f,#8fc714);
+  background:linear-gradient(180deg,#c2f03f,#93cb16);
   color:#101410;
   font-family:var(--sans);
-  font-size:clamp(12px,1.05vw,14px);font-weight:600;
-  letter-spacing:.19em;text-transform:uppercase;
+  font-size:clamp(12px,1.3vw,14px);font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;
   cursor:pointer;
-  box-shadow:0 0 0 rgba(168,220,40,0);
-  animation:glow 3.6s ease-in-out infinite;
-  transition:transform .35s var(--ease);
+  animation:glow 3.8s ease-in-out infinite;
+  transition:transform .3s var(--ease);
 }
 @keyframes glow{
-  0%,100%{box-shadow:0 10px 34px rgba(168,220,40,.22), 0 0 0 1px rgba(168,220,40,.28), 0 0 46px rgba(168,220,40,.16)}
-  50%{box-shadow:0 12px 46px rgba(168,220,40,.4), 0 0 0 1px rgba(168,220,40,.5), 0 0 78px rgba(168,220,40,.3)}
+  0%,100%{box-shadow:0 8px 30px rgba(168,220,40,.24), 0 0 0 1px rgba(168,220,40,.3), 0 0 44px rgba(168,220,40,.14)}
+  50%{box-shadow:0 12px 44px rgba(168,220,40,.42), 0 0 0 1px rgba(168,220,40,.52), 0 0 76px rgba(168,220,40,.28)}
 }
 .cta:hover{transform:translateY(-2px);}
-.cta .arr{transition:transform .35s var(--ease);}
-.cta:hover .arr{transform:translate(4px,-4px);}
+.cta .arr{transition:transform .3s var(--ease);}
+.cta:hover .arr{transform:translate(3px,-3px);}
 
-/* отсечка по бюджету — фильтрует нецелевые заявки до анкеты */
-.micro{
-  margin:16px 0 0;
-  font-size:13px;
-  letter-spacing:.02em;
-  color:var(--grey);
-}
-.micro b{color:rgba(241,233,220,.9);font-weight:500;}
-
-.features{
-  display:flex;flex-wrap:wrap;
-  margin:clamp(24px,2.8vw,38px) 0 0;
-  padding:0;list-style:none;
-  border-top:1px solid var(--line);
-  padding-top:clamp(18px,1.9vw,24px);
-  gap:0;
-}
-.features li{
-  display:flex;align-items:center;gap:13px;
-  padding:0 clamp(18px,2vw,30px);
-  border-left:1px solid var(--line);
-}
-.features li:first-child{padding-left:0;border-left:none;}
-.features svg{width:26px;height:26px;flex:none;stroke:var(--green);fill:none;stroke-width:1.4;}
-.features span{
-  font-size:11px;font-weight:600;
-  letter-spacing:.15em;text-transform:uppercase;
-  line-height:1.42;
-  color:rgba(241,233,220,.88);
-}
-
-.authors{
-  margin:clamp(18px,2vw,26px) 0 0;
-  font-size:clamp(13px,1.02vw,15px);
-  color:var(--grey);
-}
-.authors b{color:var(--green);font-weight:500;}
-.authors .sep{opacity:.45;margin:0 10px;}
-
-/* ── ЗАМЕТКА СПРАВА ──────────────────────────────────────── */
-/* внешний слой держит параллакс, внутренний — появление,
-   иначе JS-transform затирает transform анимации */
-.note{
-  position:absolute;
-  right:var(--gutter);top:44%;
-  translate:0 -50%;
-  width:clamp(150px,13.5vw,196px);
-  z-index:2;
-  font-size:clamp(12px,.92vw,14px);
-  line-height:1.62;
-  color:rgba(241,233,220,.72);
-  /* тень держит читаемость там, где под текстом светлый пиджак */
-  text-shadow:0 1px 14px rgba(23,22,20,.95), 0 0 30px rgba(23,22,20,.8);
+/* фото + дуги + цитата.
+   overflow:hidden держит фото и дуги внутри колонки — без него
+   они уезжают за край страницы и появляется боковая прокрутка */
+.hero-media{position:relative;align-self:stretch;min-height:clamp(300px,52vw,540px);overflow:hidden;}
+.photo{
+  position:absolute;inset:0 -8% 0 -4%;
+  background-image:url("assets/hero-duo-portrait.jpg");
+  background-size:cover;background-position:center center;
+  -webkit-mask-image:linear-gradient(100deg,transparent 0,#000 26%,#000 100%),
+                     linear-gradient(to top,transparent 0,#000 16%);
+  -webkit-mask-composite:source-in;
+  mask-image:linear-gradient(100deg,transparent 0,#000 26%,#000 100%),
+             linear-gradient(to top,transparent 0,#000 16%);
+  mask-composite:intersect;
   will-change:transform;
 }
-.note-in{display:block;}
-.note-in::before{
-  content:"";display:block;
-  width:26px;height:1px;
-  background:var(--green);
-  margin-bottom:14px;
-}
+.photo-in{position:absolute;inset:0;overflow:hidden;animation:photoIn 1800ms var(--ease) both;}
+@keyframes photoIn{from{transform:scale(1.07);opacity:0}to{transform:scale(1);opacity:1}}
 
-/* ── ПОДСКАЗКА СКРОЛЛА ───────────────────────────────────── */
-.scroll-hint{
-  position:absolute;
-  left:50%;bottom:clamp(14px,2vh,26px);
-  translate:-50% 0;
-  z-index:2;
-  display:flex;flex-direction:column;align-items:center;gap:9px;
-  font-size:10px;font-weight:600;
-  letter-spacing:.24em;text-transform:uppercase;
-  color:var(--grey);
+.orbit{
+  position:absolute;top:44%;left:52%;
+  width:min(120%,720px);aspect-ratio:1;
+  translate:-50% -50%;
+  pointer-events:none;
 }
-.scroll-hint i{
-  display:block;width:1px;height:34px;
-  background:linear-gradient(to bottom,var(--green),transparent);
-  animation:drop 2.1s ease-in-out infinite;
+.orbit svg{width:100%;height:100%;overflow:visible;animation:spin 80s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.orbit path{
+  fill:none;stroke:var(--green);stroke-linecap:round;
+  stroke-dasharray:100;stroke-dashoffset:100;
+  animation:draw 2600ms var(--ease) 400ms forwards;
 }
-@keyframes drop{0%{opacity:0;transform:scaleY(.2);transform-origin:top}
-  40%{opacity:1}100%{opacity:0;transform:scaleY(1);transform-origin:top}}
+@keyframes draw{to{stroke-dashoffset:0}}
 
-/* ── ЗАГЛУШКА СЛЕДУЮЩЕГО БЛОКА (даёт ход параллаксу) ─────── */
-.next{
-  min-height:62vh;
-  display:grid;place-items:center;
-  padding:80px var(--gutter);
-  background:linear-gradient(to bottom, var(--graphite), #101010);
-  border-top:1px solid var(--line);
-  text-align:center;
+.quote{
+  position:absolute;right:0;bottom:0;
+  margin:0;padding-left:16px;
+  max-width:min(58%,240px);
+  border-left:1px solid var(--green);
+  font-size:clamp(12px,1.35vw,14.5px);
+  line-height:1.52;
+  color:rgba(241,233,220,.86);
+  text-shadow:0 1px 12px rgba(23,22,20,.9);
 }
-.next p{
-  margin:0;max-width:52ch;
+.quote::before{
+  content:"“";
+  display:block;
   font-family:var(--serif);
-  font-size:clamp(22px,3vw,42px);
-  line-height:1.24;
-  color:rgba(241,233,220,.34);
+  font-size:2.6em;line-height:.6;
+  color:var(--green);
+  margin-bottom:.16em;
 }
 
-/* ── ПОЯВЛЕНИЕ ЭЛЕМЕНТОВ ─────────────────────────────────── */
+/* ── ПОЛОСЫ-КАРТОЧКИ ─────────────────────────────────────── */
+.strip{
+  display:grid;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  overflow:hidden;
+}
+.strip > *{
+  display:flex;align-items:center;gap:14px;
+  padding:clamp(16px,2.1vw,24px) clamp(14px,2vw,26px);
+  border-left:1px solid var(--line);
+}
+.strip > *:first-child{border-left:none;}
+
+.strip-3{grid-template-columns:repeat(3,minmax(0,1fr));}
+.strip-2{grid-template-columns:repeat(2,minmax(0,1fr));}
+
+.ico{
+  display:grid;place-items:center;flex:none;
+  width:clamp(38px,4vw,48px);aspect-ratio:1;
+  border:1px solid rgba(168,220,40,.5);border-radius:50%;
+  color:var(--green);
+}
+.ico svg{width:52%;height:52%;}
+
+.label{
+  font-size:clamp(10.5px,1.15vw,12.5px);font-weight:600;
+  letter-spacing:.13em;text-transform:uppercase;
+  line-height:1.44;
+}
+
+/* авторы */
+.who{display:block;}
+.who b{
+  display:block;
+  color:var(--green);font-weight:500;
+  font-size:clamp(14px,1.5vw,17px);
+  margin-bottom:2px;
+}
+.who b::before{
+  content:"";display:inline-block;
+  width:6px;height:6px;border-radius:50%;
+  background:var(--green);
+  vertical-align:middle;margin-right:9px;
+}
+.who span{font-size:clamp(13px,1.4vw,15.5px);color:rgba(241,233,220,.78);}
+
+/* доверие: иконка сверху, текст под ней, по центру */
+.strip-trust > *{flex-direction:column;text-align:center;gap:12px;}
+
+/* ── КАК МЫ РАБОТАЕМ ─────────────────────────────────────── */
+.how{margin-top:clamp(14px,2.4vw,26px);}
+.how h2{
+  margin:0 0 clamp(14px,2vw,22px);
+  text-align:center;
+  font-family:var(--serif);
+  font-weight:400;
+  font-size:clamp(15px,1.9vw,21px);
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--green);
+}
+.steps{
+  list-style:none;margin:0;padding:0;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  align-items:stretch;
+  --sgap:clamp(28px,3.4vw,44px);
+  gap:var(--sgap);
+  position:relative;
+}
+.steps li{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:clamp(16px,2.1vw,26px);
+  position:relative;
+}
+.step-n{
+  font-family:var(--serif);
+  font-size:clamp(30px,3.8vw,44px);
+  line-height:1;
+  color:var(--green);
+  display:block;margin-bottom:clamp(8px,1.2vw,14px);
+}
+.steps h3{
+  margin:0 0 8px;
+  font-size:clamp(11px,1.2vw,13px);font-weight:600;
+  letter-spacing:.13em;text-transform:uppercase;
+  line-height:1.4;
+}
+.steps p{margin:0;font-size:clamp(13px,1.4vw,15px);color:rgba(241,233,220,.72);line-height:1.55;}
+
+/* соединительная стрелка между шагами */
+.steps li:not(:last-child)::after{
+  content:"";
+  position:absolute;top:50%;right:0;
+  translate:calc(50% + var(--sgap)/2) -50%;
+  width:clamp(24px,2.6vw,32px);aspect-ratio:1;
+  border:1px solid rgba(168,220,40,.55);border-radius:50%;
+  background:var(--graphite) center/44% no-repeat
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A8DC28' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M4 12h15M13 6l6 6-6 6'/></svg>");
+}
+
+/* ── ФИНАЛЬНЫЙ ПРИЗЫВ ────────────────────────────────────── */
+.final{
+  margin-top:clamp(12px,2vw,22px);
+  display:flex;align-items:center;justify-content:space-between;
+  gap:clamp(18px,3vw,36px);
+  padding:clamp(20px,2.8vw,34px) clamp(20px,3vw,38px);
+  background:var(--card-2);
+  border:1px solid rgba(168,220,40,.55);
+  border-radius:var(--radius);
+  box-shadow:0 0 60px rgba(168,220,40,.14), inset 0 0 40px rgba(168,220,40,.04);
+}
+.final h2{
+  margin:0 0 6px;
+  font-family:var(--serif);
+  font-weight:400;
+  font-size:clamp(18px,2.3vw,27px);
+  line-height:1.22;
+}
+.final p{margin:0;font-size:clamp(13px,1.4vw,15px);color:var(--grey);}
+
+/* ── ПОЯВЛЕНИЕ ───────────────────────────────────────────── */
 .rise{
-  opacity:0;
-  transform:translateY(26px);
-  transition:opacity 1s var(--ease), transform 1.1s var(--ease);
+  opacity:0;transform:translateY(24px);
+  transition:opacity .9s var(--ease), transform 1s var(--ease);
   transition-delay:var(--d,0ms);
 }
+.ready .rise, .seen{opacity:1;transform:none;}
 h1 .l > span{
-  opacity:0;
-  transform:translateY(100%);
-  transition:opacity .9s var(--ease), transform 1.15s var(--ease);
+  opacity:0;transform:translateY(100%);
+  transition:opacity .85s var(--ease), transform 1.05s var(--ease);
   transition-delay:var(--d,0ms);
 }
-.ready .rise{opacity:1;transform:none;}
 .ready h1 .l > span{opacity:1;transform:none;}
+
+/* блоки ниже героя проявляются при прокрутке */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease), transform .9s var(--ease);}
+.reveal.seen{opacity:1;transform:none;}
+
+.mk-arc{stroke-dasharray:100;stroke-dashoffset:100;}
+.ready .mk-arc{animation:draw 1500ms var(--ease) 200ms forwards;}
+/* только opacity: CSS-transform перебил бы transform-атрибут группы */
+.mk-ltr{opacity:0;}
+.ready .mk-ltr{animation:fadeIn 900ms var(--ease) 950ms forwards;}
+@keyframes fadeIn{to{opacity:1}}
 
 /* ── АДАПТИВ ─────────────────────────────────────────────── */
 
-/* невысокие ноутбуки: 1440×800, 1366×768 — поджимаем вертикальный ритм */
-@media (min-width:861px) and (max-height:845px){
-  h1{font-size:min(5.3vw, 9.4vh);margin-bottom:20px;}
-  .lead{margin-bottom:20px;}
-  .cta{padding-top:16px;padding-bottom:16px;}
-  .features{margin-top:20px;padding-top:16px;}
-  .authors{margin-top:14px;}
-  .micro{margin-top:12px;}
-}
-
-@media (max-width:1180px){
-  .note{display:none;}
-  .content{max-width:min(62ch,66vw);}
-}
-@media (max-width:860px){
-  :root{--rail:0px;}
-  .rail{display:none;}
-  .hero{padding-left:var(--gutter);min-height:100svh;}
-  /* фото — отдельной полосой, начинается ПОД шапкой: иначе кнопка
-     «Позвонить» садится прямо на голову. Края растворяются маской. */
+/* планшет и уже: герой в одну колонку, фото полосой над текстом */
+@media (max-width:700px){
+  .hero{grid-template-columns:1fr;min-height:0;gap:clamp(14px,3vw,22px);}
+  h1{font-size:clamp(34px,10.4vw,54px);}
+  .hero-media{order:-1;min-height:0;overflow:visible;}
+  .photo-in{position:relative;inset:auto;height:clamp(230px,62vw,320px);overflow:hidden;}
   .photo{
-    inset:76px 0 auto 0;
-    height:38%;
-    background-image:url("assets/hero-duo-mobile.jpg");
-    background-position:center 10%;
-    background-size:cover;
-    -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 15%,#000 60%,transparent 100%);
-    mask-image:linear-gradient(to bottom,transparent 0,#000 15%,#000 60%,transparent 100%);
+    inset:0;
+    background-position:center 8%;
+    -webkit-mask-image:linear-gradient(to bottom,#000 0,#000 62%,transparent 100%);
+    -webkit-mask-composite:source-over;
+    mask-image:linear-gradient(to bottom,#000 0,#000 62%,transparent 100%);
+    mask-composite:add;
   }
-  .scrim{
-    background:
-      linear-gradient(to bottom,
-        var(--graphite) 0%,
-        rgba(23,22,20,.34) 12%,
-        rgba(23,22,20,.16) 26%,
-        rgba(23,22,20,.72) 42%,
-        var(--graphite) 50%);
+  .orbit{top:40%;left:50%;width:150%;}
+  /* цитата уходит из-под фото в свою строку — на фото она нечитаема */
+  .quote{
+    position:static;max-width:none;
+    order:1;                      /* после заголовка, лида и кнопки */
+    margin-top:clamp(4px,1.4vw,10px);
+    text-shadow:none;
   }
-  .vignette{background:radial-gradient(130% 55% at 50% 26%, transparent 45%, rgba(0,0,0,.45) 100%);}
-  .wrap{align-items:flex-start;padding-top:46vh;}
-  /* на телефоне дуги — единственное, что движется постоянно: делаем заметнее */
-  .orbit .arc{opacity:.3;}
-  .content{max-width:none;}
-  h1{font-size:clamp(30px,8.6vw,50px);}
-  .lead{font-size:15px;max-width:none;margin-bottom:22px;}
+  .lead{max-width:none;}
   .cta{width:100%;}
-  .phone{display:none;}
-  .pill{--pad:11px 18px;font-size:11px;gap:10px;}
-  .features{flex-direction:column;align-items:flex-start;gap:13px;margin-top:22px;padding-top:16px;}
-  .features li{padding:0;border-left:none;}
-  .features svg{width:22px;height:22px;}
-  .authors{margin-top:16px;}
-  .orbit{left:50%;top:23%;width:120vw;}
-  .scroll-hint{display:none;}
-}
-/* невысокие телефоны */
-@media (max-width:860px) and (max-height:770px){
-  .photo{height:33%;}
-  .wrap{padding-top:41vh;}
-  h1{font-size:8.2vw;}
-  .lead{margin-bottom:18px;}
-  .features{margin-top:18px;gap:11px;}
-}
-
-@media (max-width:400px){
-  .brand-name{font-size:12px;letter-spacing:.14em;}
-  .brand{gap:11px;}
-}
-
-/* ── БЕЗ АНИМАЦИЙ ────────────────────────────────────────── */
-@media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{
-    animation:none !important;
-    transition-duration:.01ms !important;
+  .strip-3{grid-template-columns:1fr;}
+  .strip-3 > *{border-left:none;border-top:1px solid var(--line);}
+  .strip-3 > *:first-child{border-top:none;}
+  .steps{grid-template-columns:1fr;gap:clamp(30px,7vw,38px);}
+  /* стрелка разворачивается вниз */
+  .steps li:not(:last-child)::after{
+    top:100%;right:50%;translate:50% calc(-50% + var(--sgap)/2);rotate:90deg;
   }
-  .rise{opacity:1;transform:none;}
-  h1 .l > span{opacity:1;transform:none;}
-  .orbit .arc{stroke-dashoffset:0;}
-  .photo-in{opacity:1;}
+  .final{flex-direction:column;align-items:stretch;text-align:left;}
+  .final .cta{width:100%;}
+}
+
+@media (max-width:430px){
+  .strip-trust{grid-template-columns:1fr;}
+  .strip-trust > *{
+    flex-direction:row;text-align:left;
+    border-left:none;border-top:1px solid var(--line);
+  }
+  .strip-trust > *:first-child{border-top:none;}
+  .strip-2{grid-template-columns:1fr;}
+  .strip-2 > *:last-child{border-left:none;border-top:1px solid var(--line);}
+  .brand-name{letter-spacing:.13em;}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none !important;transition-duration:.01ms !important;}
+  .rise,h1 .l > span,.reveal{opacity:1;transform:none;}
+  .orbit path,.mk-arc{stroke-dashoffset:0;}
+  .mk-ltr{opacity:1;}
   html{scroll-behavior:auto;}
 }
 </style>
 </head>
 
 <body>
+<div class="page">
 
-<section class="hero">
-
-  <!-- фон -->
-  <div class="media" aria-hidden="true">
-    <div class="photo-in">
-      <div class="photo" data-depth="1" data-scroll="0.14"></div>
-    </div>
-    <div class="scrim"></div>
-    <div class="vignette"></div>
-
-    <div class="orbit" data-depth="2.6" data-scroll="-0.05">
-      <svg viewBox="0 0 800 800" fill="none">
-        <path class="arc" pathLength="100" d="M400 60 A340 340 0 0 1 400 740" stroke-width="1" opacity=".2"/>
-        <path class="arc" pathLength="100" d="M170 250 A290 290 0 1 0 640 300" stroke-width=".9" opacity=".12"
-              style="animation-delay:900ms"/>
-      </svg>
-      <span class="spark" style="left:31%;top:20%;"></span>
-      <span class="spark" style="left:76%;top:66%;animation-delay:1.6s;"></span>
-    </div>
-
-    <div class="grain"></div>
-  </div>
-
-  <!-- левый рейл -->
-  <div class="rail" aria-hidden="true">
-    <span class="rail-dot"></span>
-    <span class="rail-text">Без воды · По делу · С результатом</span>
-  </div>
-
-  <!-- шапка -->
   <header class="topbar">
-    <a class="brand rise" style="--d:120ms" href="/" aria-label="Аполлонов и Шигапова">
+    <a class="brand rise" style="--d:80ms" href="/" aria-label="Аполлонов и Шигапова">
       <svg class="mark" viewBox="0 0 200 200" role="img" aria-label="Аполлонов и Шигапова">
-      <path class="mk-arc mk-cream" pathLength="100" fill="none" stroke="var(--ash-cream)" stroke-width="9" d="M 99.998669 19.500372 C 98.683889 19.500372 97.365516 19.532703 96.050736 19.597364 C 94.735956 19.662025 93.421176 19.759017 92.109988 19.88834 C 90.7988 20.017662 89.491204 20.179316 88.187201 20.369707 C 86.88679 20.563691 85.586379 20.790006 84.296745 21.045059 C 83.003519 21.303704 81.717477 21.591088 80.438619 21.910802 C 79.163355 22.234109 77.891682 22.582561 76.630786 22.966937 C 75.36989 23.34772 74.119772 23.760834 72.88043 24.206279 C 71.641088 24.648131 70.412523 25.122314 69.194734 25.628828 C 67.976946 26.13175 66.773527 26.667002 65.580885 27.2274 C 64.391835 27.79139 63.213562 28.384119 62.053251 29.005586 C 60.889347 29.627053 59.743405 30.277259 58.615424 30.95261 C 57.483851 31.631554 56.370239 32.335644 55.278181 33.068472 C 54.182531 33.797708 53.104843 34.555683 52.045115 35.342395 C 50.98898 36.125516 49.950807 36.937375 48.930595 37.774379 C 47.913975 38.607792 46.915317 39.469943 45.938213 40.353648 C 44.964701 41.237352 44.00915 42.146203 43.078746 43.076608 C 42.144749 44.010605 41.23949 44.962563 40.352193 45.939667 C 39.468489 46.916772 38.60993 47.911838 37.772925 48.932049 C 36.93592 49.948669 36.127654 50.986843 35.340941 52.04657 C 34.55782 53.102705 33.799846 54.180393 33.067018 55.276043 C 32.33419 56.371694 31.6301 57.485305 30.951156 58.613286 C 30.275804 59.744859 29.625599 60.890801 29.004132 62.051113 C 28.382664 63.215017 27.793528 64.389697 27.229538 65.582339 C 26.665547 66.771389 26.130295 67.978401 25.627374 69.192596 C 25.124452 70.410385 24.650269 71.63895 24.204825 72.881884 C 23.762972 74.121226 23.349858 75.371345 22.965483 76.632241 C 22.584699 77.893136 22.232654 79.161217 21.91294 80.440074 C 21.593226 81.718931 21.30225 83.001381 21.047197 84.294607 C 20.788552 85.587833 20.565829 86.884652 20.371845 88.188655 C 20.177861 89.492659 20.016208 90.800254 19.886885 92.10785 C 19.757563 93.419038 19.660571 94.733818 19.595909 96.048598 C 19.531248 97.366971 19.498917 98.681751 19.498917 100.000123 C 19.498917 101.318496 19.531248 102.633276 19.595909 103.951648 C 19.660571 105.266429 19.757563 106.577616 19.886885 107.888804 C 20.016208 109.199992 20.177861 110.507588 20.371845 111.811591 C 20.565829 113.115594 20.788552 114.412413 21.047197 115.70564 C 21.30225 116.995274 21.593226 118.281315 21.91294 119.560173 C 22.232654 120.83903 22.584699 122.10711 22.965483 123.368006 C 23.349858 124.628902 23.762972 125.879021 24.204825 127.118363 C 24.650269 128.361297 25.124452 129.589862 25.627374 130.80765 C 26.130295 132.021846 26.665547 133.228857 27.229538 134.417907 C 27.793528 135.610549 28.382664 136.78523 29.004132 137.949134 C 29.625599 139.109445 30.275804 140.255387 30.951156 141.386961 C 31.6301 142.514941 32.33419 143.628553 33.067018 144.724203 C 33.799846 145.819853 34.55782 146.89395 35.340941 147.953677 C 36.127654 149.013404 36.93592 150.051577 37.772925 151.068197 C 38.60993 152.088409 39.468489 153.083475 40.352193 154.060579 C 41.23949 155.037684 42.144749 155.989642 43.078746 156.923639 C 44.00915 157.854043 44.964701 158.762894 45.938213 159.646599 C 46.915317 160.530304 47.913975 161.392455 48.930595 162.225867 C 49.950807 163.062872 50.98898 163.874731 52.045115 164.657851 C 53.104843 165.444564 54.182531 166.202538 55.278181 166.931774 C 56.370239 167.664603 57.483851 168.368693 58.615424 169.047636 C 59.743405 169.722988 60.889347 170.373193 62.053251 170.994661 C 63.213562 171.616128 64.391835 172.208857 65.580885 172.772847 C 66.773527 173.333245 67.976946 173.868497 69.194734 174.371418 C 70.412523 174.877932 71.641088 175.352115 72.88043 175.793967 C 74.119772 176.239412 75.36989 176.652526 76.630786 177.033309 C 77.891682 177.417685 79.163355 177.766138 80.438619 178.085852 C 81.717477 178.409159 83.003519 178.696542 84.296745 178.951595 C 85.586379 179.210241 86.88679 179.436555 88.187201 179.626947 C 89.491204 179.820931 90.7988 179.982584 92.109988 180.111907 C 93.421176 180.241229 94.735956 180.338221 96.050736 180.402883 C 97.365516 180.467544 98.683889 180.499875 99.998669 180.499875 "/>
-      <path class="mk-arc mk-green" pathLength="100" fill="none" stroke="var(--ash-green)" stroke-width="9" d="M 107.499382 19.798532 C 108.738724 19.906301 109.978066 20.042809 111.210223 20.208054 C 112.445973 20.3733 113.674538 20.567284 114.899511 20.786414 C 116.124484 21.009136 117.345864 21.260597 118.556468 21.537203 C 119.770664 21.817403 120.977675 22.122748 122.177502 22.456831 C 123.377328 22.790915 124.566378 23.153736 125.748244 23.545297 C 126.933701 23.933265 128.104789 24.349971 129.268693 24.795416 C 130.432597 25.237268 131.582132 25.707859 132.724482 26.207188 C 133.866831 26.702925 134.994812 27.2274 136.112016 27.777021 C 137.22922 28.326642 138.332055 28.901409 139.424113 29.504915 C 140.512578 30.104828 141.590267 30.729888 142.649994 31.383686 C 143.709721 32.033891 144.755079 32.709243 145.786068 33.406148 C 146.817057 34.106646 147.830084 34.828697 148.82515 35.575895 C 149.823808 36.323092 150.800913 37.091843 151.760056 37.885741 C 152.722791 38.676046 153.663972 39.491497 154.587192 40.324909 C 155.510412 41.161914 156.412078 42.016881 157.295783 42.896993 C 158.179488 43.773513 159.041639 44.671587 159.882236 45.587622 C 160.722833 46.50725 161.545469 47.441247 162.342958 48.396797 C 163.140448 49.352348 163.916384 50.32586 164.667174 51.317334 C 165.421556 52.308807 166.150792 53.318242 166.858474 54.342047 C 167.562564 55.369443 168.2451 56.411209 168.90249 57.467344 C 169.55988 58.523479 170.192124 59.597575 170.802815 60.682448 C 171.409912 61.767322 171.991864 62.870156 172.54867 63.983768 C 173.105476 65.093787 173.637136 66.221768 174.143649 67.360526 C 174.646571 68.495691 175.124346 69.645226 175.576975 70.805537 C 176.029605 71.965849 176.453495 73.136937 176.848648 74.31521 C 177.247393 75.497075 177.617399 76.686125 177.958667 77.882359 C 178.299935 79.078594 178.616057 80.285605 178.899849 81.496209 C 179.187232 82.706812 179.445878 83.924601 179.675785 85.149573 C 179.905692 86.370954 180.10686 87.599519 180.27929 88.831676 C 180.45172 90.067426 180.595412 91.303176 180.710366 92.542518 C 180.825319 93.78186 180.911534 95.024794 180.969011 96.267728 C 181.026488 97.510662 181.055226 98.753597 181.055226 100.000123 C 181.055226 101.24665 181.026488 102.489584 180.969011 103.732518 C 180.911534 104.975453 180.825319 106.218387 180.710366 107.457729 C 180.595412 108.697071 180.45172 109.932821 180.27929 111.164978 C 180.10686 112.400728 179.905692 113.629293 179.675785 114.850673 C 179.445878 116.075646 179.187232 117.293434 178.899849 118.504038 C 178.616057 119.714641 178.299935 120.921653 177.958667 122.117887 C 177.617399 123.314122 177.247393 124.503171 176.848648 125.681444 C 176.453495 126.86331 176.029605 128.034398 175.576975 129.194709 C 175.124346 130.355021 174.646571 131.500963 174.143649 132.639721 C 173.637136 133.778479 173.105476 134.902867 172.54867 136.016479 C 171.991864 137.13009 171.409912 138.232925 170.802815 139.317798 C 170.192124 140.402672 169.55988 141.476768 168.90249 142.532903 C 168.2451 143.589038 167.562564 144.630803 166.858474 145.654608 C 166.150792 146.682004 165.421556 147.691439 164.667174 148.682913 C 163.916384 149.674386 163.140448 150.647899 162.342958 151.603449 C 161.545469 152.559 160.722833 153.492997 159.882236 154.412624 C 159.041639 155.32866 158.179488 156.226734 157.295783 157.103254 C 156.412078 157.983366 155.510412 158.838332 154.587192 159.675337 C 153.663972 160.50875 152.722791 161.324201 151.760056 162.114506 C 150.800913 162.908403 149.823808 163.677155 148.82515 164.424352 C 147.830084 165.167957 146.817057 165.893601 145.786068 166.590506 C 144.755079 167.291004 143.709721 167.966355 142.649994 168.616561 C 141.590267 169.270359 140.512578 169.895418 139.424113 170.495332 C 138.332055 171.098837 137.22922 171.673604 136.112016 172.223226 C 134.994812 172.772847 133.866831 173.297322 132.724482 173.793059 C 131.582132 174.292388 130.432597 174.762979 129.268693 175.204831 C 128.104789 175.650276 126.933701 176.066982 125.748244 176.45495 C 124.566378 176.84651 123.377328 177.209332 122.177502 177.543415 C 120.977675 177.877499 119.770664 178.182844 118.556468 178.463043 C 117.345864 178.73965 116.124484 178.991111 114.899511 179.210241 C 113.674538 179.432963 112.445973 179.626947 111.210223 179.792192 C 109.978066 179.957438 108.738724 180.093945 107.499382 180.201714 "/>
-      <g class="mk-ltr" transform="scale(0.91634) translate(-44.83,-56.83)">
-      <path fill="var(--ash-cream)" d="M 143.847656 73.742188 L 153.851562 73.742188 L 153.851562 208.6875 C 151.171875 205.859375 147.835938 200.421875 143.847656 192.375 Z M 143.847656 73.742188 "/>
-      <path fill="var(--ash-cream)" d="M 153.851562 82.875 L 85.671875 192.050781 L 84.910156 192.375 L 84.910156 175.519531 L 143.847656 82.113281 Z M 153.851562 82.875 "/>
-      <path fill="var(--ash-cream)" d="M 96.113281 154.644531 L 153.851562 154.644531 L 153.851562 164.429688 L 96.113281 164.429688 Z M 96.113281 154.644531 "/>
-      <path fill="var(--ash-green)" d="M 162.605469 154.425781 L 162.605469 257.738281 C 165.839844 257.425781 169.046875 256.945312 172.230469 256.292969 L 172.230469 154.425781 Z M 162.605469 154.425781 "/>
-      <path fill="var(--ash-green)" d="M 185.222656 172.148438 L 185.222656 252.640625 C 188.507812 251.445312 191.71875 250.074219 194.847656 248.519531 L 194.847656 172.148438 Z M 185.222656 172.148438 "/>
-      <path fill="var(--ash-green)" d="M 208.386719 154.316406 L 208.386719 240.285156 C 211.777344 237.796875 214.984375 235.089844 218.007812 232.164062 L 218.007812 154.316406 Z M 208.386719 154.316406 "/>
-      </g></svg>
+<path class="mk-arc" pathLength="100" fill="none" stroke="var(--ash-cream)" stroke-width="9" d="M 99.998669 19.500372 C 98.683889 19.500372 97.365516 19.532703 96.050736 19.597364 C 94.735956 19.662025 93.421176 19.759017 92.109988 19.88834 C 90.7988 20.017662 89.491204 20.179316 88.187201 20.369707 C 86.88679 20.563691 85.586379 20.790006 84.296745 21.045059 C 83.003519 21.303704 81.717477 21.591088 80.438619 21.910802 C 79.163355 22.234109 77.891682 22.582561 76.630786 22.966937 C 75.36989 23.34772 74.119772 23.760834 72.88043 24.206279 C 71.641088 24.648131 70.412523 25.122314 69.194734 25.628828 C 67.976946 26.13175 66.773527 26.667002 65.580885 27.2274 C 64.391835 27.79139 63.213562 28.384119 62.053251 29.005586 C 60.889347 29.627053 59.743405 30.277259 58.615424 30.95261 C 57.483851 31.631554 56.370239 32.335644 55.278181 33.068472 C 54.182531 33.797708 53.104843 34.555683 52.045115 35.342395 C 50.98898 36.125516 49.950807 36.937375 48.930595 37.774379 C 47.913975 38.607792 46.915317 39.469943 45.938213 40.353648 C 44.964701 41.237352 44.00915 42.146203 43.078746 43.076608 C 42.144749 44.010605 41.23949 44.962563 40.352193 45.939667 C 39.468489 46.916772 38.60993 47.911838 37.772925 48.932049 C 36.93592 49.948669 36.127654 50.986843 35.340941 52.04657 C 34.55782 53.102705 33.799846 54.180393 33.067018 55.276043 C 32.33419 56.371694 31.6301 57.485305 30.951156 58.613286 C 30.275804 59.744859 29.625599 60.890801 29.004132 62.051113 C 28.382664 63.215017 27.793528 64.389697 27.229538 65.582339 C 26.665547 66.771389 26.130295 67.978401 25.627374 69.192596 C 25.124452 70.410385 24.650269 71.63895 24.204825 72.881884 C 23.762972 74.121226 23.349858 75.371345 22.965483 76.632241 C 22.584699 77.893136 22.232654 79.161217 21.91294 80.440074 C 21.593226 81.718931 21.30225 83.001381 21.047197 84.294607 C 20.788552 85.587833 20.565829 86.884652 20.371845 88.188655 C 20.177861 89.492659 20.016208 90.800254 19.886885 92.10785 C 19.757563 93.419038 19.660571 94.733818 19.595909 96.048598 C 19.531248 97.366971 19.498917 98.681751 19.498917 100.000123 C 19.498917 101.318496 19.531248 102.633276 19.595909 103.951648 C 19.660571 105.266429 19.757563 106.577616 19.886885 107.888804 C 20.016208 109.199992 20.177861 110.507588 20.371845 111.811591 C 20.565829 113.115594 20.788552 114.412413 21.047197 115.70564 C 21.30225 116.995274 21.593226 118.281315 21.91294 119.560173 C 22.232654 120.83903 22.584699 122.10711 22.965483 123.368006 C 23.349858 124.628902 23.762972 125.879021 24.204825 127.118363 C 24.650269 128.361297 25.124452 129.589862 25.627374 130.80765 C 26.130295 132.021846 26.665547 133.228857 27.229538 134.417907 C 27.793528 135.610549 28.382664 136.78523 29.004132 137.949134 C 29.625599 139.109445 30.275804 140.255387 30.951156 141.386961 C 31.6301 142.514941 32.33419 143.628553 33.067018 144.724203 C 33.799846 145.819853 34.55782 146.89395 35.340941 147.953677 C 36.127654 149.013404 36.93592 150.051577 37.772925 151.068197 C 38.60993 152.088409 39.468489 153.083475 40.352193 154.060579 C 41.23949 155.037684 42.144749 155.989642 43.078746 156.923639 C 44.00915 157.854043 44.964701 158.762894 45.938213 159.646599 C 46.915317 160.530304 47.913975 161.392455 48.930595 162.225867 C 49.950807 163.062872 50.98898 163.874731 52.045115 164.657851 C 53.104843 165.444564 54.182531 166.202538 55.278181 166.931774 C 56.370239 167.664603 57.483851 168.368693 58.615424 169.047636 C 59.743405 169.722988 60.889347 170.373193 62.053251 170.994661 C 63.213562 171.616128 64.391835 172.208857 65.580885 172.772847 C 66.773527 173.333245 67.976946 173.868497 69.194734 174.371418 C 70.412523 174.877932 71.641088 175.352115 72.88043 175.793967 C 74.119772 176.239412 75.36989 176.652526 76.630786 177.033309 C 77.891682 177.417685 79.163355 177.766138 80.438619 178.085852 C 81.717477 178.409159 83.003519 178.696542 84.296745 178.951595 C 85.586379 179.210241 86.88679 179.436555 88.187201 179.626947 C 89.491204 179.820931 90.7988 179.982584 92.109988 180.111907 C 93.421176 180.241229 94.735956 180.338221 96.050736 180.402883 C 97.365516 180.467544 98.683889 180.499875 99.998669 180.499875 "/>
+<path class="mk-arc" pathLength="100" fill="none" stroke="var(--ash-green)" stroke-width="9" d="M 107.499382 19.798532 C 108.738724 19.906301 109.978066 20.042809 111.210223 20.208054 C 112.445973 20.3733 113.674538 20.567284 114.899511 20.786414 C 116.124484 21.009136 117.345864 21.260597 118.556468 21.537203 C 119.770664 21.817403 120.977675 22.122748 122.177502 22.456831 C 123.377328 22.790915 124.566378 23.153736 125.748244 23.545297 C 126.933701 23.933265 128.104789 24.349971 129.268693 24.795416 C 130.432597 25.237268 131.582132 25.707859 132.724482 26.207188 C 133.866831 26.702925 134.994812 27.2274 136.112016 27.777021 C 137.22922 28.326642 138.332055 28.901409 139.424113 29.504915 C 140.512578 30.104828 141.590267 30.729888 142.649994 31.383686 C 143.709721 32.033891 144.755079 32.709243 145.786068 33.406148 C 146.817057 34.106646 147.830084 34.828697 148.82515 35.575895 C 149.823808 36.323092 150.800913 37.091843 151.760056 37.885741 C 152.722791 38.676046 153.663972 39.491497 154.587192 40.324909 C 155.510412 41.161914 156.412078 42.016881 157.295783 42.896993 C 158.179488 43.773513 159.041639 44.671587 159.882236 45.587622 C 160.722833 46.50725 161.545469 47.441247 162.342958 48.396797 C 163.140448 49.352348 163.916384 50.32586 164.667174 51.317334 C 165.421556 52.308807 166.150792 53.318242 166.858474 54.342047 C 167.562564 55.369443 168.2451 56.411209 168.90249 57.467344 C 169.55988 58.523479 170.192124 59.597575 170.802815 60.682448 C 171.409912 61.767322 171.991864 62.870156 172.54867 63.983768 C 173.105476 65.093787 173.637136 66.221768 174.143649 67.360526 C 174.646571 68.495691 175.124346 69.645226 175.576975 70.805537 C 176.029605 71.965849 176.453495 73.136937 176.848648 74.31521 C 177.247393 75.497075 177.617399 76.686125 177.958667 77.882359 C 178.299935 79.078594 178.616057 80.285605 178.899849 81.496209 C 179.187232 82.706812 179.445878 83.924601 179.675785 85.149573 C 179.905692 86.370954 180.10686 87.599519 180.27929 88.831676 C 180.45172 90.067426 180.595412 91.303176 180.710366 92.542518 C 180.825319 93.78186 180.911534 95.024794 180.969011 96.267728 C 181.026488 97.510662 181.055226 98.753597 181.055226 100.000123 C 181.055226 101.24665 181.026488 102.489584 180.969011 103.732518 C 180.911534 104.975453 180.825319 106.218387 180.710366 107.457729 C 180.595412 108.697071 180.45172 109.932821 180.27929 111.164978 C 180.10686 112.400728 179.905692 113.629293 179.675785 114.850673 C 179.445878 116.075646 179.187232 117.293434 178.899849 118.504038 C 178.616057 119.714641 178.299935 120.921653 177.958667 122.117887 C 177.617399 123.314122 177.247393 124.503171 176.848648 125.681444 C 176.453495 126.86331 176.029605 128.034398 175.576975 129.194709 C 175.124346 130.355021 174.646571 131.500963 174.143649 132.639721 C 173.637136 133.778479 173.105476 134.902867 172.54867 136.016479 C 171.991864 137.13009 171.409912 138.232925 170.802815 139.317798 C 170.192124 140.402672 169.55988 141.476768 168.90249 142.532903 C 168.2451 143.589038 167.562564 144.630803 166.858474 145.654608 C 166.150792 146.682004 165.421556 147.691439 164.667174 148.682913 C 163.916384 149.674386 163.140448 150.647899 162.342958 151.603449 C 161.545469 152.559 160.722833 153.492997 159.882236 154.412624 C 159.041639 155.32866 158.179488 156.226734 157.295783 157.103254 C 156.412078 157.983366 155.510412 158.838332 154.587192 159.675337 C 153.663972 160.50875 152.722791 161.324201 151.760056 162.114506 C 150.800913 162.908403 149.823808 163.677155 148.82515 164.424352 C 147.830084 165.167957 146.817057 165.893601 145.786068 166.590506 C 144.755079 167.291004 143.709721 167.966355 142.649994 168.616561 C 141.590267 169.270359 140.512578 169.895418 139.424113 170.495332 C 138.332055 171.098837 137.22922 171.673604 136.112016 172.223226 C 134.994812 172.772847 133.866831 173.297322 132.724482 173.793059 C 131.582132 174.292388 130.432597 174.762979 129.268693 175.204831 C 128.104789 175.650276 126.933701 176.066982 125.748244 176.45495 C 124.566378 176.84651 123.377328 177.209332 122.177502 177.543415 C 120.977675 177.877499 119.770664 178.182844 118.556468 178.463043 C 117.345864 178.73965 116.124484 178.991111 114.899511 179.210241 C 113.674538 179.432963 112.445973 179.626947 111.210223 179.792192 C 109.978066 179.957438 108.738724 180.093945 107.499382 180.201714 "/>
+<g class="mk-ltr" transform="scale(0.91634) translate(-44.83,-56.83)">
+  <path fill="var(--ash-cream)" d="M 143.847656 73.742188 L 153.851562 73.742188 L 153.851562 208.6875 C 151.171875 205.859375 147.835938 200.421875 143.847656 192.375 Z M 143.847656 73.742188 "/>
+  <path fill="var(--ash-cream)" d="M 153.851562 82.875 L 85.671875 192.050781 L 84.910156 192.375 L 84.910156 175.519531 L 143.847656 82.113281 Z M 153.851562 82.875 "/>
+  <path fill="var(--ash-cream)" d="M 96.113281 154.644531 L 153.851562 154.644531 L 153.851562 164.429688 L 96.113281 164.429688 Z M 96.113281 154.644531 "/>
+  <path fill="var(--ash-green)" d="M 162.605469 154.425781 L 162.605469 257.738281 C 165.839844 257.425781 169.046875 256.945312 172.230469 256.292969 L 172.230469 154.425781 Z M 162.605469 154.425781 "/>
+  <path fill="var(--ash-green)" d="M 185.222656 172.148438 L 185.222656 252.640625 C 188.507812 251.445312 191.71875 250.074219 194.847656 248.519531 L 194.847656 172.148438 Z M 185.222656 172.148438 "/>
+  <path fill="var(--ash-green)" d="M 208.386719 154.316406 L 208.386719 240.285156 C 211.777344 237.796875 214.984375 235.089844 218.007812 232.164062 L 218.007812 154.316406 Z M 208.386719 154.316406 "/>
+</g>
+</svg>
       <span class="brand-name">Аполлонов<br />и Шигапова</span>
     </a>
-
-    <div class="topbar-right">
-      <!-- TODO: подставить рабочий номер -->
-      <a class="phone rise" style="--d:220ms" href="tel:+79991234567">+7 999 123-45-67</a>
-      <a class="pill rise" style="--d:300ms" href="#call">
-        Позвонить
-        <svg class="arr" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-          <path d="M2 10L10 2M10 2H3.5M10 2V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-      </a>
-    </div>
+    <!-- TODO: подставить рабочий номер -->
+    <a class="call rise" style="--d:180ms" href="tel:+79991234567" aria-label="Позвонить">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M15.5 21A12.5 12.5 0 0 1 3 8.5 2.5 2.5 0 0 1 5.5 6h1.6a1 1 0 0 1 1 .8l.7 3a1 1 0 0 1-.3.95l-1.3 1.2a10 10 0 0 0 4.35 4.35l1.2-1.3a1 1 0 0 1 .95-.3l3 .7a1 1 0 0 1 .8 1v1.6A2.5 2.5 0 0 1 15.5 21Z"/>
+      </svg>
+    </a>
   </header>
 
-  <!-- основной текст -->
-  <div class="wrap">
-    <div class="content" data-depth="0.35">
+  <section class="hero">
+    <div class="hero-text">
+      <p class="eyebrow rise" style="--d:300ms">Системный маркетинг для роста выручки</p>
 
       <h1>
-        <span class="l l1"><span style="--d:420ms">Пересобираем</span></span>
-        <span class="l l2"><span style="--d:540ms">Продажи</span></span>
-        <span class="l l3"><span style="--d:640ms">в малом</span></span>
-        <span class="l l4"><span style="--d:720ms">бизнесе</span></span>
+        <span class="l"><span style="--d:400ms">Пересобираем</span></span>
+        <span class="l"><span class="green" style="--d:500ms">Продажи</span></span>
+        <span class="l"><span style="--d:590ms">в малом</span></span>
+        <span class="l"><span style="--d:670ms">бизнесе</span></span>
       </h1>
 
-      <p class="lead rise" style="--d:860ms">
+      <p class="lead rise" style="--d:820ms">
         Без воды и лишней теории. Показываем, где бизнес теряет деньги,
         даём конкретные шаги и собираем систему, которую можно применить сразу.
       </p>
 
-      <a class="cta rise" style="--d:960ms" href="#audit">
+      <a class="cta rise" style="--d:920ms" href="#audit">
         Бесплатный аудит
         <svg class="arr" width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true">
           <path d="M2 10L10 2M10 2H3.5M10 2V8.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
         </svg>
       </a>
-
-      <p class="micro rise" style="--d:1040ms">
-        Ответ за 2 суток. Ничего не продаём на этом шаге.
-        <b>Работаем с проектами от 80 000 ₽.</b>
-      </p>
-
-      <ul class="features rise" style="--d:1140ms">
-        <li>
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.6"/>
-            <path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3"/>
-          </svg>
-          <span>Конкретные<br />шаги</span>
-        </li>
-        <li>
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M13.4 2.5 4.6 13.4h6.2l-1.2 8.1 8.8-10.9h-6.2l1.2-8.1Z" stroke-linejoin="round"/>
-          </svg>
-          <span>Применимо<br />сразу</span>
-        </li>
-        <li>
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 2.6 21 7.5v9L12 21.4 3 16.5v-9L12 2.6Z" stroke-linejoin="round"/>
-            <path d="M3 7.5 12 12.4 21 7.5M12 12.4v9"/>
-          </svg>
-          <span>Система +<br />упаковка</span>
-        </li>
-      </ul>
-
-      <p class="authors rise" style="--d:1240ms">
-        <b>Александр</b> — цифры и система
-        <span class="sep">·</span>
-        <b>Алина</b> — упаковка и визуал
-      </p>
-
     </div>
-  </div>
 
-  <!-- заметка справа -->
-  <aside class="note" data-depth="0.9">
-    <span class="note-in rise" style="--d:1340ms">
-      За агентством приятно и удобно, за фамилиями — нет.
+    <div class="hero-media">
+      <div class="photo-in">
+        <div class="photo" data-depth="1" data-scroll="0.1"></div>
+        <div class="orbit" data-depth="2.4" aria-hidden="true">
+        <svg viewBox="0 0 800 800" fill="none">
+          <path pathLength="100" d="M400 70 A330 330 0 0 1 400 730" stroke-width="1" opacity=".3"/>
+          <path pathLength="100" d="M180 250 A290 290 0 1 0 650 310" stroke-width=".9" opacity=".16"
+                style="animation-delay:900ms"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <blockquote class="quote rise" style="--d:1080ms">
+      За агентством прятаться удобно, за фамилиями — нет.
       У нашей работы есть авторы.
-    </span>
-  </aside>
+    </blockquote>
+  </section>
 
-  <div class="scroll-hint rise" style="--d:1500ms" aria-hidden="true">
-    <i></i>
-    <span>Дальше</span>
-  </div>
+  <ul class="strip strip-3 reveal" style="list-style:none;margin:0;padding:0">
+    <li>
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+        <circle cx="12" cy="12" r="8.6"/><circle cx="12" cy="12" r="3.4"/>
+        <path d="M12 1.6v3.2M12 19.2v3.2M1.6 12h3.2M19.2 12h3.2" stroke-linecap="round"/>
+      </svg></span>
+      <span class="label">Конкретные<br />шаги</span>
+    </li>
+    <li>
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+        stroke-linejoin="round" aria-hidden="true">
+        <path d="M13.4 2.4 4.6 13.4h6.2l-1.2 8.2 8.8-11h-6.2l1.2-8.2Z"/>
+      </svg></span>
+      <span class="label">Применимо<br />сразу</span>
+    </li>
+    <li>
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+        stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 2.5 21 7.4v9.2L12 21.5 3 16.6V7.4L12 2.5Z"/><path d="M3 7.4 12 12.3l9-4.9M12 12.3v9.2"/>
+      </svg></span>
+      <span class="label">Система +<br />упаковка</span>
+    </li>
+  </ul>
 
-</section>
+  <ul class="strip strip-2 reveal" style="list-style:none;margin:0;padding:0">
+    <li><span class="who"><b>Александр —</b><span>цифры и система</span></span></li>
+    <li><span class="who"><b>Алина —</b><span>упаковка и визуал</span></span></li>
+  </ul>
 
-<!-- заглушка: сюда встанет блок 2 «Все делают свой кусок» -->
-<section class="next">
-  <p>Дальше — блок 2: «Все делают свой кусок»</p>
-</section>
+  <ul class="strip strip-3 strip-trust reveal" style="list-style:none;margin:0;padding:0">
+    <li>
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="9" cy="8" r="3.2"/><path d="M2.8 20a6.2 6.2 0 0 1 12.4 0"/>
+        <path d="M16.4 5.2a3.2 3.2 0 0 1 0 5.6M18.2 20a6 6 0 0 0-2.4-4.8"/>
+      </svg></span>
+      <span class="label">Два партнёра</span>
+    </li>
+    <li>
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 2.6l7.2 2.8v6c0 4.5-3 8.2-7.2 10-4.2-1.8-7.2-5.5-7.2-10v-6L12 2.6Z"/>
+      </svg></span>
+      <span class="label">Без имитации<br />агентства</span>
+    </li>
+    <li>
+      <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3.2 17.4 9 11.6l3.4 3.4 4.2-4.2"/><path d="M14.6 9.2h4.6v4.6"/>
+      </svg></span>
+      <span class="label">По делу.<br />С результатом</span>
+    </li>
+  </ul>
+
+  <section class="how">
+    <h2 class="reveal">Как мы работаем</h2>
+    <ol class="steps">
+      <li class="reveal">
+        <span class="step-n">01</span>
+        <h3>Диагностика</h3>
+        <p>Разбираем бизнес, находим потери и точки роста.</p>
+      </li>
+      <li class="reveal" style="transition-delay:120ms">
+        <span class="step-n">02</span>
+        <h3>Конкретные решения</h3>
+        <p>Даём план действий и приоритеты.</p>
+      </li>
+      <li class="reveal" style="transition-delay:240ms">
+        <span class="step-n">03</span>
+        <h3>Внедрение и рост</h3>
+        <p>Помогаем внедрить и масштабировать результат.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="final reveal" id="audit">
+    <div>
+      <h2>Готовы навести порядок в продажах и вырастить выручку?</h2>
+      <p>Начнём с бесплатного аудита.</p>
+    </div>
+    <a class="cta" href="#audit">
+      Бесплатный аудит
+      <svg class="arr" width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+        <path d="M2 10L10 2M10 2H3.5M10 2V8.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+    </a>
+  </section>
+
+</div>
 
 <script>
 (function () {
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // появление
   requestAnimationFrame(function () {
     requestAnimationFrame(function () { document.body.classList.add('ready'); });
   });
 
+  // блоки ниже героя проявляются, когда доходят до экрана
+  var blocks = [].slice.call(document.querySelectorAll('.reveal'));
+  if (reduce || !('IntersectionObserver' in window)) {
+    blocks.forEach(function (el) { el.classList.add('seen'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('seen'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.12 });
+    blocks.forEach(function (el) { io.observe(el); });
+  }
+
   if (reduce) return;
 
-  // параллакс: мышь + скролл, слои двигаются с разной глубиной
+  // параллакс: мышь и прокрутка, слои с разной глубиной
   var layers = [].slice.call(document.querySelectorAll('[data-depth]'));
   var tx = 0, ty = 0, cx = 0, cy = 0, sy = 0, csy = 0, running = false;
 
@@ -642,10 +603,7 @@ h1 .l > span{
     start();
   }, { passive: true });
 
-  window.addEventListener('scroll', function () {
-    sy = window.scrollY;
-    start();
-  }, { passive: true });
+  window.addEventListener('scroll', function () { sy = window.scrollY; start(); }, { passive: true });
 
   function start() { if (!running) { running = true; requestAnimationFrame(tick); } }
 
@@ -653,26 +611,19 @@ h1 .l > span{
     cx += (tx - cx) * 0.055;
     cy += (ty - cy) * 0.055;
     csy += (sy - csy) * 0.1;
-
-    // на телефоне полоса фото маленькая — сдвиг от скролла делаем мягче,
-    // иначе картинка выезжает за растушёванный край маски
-    var narrow = window.innerWidth <= 860;
+    var narrow = window.innerWidth <= 700;
 
     for (var i = 0; i < layers.length; i++) {
       var el = layers[i];
       var d = parseFloat(el.dataset.depth) || 0;
       var s = parseFloat(el.dataset.scroll) || 0;
-      var x = -cx * d * 26;
-      var y = -cy * d * 18 + csy * s * (narrow ? 0.45 : 1);
+      var x = -cx * d * 22;
+      var y = -cy * d * 15 + csy * s * (narrow ? 0.4 : 1);
       el.style.transform = 'translate3d(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px,0)';
     }
 
-    // затухание, когда всё почти догнало цель
-    if (Math.abs(tx - cx) < 0.0004 && Math.abs(ty - cy) < 0.0004 && Math.abs(sy - csy) < 0.4) {
-      running = false;
-    } else {
-      requestAnimationFrame(tick);
-    }
+    if (Math.abs(tx - cx) < 0.0004 && Math.abs(ty - cy) < 0.0004 && Math.abs(sy - csy) < 0.4) running = false;
+    else requestAnimationFrame(tick);
   }
 })();
 </script>
