@@ -94,7 +94,7 @@ a{color:inherit;text-decoration:none;}
   grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);
   align-items:center;
   gap:clamp(16px,2.6vw,30px);
-  min-height:min(70vh,560px);
+  min-height:min(76vh,620px);
 }
 
 .eyebrow{
@@ -148,20 +148,23 @@ h1 .green{color:var(--green);}
 /* фото + дуги + цитата.
    overflow:hidden держит фото и дуги внутри колонки — без него
    они уезжают за край страницы и появляется боковая прокрутка */
-.hero-media{position:relative;align-self:stretch;min-height:clamp(300px,52vw,540px);overflow:hidden;}
+.hero-media{position:relative;align-self:stretch;min-height:clamp(340px,50vw,600px);overflow:hidden;}
 .photo{
   position:absolute;inset:0 -8% 0 -4%;
   background-image:url("assets/hero-duo-portrait.jpg");
-  background-size:cover;background-position:center center;
-  -webkit-mask-image:linear-gradient(100deg,transparent 0,#000 26%,#000 100%),
-                     linear-gradient(to top,transparent 0,#000 16%);
-  -webkit-mask-composite:source-in;
-  mask-image:linear-gradient(100deg,transparent 0,#000 26%,#000 100%),
-             linear-gradient(to top,transparent 0,#000 16%);
-  mask-composite:intersect;
+  background-size:cover;background-position:center 18%;
+  /* растушёвка по двум слоям: mask-composite ведёт себя по-разному
+     в движках, а вложенные маски пересекаются сами собой */
+  -webkit-mask-image:linear-gradient(to right,transparent 0,#000 24%);
+  mask-image:linear-gradient(to right,transparent 0,#000 24%);
   will-change:transform;
 }
-.photo-in{position:absolute;inset:0;overflow:hidden;animation:photoIn 1800ms var(--ease) both;}
+.photo-in{
+  position:absolute;inset:0;overflow:hidden;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 9%,#000 86%,transparent 100%);
+  mask-image:linear-gradient(to bottom,transparent 0,#000 9%,#000 86%,transparent 100%);
+  animation:photoIn 1800ms var(--ease) both;
+}
 @keyframes photoIn{from{transform:scale(1.07);opacity:0}to{transform:scale(1);opacity:1}}
 
 .orbit{
@@ -355,14 +358,22 @@ h1 .l > span{
   .hero{grid-template-columns:1fr;min-height:0;gap:clamp(14px,3vw,22px);}
   h1{font-size:clamp(34px,10.4vw,54px);}
   .hero-media{order:-1;min-height:0;overflow:visible;}
-  .photo-in{position:relative;inset:auto;height:clamp(230px,62vw,320px);overflow:hidden;}
+  .photo-in{
+    position:relative;inset:auto;
+    height:clamp(300px,80vw,420px);
+    overflow:hidden;
+    border-radius:var(--radius);   /* заодно с карточками ниже */
+  }
+  .photo{inset:0;}
   .photo{
     inset:0;
-    background-position:center 8%;
-    -webkit-mask-image:linear-gradient(to bottom,#000 0,#000 62%,transparent 100%);
-    -webkit-mask-composite:source-over;
-    mask-image:linear-gradient(to bottom,#000 0,#000 62%,transparent 100%);
-    mask-composite:add;
+    background-position:center 10%;
+    -webkit-mask-image:none;
+    mask-image:none;
+  }
+  .photo-in{
+    -webkit-mask-image:linear-gradient(to bottom,#000 0,#000 66%,transparent 100%);
+    mask-image:linear-gradient(to bottom,#000 0,#000 66%,transparent 100%);
   }
   .orbit{top:40%;left:50%;width:150%;}
   /* цитата уходит из-под фото в свою строку — на фото она нечитаема */
@@ -465,8 +476,8 @@ h1 .l > span{
         <div class="photo" data-depth="1" data-scroll="0.1"></div>
         <div class="orbit" data-depth="2.4" aria-hidden="true">
         <svg viewBox="0 0 800 800" fill="none">
-          <path pathLength="100" d="M400 70 A330 330 0 0 1 400 730" stroke-width="1" opacity=".3"/>
-          <path pathLength="100" d="M180 250 A290 290 0 1 0 650 310" stroke-width=".9" opacity=".16"
+          <path pathLength="100" d="M400 70 A330 330 0 0 1 400 730" stroke-width="1" opacity=".16"/>
+          <path pathLength="100" d="M180 250 A290 290 0 1 0 650 310" stroke-width=".9" opacity=".08"
                 style="animation-delay:900ms"/>
           </svg>
         </div>
