@@ -389,6 +389,260 @@ h1 .l > span{
 .ready .mk-ltr{animation:fadeIn 900ms var(--ease) 950ms forwards;}
 @keyframes fadeIn{to{opacity:1}}
 
+
+/* ═══ ОБЩЕЕ ДЛЯ НОВЫХ БЛОКОВ ═════════════════════════════ */
+.sec{margin-top:clamp(48px,7vw,110px);}
+.sec-num{
+  display:block;margin:0 0 clamp(10px,1.4vw,16px);
+  font-family:var(--serif);font-size:clamp(15px,1.5vw,19px);
+  letter-spacing:.2em;color:var(--green);
+}
+.sec-eyebrow{
+  display:block;margin:0 0 clamp(12px,1.6vw,18px);
+  font-size:clamp(10px,.86vw,12px);font-weight:600;
+  letter-spacing:.28em;text-transform:uppercase;color:var(--green);
+}
+h2.sec-title{
+  margin:0 0 clamp(14px,2vw,26px);
+  font-family:var(--serif);font-weight:300;
+  font-size:clamp(30px,4.4vw,62px);line-height:1.02;
+  text-transform:uppercase;letter-spacing:.01em;
+}
+h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-height:1.1;}
+.sec-lead{
+  margin:0 0 clamp(22px,3vw,40px);max-width:60ch;
+  font-size:clamp(14px,1.1vw,17px);line-height:1.62;color:rgba(241,233,220,.74);
+}
+
+/* появление по очереди */
+.stagger > *{
+  opacity:0;transform:translateY(26px);
+  transition:opacity .8s var(--ease),transform .9s var(--ease);
+  transition-delay:calc(var(--i,0) * 110ms);
+}
+.stagger.seen > *{opacity:1;transform:none;}
+
+/* ═══ 01. ВСЕ ДЕЛАЮТ СВОЙ КУСОК ══════════════════════════ */
+.pieces{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;
+  align-items:stretch;gap:clamp(10px,1.4vw,18px);
+}
+.piece{
+  background:var(--card);border:1px solid var(--line);
+  border-radius:var(--radius);padding:clamp(16px,1.9vw,24px);
+  position:relative;
+}
+.piece-ico{display:block;width:26px;height:26px;stroke:var(--grey);fill:none;stroke-width:1.5;margin-bottom:12px;}
+.piece h3{
+  margin:0 0 4px;font-size:clamp(11px,1vw,13px);font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;
+}
+.piece .by{display:block;font-size:clamp(11px,.92vw,13px);color:var(--grey);margin-bottom:14px;}
+.piece p{
+  margin:0;padding-top:14px;border-top:1px solid var(--line);
+  font-size:clamp(12px,.98vw,14px);line-height:1.55;color:rgba(241,233,220,.7);
+}
+/* стрелки-разрывы между карточками */
+.piece + .piece::before{
+  content:"";position:absolute;left:calc(-1 * clamp(10px,1.4vw,18px) / 2 - 4px);top:50%;
+  translate:0 -50%;width:8px;height:14px;
+  background:var(--grey);opacity:.45;
+  clip-path:polygon(0 0,100% 50%,0 100%,0 78%,58% 50%,0 22%);
+}
+.nobody{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+  padding-inline:clamp(8px,1.4vw,20px);text-align:center;
+}
+.nobody svg{width:30px;height:30px;stroke:var(--grey);stroke-width:1.4;}
+.nobody span{
+  font-size:clamp(9.5px,.8vw,11px);font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--grey);line-height:1.5;
+}
+
+/* панель «Управляемость» */
+.control{
+  position:relative;margin-top:clamp(26px,3.4vw,48px);
+  border:1px solid rgba(168,220,40,.45);border-radius:var(--radius);
+  padding:clamp(30px,3.6vw,52px) clamp(20px,3vw,44px) clamp(24px,3vw,40px);
+  display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);
+  gap:clamp(24px,3.4vw,52px);align-items:center;
+}
+.control-label{
+  position:absolute;top:0;left:50%;translate:-50% -50%;
+  background:var(--graphite);padding:0 16px;
+  font-size:clamp(9.5px,.82vw,11.5px);font-weight:600;
+  letter-spacing:.3em;text-transform:uppercase;color:var(--green);
+}
+.chain{display:flex;align-items:center;justify-content:center;gap:0;}
+.node{
+  flex:none;display:grid;place-items:center;gap:6px;
+  width:clamp(74px,7.4vw,104px);aspect-ratio:1;border-radius:50%;
+  border:1px solid rgba(168,220,40,.55);
+  opacity:0;scale:.86;
+  transition:opacity .6s var(--ease),scale .6s var(--ease);
+  transition-delay:calc(var(--i) * 260ms);
+}
+.seen .node{opacity:1;scale:1;}
+.node svg{width:24px;height:24px;stroke:var(--green);fill:none;stroke-width:1.4;}
+.node b{
+  font-size:clamp(8.5px,.75vw,10.5px);font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;color:rgba(241,233,220,.9);
+}
+.link{
+  flex:1 1 auto;height:1px;max-width:46px;
+  background:rgba(168,220,40,.55);
+  transform-origin:left;scale:0 1;
+  transition:scale .5s var(--ease);
+  transition-delay:calc((var(--i) * 260ms) + 130ms);
+}
+.seen .link{scale:1 1;}
+.chain-arrow{
+  flex:none;width:44px;height:12px;margin-left:6px;
+  opacity:0;transform:translateX(-8px);
+  transition:opacity .5s var(--ease) 1.1s,transform .6s var(--ease) 1.1s;
+}
+.seen .chain-arrow{opacity:1;transform:none;}
+.chain-arrow svg{width:100%;height:100%;stroke:var(--green);fill:none;stroke-width:1.4;}
+.control h3{
+  margin:0 0 12px;font-family:var(--serif);font-weight:400;
+  font-size:clamp(17px,1.8vw,25px);line-height:1.2;
+  text-transform:uppercase;letter-spacing:.02em;color:var(--green);
+}
+.control p{margin:0;font-size:clamp(13px,1.05vw,16px);line-height:1.6;color:rgba(241,233,220,.76);}
+
+/* ═══ 02. ЧЕТЫРЕ ШАГА ════════════════════════════════════ */
+.stairs{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  align-items:end;gap:clamp(10px,1.4vw,20px);
+  margin-top:clamp(20px,2.6vw,36px);
+}
+.stair{
+  position:relative;
+  background:linear-gradient(170deg,#242320,#141311);
+  border:1px solid var(--line);border-top-color:rgba(168,220,40,.5);
+  border-radius:14px;
+  padding:clamp(14px,1.7vw,24px);
+  box-shadow:0 -1px 0 rgba(168,220,40,.25), 0 18px 40px rgba(0,0,0,.45);
+  opacity:0;transform:translateY(34px);
+  transition:opacity .75s var(--ease),transform .85s var(--ease);
+  transition-delay:calc(var(--i) * 150ms);
+}
+.seen .stair{opacity:1;transform:none;}
+.stair:nth-child(1){min-height:clamp(150px,15vw,196px);}
+.stair:nth-child(2){min-height:clamp(186px,19vw,250px);}
+.stair:nth-child(3){min-height:clamp(222px,23vw,304px);}
+.stair:nth-child(4){min-height:clamp(258px,27vw,358px);}
+.stair-n{
+  position:absolute;top:calc(-1 * clamp(30px,3.4vw,48px));left:clamp(12px,1.6vw,22px);
+  font-family:var(--serif);font-size:clamp(28px,3.6vw,50px);line-height:1;
+  color:rgba(241,233,220,.9);
+}
+.stair:nth-child(4) .stair-n{color:var(--green);}
+.stair h3{
+  margin:0 0 8px;font-size:clamp(12px,1.15vw,16px);font-weight:600;
+  letter-spacing:.06em;
+}
+.stair p{margin:0;font-size:clamp(11.5px,.95vw,13.5px);line-height:1.5;color:rgba(241,233,220,.66);}
+.stairs-rise{
+  grid-column:1/-1;height:2px;margin-top:18px;
+  background:linear-gradient(90deg,rgba(168,220,40,0),var(--green));
+  transform-origin:left;scale:0 1;
+  transition:scale 1.4s var(--ease) .5s;
+}
+.seen .stairs-rise{scale:1 1;}
+
+/* ═══ 03. ЧЕГО МЫ НЕ ДЕЛАЕМ ══════════════════════════════ */
+.principles{
+  display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1fr);
+  gap:clamp(24px,3.6vw,60px);align-items:center;
+  border:1px solid var(--line);border-radius:var(--radius);
+  overflow:hidden;background:var(--card);
+}
+.principles-photo{
+  position:relative;align-self:stretch;min-height:clamp(280px,34vw,470px);
+  background:url("assets/sasha.jpg") center 18%/cover;
+}
+.principles-photo::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg,rgba(23,22,20,0) 55%,rgba(29,28,25,.96) 100%);
+}
+.principles-body{padding:clamp(22px,3vw,52px) clamp(20px,3vw,48px) clamp(22px,3vw,52px) 0;position:relative;}
+.ghost-num{
+  position:absolute;top:clamp(-6px,-.4vw,0px);right:clamp(6px,1.6vw,24px);
+  font-family:var(--serif);font-size:clamp(90px,11vw,190px);line-height:.8;
+  color:rgba(241,233,220,.05);pointer-events:none;user-select:none;
+}
+.nope{list-style:none;margin:0 0 clamp(20px,2.6vw,34px);padding:0;position:relative;}
+.nope li{
+  display:flex;gap:14px;align-items:flex-start;
+  padding:clamp(9px,1.1vw,14px) 0;
+  font-size:clamp(13px,1.08vw,16px);line-height:1.5;color:rgba(241,233,220,.86);
+  opacity:0;transform:translateX(18px);
+  transition:opacity .7s var(--ease),transform .7s var(--ease);
+  transition-delay:calc(var(--i) * 130ms + 200ms);
+}
+.seen .nope li{opacity:1;transform:none;}
+.nope i{
+  flex:none;width:14px;height:14px;margin-top:3px;
+  background:var(--green);opacity:.85;
+  clip-path:polygon(14% 0,50% 36%,86% 0,100% 14%,64% 50%,100% 86%,86% 100%,50% 64%,14% 100%,0 86%,36% 50%,0 14%);
+}
+.claim{
+  position:relative;padding:clamp(16px,2vw,26px) clamp(18px,2.2vw,30px);
+  border:1px solid rgba(168,220,40,.5);border-radius:6px;
+  background:linear-gradient(120deg,rgba(168,220,40,.07),rgba(168,220,40,.02));
+  font-size:clamp(13px,1.1vw,17px);line-height:1.55;color:var(--green);
+}
+.claim::before,.claim::after{
+  content:"";position:absolute;width:14px;height:14px;
+  border:1px solid var(--green);
+}
+.claim::before{top:-1px;left:-1px;border-right:none;border-bottom:none;}
+.claim::after{bottom:-1px;right:-1px;border-left:none;border-top:none;}
+
+/* ═══ 04. С ЧЕГО НАЧАТЬ ══════════════════════════════════ */
+.start-actions{display:flex;flex-wrap:wrap;gap:clamp(10px,1.4vw,18px);align-items:center;}
+.ghost-btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:clamp(15px,1.55vw,23px) clamp(24px,3vw,44px);
+  border:1px solid rgba(241,233,220,.35);border-radius:999px;
+  font-size:clamp(12px,1.02vw,15px);color:rgba(241,233,220,.88);
+  white-space:nowrap;transition:border-color .3s var(--ease),color .3s var(--ease);
+}
+.ghost-btn:hover{border-color:var(--green);color:var(--green);}
+.start-micro{margin:clamp(12px,1.6vw,20px) 0 0;font-size:clamp(12px,.98vw,14px);color:var(--grey);}
+
+.tariffs{
+  position:relative;margin-top:clamp(40px,5vw,80px);
+  background:var(--green);color:#12140C;
+  padding:clamp(46px,5.6vw,84px) clamp(20px,3vw,48px) clamp(30px,3.6vw,54px);
+}
+/* рваный край сверху */
+.tariffs::before{
+  content:"";position:absolute;left:0;right:0;top:-1px;height:clamp(22px,2.6vw,40px);
+  background:var(--graphite);
+  -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 40' preserveAspectRatio='none'><path d='M0 0h1200v13l-38 6-44-9-51 11-46-5-49 9-53-7-41 8-47-4-52 10-45-8-50 6-48-9-43 7-52-5-46 9-51-8-44 6-49-4-53 9-42-7-47 5-52-9-45 8-50-6-48 4-44 8V0z'/></svg>") bottom/100% 100% no-repeat;
+  mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 40' preserveAspectRatio='none'><path d='M0 0h1200v13l-38 6-44-9-51 11-46-5-49 9-53-7-41 8-47-4-52 10-45-8-50 6-48-9-43 7-52-5-46 9-51-8-44 6-49-4-53 9-42-7-47 5-52-9-45 8-50-6-48 4-44 8V0z'/></svg>") bottom/100% 100% no-repeat;
+}
+.tariff-grid{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(16px,2.4vw,40px);
+}
+.tariff{
+  padding-left:clamp(14px,2vw,28px);border-left:1px solid rgba(18,20,12,.28);
+}
+.tariff:first-child{border-left:none;padding-left:0;}
+.tariff b{
+  display:block;font-family:var(--serif);font-weight:400;
+  font-size:clamp(28px,3.4vw,48px);line-height:1;margin-bottom:clamp(8px,1vw,14px);
+}
+.tariff span{display:block;font-size:clamp(12.5px,1.05vw,16px);line-height:1.45;}
+.tariff span em{font-style:normal;opacity:.72;}
+.tariffs-note{
+  margin:clamp(22px,2.8vw,40px) 0 0;text-align:center;
+  font-size:clamp(12.5px,1.05vw,16px);
+}
+
 /* невысокие ноутбуки — поджимаем вертикальный ритм */
 @media (min-width:1001px) and (max-height:850px){
   h1{font-size:min(5.1vw,9.6vh);margin-bottom:20px;}
@@ -515,6 +769,36 @@ h1 .l > span{
   .authors span{font-size:clamp(13px,3.7vw,15px);color:rgba(241,233,220,.78);}
 
   .page{padding-top:clamp(14px,3.2vw,20px);}
+}
+
+/* ── НОВЫЕ БЛОКИ НА УЗКИХ ЭКРАНАХ ───────────────────────── */
+@media (max-width:900px){
+  .pieces{grid-template-columns:1fr;}
+  .piece + .piece::before{
+    left:50%;top:calc(-1 * clamp(10px,1.4vw,18px) / 2 - 5px);
+    translate:-50% 0;rotate:90deg;
+  }
+  .nobody{flex-direction:row;gap:16px;padding:clamp(12px,3vw,18px);}
+  .nobody span{text-align:left;}
+  .control{grid-template-columns:1fr;gap:clamp(20px,4vw,30px);}
+  .chain{flex-wrap:wrap;gap:8px 0;}
+  .principles{grid-template-columns:1fr;}
+  .principles-photo{min-height:clamp(240px,58vw,360px);}
+  .principles-photo::after{
+    background:linear-gradient(180deg,rgba(23,22,20,0) 45%,rgba(29,28,25,.96) 100%);
+  }
+  .principles-body{padding:0 clamp(18px,4vw,32px) clamp(24px,5vw,40px);}
+  .stairs{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:clamp(40px,9vw,60px);}
+  .stair:nth-child(1),.stair:nth-child(2),
+  .stair:nth-child(3),.stair:nth-child(4){min-height:0;}
+}
+@media (max-width:560px){
+  .stairs{grid-template-columns:1fr;}
+  .tariff-grid{grid-template-columns:1fr;gap:clamp(14px,4vw,22px);}
+  .tariff{border-left:none;padding-left:0;border-top:1px solid rgba(18,20,12,.28);padding-top:14px;}
+  .tariff:first-child{border-top:none;padding-top:0;}
+  .start-actions{flex-direction:column;align-items:stretch;}
+  .ghost-btn{width:100%;}
 }
 
 /* Узкие телефоны: раскладка та же, что в макете, только ячейки
@@ -688,38 +972,151 @@ h1 .l > span{
     </li>
   </ul>
 
-  <section class="how">
-    <h2 class="reveal">Как мы работаем</h2>
-    <ol class="steps">
-      <li class="reveal">
-        <span class="step-n">01</span>
-        <h3>Диагностика</h3>
-        <p>Разбираем бизнес, находим потери и точки роста.</p>
-      </li>
-      <li class="reveal" style="transition-delay:120ms">
-        <span class="step-n">02</span>
-        <h3>Конкретные решения</h3>
-        <p>Даём план действий и приоритеты.</p>
-      </li>
-      <li class="reveal" style="transition-delay:240ms">
-        <span class="step-n">03</span>
-        <h3>Внедрение и рост</h3>
-        <p>Помогаем внедрить и масштабировать результат.</p>
-      </li>
-    </ol>
+  <!-- 01 ─ Все делают свой кусок -->
+  <section class="sec reveal">
+    <span class="sec-num">01</span>
+    <h2 class="sec-title">Все делают<br />свой кусок</h2>
+
+    <div class="pieces stagger reveal">
+      <article class="piece" style="--i:0">
+        <svg class="piece-ico" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="2.5" y="4" width="19" height="13" rx="1.6"/><path d="M9 21h6M12 17v4"/>
+        </svg>
+        <h3>Сайт</h3><span class="by">у одного подрядчика</span>
+        <p>Сайт — у одного подрядчика, реклама — у другого, CRM — у третьего.</p>
+      </article>
+      <article class="piece" style="--i:1">
+        <svg class="piece-ico" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 10v4a1 1 0 0 0 1 1h3l7 4V5L7 9H4a1 1 0 0 0-1 1Z"/><path d="M18 9.2a4 4 0 0 1 0 5.6"/>
+        </svg>
+        <h3>Реклама</h3><span class="by">у другого подрядчика</span>
+        <p>Каждый закрыл свою задачу и ушёл.</p>
+      </article>
+      <article class="piece" style="--i:2">
+        <svg class="piece-ico" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>
+        </svg>
+        <h3>CRM</h3><span class="by">у третьего подрядчика</span>
+        <p>Продажи при этом не выросли, а спросить не с кого.</p>
+      </article>
+      <div class="nobody" style="--i:3">
+        <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" aria-hidden="true">
+          <path d="M5 5l14 14M19 5L5 19"/>
+        </svg>
+        <span>Спросить<br />не с кого</span>
+      </div>
+    </div>
+
+    <div class="control">
+      <span class="control-label">Управляемость</span>
+      <div class="chain">
+        <span class="node" style="--i:0">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2.5" y="4" width="19" height="13" rx="1.6"/><path d="M9 21h6M12 17v4"/>
+          </svg><b>Сайт</b>
+        </span>
+        <i class="link" style="--i:0"></i>
+        <span class="node" style="--i:1">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 10v4a1 1 0 0 0 1 1h3l7 4V5L7 9H4a1 1 0 0 0-1 1Z"/><path d="M18 9.2a4 4 0 0 1 0 5.6"/>
+          </svg><b>Реклама</b>
+        </span>
+        <i class="link" style="--i:1"></i>
+        <span class="node" style="--i:2">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>
+          </svg><b>CRM</b>
+        </span>
+        <span class="chain-arrow">
+          <svg viewBox="0 0 44 12" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M0 6h40M35 1.5 40.5 6 35 10.5"/>
+          </svg>
+        </span>
+      </div>
+      <div>
+        <h3>Малому бизнесу нужна не реклама, а управляемость</h3>
+        <p>Понимать, откуда приходят заявки, почему сегодня их меньше и что делать завтра.</p>
+      </div>
+    </div>
   </section>
 
-  <section class="final reveal" id="audit">
-    <div>
-      <h2>Готовы навести порядок в продажах и вырастить выручку?</h2>
-      <p>Начнём с бесплатного аудита.</p>
+  <!-- 02 ─ Четыре шага -->
+  <section class="sec reveal">
+    <span class="sec-num">02</span>
+    <h2 class="sec-title low">Четыре шага,<br />а не одна услуга</h2>
+    <p class="sec-lead">Каждый следующий шаг начинается только тогда, когда предыдущий дал цифры.</p>
+
+    <div class="stairs">
+      <article class="stair" style="--i:0">
+        <span class="stair-n">01</span><h3>Разбор</h3>
+        <p>Короткий созвон: смотрим, что происходит с продажами сейчас.</p>
+      </article>
+      <article class="stair" style="--i:1">
+        <span class="stair-n">02</span><h3>Аудит</h3>
+        <p>Разбираем воронку по цифрам, отдаём план: что чинить и в каком порядке.</p>
+      </article>
+      <article class="stair" style="--i:2">
+        <span class="stair-n">03</span><h3>Сборка</h3>
+        <p>Оффер, сайт, трафик, CRM, работа менеджера — собираем в одну связку и запускаем.</p>
+      </article>
+      <article class="stair" style="--i:3">
+        <span class="stair-n">04</span><h3>Ведение</h3>
+        <p>Управляем продажами дальше и отвечаем за цифры каждый месяц.</p>
+      </article>
+      <span class="stairs-rise"></span>
     </div>
-    <a class="cta" href="#audit">
-      Бесплатный аудит
-      <svg class="arr" width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-        <path d="M2 10L10 2M10 2H3.5M10 2V8.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-      </svg>
-    </a>
+  </section>
+
+  <!-- 03 ─ Чего мы не делаем -->
+  <section class="sec reveal">
+    <div class="principles">
+      <div class="principles-photo" aria-hidden="true"></div>
+      <div class="principles-body">
+        <span class="ghost-num" aria-hidden="true">04</span>
+        <span class="sec-eyebrow">Наши принципы</span>
+        <h2 class="sec-title low">Чего мы<br />не делаем</h2>
+        <ul class="nope">
+          <li style="--i:0"><i></i><span>Не берём разовые задачи, за результат которых нельзя отвечать.</span></li>
+          <li style="--i:1"><i></i><span>Не выдумываем кейсы — только настоящие цифры.</span></li>
+          <li style="--i:2"><i></i><span>Не делаем красоту раньше продаж.</span></li>
+          <li style="--i:3"><i></i><span>Не ведём больше двух проектов одновременно.</span></li>
+        </ul>
+        <p class="claim">
+          Мы зарабатываем на ведении, а не на потоке новых клиентов —
+          поэтому нам невыгодно бросать проект после запуска.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 ─ С чего начать -->
+  <section class="sec reveal" id="audit">
+    <span class="sec-eyebrow">С чего начать</span>
+    <h2 class="sec-title low">Начинаем с<br />бесплатного разбора</h2>
+    <p class="sec-lead">
+      Отвечаете на несколько вопросов о бизнесе — получаете PDF с 3–5 главными
+      точками потери и конкретными шагами. Без звонков и без давления купить.
+    </p>
+
+    <div class="start-actions">
+      <a class="cta" href="tel:+79201461140">
+        Получить аудит
+        <svg class="arr" width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <path d="M2 10L10 2M10 2H3.5M10 2V8.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </a>
+      <span class="ghost-btn">Работаем с проектами от 80 000 ₽</span>
+    </div>
+    <p class="start-micro">Аудит бесплатный · результат за 2 суток</p>
+
+    <div class="tariffs">
+      <div class="tariff-grid">
+        <div class="tariff"><b>1</b><span>Стратегический аудит —<br /><em>от 20 000 ₽</em></span></div>
+        <div class="tariff"><b>2</b><span>Сборка системы —<br /><em>от 80 000 ₽</em></span></div>
+        <div class="tariff"><b>3</b><span>Ведение —<br /><em>от 45 000 ₽/мес</em></span></div>
+      </div>
+      <p class="tariffs-note">Бесплатный аудит — первый шаг, а не отдельная услуга.</p>
+    </div>
   </section>
 
 </div>
