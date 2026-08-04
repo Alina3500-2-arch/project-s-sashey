@@ -8,7 +8,7 @@
 
 <link rel="icon" href="assets/favicon.svg" />
 <link rel="preload" as="image" href="assets/hero-duo-wide.jpg" media="(min-width:861px)" />
-<link rel="preload" as="image" href="assets/hero-duo-portrait.jpg" media="(max-width:860px)" />
+
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -281,13 +281,26 @@ h1 .l3,h1 .l4{font-size:.84em;}
   background:var(--green);margin-bottom:14px;
 }
 
-/* выезжает справа последней, через паузу после всей остальной загрузки —
-   так на неё падает отдельный акцент */
-.note{
-  opacity:0;transform:translateX(56px);
-  transition:opacity 1.05s var(--ease) 2.7s, transform 1.2s var(--ease) 2.7s;
+/* Всплывает последней, через паузу после всей остальной загрузки:
+   медленно, с размытия, а дальше едва заметно покачивается — как облачко.
+   Покачивание объявлено вторым, поэтому после старта перебивает
+   transform от всплытия, а прозрачность остаётся от него. */
+.note{opacity:0;}
+.ready .note{
+  animation:
+    noteIn 2.4s cubic-bezier(.16,.68,.3,1) 2.6s both,
+    noteFloat 8s ease-in-out 5s infinite;
 }
-.ready .note{opacity:1;transform:none;}
+@keyframes noteIn{
+  from{opacity:0;transform:translate(58px,14px) scale(.98);filter:blur(4px);}
+  to  {opacity:1;transform:none;filter:blur(0);}
+}
+@keyframes noteFloat{
+  0%,100%{transform:translate(0,0) rotate(0deg);}
+  25%    {transform:translate(-2px,-5px) rotate(-.22deg);}
+  50%    {transform:translate(1.5px,-2px) rotate(.14deg);}
+  75%    {transform:translate(2px,-6px) rotate(.2deg);}
+}
 
 /* ── БЛОКИ НИЖЕ ПЕРВОГО ЭКРАНА ───────────────────────────── */
 .page{
@@ -409,13 +422,15 @@ h1 .l > span{
   .media{
     position:relative;left:auto;width:auto;translate:none;
     top:auto;bottom:auto;z-index:0;
-    height:clamp(300px,80vw,420px);
+    height:clamp(320px,96vw,460px);
     border-radius:var(--radius);
   }
+  /* то же основное фото, что и на ПК; прижато вправо, чтобы в кадр
+     попали оба, а слева осталась тёмная стена */
   .photo{
     inset:0;
-    background-image:url("assets/hero-duo-portrait.jpg");
-    background-position:center 10%;
+    background-image:url("assets/hero-duo-wide.jpg");
+    background-position:right center;
   }
   .photo-in{
     -webkit-mask-image:linear-gradient(to bottom,#000 0,#000 68%,transparent 100%);
@@ -720,27 +735,30 @@ h1 .l > span{
     blocks.forEach(function (el) { io.observe(el); });
   }
 
-  // Номер прижимаем к тому месту, где голова становится видна.
-  // Геометрически волосы начинаются раньше, но там их гасит затемнение,
-  // а его градиент задан в долях ширины — поэтому и считаем в долях.
-  var HEAD_EDGE = 0.79, GAP = 22, BTN_GAP = 26;
+  // Номер держим левее головы. Считаем по самому кадру, а не в долях
+  // экрана: при узком окне cover срезает бока, и голова уезжает влево —
+  // тогда любая доля от ширины рано или поздно окажется на лице.
+  var IMG_W = 1592, IMG_H = 891, HEAD_X = 820, GAP = 24, BTN_GAP = 26;
 
   function placePhone() {
+    var media = document.querySelector('.media');
     var phone = document.querySelector('.phone');
     var bar = document.querySelector('.topbar');
     var brand = document.querySelector('.brand');
     var pill = document.querySelector('.pill');
-    if (!phone || !bar || !brand) return;
+    if (!media || !phone || !bar || !brand) return;
     if (getComputedStyle(phone).display === 'none') { phone.style.left = ''; return; }
 
+    var m = media.getBoundingClientRect();
     var b = bar.getBoundingClientRect();
-    var left = window.innerWidth * HEAD_EDGE - GAP - phone.offsetWidth - b.left;
+    var scale = Math.max(m.width / IMG_W, m.height / IMG_H);
+    var headX = m.left + (m.width - IMG_W * scale) / 2 + HEAD_X * scale;
 
-    var minLeft = brand.getBoundingClientRect().right - b.left + 28;
+    var left = headX - GAP - phone.offsetWidth - b.left;
     if (pill) {
-      var maxLeft = pill.getBoundingClientRect().left - b.left - BTN_GAP - phone.offsetWidth;
-      left = Math.min(left, maxLeft);
+      left = Math.min(left, pill.getBoundingClientRect().left - b.left - BTN_GAP - phone.offsetWidth);
     }
+    var minLeft = brand.getBoundingClientRect().right - b.left + 24;
     phone.style.left = Math.max(minLeft, left) + 'px';
   }
 
