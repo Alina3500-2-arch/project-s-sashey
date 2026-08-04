@@ -153,7 +153,7 @@ a{color:inherit;text-decoration:none;}
 }
 /* номер над кнопкой: так он не зависит от кадра вообще */
 .topbar-right{
-  display:flex;flex-direction:column;align-items:flex-end;
+  display:flex;flex-direction:column;align-items:center;
   gap:clamp(8px,.9vw,12px);
 }
 .phone{
@@ -391,7 +391,7 @@ h1 .l > span{
 
 
 /* ═══ ОБЩЕЕ ДЛЯ НОВЫХ БЛОКОВ ═════════════════════════════ */
-.sec{margin-top:clamp(48px,7vw,110px);}
+.sec{margin-top:clamp(34px,4.6vw,74px);}
 .sec-num{
   display:block;margin:0 0 clamp(10px,1.4vw,16px);
   font-family:var(--serif);font-size:clamp(15px,1.5vw,19px);
@@ -446,18 +446,18 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 .piece + .piece{box-shadow:inset 1px 0 0 rgba(42,39,35,.9);}
 .split.torn .piece{box-shadow:none;border-radius:3px;}
 .split.torn .piece:nth-child(1){
-  transform:translateX(-5px) rotate(-.45deg);
+  transform:translate(-7px,3px) rotate(-1.3deg);
   clip-path:polygon(0 0,98.6% 0,100% 8%,97.4% 17%,99.5% 26%,97.1% 35%,99.8% 44%,
     97.3% 53%,99.4% 62%,96.9% 71%,99.2% 80%,97.5% 89%,99.7% 96%,98.1% 100%,0 100%);
 }
 .split.torn .piece:nth-child(2){
-  transform:translateY(2px);
+  transform:translateY(-3px) rotate(.5deg);
   clip-path:polygon(1.4% 0,98.8% 0,100% 9%,97.6% 18%,99.6% 27%,97.2% 36%,99.9% 45%,
     97.4% 54%,99.5% 63%,97% 72%,99.3% 81%,97.6% 90%,99.8% 97%,98.2% 100%,
     1.8% 100%,.2% 92%,2.6% 83%,.5% 74%,2.9% 65%,.1% 56%,2.7% 47%,.6% 38%,3% 29%,.8% 20%,2.4% 11%);
 }
 .split.torn .piece:nth-child(3){
-  transform:translateX(5px) rotate(.4deg);
+  transform:translate(7px,4px) rotate(1.15deg);
   clip-path:polygon(1.6% 0,100% 0,100% 100%,1.9% 100%,.3% 91%,2.7% 82%,.6% 73%,
     3% 64%,.2% 55%,2.8% 46%,.7% 37%,3.1% 28%,.9% 19%,2.5% 10%);
 }
@@ -490,51 +490,57 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 /* панель «Управляемость» */
 .control{
   position:relative;margin-top:clamp(30px,3.8vw,54px);
-  border:1px solid rgba(168,220,40,.45);border-radius:var(--radius);
-  padding:clamp(34px,4vw,56px) clamp(22px,3vw,46px) clamp(28px,3.2vw,44px);
-  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  border:1px solid rgba(168,220,40,.5);border-radius:var(--radius);
+  padding:clamp(36px,4.2vw,58px) clamp(24px,3.2vw,50px) clamp(30px,3.4vw,48px);
+  display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,1fr);
   gap:clamp(24px,3.4vw,54px);align-items:center;
 }
+/* подпись врезана в верхнюю рамку, по бокам — короткие штрихи */
 .control-label{
   position:absolute;top:0;left:50%;translate:-50% -50%;
-  background:var(--graphite);padding:0 18px;
+  display:flex;align-items:center;gap:14px;
+  background:var(--graphite);padding:0 14px;
   font-size:clamp(9.5px,.82vw,11.5px);font-weight:600;
   letter-spacing:.3em;text-transform:uppercase;color:var(--green);
+  white-space:nowrap;
+}
+.control-label::before,.control-label::after{
+  content:"";width:clamp(14px,1.6vw,26px);height:1px;background:rgba(168,220,40,.55);
 }
 .chain{display:flex;align-items:center;justify-content:flex-start;}
 .node{
-  flex:none;display:grid;place-items:center;gap:5px;
-  width:clamp(76px,7vw,98px);aspect-ratio:1;border-radius:50%;
-  border:1px solid rgba(168,220,40,.6);
+  flex:none;display:grid;place-items:center;gap:6px;
+  width:clamp(80px,7.6vw,104px);aspect-ratio:1;border-radius:50%;
+  border:1px solid rgba(168,220,40,.65);
   opacity:0;scale:.85;
   transition:opacity .55s var(--ease),scale .55s var(--ease);
   transition-delay:calc(var(--i) * 300ms);
 }
 .seen .node{opacity:1;scale:1;}
-.node svg{width:22px;height:22px;stroke:var(--green);fill:none;stroke-width:1.4;}
+.node svg{width:23px;height:23px;stroke:var(--green);fill:none;stroke-width:1.4;}
 .node b{
   font-size:clamp(8px,.72vw,10px);font-weight:600;
   letter-spacing:.14em;text-transform:uppercase;color:rgba(241,233,220,.92);
 }
 .link{
-  flex:0 0 auto;width:clamp(18px,2.2vw,34px);height:1px;
-  background:rgba(168,220,40,.6);
+  flex:0 0 auto;width:clamp(16px,2vw,30px);height:1px;
+  background:rgba(168,220,40,.65);
   transform-origin:left;scale:0 1;
   transition:scale .45s var(--ease);
   transition-delay:calc((var(--i) * 300ms) + 150ms);
 }
 .seen .link{scale:1 1;}
 .chain-arrow{
-  flex:none;width:clamp(34px,3.6vw,52px);height:12px;margin-left:clamp(10px,1.4vw,18px);
-  opacity:0;transform:translateX(-10px);
+  flex:none;width:clamp(44px,4.6vw,68px);height:14px;margin-left:clamp(14px,1.8vw,26px);
+  opacity:0;transform:translateX(-12px);
   transition:opacity .5s var(--ease) 1.2s,transform .6s var(--ease) 1.2s;
 }
 .seen .chain-arrow{opacity:1;transform:none;}
-.chain-arrow svg{width:100%;height:100%;stroke:var(--green);fill:none;stroke-width:1.4;}
+.chain-arrow svg{width:100%;height:100%;stroke:var(--green);fill:none;stroke-width:1.5;}
 .control h3{
   margin:0 0 12px;font-family:var(--serif);font-weight:400;
-  font-size:clamp(17px,1.75vw,25px);line-height:1.22;
-  text-transform:uppercase;letter-spacing:.02em;color:var(--green);
+  font-size:clamp(17px,1.75vw,25px);line-height:1.24;
+  text-transform:uppercase;letter-spacing:.03em;color:var(--green);
 }
 .control p{margin:0;font-size:clamp(13px,1.05vw,16px);line-height:1.6;color:rgba(241,233,220,.76);}
 
@@ -1036,7 +1042,6 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 
   <!-- 01 ─ Все делают свой кусок -->
   <section class="sec reveal">
-    <span class="sec-num">01</span>
     <h2 class="sec-title">Все делают<br />свой кусок</h2>
 
     <div class="split" id="split">
@@ -1096,8 +1101,8 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
           </svg><b>CRM</b>
         </span>
         <span class="chain-arrow">
-          <svg viewBox="0 0 44 12" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M0 6h40M35 1.5 40.5 6 35 10.5"/>
+          <svg viewBox="0 0 68 14" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M0 7h62M55.5 1.5 62.5 7 55.5 12.5"/>
           </svg>
         </span>
       </div>
@@ -1110,7 +1115,6 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 
   <!-- 02 ─ Четыре шага -->
   <section class="sec reveal">
-    <span class="sec-num">02</span>
     <h2 class="sec-title low">Четыре шага,<br />а не одна услуга</h2>
     <p class="sec-lead">Каждый следующий шаг начинается только тогда, когда предыдущий дал цифры.</p>
 
@@ -1209,28 +1213,28 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
     blocks.forEach(function (el) { io.observe(el); });
   }
 
-  // Лист сначала приезжает целым, и только потом расходится на куски.
+  // Лист приезжает целым и рвётся; при уходе с экрана собирается обратно,
+  // поэтому разрыв показывается заново на каждой прокрутке.
   var split = document.getElementById('split');
   if (split) {
-    if (reduce) {
+    if (reduce || !('IntersectionObserver' in window)) {
       split.classList.add('torn');
-    } else if ('IntersectionObserver' in window) {
+    } else {
+      var tearTimer = null;
       var so = new IntersectionObserver(function (es) {
         es.forEach(function (e) {
-          if (!e.isIntersecting) return;
-          so.unobserve(e.target);
-          setTimeout(function () { split.classList.add('torn'); }, 900);
+          clearTimeout(tearTimer);
+          if (e.isIntersecting) {
+            tearTimer = setTimeout(function () { split.classList.add('torn'); }, 900);
+          } else {
+            split.classList.remove('torn');
+          }
         });
-      }, { threshold: 0.35 });
+      }, { threshold: 0.3 });
       so.observe(split);
-    } else {
-      split.classList.add('torn');
     }
   }
 
-  // Номер держим левее головы. Считаем по самому кадру, а не в долях
-  // экрана: при узком окне cover срезает бока, и голова уезжает влево —
-  // тогда любая доля от ширины рано или поздно окажется на лице.
 })();
 </script>
 
