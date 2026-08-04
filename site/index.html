@@ -151,13 +151,13 @@ a{color:inherit;text-decoration:none;}
   font-size:clamp(12px,1.3vw,18px);
   line-height:1.24;letter-spacing:.19em;text-transform:uppercase;
 }
-.topbar-right{display:flex;align-items:center;gap:clamp(14px,2vw,32px);}
-/* Номер стоит вплотную слева от головы. Кадр по cover при смене
-   пропорций окна подъезжает вбок, поэтому положение считает скрипт
-   по геометрии самого кадра, а не в процентах от экрана. */
+/* номер над кнопкой: так он не зависит от кадра вообще */
+.topbar-right{
+  display:flex;flex-direction:column;align-items:flex-end;
+  gap:clamp(8px,.9vw,12px);
+}
 .phone{
-  position:absolute;top:50%;translate:0 -50%;left:0;
-  font-size:clamp(14px,1.15vw,17px);white-space:nowrap;
+  font-size:clamp(14px,1.15vw,17px);white-space:nowrap;letter-spacing:.02em;
   transition:color .3s var(--ease);
 }
 .phone:hover{color:var(--green);}
@@ -423,37 +423,65 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 .stagger.seen > *{opacity:1;transform:none;}
 
 /* ═══ 01. ВСЕ ДЕЛАЮТ СВОЙ КУСОК ══════════════════════════ */
-.pieces{
-  display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;
-  align-items:stretch;gap:clamp(10px,1.4vw,18px);
+.split{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr)) auto;
+  align-items:stretch;
+  gap:0;                              /* целый лист */
+  transition:gap .75s var(--ease) .1s;
 }
+.split.torn{gap:clamp(9px,1.2vw,16px);}
+
 .piece{
-  background:var(--card);border:1px solid var(--line);
-  border-radius:var(--radius);padding:clamp(16px,1.9vw,24px);
+  background:var(--card);
+  border-block:1px solid var(--line);
+  padding:clamp(15px,1.8vw,23px);
   position:relative;
+  transition:transform .75s var(--ease) .1s;
 }
-.piece-ico{display:block;width:26px;height:26px;stroke:var(--grey);fill:none;stroke-width:1.5;margin-bottom:12px;}
+.piece:first-child{border-left:1px solid var(--line);border-radius:14px 0 0 14px;}
+.split .piece:nth-child(3){border-right:1px solid var(--line);border-radius:0 14px 14px 0;}
+
+/* пока лист целый — тонкие линии сгиба; после разрыва их сменяют рваные края */
+.piece + .piece{box-shadow:inset 1px 0 0 rgba(42,39,35,.9);}
+.split.torn .piece{box-shadow:none;border-radius:3px;}
+.split.torn .piece:nth-child(1){
+  transform:translateX(-5px) rotate(-.45deg);
+  clip-path:polygon(0 0,98.6% 0,100% 8%,97.4% 17%,99.5% 26%,97.1% 35%,99.8% 44%,
+    97.3% 53%,99.4% 62%,96.9% 71%,99.2% 80%,97.5% 89%,99.7% 96%,98.1% 100%,0 100%);
+}
+.split.torn .piece:nth-child(2){
+  transform:translateY(2px);
+  clip-path:polygon(1.4% 0,98.8% 0,100% 9%,97.6% 18%,99.6% 27%,97.2% 36%,99.9% 45%,
+    97.4% 54%,99.5% 63%,97% 72%,99.3% 81%,97.6% 90%,99.8% 97%,98.2% 100%,
+    1.8% 100%,.2% 92%,2.6% 83%,.5% 74%,2.9% 65%,.1% 56%,2.7% 47%,.6% 38%,3% 29%,.8% 20%,2.4% 11%);
+}
+.split.torn .piece:nth-child(3){
+  transform:translateX(5px) rotate(.4deg);
+  clip-path:polygon(1.6% 0,100% 0,100% 100%,1.9% 100%,.3% 91%,2.7% 82%,.6% 73%,
+    3% 64%,.2% 55%,2.8% 46%,.7% 37%,3.1% 28%,.9% 19%,2.5% 10%);
+}
+
+.piece-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;}
+.piece-ico{flex:none;width:24px;height:24px;stroke:var(--grey);fill:none;stroke-width:1.5;margin-top:1px;}
 .piece h3{
-  margin:0 0 4px;font-size:clamp(11px,1vw,13px);font-weight:600;
+  margin:0 0 3px;font-size:clamp(11px,1vw,13px);font-weight:600;
   letter-spacing:.16em;text-transform:uppercase;
 }
-.piece .by{display:block;font-size:clamp(11px,.92vw,13px);color:var(--grey);margin-bottom:14px;}
+.piece .by{display:block;font-size:clamp(11px,.92vw,13px);color:var(--grey);}
 .piece p{
   margin:0;padding-top:14px;border-top:1px solid var(--line);
   font-size:clamp(12px,.98vw,14px);line-height:1.55;color:rgba(241,233,220,.7);
 }
-/* стрелки-разрывы между карточками */
-.piece + .piece::before{
-  content:"";position:absolute;left:calc(-1 * clamp(10px,1.4vw,18px) / 2 - 4px);top:50%;
-  translate:0 -50%;width:8px;height:14px;
-  background:var(--grey);opacity:.45;
-  clip-path:polygon(0 0,100% 50%,0 100%,0 78%,58% 50%,0 22%);
-}
+
 .nobody{
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
-  padding-inline:clamp(8px,1.4vw,20px);text-align:center;
+  padding-inline:clamp(12px,1.8vw,26px);text-align:center;
+  opacity:0;transform:scale(.8);
+  transition:opacity .5s var(--ease),transform .5s var(--ease);
 }
-.nobody svg{width:30px;height:30px;stroke:var(--grey);stroke-width:1.4;}
+.split.torn .nobody{opacity:1;transform:none;transition-delay:.5s;}
+.nobody svg{width:30px;height:30px;stroke:#E24C3F;stroke-width:1.8;}
 .nobody span{
   font-size:clamp(9.5px,.8vw,11px);font-weight:600;
   letter-spacing:.18em;text-transform:uppercase;color:var(--grey);line-height:1.5;
@@ -461,51 +489,51 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 
 /* панель «Управляемость» */
 .control{
-  position:relative;margin-top:clamp(26px,3.4vw,48px);
+  position:relative;margin-top:clamp(30px,3.8vw,54px);
   border:1px solid rgba(168,220,40,.45);border-radius:var(--radius);
-  padding:clamp(30px,3.6vw,52px) clamp(20px,3vw,44px) clamp(24px,3vw,40px);
-  display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);
-  gap:clamp(24px,3.4vw,52px);align-items:center;
+  padding:clamp(34px,4vw,56px) clamp(22px,3vw,46px) clamp(28px,3.2vw,44px);
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:clamp(24px,3.4vw,54px);align-items:center;
 }
 .control-label{
   position:absolute;top:0;left:50%;translate:-50% -50%;
-  background:var(--graphite);padding:0 16px;
+  background:var(--graphite);padding:0 18px;
   font-size:clamp(9.5px,.82vw,11.5px);font-weight:600;
   letter-spacing:.3em;text-transform:uppercase;color:var(--green);
 }
-.chain{display:flex;align-items:center;justify-content:center;gap:0;}
+.chain{display:flex;align-items:center;justify-content:flex-start;}
 .node{
-  flex:none;display:grid;place-items:center;gap:6px;
-  width:clamp(74px,7.4vw,104px);aspect-ratio:1;border-radius:50%;
-  border:1px solid rgba(168,220,40,.55);
-  opacity:0;scale:.86;
-  transition:opacity .6s var(--ease),scale .6s var(--ease);
-  transition-delay:calc(var(--i) * 260ms);
+  flex:none;display:grid;place-items:center;gap:5px;
+  width:clamp(76px,7vw,98px);aspect-ratio:1;border-radius:50%;
+  border:1px solid rgba(168,220,40,.6);
+  opacity:0;scale:.85;
+  transition:opacity .55s var(--ease),scale .55s var(--ease);
+  transition-delay:calc(var(--i) * 300ms);
 }
 .seen .node{opacity:1;scale:1;}
-.node svg{width:24px;height:24px;stroke:var(--green);fill:none;stroke-width:1.4;}
+.node svg{width:22px;height:22px;stroke:var(--green);fill:none;stroke-width:1.4;}
 .node b{
-  font-size:clamp(8.5px,.75vw,10.5px);font-weight:600;
-  letter-spacing:.14em;text-transform:uppercase;color:rgba(241,233,220,.9);
+  font-size:clamp(8px,.72vw,10px);font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;color:rgba(241,233,220,.92);
 }
 .link{
-  flex:1 1 auto;height:1px;max-width:46px;
-  background:rgba(168,220,40,.55);
+  flex:0 0 auto;width:clamp(18px,2.2vw,34px);height:1px;
+  background:rgba(168,220,40,.6);
   transform-origin:left;scale:0 1;
-  transition:scale .5s var(--ease);
-  transition-delay:calc((var(--i) * 260ms) + 130ms);
+  transition:scale .45s var(--ease);
+  transition-delay:calc((var(--i) * 300ms) + 150ms);
 }
 .seen .link{scale:1 1;}
 .chain-arrow{
-  flex:none;width:44px;height:12px;margin-left:6px;
-  opacity:0;transform:translateX(-8px);
-  transition:opacity .5s var(--ease) 1.1s,transform .6s var(--ease) 1.1s;
+  flex:none;width:clamp(34px,3.6vw,52px);height:12px;margin-left:clamp(10px,1.4vw,18px);
+  opacity:0;transform:translateX(-10px);
+  transition:opacity .5s var(--ease) 1.2s,transform .6s var(--ease) 1.2s;
 }
 .seen .chain-arrow{opacity:1;transform:none;}
 .chain-arrow svg{width:100%;height:100%;stroke:var(--green);fill:none;stroke-width:1.4;}
 .control h3{
   margin:0 0 12px;font-family:var(--serif);font-weight:400;
-  font-size:clamp(17px,1.8vw,25px);line-height:1.2;
+  font-size:clamp(17px,1.75vw,25px);line-height:1.22;
   text-transform:uppercase;letter-spacing:.02em;color:var(--green);
 }
 .control p{margin:0;font-size:clamp(13px,1.05vw,16px);line-height:1.6;color:rgba(241,233,220,.76);}
@@ -773,11 +801,11 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 
 /* ── НОВЫЕ БЛОКИ НА УЗКИХ ЭКРАНАХ ───────────────────────── */
 @media (max-width:900px){
-  .pieces{grid-template-columns:1fr;}
-  .piece + .piece::before{
-    left:50%;top:calc(-1 * clamp(10px,1.4vw,18px) / 2 - 5px);
-    translate:-50% 0;rotate:90deg;
-  }
+  .split{grid-template-columns:1fr;gap:0;}
+  .split.torn{gap:clamp(9px,2.4vw,16px);}
+  .piece:first-child,.split .piece:nth-child(3){border-radius:14px;}
+  .piece{border-inline:1px solid var(--line);}
+  .split.torn .piece{transform:none !important;clip-path:none !important;border-radius:14px;}
   .nobody{flex-direction:row;gap:16px;padding:clamp(12px,3vw,18px);}
   .nobody span{text-align:left;}
   .control{grid-template-columns:1fr;gap:clamp(20px,4vw,30px);}
@@ -849,8 +877,8 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 </svg>
       <span class="brand-name">Аполлонов<br />и Шигапова</span>
     </a>
-    <a class="phone rise" style="--d:180ms" href="tel:+79201461140">+7 (920) 146-11-40</a>
     <div class="topbar-right">
+      <a class="phone rise" style="--d:180ms" href="tel:+79201461140">+7 (920) 146-11-40</a>
       <a class="pill rise" style="--d:260ms" href="tel:+79201461140">
         Позвонить
         <svg class="arr" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
@@ -972,34 +1000,74 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
     </li>
   </ul>
 
+  <section class="how">
+    <h2 class="reveal">Как мы работаем</h2>
+    <ol class="steps">
+      <li class="reveal">
+        <span class="step-n">01</span>
+        <h3>Диагностика</h3>
+        <p>Разбираем бизнес, находим потери и точки роста.</p>
+      </li>
+      <li class="reveal" style="transition-delay:120ms">
+        <span class="step-n">02</span>
+        <h3>Конкретные решения</h3>
+        <p>Даём план действий и приоритеты.</p>
+      </li>
+      <li class="reveal" style="transition-delay:240ms">
+        <span class="step-n">03</span>
+        <h3>Внедрение и рост</h3>
+        <p>Помогаем внедрить и масштабировать результат.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="final reveal">
+    <div>
+      <h2>Готовы навести порядок в продажах и вырастить выручку?</h2>
+      <p>Начнём с бесплатного аудита.</p>
+    </div>
+    <a class="cta" href="#audit">
+      Бесплатный аудит
+      <svg class="arr" width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+        <path d="M2 10L10 2M10 2H3.5M10 2V8.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+    </a>
+  </section>
+
   <!-- 01 ─ Все делают свой кусок -->
   <section class="sec reveal">
     <span class="sec-num">01</span>
     <h2 class="sec-title">Все делают<br />свой кусок</h2>
 
-    <div class="pieces stagger reveal">
-      <article class="piece" style="--i:0">
-        <svg class="piece-ico" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <rect x="2.5" y="4" width="19" height="13" rx="1.6"/><path d="M9 21h6M12 17v4"/>
-        </svg>
-        <h3>Сайт</h3><span class="by">у одного подрядчика</span>
+    <div class="split" id="split">
+      <article class="piece">
+        <div class="piece-head">
+          <svg class="piece-ico" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2.5" y="4" width="19" height="13" rx="1.6"/><path d="M9 21h6M12 17v4"/>
+          </svg>
+          <span><h3>Сайт</h3><span class="by">у одного подрядчика</span></span>
+        </div>
         <p>Сайт — у одного подрядчика, реклама — у другого, CRM — у третьего.</p>
       </article>
-      <article class="piece" style="--i:1">
-        <svg class="piece-ico" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M3 10v4a1 1 0 0 0 1 1h3l7 4V5L7 9H4a1 1 0 0 0-1 1Z"/><path d="M18 9.2a4 4 0 0 1 0 5.6"/>
-        </svg>
-        <h3>Реклама</h3><span class="by">у другого подрядчика</span>
+      <article class="piece">
+        <div class="piece-head">
+          <svg class="piece-ico" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 10v4a1 1 0 0 0 1 1h3l7 4V5L7 9H4a1 1 0 0 0-1 1Z"/><path d="M18 9.2a4 4 0 0 1 0 5.6"/>
+          </svg>
+          <span><h3>Реклама</h3><span class="by">у другого подрядчика</span></span>
+        </div>
         <p>Каждый закрыл свою задачу и ушёл.</p>
       </article>
-      <article class="piece" style="--i:2">
-        <svg class="piece-ico" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>
-        </svg>
-        <h3>CRM</h3><span class="by">у третьего подрядчика</span>
+      <article class="piece">
+        <div class="piece-head">
+          <svg class="piece-ico" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>
+          </svg>
+          <span><h3>CRM</h3><span class="by">у третьего подрядчика</span></span>
+        </div>
         <p>Продажи при этом не выросли, а спросить не с кого.</p>
       </article>
-      <div class="nobody" style="--i:3">
+      <div class="nobody">
         <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" aria-hidden="true">
           <path d="M5 5l14 14M19 5L5 19"/>
         </svg>
@@ -1141,40 +1209,28 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
     blocks.forEach(function (el) { io.observe(el); });
   }
 
+  // Лист сначала приезжает целым, и только потом расходится на куски.
+  var split = document.getElementById('split');
+  if (split) {
+    if (reduce) {
+      split.classList.add('torn');
+    } else if ('IntersectionObserver' in window) {
+      var so = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          so.unobserve(e.target);
+          setTimeout(function () { split.classList.add('torn'); }, 900);
+        });
+      }, { threshold: 0.35 });
+      so.observe(split);
+    } else {
+      split.classList.add('torn');
+    }
+  }
+
   // Номер держим левее головы. Считаем по самому кадру, а не в долях
   // экрана: при узком окне cover срезает бока, и голова уезжает влево —
   // тогда любая доля от ширины рано или поздно окажется на лице.
-  // HEAD_X — левый край головы в ВЕРХНЕЙ полосе кадра (строки 0-120),
-  // там она начинается на 956 px, а не на 820 как ниже по росту.
-  // Строка номера попадает именно в эту полосу.
-  var IMG_W = 1592, IMG_H = 891, HEAD_X = 956;
-  var GAP = 18, BTN_GAP = 26, VISIBLE_EDGE = 0.79;
-
-  function placePhone() {
-    var media = document.querySelector('.media');
-    var phone = document.querySelector('.phone');
-    var bar = document.querySelector('.topbar');
-    var brand = document.querySelector('.brand');
-    var pill = document.querySelector('.pill');
-    if (!media || !phone || !bar || !brand) return;
-    if (getComputedStyle(phone).display === 'none') { phone.style.left = ''; return; }
-
-    var m = media.getBoundingClientRect();
-    var b = bar.getBoundingClientRect();
-    var scale = Math.max(m.width / IMG_W, m.height / IMG_H);
-    var headX = m.left + (m.width - IMG_W * scale) / 2 + HEAD_X * scale;
-    var right = Math.min(headX - GAP, window.innerWidth * VISIBLE_EDGE);
-    if (pill) right = Math.min(right, pill.getBoundingClientRect().left - BTN_GAP);
-
-    var left = right - phone.offsetWidth - b.left;
-    var minLeft = brand.getBoundingClientRect().right - b.left + 24;
-    phone.style.left = Math.max(minLeft, left) + 'px';
-  }
-
-  placePhone();
-  window.addEventListener('resize', placePhone, { passive: true });
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(placePhone);
-
 })();
 </script>
 
