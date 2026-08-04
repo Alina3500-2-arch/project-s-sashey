@@ -177,8 +177,8 @@ a{color:inherit;text-decoration:none;}
 /* круглая кнопка звонка — только на телефоне */
 .call{
   display:none;place-items:center;
-  width:52px;height:42px;
-  border:1px solid var(--green);border-radius:999px;color:var(--green);flex:none;
+  width:clamp(44px,5.2vw,52px);aspect-ratio:1;   /* ровный круг, не овал */
+  border:1px solid var(--green);border-radius:50%;color:var(--green);flex:none;
 }
 .call svg{width:20px;height:20px;}
 
@@ -415,7 +415,7 @@ h1 .l > span{
      под заголовок и уходит в правый край экрана. */
   .media{
     position:absolute;
-    top:12.5%;left:37%;right:calc(var(--pad) * -1);
+    top:12.5%;left:max(37%,178px);right:calc(var(--pad) * -1);
     bottom:auto;height:auto;aspect-ratio:.9;
     width:auto;translate:none;z-index:0;
     border-radius:0;
@@ -457,7 +457,7 @@ h1 .l > span{
   h1{font-size:clamp(30px,7vw,70px);line-height:.96;margin-bottom:clamp(14px,2.6vw,26px);}
   h1 .l2{font-size:1em;}
   h1 .l3,h1 .l4{font-size:1em;}
-  .lead{max-width:40%;font-size:clamp(13px,1.95vw,19px);margin-bottom:clamp(16px,3vw,30px);}
+  .lead{max-width:max(40%,168px);font-size:clamp(13px,1.95vw,19px);margin-bottom:clamp(16px,3vw,30px);}
   .cta{width:auto;align-self:flex-start;padding-inline:clamp(22px,3.4vw,42px);}
   .eyebrow{font-size:clamp(12px,1.75vw,17px);}
   /* цитата — узким блоком справа, как в макете */
@@ -517,32 +517,16 @@ h1 .l > span{
   .page{padding-top:clamp(14px,3.2vw,20px);}
 }
 
-/* Ниже 620 px две колонки нечитаемы: строка заголовка не помещается,
-   а лид ужимается до 140 px. Фото возвращается полосой над текстом. */
-@media (max-width:620px){
-  .media{
-    position:relative;top:auto;left:auto;right:auto;
-    aspect-ratio:auto;height:clamp(300px,92vw,430px);
-    border-radius:var(--radius);
+/* Узкие телефоны: раскладка та же, что в макете, только ячейки
+   компактнее — иначе подписи в три колонки обрезаются. */
+@media (max-width:560px){
+  .features li,.strip-3 > *{
+    flex-direction:column;align-items:flex-start;gap:9px;
+    padding-inline:clamp(9px,2.6vw,14px);
   }
-  .photo{-webkit-mask-image:none;mask-image:none;}
-  .photo-in{
-    -webkit-mask-image:linear-gradient(to bottom,#000 0,#000 70%,transparent 100%);
-    mask-image:linear-gradient(to bottom,#000 0,#000 70%,transparent 100%);
-  }
-  h1{font-size:clamp(30px,9vw,52px);}
-  .lead{max-width:none;font-size:clamp(14px,4vw,16px);}
-  .cta{width:100%;align-self:stretch;}
-  .note{width:auto;align-self:stretch;}
-  .features,.authors{grid-template-columns:1fr;}
-  .features li,.authors .who{border-left:none;border-top:1px solid var(--line);}
-  .features li:first-child,.authors .who:first-child{border-top:none;}
-
-  .strip-3{grid-template-columns:1fr;}
-  .strip-3 > *{border-left:none;border-top:1px solid var(--line);}
-  .strip-3 > *:first-child{border-top:none;}
-  .strip-trust > *{flex-direction:row;text-align:left;}
-
+  .strip-trust > *{align-items:center;}
+  .label{font-size:10px;letter-spacing:.07em;line-height:1.35;}
+  .ico,.strip .ico{width:32px;}
   .steps{grid-template-columns:1fr;gap:clamp(30px,7vw,38px);}
   .steps li:not(:last-child)::after{
     top:100%;right:50%;translate:50% calc(-50% + var(--sgap)/2);rotate:90deg;
@@ -581,16 +565,15 @@ h1 .l > span{
 </svg>
       <span class="brand-name">Аполлонов<br />и Шигапова</span>
     </a>
-    <!-- TODO: подставить рабочий номер -->
-    <a class="phone rise" style="--d:180ms" href="tel:+79991234567">+7 999 123-45-67</a>
+    <a class="phone rise" style="--d:180ms" href="tel:+79201461140">+7 (920) 146-11-40</a>
     <div class="topbar-right">
-      <a class="pill rise" style="--d:260ms" href="tel:+79991234567">
+      <a class="pill rise" style="--d:260ms" href="tel:+79201461140">
         Позвонить
         <svg class="arr" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
           <path d="M2 10L10 2M10 2H3.5M10 2V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
         </svg>
       </a>
-      <a class="call rise" style="--d:180ms" href="tel:+79991234567" aria-label="Позвонить">
+      <a class="call rise" style="--d:180ms" href="tel:+79201461140" aria-label="Позвонить">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M15.5 21A12.5 12.5 0 0 1 3 8.5 2.5 2.5 0 0 1 5.5 6h1.6a1 1 0 0 1 1 .8l.7 3a1 1 0 0 1-.3.95l-1.3 1.2a10 10 0 0 0 4.35 4.35l1.2-1.3a1 1 0 0 1 .95-.3l3 .7a1 1 0 0 1 .8 1v1.6A2.5 2.5 0 0 1 15.5 21Z"/>
@@ -764,7 +747,11 @@ h1 .l > span{
   // Номер держим левее головы. Считаем по самому кадру, а не в долях
   // экрана: при узком окне cover срезает бока, и голова уезжает влево —
   // тогда любая доля от ширины рано или поздно окажется на лице.
-  var IMG_W = 1592, IMG_H = 891, HEAD_X = 820, GAP = 16, BTN_GAP = 26;
+  // HEAD_X — левый край головы в ВЕРХНЕЙ полосе кадра (строки 0-120),
+  // там она начинается на 956 px, а не на 820 как ниже по росту.
+  // Строка номера попадает именно в эту полосу.
+  var IMG_W = 1592, IMG_H = 891, HEAD_X = 956;
+  var GAP = 18, BTN_GAP = 26, VISIBLE_EDGE = 0.79;
 
   function placePhone() {
     var media = document.querySelector('.media');
@@ -779,11 +766,10 @@ h1 .l > span{
     var b = bar.getBoundingClientRect();
     var scale = Math.max(m.width / IMG_W, m.height / IMG_H);
     var headX = m.left + (m.width - IMG_W * scale) / 2 + HEAD_X * scale;
+    var right = Math.min(headX - GAP, window.innerWidth * VISIBLE_EDGE);
+    if (pill) right = Math.min(right, pill.getBoundingClientRect().left - BTN_GAP);
 
-    var left = headX - GAP - phone.offsetWidth - b.left;
-    if (pill) {
-      left = Math.min(left, pill.getBoundingClientRect().left - b.left - BTN_GAP - phone.offsetWidth);
-    }
+    var left = right - phone.offsetWidth - b.left;
     var minLeft = brand.getBoundingClientRect().right - b.left + 24;
     phone.style.left = Math.max(minLeft, left) + 'px';
   }
