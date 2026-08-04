@@ -428,16 +428,15 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   grid-template-columns:repeat(3,minmax(0,1fr)) auto;
   align-items:stretch;
   gap:0;                              /* целый лист */
-  transition:gap .75s var(--ease) .1s;
+  transition:gap 1.7s cubic-bezier(.18,.86,.22,1) .12s;
 }
-.split.torn{gap:clamp(9px,1.2vw,16px);}
+.split.torn{gap:clamp(11px,1.5vw,20px);}
 
 .piece{
   background:var(--card);
   border-block:1px solid var(--line);
   padding:clamp(15px,1.8vw,23px);
   position:relative;
-  transition:transform .75s var(--ease) .1s;
 }
 .piece:first-child{border-left:1px solid var(--line);border-radius:14px 0 0 14px;}
 .split .piece:nth-child(3){border-right:1px solid var(--line);border-radius:0 14px 14px 0;}
@@ -446,20 +445,40 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 .piece + .piece{box-shadow:inset 1px 0 0 rgba(42,39,35,.9);}
 .split.torn .piece{box-shadow:none;border-radius:3px;}
 .split.torn .piece:nth-child(1){
-  transform:translate(-7px,3px) rotate(-1.3deg);
+  animation:ripLeft 1.9s cubic-bezier(.18,.86,.22,1) both;
   clip-path:polygon(0 0,98.6% 0,100% 8%,97.4% 17%,99.5% 26%,97.1% 35%,99.8% 44%,
     97.3% 53%,99.4% 62%,96.9% 71%,99.2% 80%,97.5% 89%,99.7% 96%,98.1% 100%,0 100%);
 }
 .split.torn .piece:nth-child(2){
-  transform:translateY(-3px) rotate(.5deg);
+  animation:ripMid 1.7s cubic-bezier(.18,.86,.22,1) .08s both;
   clip-path:polygon(1.4% 0,98.8% 0,100% 9%,97.6% 18%,99.6% 27%,97.2% 36%,99.9% 45%,
     97.4% 54%,99.5% 63%,97% 72%,99.3% 81%,97.6% 90%,99.8% 97%,98.2% 100%,
     1.8% 100%,.2% 92%,2.6% 83%,.5% 74%,2.9% 65%,.1% 56%,2.7% 47%,.6% 38%,3% 29%,.8% 20%,2.4% 11%);
 }
 .split.torn .piece:nth-child(3){
-  transform:translate(7px,4px) rotate(1.15deg);
+  animation:ripRight 2.05s cubic-bezier(.18,.86,.22,1) .04s both;
   clip-path:polygon(1.6% 0,100% 0,100% 100%,1.9% 100%,.3% 91%,2.7% 82%,.6% 73%,
     3% 64%,.2% 55%,2.8% 46%,.7% 37%,3.1% 28%,.9% 19%,2.5% 10%);
+}
+/* сначала лист натягивается в обратную сторону, потом рвётся
+   и куски долго доезжают по инерции */
+@keyframes ripLeft{
+  0%  {transform:none;}
+  9%  {transform:translate(3px,-1px) rotate(.22deg);}
+  34% {transform:translate(-11px,5px) rotate(-2deg);}
+  100%{transform:translate(-7px,3px) rotate(-1.3deg);}
+}
+@keyframes ripMid{
+  0%  {transform:none;}
+  9%  {transform:translateY(1px);}
+  34% {transform:translateY(-6px) rotate(.9deg);}
+  100%{transform:translateY(-3px) rotate(.5deg);}
+}
+@keyframes ripRight{
+  0%  {transform:none;}
+  9%  {transform:translate(-3px,-1px) rotate(-.2deg);}
+  34% {transform:translate(11px,7px) rotate(1.8deg);}
+  100%{transform:translate(7px,4px) rotate(1.15deg);}
 }
 
 .piece-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;}
@@ -478,9 +497,9 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
   padding-inline:clamp(12px,1.8vw,26px);text-align:center;
   opacity:0;transform:scale(.8);
-  transition:opacity .5s var(--ease),transform .5s var(--ease);
+  transition:opacity .7s var(--ease),transform .7s var(--ease);
 }
-.split.torn .nobody{opacity:1;transform:none;transition-delay:.5s;}
+.split.torn .nobody{opacity:1;transform:none;transition-delay:1.5s;}
 .nobody svg{width:30px;height:30px;stroke:#E24C3F;stroke-width:1.8;}
 .nobody span{
   font-size:clamp(9.5px,.8vw,11px);font-weight:600;
@@ -1225,7 +1244,7 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
         es.forEach(function (e) {
           clearTimeout(tearTimer);
           if (e.isIntersecting) {
-            tearTimer = setTimeout(function () { split.classList.add('torn'); }, 900);
+            tearTimer = setTimeout(function () { split.classList.add('torn'); }, 1350);
           } else {
             split.classList.remove('torn');
           }
