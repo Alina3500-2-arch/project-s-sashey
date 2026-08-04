@@ -8,6 +8,7 @@
 
 <link rel="icon" href="assets/favicon.svg" />
 <link rel="preload" as="image" href="assets/hero-duo-wide.jpg" media="(min-width:861px)" />
+<link rel="preload" as="image" href="assets/hero-duo-mobile.jpg" media="(max-width:860px)" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -425,12 +426,12 @@ h1 .l > span{
     height:clamp(320px,96vw,460px);
     border-radius:var(--radius);
   }
-  /* то же основное фото, что и на ПК; прижато вправо, чтобы в кадр
-     попали оба, а слева осталась тёмная стена */
+  /* то же фото, но узкий кроп вокруг пары — иначе на телефоне
+     люди тонут в кадре */
   .photo{
     inset:0;
-    background-image:url("assets/hero-duo-wide.jpg");
-    background-position:right center;
+    background-image:url("assets/hero-duo-mobile.jpg");
+    background-position:center center;
   }
   .photo-in{
     -webkit-mask-image:linear-gradient(to bottom,#000 0,#000 68%,transparent 100%);
