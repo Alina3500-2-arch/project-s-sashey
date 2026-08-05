@@ -928,7 +928,11 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
      текстом и первой ступенью остаётся большая дыра. Подзаголовок уходит
      под снимок: в кадре он налез бы на цифру «02». */
   .stairs{aspect-ratio:auto;display:flex;flex-direction:column;}
-  .stairs-frame{position:relative;inset:auto;order:0;aspect-ratio:1557/923;}
+  .stairs-frame{
+    position:relative;inset:auto;order:0;aspect-ratio:1557/923;
+    /* нижняя подпись уходит чуть ниже снимка — оставляем ей место */
+    margin-bottom:3%;
+  }
   .stairs-head h2{font-size:5.2cqw;}
   .stairs-head{--w:46.5%;}
   .stairs-lead{
@@ -936,16 +940,16 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
     padding:0 clamp(18px,5vw,32px);margin-top:clamp(10px,2.6vw,16px);
     font-size:clamp(13px,3.4vw,16px);line-height:1.5;
   }
-  .stair-n{top:var(--tm);font-size:7.5cqw;}
+  .stair-n{top:var(--tm);font-size:8.2cqw;}
   /* Ширину и левый край не трогаем: они равны грани своей ступени.
      Шире — и текст заезжает на соседнюю ступень. */
   .stair-txt{top:var(--tm);width:var(--wm,var(--w));}
-  .stair-txt h3{font-size:3cqw;margin-bottom:.4em;}
+  .stair-txt h3{font-size:3.6cqw;margin-bottom:.42em;}
   /* на узкой колонке полный текст даёт семь строк — на телефоне
      показываем короткую формулировку */
   .stair-txt .s-full{display:none;}
   .stair-txt .s-short{display:inline;}
-  .stair-txt p{font-size:2.35cqw;line-height:1.34;}
+  .stair-txt p{font-size:2.85cqw;line-height:1.35;}
   .steps-list{display:none;}
 }
 @media (max-width:560px){
@@ -969,7 +973,7 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   .ico,.strip .ico{width:32px;}
   /* просвет должен быть заметно больше кружка со стрелкой,
      иначе она лежит на карточках, а не на фоне */
-  .steps{grid-template-columns:1fr;gap:clamp(48px,12vw,60px);}
+  .steps{grid-template-columns:1fr;--sgap:clamp(48px,12vw,60px);}
   .steps li:not(:last-child)::after{
     top:100%;right:50%;translate:50% calc(-50% + var(--sgap)/2);rotate:90deg;
   }
@@ -1263,7 +1267,7 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
       <span class="stair-n" style="--l:10.61%;--t:50.36%;--tm:48.9%;--i:0">01</span>
       <div class="stair-txt" style="--l:6.71%;--t:71.97%;--tm:68.4%;--w:15%;--i:0">
         <h3>Разбор</h3>
-        <p><span class="s-full">Короткий созвон: смотрим, что происходит с продажами сейчас.</span><span class="s-short">Смотрим, что сейчас с продажами.</span></p>
+        <p><span class="s-full">Короткий созвон: смотрим, что происходит с продажами сейчас.</span><span class="s-short">Смотрим, что с продажами.</span></p>
       </div>
 
       <span class="stair-n" style="--l:32.75%;--t:36.46%;--tm:35.0%;--i:1">02</span>
