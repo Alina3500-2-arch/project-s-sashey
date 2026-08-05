@@ -654,6 +654,7 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   letter-spacing:.01em;line-height:1.1;color:rgba(241,233,220,.96);
   transition-delay:calc(var(--i) * 340ms + 430ms);
 }
+.stair-txt .s-short{display:none;}
 .stair-txt p{
   margin:0;font-size:1.12cqw;line-height:1.55;
   color:rgba(241,233,220,.62);
@@ -936,9 +937,15 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
     font-size:clamp(13px,3.4vw,16px);line-height:1.5;
   }
   .stair-n{top:var(--tm);font-size:7.5cqw;}
-  .stair-txt{top:var(--tm);width:var(--wm);left:var(--lm,var(--l));}
-  .stair-txt h3{font-size:3.1cqw;margin-bottom:.45em;}
-  .stair-txt p{font-size:2.5cqw;line-height:1.38;}
+  /* Ширину и левый край не трогаем: они равны грани своей ступени.
+     Шире — и текст заезжает на соседнюю ступень. */
+  .stair-txt{top:var(--tm);width:var(--wm,var(--w));}
+  .stair-txt h3{font-size:3cqw;margin-bottom:.4em;}
+  /* на узкой колонке полный текст даёт семь строк — на телефоне
+     показываем короткую формулировку */
+  .stair-txt .s-full{display:none;}
+  .stair-txt .s-short{display:inline;}
+  .stair-txt p{font-size:2.35cqw;line-height:1.34;}
   .steps-list{display:none;}
 }
 @media (max-width:560px){
@@ -960,7 +967,9 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   .strip-trust > *{align-items:center;}
   .label{font-size:10px;letter-spacing:.07em;line-height:1.35;}
   .ico,.strip .ico{width:32px;}
-  .steps{grid-template-columns:1fr;gap:clamp(30px,7vw,38px);}
+  /* просвет должен быть заметно больше кружка со стрелкой,
+     иначе она лежит на карточках, а не на фоне */
+  .steps{grid-template-columns:1fr;gap:clamp(48px,12vw,60px);}
   .steps li:not(:last-child)::after{
     top:100%;right:50%;translate:50% calc(-50% + var(--sgap)/2);rotate:90deg;
   }
@@ -1252,27 +1261,27 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
         </div>
 
       <span class="stair-n" style="--l:10.61%;--t:50.36%;--tm:48.9%;--i:0">01</span>
-      <div class="stair-txt" style="--l:6.71%;--t:71.97%;--tm:67.9%;--w:15%;--wm:23.4%;--i:0">
+      <div class="stair-txt" style="--l:6.71%;--t:71.97%;--tm:68.4%;--w:15%;--i:0">
         <h3>Разбор</h3>
-        <p>Короткий созвон: смотрим, что происходит с продажами сейчас.</p>
+        <p><span class="s-full">Короткий созвон: смотрим, что происходит с продажами сейчас.</span><span class="s-short">Смотрим, что сейчас с продажами.</span></p>
       </div>
 
       <span class="stair-n" style="--l:32.75%;--t:36.46%;--tm:35.0%;--i:1">02</span>
-      <div class="stair-txt" style="--l:29.83%;--t:57.59%;--tm:54.2%;--lm:31.8%;--w:16.5%;--wm:21.8%;--i:1">
+      <div class="stair-txt" style="--l:29.83%;--t:57.59%;--tm:53.7%;--w:16.5%;--wm:15.8%;--i:1">
         <h3>Аудит</h3>
-        <p>Разбираем воронку по цифрам, отдаём план: что чинить и в каком порядке.</p>
+        <p><span class="s-full">Разбираем воронку по цифрам, отдаём план: что чинить и в каком порядке.</span><span class="s-short">Разбираем воронку и даём план.</span></p>
       </div>
 
       <span class="stair-n" style="--l:56.54%;--t:21.29%;--tm:19.8%;--i:2">03</span>
-      <div class="stair-txt" style="--l:54.88%;--t:42.10%;--tm:38.9%;--w:14.5%;--wm:21%;--i:2">
+      <div class="stair-txt" style="--l:54.88%;--t:42.10%;--tm:38.4%;--w:14.5%;--i:2">
         <h3>Сборка</h3>
-        <p>Оффер, сайт, трафик, CRM, работа менеджера — собираем в одну связку.</p>
+        <p><span class="s-full">Оффер, сайт, трафик, CRM, работа менеджера — собираем в одну связку.</span><span class="s-short">Сайт, трафик, CRM — в связке.</span></p>
       </div>
 
       <span class="stair-n" style="--l:79.04%;--t:5.82%;--tm:4.4%;--i:3">04</span>
-      <div class="stair-txt" style="--l:78.73%;--t:26.60%;--tm:23.7%;--lm:76.9%;--w:15%;--wm:21.5%;--i:3">
+      <div class="stair-txt" style="--l:78.73%;--t:26.60%;--tm:23.2%;--w:15%;--wm:15.3%;--i:3">
         <h3>Ведение</h3>
-        <p>Управляем продажами дальше и отвечаем за цифры каждый месяц.</p>
+        <p><span class="s-full">Управляем продажами дальше и отвечаем за цифры каждый месяц.</span><span class="s-short">Ведём дальше, отвечаем за цифры.</span></p>
       </div>
       </div>
       <p class="sec-lead stairs-lead">Каждый следующий шаг начинается только тогда,<br />когда предыдущий дал цифры.</p>
