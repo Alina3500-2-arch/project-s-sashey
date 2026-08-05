@@ -416,7 +416,7 @@ h1 .l > span{
 h2.sec-title{
   margin:0 0 clamp(14px,2vw,26px);
   font-family:var(--serif);font-weight:300;
-  font-size:clamp(32px,5.6vw,104px);line-height:1.02;
+  font-size:clamp(32px,6.6vw,104px);line-height:1.02;
   text-transform:uppercase;letter-spacing:.01em;
 }
 h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-height:1.1;}
@@ -626,10 +626,10 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   opacity:0;transform:translateY(20px);
   transition:opacity .9s var(--ease) .1s,transform 1s var(--ease) .1s;
 }
-.stairs-head{--l:8.09%;--t:2.40%;--w:48%;}
-.stairs-lead{--l:8.2%;--t:24.35%;--w:34%;transition-delay:.28s;}
+.stairs-head{--l:8.09%;--t:2.40%;--w:46%;}
+.stairs-lead{--l:8.2%;--t:29.6%;--w:34%;transition-delay:.28s;}
 .stairs.run .stairs-head,.stairs.run .stairs-lead{opacity:1;transform:none;}
-.stairs-head h2{font-size:5.64cqw;line-height:1.27;margin:0;}
+.stairs-head h2{font-size:6.4cqw;line-height:1.16;margin:0;}
 .stairs-lead{font-size:1.25cqw;line-height:1.45;margin:0;max-width:none;}
 
 /* Ступени проявляются по очереди: сначала цифра, затем название,
@@ -714,17 +714,12 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 .seen .nope li{opacity:1;transform:none;}
 /* тонкий крестик, как в макете, а не жирная плашка */
 .nope i{
-  flex:none;width:1em;height:1em;margin-top:.28em;
+  flex:none;width:1em;height:1em;margin-top:.28em;position:relative;
   background:
-    linear-gradient(to bottom,transparent calc(50% - .55px),var(--green) calc(50% - .55px),
-                    var(--green) calc(50% + .55px),transparent calc(50% + .55px)) center/100% 100% no-repeat;
-  rotate:45deg;
-  position:relative;
-}
-.nope i::after{
-  content:"";position:absolute;inset:0;
-  background:linear-gradient(to right,transparent calc(50% - .55px),var(--green) calc(50% - .55px),
-                    var(--green) calc(50% + .55px),transparent calc(50% + .55px));
+    linear-gradient(45deg,transparent calc(50% - .6px),var(--green) calc(50% - .6px),
+                    var(--green) calc(50% + .6px),transparent calc(50% + .6px)),
+    linear-gradient(-45deg,transparent calc(50% - .6px),var(--green) calc(50% - .6px),
+                    var(--green) calc(50% + .6px),transparent calc(50% + .6px));
 }
 .claim{
   position:relative;padding:clamp(16px,2vw,26px) clamp(18px,2.2vw,30px);
@@ -794,9 +789,11 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 .princ.run .claim::before,.princ.run .claim::after{opacity:1;}
 
 @media (prefers-reduced-motion:reduce){
+  /* поворот здесь не сбрасываем: крестик нарисован диагоналями,
+     а не повёрнут, и сброс превращал бы его в плюс */
   .princ-photo,.princ-rule,.mk,.ghost-num,.princ-body .sec-eyebrow,
   .princ-body h2,.nope li,.nope i,.claim,.claim::before,.claim::after{
-    opacity:1;scale:1;rotate:0deg;translate:0 0;
+    opacity:1;scale:1;translate:0 0;
   }
 }
 
@@ -843,14 +840,14 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
     pointer-events:none;user-select:none;
   }
 
-  .princ-body{position:absolute;left:48.03%;top:0;width:48%;padding:0;}
+  .princ-body{position:absolute;left:48.03%;top:0;width:48%;padding:0;margin-top:0;}
   .princ-body .sec-eyebrow{
     position:absolute;top:11.14cqh;left:0;margin:0;
     font-size:1cqw;letter-spacing:.363em;
   }
   .princ-body h2{
     position:absolute;top:14.58cqh;left:0;margin:0;
-    font-size:5.6cqw;line-height:1.06;
+    font-size:7.0cqw;line-height:1.04;
   }
   .nope{position:absolute;top:43.0cqh;left:0;width:83%;margin:0;}
   .nope li{
