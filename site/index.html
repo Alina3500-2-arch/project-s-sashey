@@ -380,6 +380,24 @@ h1 .l3,h1 .l4{font-size:.84em;}
     #0B0B09;
   overflow:hidden;
 }
+/* Портрет живёт слева и растворяется в фоне — центральная колонка
+   макета (знак, заголовок, кнопка, контакты) остаётся нетронутой. */
+.closer-photo{
+  position:absolute;left:0;top:0;bottom:0;width:31%;
+  background:url("assets/sasha-closer.jpg") 62% 22%/cover no-repeat;
+  opacity:0;
+  -webkit-mask-image:
+    linear-gradient(to right,#000 34%,rgba(0,0,0,.55) 62%,transparent 100%),
+    linear-gradient(to bottom,transparent 0,#000 16%,#000 82%,transparent 100%);
+  -webkit-mask-composite:source-in;
+          mask-image:
+    linear-gradient(to right,#000 34%,rgba(0,0,0,.55) 62%,transparent 100%),
+    linear-gradient(to bottom,transparent 0,#000 16%,#000 82%,transparent 100%);
+          mask-composite:intersect;
+  transition:opacity 1.4s var(--ease) .2s,scale 1.8s var(--ease) .2s;
+  scale:1.05;
+}
+.closer.run .closer-photo{opacity:.62;scale:1;}
 .closer-mark{
   position:absolute;left:50%;top:5.4cqh;translate:-50% 0;
   width:3.5cqw;aspect-ratio:1;
@@ -1404,6 +1422,15 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   .closer h2{position:static;translate:0;width:auto;font-size:clamp(30px,9.4vw,54px);line-height:1.06;margin:0 0 clamp(14px,4vw,22px);}
   .closer > p{position:static;translate:0;width:auto;font-size:clamp(13px,3.6vw,16px);margin:0 0 clamp(24px,7vw,38px);}
   .closer-cta{position:relative;top:auto;}
+  /* на телефоне портрет уходит в фон, иначе спорит с текстом */
+  .closer-photo{
+    left:0;right:0;width:auto;
+    background-position:58% 12%;
+    -webkit-mask-image:linear-gradient(to bottom,#000 0,rgba(0,0,0,.5) 46%,transparent 78%);
+            mask-image:linear-gradient(to bottom,#000 0,rgba(0,0,0,.5) 46%,transparent 78%);
+    -webkit-mask-composite:source-over;mask-composite:add;
+  }
+  .closer.run .closer-photo{opacity:.17;}
   .closer.run > p,.closer.run .closer-foot,.closer.run h2{translate:0 0;}
   .closer-cta .cta{padding:1em 2em;font-size:clamp(12px,3.4vw,14px);width:100%;justify-content:center;}
   .closer-foot{
@@ -1925,6 +1952,7 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 
   <!-- 07 ─ Финал: разберём, где теряются деньги -->
   <section class="closer reveal" id="closer">
+    <div class="closer-photo" aria-hidden="true"></div>
     <span class="closer-mark" aria-hidden="true"></span>
     <h2>Разберём,<br />где теряются<br />деньги</h2>
     <p>Бесплатный аудит — это не звонок с продажей,<br />
