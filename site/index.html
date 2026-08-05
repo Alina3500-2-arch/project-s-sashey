@@ -416,7 +416,7 @@ h1 .l > span{
 h2.sec-title{
   margin:0 0 clamp(14px,2vw,26px);
   font-family:var(--serif);font-weight:300;
-  font-size:clamp(30px,4.4vw,62px);line-height:1.02;
+  font-size:clamp(32px,5.6vw,104px);line-height:1.02;
   text-transform:uppercase;letter-spacing:.01em;
 }
 h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-height:1.1;}
@@ -686,11 +686,20 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
    Полнокадровая композиция макета включается от 901 px. */
 .princ-sec{padding:0;}
 .princ{position:relative;container-type:inline-size;}
+/* Снимок во всю ширину экрана и растворяется книзу в фон страницы —
+   как на первом экране, без жёстко обрезанного прямоугольника. */
 .princ-photo{
-  aspect-ratio:4/3;
-  background:url("assets/sasha-wall.jpg") center 22%/cover;
+  width:100vw;margin-left:calc(50% - 50vw);
+  aspect-ratio:4/5;
+  background:url("assets/sasha-wall.jpg") center 12%/cover;
+  -webkit-mask-image:linear-gradient(to bottom,#000 40%,rgba(0,0,0,.42) 70%,rgba(0,0,0,.10) 86%,transparent 96%);
+          mask-image:linear-gradient(to bottom,#000 40%,rgba(0,0,0,.42) 70%,rgba(0,0,0,.10) 86%,transparent 96%);
 }
-.princ-body{padding:clamp(20px,5vw,32px) clamp(18px,5vw,32px) 0;}
+.princ-body{
+  position:relative;z-index:2;
+  margin-top:-11%;
+  padding:0 clamp(18px,5vw,32px);
+}
 .princ-rule,.mk,.ghost-num{display:none;}
 
 .nope{list-style:none;margin:clamp(18px,4vw,26px) 0 clamp(20px,4.5vw,30px);padding:0;}
@@ -841,7 +850,7 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   }
   .princ-body h2{
     position:absolute;top:14.58cqh;left:0;margin:0;
-    font-size:6.2cqw;line-height:1.09;
+    font-size:5.6cqw;line-height:1.06;
   }
   .nope{position:absolute;top:43.0cqh;left:0;width:83%;margin:0;}
   .nope li{
@@ -1055,15 +1064,18 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
      текстом и первой ступенью остаётся большая дыра. Подзаголовок уходит
      под снимок: в кадре он налез бы на цифру «02». */
   .stairs{aspect-ratio:auto;display:flex;flex-direction:column;}
+  .stairs-head{
+    position:static;order:0;width:auto;
+    padding:0 clamp(18px,5vw,32px);margin-bottom:clamp(12px,3vw,18px);
+  }
+  .stairs-head h2{font-size:clamp(26px,8.2vw,44px);line-height:1.1;}
   .stairs-frame{
-    position:relative;inset:auto;order:0;aspect-ratio:1557/923;
+    position:relative;inset:auto;order:1;aspect-ratio:1557/923;
     /* нижняя подпись уходит чуть ниже снимка — оставляем ей место */
     margin-bottom:3%;
   }
-  .stairs-head h2{font-size:5.2cqw;}
-  .stairs-head{--w:46.5%;}
   .stairs-lead{
-    position:static;order:1;width:auto;
+    position:static;order:2;width:auto;
     padding:0 clamp(18px,5vw,32px);margin-top:clamp(10px,2.6vw,16px);
     font-size:clamp(13px,3.4vw,16px);line-height:1.5;
   }
@@ -1384,33 +1396,34 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
        лежат на нём. Координаты подписей — доли кадра, снятые с макета. -->
   <section class="sec reveal steps-sec">
     <div class="stairs">
+      <div class="stairs-head">
+        <h2 class="sec-title low">Четыре шага,<br />а не одна услуга</h2>
+      </div>
+
       <div class="stairs-frame">
         <div class="stairs-photo"><img src="assets/stairs.jpg" alt="Четыре ступени" /></div>
 
-        <div class="stairs-head">
-          <h2 class="sec-title low">Четыре шага,<br />а не одна услуга</h2>
-        </div>
 
-      <span class="stair-n" style="--l:10.61%;--t:50.36%;--tm:48.9%;--i:0">01</span>
-      <div class="stair-txt" style="--l:6.71%;--t:71.97%;--tm:68.4%;--w:15%;--i:0">
+      <span class="stair-n" style="--l:8.8%;--t:50.36%;--tm:48.9%;--i:0">01</span>
+      <div class="stair-txt" style="--l:4.9%;--t:71.97%;--tm:68.4%;--w:16.6%;--i:0">
         <h3>Разбор</h3>
         <p><span class="s-full">Короткий созвон: смотрим, что происходит с продажами сейчас.</span><span class="s-short">Смотрим, что с продажами.</span></p>
       </div>
 
-      <span class="stair-n" style="--l:32.75%;--t:36.46%;--tm:35.0%;--i:1">02</span>
-      <div class="stair-txt" style="--l:29.83%;--t:57.59%;--tm:53.7%;--w:16.5%;--wm:15.8%;--i:1">
+      <span class="stair-n" style="--l:30.8%;--t:36.46%;--tm:35.0%;--i:1">02</span>
+      <div class="stair-txt" style="--l:27.9%;--t:57.59%;--tm:53.7%;--w:17.4%;--wm:17.6%;--i:1">
         <h3>Аудит</h3>
         <p><span class="s-full">Разбираем воронку по цифрам, отдаём план: что чинить и в каком порядке.</span><span class="s-short">Разбираем воронку и даём план.</span></p>
       </div>
 
-      <span class="stair-n" style="--l:56.54%;--t:21.29%;--tm:19.8%;--i:2">03</span>
-      <div class="stair-txt" style="--l:54.88%;--t:42.10%;--tm:38.4%;--w:14.5%;--i:2">
+      <span class="stair-n" style="--l:54.6%;--t:21.29%;--tm:19.8%;--i:2">03</span>
+      <div class="stair-txt" style="--l:52.9%;--t:42.10%;--tm:38.4%;--w:16.3%;--wm:16.4%;--i:2">
         <h3>Сборка</h3>
         <p><span class="s-full">Оффер, сайт, трафик, CRM, работа менеджера — собираем в одну связку.</span><span class="s-short">Сайт, трафик, CRM — в связке.</span></p>
       </div>
 
-      <span class="stair-n" style="--l:79.04%;--t:5.82%;--tm:4.4%;--i:3">04</span>
-      <div class="stair-txt" style="--l:78.73%;--t:26.60%;--tm:23.2%;--w:15%;--wm:15.3%;--i:3">
+      <span class="stair-n" style="--l:77.1%;--t:5.82%;--tm:4.4%;--i:3">04</span>
+      <div class="stair-txt" style="--l:76.8%;--t:26.60%;--tm:23.2%;--w:17%;--wm:17.1%;--i:3">
         <h3>Ведение</h3>
         <p><span class="s-full">Управляем продажами дальше и отвечаем за цифры каждый месяц.</span><span class="s-short">Ведём дальше, отвечаем за цифры.</span></p>
       </div>
