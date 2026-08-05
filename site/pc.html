@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>ПК-версия — предпросмотр с телефона</title>
+<link rel="icon" href="assets/favicon.svg" />
+<style>
+  :root{--graphite:#171614;--cream:#F1E9DC;--green:#A8DC28;--grey:#9F9485;--line:#2A2723;}
+  *{box-sizing:border-box;}
+  html,body{margin:0;background:#0E0D0C;}
+  body{
+    color:var(--cream);
+    font:14px/1.4 Manrope,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+    -webkit-text-size-adjust:100%;
+  }
+
+  /* Панель управления поверх всего */
+  .bar{
+    position:fixed;top:0;left:0;right:0;z-index:10;
+    display:flex;align-items:center;gap:8px;
+    padding:9px 12px;
+    background:rgba(23,22,20,.94);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .bar .t{color:var(--grey);white-space:nowrap;font-size:12px;}
+  .bar .t b{color:var(--green);font-weight:600;}
+  .widths{display:flex;gap:6px;margin-left:auto;}
+  .widths button{
+    appearance:none;cursor:pointer;
+    padding:6px 9px;border-radius:999px;
+    border:1px solid var(--line);background:transparent;
+    color:var(--cream);font:inherit;font-size:11px;line-height:1;
+  }
+  .widths button[aria-pressed="true"]{border-color:var(--green);color:var(--green);}
+  .home{
+    color:var(--green);text-decoration:none;font-size:11px;line-height:1;
+    border:1px solid var(--green);border-radius:999px;padding:6px 9px;white-space:nowrap;
+  }
+
+  /* Окно, в котором живёт уменьшенный монитор */
+  .viewport{
+    position:fixed;left:50%;top:var(--barH,40px);
+    width:var(--bandW,100%);height:var(--bandH,240px);
+    transform:translateX(-50%);
+    overflow:hidden;
+    background:var(--graphite);
+    box-shadow:0 18px 50px rgba(0,0,0,.55);
+  }
+  .viewport iframe{
+    border:0;display:block;transform-origin:top left;background:var(--graphite);
+  }
+
+  /* Подсказка под «монитором» */
+  .hint{
+    position:fixed;left:0;right:0;z-index:5;
+    top:calc(var(--barH,40px) + var(--bandH,240px));
+    padding:14px 18px;
+    color:var(--grey);font-size:12px;line-height:1.55;
+    text-align:center;
+    pointer-events:none;
+  }
+  .hint b{color:var(--cream);font-weight:600;}
+
+  /* Пустышка, которая даёт странице высоту для прокрутки */
+  .spacer{width:1px;}
+</style>
+</head>
+
+<body>
+
+<div class="bar" id="bar">
+  <span class="t">ПК · <b id="info">1440</b></span>
+  <div class="widths" id="widths">
+    <button data-w="1280">1280</button>
+    <button data-w="1440" aria-pressed="true">1440</button>
+    <button data-w="1920">1920</button>
+  </div>
+  <a class="home" href="index.html">Моб.</a>
+</div>
+
+<div class="viewport" id="viewport">
+  <iframe id="frame" src="index.html" title="Предпросмотр ПК-версии" scrolling="no"></iframe>
+</div>
+
+<p class="hint">
+  Листайте страницу как обычно — сайт внутри прокручивается вместе с ней,<br>
+  анимации срабатывают там же, где на настоящем мониторе.<br><br>
+  <b>Поверните телефон боком</b> — окно станет примерно вдвое крупнее.
+</p>
+
+<div class="spacer" id="spacer"></div>
+
+<script>
+(function () {
+  var W = 1440;              // ширина «монитора»
+  var RATIO = 900 / 1440;    // высота монитора = 16:10, как у настоящего экрана
+
+  var frame    = document.getElementById('frame');
+  var spacer   = document.getElementById('spacer');
+  var bar      = document.getElementById('bar');
+  var info     = document.getElementById('info');
+  var root     = document.documentElement;
+
+  var k = 1, H = 900, innerH = 0;
+
+  function layout() {
+    var doc = frame.contentDocument;
+    if (!doc || !doc.documentElement) return;
+
+    H = Math.round(W * RATIO);
+    var barH = bar.offsetHeight;
+
+    // Монитор целиком должен помещаться на экране: подбираем по обеим сторонам
+    k = Math.min(root.clientWidth / W, (window.innerHeight - barH) / H);
+
+    root.style.setProperty('--barH', barH + 'px');
+    root.style.setProperty('--bandW', Math.round(W * k) + 'px');
+    root.style.setProperty('--bandH', Math.round(H * k) + 'px');
+
+    // Кадр — настоящий десктопный вьюпорт, просто уменьшенный
+    frame.style.width  = W + 'px';
+    frame.style.height = H + 'px';
+    frame.style.transform = 'scale(' + k + ')';
+
+    // Внешняя прокрутка должна ровно покрывать внутреннюю:
+    // outerMax = k * (innerH - H)  =>  spacer = k*(innerH - H) + window.innerHeight
+    innerH = doc.documentElement.scrollHeight;
+    var need = Math.max(0, k * (innerH - H)) + window.innerHeight;
+    spacer.style.height = Math.round(need) + 'px';
+
+    info.textContent = W + ' · ' + Math.round(k * 100) + '%';
+    sync();
+  }
+
+  // Прокрутка внешней страницы двигает страницу внутри кадра.
+  function sync() {
+    if (!frame.contentWindow) return;
+    var y = window.scrollY / k;
+    frame.contentWindow.scrollTo(0, Math.min(y, Math.max(0, innerH - H)));
+  }
+
+  frame.addEventListener('load', function () {
+    layout();
+    setTimeout(layout, 400);
+    setTimeout(layout, 1500);
+  });
+  window.addEventListener('scroll', sync, { passive: true });
+  window.addEventListener('resize', layout);
+  window.addEventListener('orientationchange', function () { setTimeout(layout, 250); });
+  setInterval(layout, 2000);   // страница внутри может подрасти после загрузки шрифтов
+
+  document.getElementById('widths').addEventListener('click', function (e) {
+    var btn = e.target.closest('button');
+    if (!btn) return;
+    W = +btn.dataset.w;
+    [].forEach.call(this.querySelectorAll('button'), function (b) {
+      b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+    });
+    window.scrollTo(0, 0);
+    layout();
+  });
+})();
+</script>
+
+</body>
+</html>
