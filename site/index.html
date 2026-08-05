@@ -604,13 +604,16 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   width:100vw;margin-left:calc(50% - 50vw);
   aspect-ratio:1557/923;
 }
-.stairs-frame{position:absolute;inset:0;z-index:1;}
+.stairs-frame{position:absolute;inset:0;z-index:1;background:var(--graphite);}
 .stairs-photo{
   position:absolute;inset:0;overflow:hidden;
-  /* верх и низ растворяются в фоне страницы, чтобы снимок не читался
-     как чёрная подложка, врезанная в страницу */
-  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 8%,#000 92%,transparent 100%);
-          mask-image:linear-gradient(to bottom,transparent 0,#000 8%,#000 92%,transparent 100%);
+  /* Снимок почти чёрный (фон 2/255), фон страницы — 23/255, поэтому
+     врезанный кадр читался тёмной плашкой. Режим screen поднимает чёрный
+     ровно до фона страницы: подложка исчезает, ступени и свечение целы.
+     Маска добирает края там, где снимок чуть светлее чёрного. */
+  mix-blend-mode:screen;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 6%,#000 93%,transparent 100%);
+          mask-image:linear-gradient(to bottom,transparent 0,#000 6%,#000 93%,transparent 100%);
 }
 .stairs-photo img{
   position:absolute;display:block;
@@ -920,23 +923,18 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
     background:linear-gradient(180deg,rgba(23,22,20,0) 45%,rgba(29,28,25,.96) 100%);
   }
   .principles-body{padding:0 clamp(18px,4vw,32px) clamp(24px,5vw,40px);}
-  .stairs{
-    aspect-ratio:auto;display:flex;flex-direction:column;
-    gap:clamp(14px,3.5vw,22px);
+  /* Заголовок ложится в пустой левый верх кадра — как на ПК, иначе между
+     текстом и первой ступенью остаётся большая дыра. Подзаголовок уходит
+     под снимок: в кадре он налез бы на цифру «02». */
+  .stairs{aspect-ratio:auto;display:flex;flex-direction:column;}
+  .stairs-frame{position:relative;inset:auto;order:0;aspect-ratio:1557/923;}
+  .stairs-head h2{font-size:5.2cqw;}
+  .stairs-head{--w:46.5%;}
+  .stairs-lead{
+    position:static;order:1;width:auto;
+    padding:0 clamp(18px,5vw,32px);margin-top:clamp(10px,2.6vw,16px);
+    font-size:clamp(13px,3.4vw,16px);line-height:1.5;
   }
-  .stairs-head,.stairs-lead{
-    position:static;width:auto;
-    padding:0 clamp(18px,5vw,32px);
-  }
-  .stairs-head{order:0;}
-  .stairs-lead{order:1;font-size:clamp(13px,3.4vw,16px);margin-top:clamp(8px,2.2vw,14px);}
-  .stairs-head h2{font-size:clamp(26px,7.4vw,44px);line-height:1.1;margin:0;}
-  .stairs-frame{
-    position:relative;inset:auto;order:2;
-    aspect-ratio:1557/923;
-  }
-  /* Подписи остаются на ступенях: цифры крупнее, текст мельче,
-     колонки шире — иначе на 390 px строки рассыпаются. */
   .stair-n{top:var(--tm);font-size:7.5cqw;}
   .stair-txt{top:var(--tm);width:var(--wm);left:var(--lm,var(--l));}
   .stair-txt h3{font-size:3.1cqw;margin-bottom:.45em;}
@@ -1246,13 +1244,12 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
        лежат на нём. Координаты подписей — доли кадра, снятые с макета. -->
   <section class="sec reveal steps-sec">
     <div class="stairs">
-      <div class="stairs-head">
-        <h2 class="sec-title low">Четыре шага,<br />а не одна услуга</h2>
-      </div>
-      <p class="sec-lead stairs-lead">Каждый следующий шаг начинается только тогда,<br />когда предыдущий дал цифры.</p>
-
       <div class="stairs-frame">
         <div class="stairs-photo"><img src="assets/stairs.jpg" alt="Четыре ступени" /></div>
+
+        <div class="stairs-head">
+          <h2 class="sec-title low">Четыре шага,<br />а не одна услуга</h2>
+        </div>
 
       <span class="stair-n" style="--l:10.61%;--t:50.36%;--tm:48.9%;--i:0">01</span>
       <div class="stair-txt" style="--l:6.71%;--t:71.97%;--tm:67.9%;--w:15%;--wm:23.4%;--i:0">
@@ -1278,6 +1275,7 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
         <p>Управляем продажами дальше и отвечаем за цифры каждый месяц.</p>
       </div>
       </div>
+      <p class="sec-lead stairs-lead">Каждый следующий шаг начинается только тогда,<br />когда предыдущий дал цифры.</p>
     </div>
 
     <ol class="steps-list">
