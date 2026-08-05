@@ -49,6 +49,7 @@
   }
   .viewport iframe{
     border:0;display:block;transform-origin:top left;background:var(--graphite);
+    pointer-events:none;   /* палец листает внешнюю страницу, а не содержимое кадра */
   }
 
   /* Подсказка под «монитором» */
@@ -80,7 +81,7 @@
 </div>
 
 <div class="viewport" id="viewport">
-  <iframe id="frame" src="index.html" title="Предпросмотр ПК-версии" scrolling="no"></iframe>
+  <iframe id="frame" title="Предпросмотр ПК-версии"></iframe>
 </div>
 
 <p class="hint">
@@ -104,9 +105,22 @@
 
   var k = 1, H = 900, innerH = 0;
 
+  // Две вещи, которые ломают предпросмотр на телефоне:
+  // 1) во вложенном кадре браузер берёт ширину не из кадра, а из устройства —
+  //    из-за этого внутри включалась мобильная вёрстка. Параметр ?w= говорит
+  //    сайту разложиться как на мониторе такой ширины;
+  // 2) листать содержимое кадра телефон не даёт. Поэтому не листаем его,
+  //    а сдвигаем страницу внутри трансформацией — кадр при этом остаётся
+  //    ровно 900 px высотой, то есть настоящим монитором, и анимации
+  //    срабатывают там же, где на компьютере.
+  function build() {
+    frame.src = 'index.html?w=' + W;
+  }
+  build();
+
   function layout() {
     var doc = frame.contentDocument;
-    if (!doc || !doc.documentElement) return;
+    if (!doc || !doc.body) return;
 
     H = Math.round(W * RATIO);
     var barH = bar.offsetHeight;
@@ -118,14 +132,13 @@
     root.style.setProperty('--bandW', Math.round(W * k) + 'px');
     root.style.setProperty('--bandH', Math.round(H * k) + 'px');
 
-    // Кадр — настоящий десктопный вьюпорт, просто уменьшенный
-    frame.style.width  = W + 'px';
+    innerH = Math.max(doc.body.scrollHeight, doc.body.offsetHeight);
+    frame.style.width = W + 'px';
     frame.style.height = H + 'px';
     frame.style.transform = 'scale(' + k + ')';
 
     // Внешняя прокрутка должна ровно покрывать внутреннюю:
     // outerMax = k * (innerH - H)  =>  spacer = k*(innerH - H) + window.innerHeight
-    innerH = doc.documentElement.scrollHeight;
     var need = Math.max(0, k * (innerH - H)) + window.innerHeight;
     spacer.style.height = Math.round(need) + 'px';
 
@@ -135,15 +148,16 @@
 
   // Прокрутка внешней страницы двигает страницу внутри кадра.
   function sync() {
-    if (!frame.contentWindow) return;
-    var y = window.scrollY / k;
-    frame.contentWindow.scrollTo(0, Math.min(y, Math.max(0, innerH - H)));
+    var doc = frame.contentDocument;
+    if (!doc || !doc.body) return;
+    var y = Math.max(0, Math.min(window.scrollY / k, innerH - H));
+    doc.body.style.transform = 'translateY(' + (-Math.round(y)) + 'px)';
   }
 
   frame.addEventListener('load', function () {
     layout();
-    setTimeout(layout, 400);
-    setTimeout(layout, 1500);
+    setTimeout(layout, 500);
+    setTimeout(layout, 1600);
   });
   window.addEventListener('scroll', sync, { passive: true });
   window.addEventListener('resize', layout);
@@ -158,7 +172,7 @@
       b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
     });
     window.scrollTo(0, 0);
-    layout();
+    build();
   });
 })();
 </script>

@@ -2,7 +2,18 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- Обычная загрузка — ширина устройства. С параметром ?w=1440 страница
+     раскладывается как на мониторе такой ширины: это нужно предпросмотру
+     ПК-версии с телефона (pc.html). -->
+<script>
+(function () {
+  var w = (location.search.match(/[?&]w=(\d{3,4})/) || [])[1];
+  document.write('<meta name="viewport" content="' +
+    (w ? 'width=' + w : 'width=device-width, initial-scale=1') + '">');
+  if (w) document.write('<style>html{overflow:hidden;}</style>');
+})();
+</script>
+<noscript><meta name="viewport" content="width=device-width, initial-scale=1" /></noscript>
 <title>Аполлонов и Шигапова — пересобираем продажи в малом бизнесе</title>
 <meta name="description" content="Показываем, где бизнес теряет деньги, даём конкретные шаги и собираем систему продаж: оффер, сайт, трафик, CRM, работа менеджера." />
 
