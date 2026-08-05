@@ -285,8 +285,13 @@ h1 .l3,h1 .l4{font-size:.84em;}
   justify-self:end;align-self:center;
   margin:0;width:clamp(150px,13.5vw,200px);
   font-size:clamp(12px,.92vw,14px);line-height:1.6;
-  color:rgba(241,233,220,.72);
-  text-shadow:0 1px 14px rgba(23,22,20,.95),0 0 30px rgba(23,22,20,.8);
+  color:rgba(241,233,220,.96);
+  /* цитата лежит на светлом пиджаке — держим её ореолом, а не плашкой:
+     любая подложка даёт заметный прямоугольник на фотографии */
+  text-shadow:
+    0 0 2px rgba(23,22,20,.98), 0 0 6px rgba(23,22,20,.95),
+    0 0 16px rgba(23,22,20,.9), 0 0 34px rgba(23,22,20,.8),
+    0 1px 2px rgba(23,22,20,1);
 }
 .note::before{
   content:"";display:block;width:26px;height:1px;
@@ -362,586 +367,87 @@ h1 .l3,h1 .l4{font-size:.84em;}
     url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A8DC28' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M4 12h15M13 6l6 6-6 6'/></svg>");
 }
 
-/* ═══ 07. ПРИЗЫВ К ДЕЙСТВИЮ ══════════════════════════════ */
-.final{
-  position:relative;overflow:hidden;
-  margin-top:clamp(46px,6vw,96px);
-  padding:clamp(34px,4.6vw,80px) clamp(22px,3.4vw,64px);
-  border:1px solid rgba(168,220,40,.5);border-radius:var(--radius);
+
+/* ═══ 07. ФИНАЛ ══════════════════════════════════════════ */
+/* Кадр макета: 1673×941. Всё в долях кадра, размеры — в cqw. */
+.closer{
+  position:relative;container-type:size;
+  width:100vw;margin-left:calc(50% - 50vw);margin-top:clamp(40px,5vw,86px);
+  aspect-ratio:1673/941;
+  display:block;text-align:center;
   background:
-    radial-gradient(120% 160% at 88% 8%,rgba(168,220,40,.16),transparent 58%),
-    linear-gradient(150deg,rgba(168,220,40,.07),rgba(168,220,40,.015) 60%),
-    var(--card-2);
-  box-shadow:0 0 80px rgba(168,220,40,.12),inset 0 0 60px rgba(168,220,40,.04);
+    radial-gradient(90% 70% at 50% 42%,rgba(168,220,40,.05),transparent 70%),
+    #0B0B09;
+  overflow:hidden;
 }
-.final-body{position:relative;z-index:2;width:min(76%,900px);}
-.final .sec-eyebrow{margin-bottom:clamp(10px,1.4vw,18px);}
-.final h2{
-  margin:0 0 clamp(12px,1.6vw,22px);
-  font-family:var(--serif);font-weight:400;
-  font-size:clamp(28px,4.6vw,72px);line-height:1.06;letter-spacing:.01em;
+.closer-mark{
+  position:absolute;left:50%;top:5.4cqh;translate:-50% 0;
+  width:3.5cqw;aspect-ratio:1;
+  background:url("assets/favicon.svg") center/contain no-repeat;
+  opacity:0;
+  transition:opacity .9s var(--ease),translate 1s var(--ease);
 }
-.final p{
-  margin:0 0 clamp(20px,2.6vw,36px);
-  font-size:clamp(13px,1.15vw,17px);line-height:1.6;color:rgba(241,233,220,.76);
+.closer.run .closer-mark{opacity:1;}
+.closer h2{
+  position:absolute;left:50%;top:17.4cqh;translate:-50% 0;width:64%;
+  margin:0;font-family:var(--serif);font-weight:400;
+  font-size:6.35cqw;line-height:.99;letter-spacing:.005em;
+  color:var(--cream);
+  opacity:0;
+  transition:opacity 1s var(--ease) .15s;
 }
-.final-actions{display:flex;flex-wrap:wrap;gap:clamp(10px,1.4vw,18px);align-items:center;}
-.final-micro{
-  margin:clamp(14px,1.8vw,24px) 0 0;
-  font-size:clamp(11.5px,.95vw,14px);color:var(--grey);
+.closer h2 br{display:block;}
+.closer.run h2{opacity:1;}
+.closer > p{
+  position:absolute;left:50%;top:56.5cqh;translate:-50% 0;width:52%;
+  margin:0;font-size:1.32cqw;line-height:1.62;color:rgba(241,233,220,.82);
+  opacity:0;translate:-50% 14px;
+  transition:opacity .9s var(--ease) .45s,translate 1s var(--ease) .45s;
 }
-/* фирменный знак крупно и еле заметно — как водяной знак */
-.final-mark{
-  position:absolute;right:-3%;top:50%;translate:0 -50%;
-  width:clamp(200px,26vw,380px);aspect-ratio:1;
-  background:url("assets/ash-mark.svg") center/contain no-repeat;
-  opacity:.045;pointer-events:none;
-  rotate:0deg;
-}
-.reveal.seen .final-mark{animation:markFloat 14s ease-in-out infinite;}
-@keyframes markFloat{
-  0%,100%{translate:0 -50%;opacity:.045;}
-  50%{translate:0 -54%;opacity:.075;}
-}
+.closer.run > p{opacity:1;translate:-50% 0;}
 
-/* ═══ ПОДВАЛ ═════════════════════════════════════════════ */
-.foot{
-  margin-top:clamp(40px,5vw,80px);
-  padding-top:clamp(26px,3vw,44px);
-  border-top:1px solid var(--line);
+.closer-cta{
+  position:absolute;left:0;right:0;top:72.5cqh;
+  display:flex;align-items:center;justify-content:center;
 }
-.foot-top{
-  display:grid;grid-template-columns:auto 1fr auto;
-  gap:clamp(20px,3vw,48px);align-items:start;
+/* тонкая светящаяся линия проходит через всю ширину за кнопкой */
+.closer-wire{
+  position:absolute;left:0;right:0;top:50%;height:1px;translate:0 -50%;
+  background:linear-gradient(90deg,rgba(168,220,40,0),rgba(168,220,40,.85) 18%,
+             rgba(168,220,40,.85) 82%,rgba(168,220,40,0));
+  box-shadow:0 0 14px rgba(168,220,40,.55);
+  scale:0 1;transform-origin:center;
+  transition:scale 1.2s var(--ease) .6s;
 }
-.foot-brand{display:flex;align-items:center;gap:clamp(10px,1.2vw,16px);text-decoration:none;}
-.foot-mark{
-  width:clamp(38px,3.4vw,52px);aspect-ratio:1;
-  background:url("assets/ash-mark.svg") center/contain no-repeat;
-}
-.foot-name{
-  font-family:var(--serif);font-size:clamp(12px,1.05vw,15px);
-  letter-spacing:.18em;text-transform:uppercase;line-height:1.5;color:var(--cream);
-}
-.foot-nav{display:flex;flex-wrap:wrap;gap:clamp(14px,2vw,30px);justify-content:center;padding-top:.6em;}
-.foot-nav a{
-  font-size:clamp(12px,1vw,15px);color:rgba(241,233,220,.72);text-decoration:none;
-  position:relative;transition:color .3s var(--ease);
-}
-.foot-nav a::after{
-  content:"";position:absolute;left:0;right:0;bottom:-.35em;height:1px;
-  background:var(--green);scale:0 1;transform-origin:left;
-  transition:scale .35s var(--ease);
-}
-.foot-nav a:hover{color:var(--green);}
-.foot-nav a:hover::after{scale:1 1;}
-.foot-contacts{display:flex;flex-direction:column;align-items:flex-end;gap:.45em;text-align:right;}
-.foot-phone{
-  font-family:var(--serif);font-size:clamp(16px,1.5vw,23px);
-  color:var(--cream);text-decoration:none;transition:color .3s var(--ease);
-}
-.foot-phone:hover{color:var(--green);}
-.foot-hint{font-size:clamp(11px,.92vw,13.5px);color:var(--grey);}
-.foot-bottom{
-  display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;
-  margin-top:clamp(24px,3vw,44px);padding-top:clamp(14px,1.6vw,22px);
-  border-top:1px solid var(--line);
-  font-size:clamp(11px,.9vw,13px);color:var(--grey);
-}
-
-
-/* ── ПОЯВЛЕНИЕ ───────────────────────────────────────────── */
-.rise{
-  opacity:0;transform:translateY(24px);
-  transition:opacity .9s var(--ease),transform 1s var(--ease);
-  transition-delay:var(--d,0ms);
-}
-.ready .rise{opacity:1;transform:none;}
-h1 .l > span{
-  opacity:0;transform:translateY(100%);
-  transition:opacity .85s var(--ease),transform 1.05s var(--ease);
-  transition-delay:var(--d,0ms);
-}
-.ready h1 .l > span{opacity:1;transform:none;}
-.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform .9s var(--ease);}
-.reveal.seen{opacity:1;transform:none;}
-
-.mk-arc{stroke-dasharray:100;stroke-dashoffset:100;}
-.ready .mk-arc{animation:draw 1500ms var(--ease) 200ms forwards;}
-/* только opacity: CSS-transform перебил бы transform-атрибут группы */
-.mk-ltr{opacity:0;}
-.ready .mk-ltr{animation:fadeIn 900ms var(--ease) 950ms forwards;}
-@keyframes fadeIn{to{opacity:1}}
-
-
-/* ═══ ОБЩЕЕ ДЛЯ НОВЫХ БЛОКОВ ═════════════════════════════ */
-.sec{margin-top:clamp(34px,4.6vw,74px);}
-.sec-num{
-  display:block;margin:0 0 clamp(10px,1.4vw,16px);
-  font-family:var(--serif);font-size:clamp(15px,1.5vw,19px);
-  letter-spacing:.2em;color:var(--green);
-}
-.sec-eyebrow{
-  display:block;margin:0 0 clamp(12px,1.6vw,18px);
-  font-size:clamp(10px,.86vw,12px);font-weight:600;
-  letter-spacing:.28em;text-transform:uppercase;color:var(--green);
-}
-h2.sec-title{
-  margin:0 0 clamp(14px,2vw,26px);
-  font-family:var(--serif);font-weight:300;
-  font-size:clamp(32px,6.6vw,104px);line-height:1.02;
-  text-transform:uppercase;letter-spacing:.01em;
-}
-h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-height:1.1;}
-.sec-lead{
-  margin:0 0 clamp(22px,3vw,40px);max-width:60ch;
-  font-size:clamp(14px,1.1vw,17px);line-height:1.62;color:rgba(241,233,220,.74);
-}
-
-/* появление по очереди */
-.stagger > *{
-  opacity:0;transform:translateY(26px);
-  transition:opacity .8s var(--ease),transform .9s var(--ease);
-  transition-delay:calc(var(--i,0) * 110ms);
-}
-.stagger.seen > *{opacity:1;transform:none;}
-
-/* ═══ 01. ВСЕ ДЕЛАЮТ СВОЙ КУСОК ══════════════════════════ */
-.split{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr)) auto;
-  align-items:stretch;
-  /* Зазор постоянный. Целый лист получается сдвигом кусков навстречу,
-     а не изменением gap — иначе карточки меняют ширину, текст
-     переливается и панель ниже прыгает. */
-  --rip:clamp(12px,1.6vw,22px);
-  gap:var(--rip);
-}
-
-.piece{
-  background:var(--card);
-  border-block:1px solid var(--line);
-  padding:clamp(15px,1.8vw,23px);
-  position:relative;
-}
-/* сомкнутый лист */
-.split .piece:nth-child(1){transform:translateX(var(--rip));}
-.split .piece:nth-child(3){transform:translateX(calc(-1 * var(--rip)));}
-.piece:first-child{border-left:1px solid var(--line);border-radius:14px 0 0 14px;}
-.split .piece:nth-child(3){border-right:1px solid var(--line);border-radius:0 14px 14px 0;}
-
-/* пока лист целый — тонкие линии сгиба; после разрыва их сменяют рваные края */
-.piece + .piece{box-shadow:inset 1px 0 0 rgba(42,39,35,.9);}
-.split.torn .piece{box-shadow:none;border-radius:3px;}
-.split.torn .piece:nth-child(1){
-  animation:ripLeft 2.1s cubic-bezier(.18,.86,.22,1) both;
-  clip-path:polygon(0 0,100% 0,95.4% 6%,99.1% 12%,94.6% 19%,98.7% 26%,95.1% 33%,
-    99.4% 40%,94.4% 47%,98.9% 54%,94.9% 61%,99.2% 68%,94.7% 75%,98.4% 82%,
-    95.5% 89%,99% 95%,96.1% 100%,0 100%);
-}
-.split.torn .piece:nth-child(2){
-  animation:ripMid 1.9s cubic-bezier(.18,.86,.22,1) .1s both;
-  clip-path:polygon(4.6% 0,100% 0,95.2% 7%,99.3% 14%,94.8% 21%,98.6% 28%,95.4% 35%,
-    99.5% 42%,94.5% 49%,98.8% 56%,95% 63%,99.1% 70%,94.6% 77%,98.5% 84%,
-    95.7% 91%,98.9% 96%,96% 100%,3.9% 100%,.8% 93%,5.1% 86%,1.2% 79%,4.7% 72%,
-    .6% 65%,5.4% 58%,1% 51%,4.9% 44%,.9% 37%,5.2% 30%,1.4% 23%,4.4% 16%,.7% 9%);
-}
-.split.torn .piece:nth-child(3){
-  animation:ripRight 2.25s cubic-bezier(.18,.86,.22,1) .05s both;
-  clip-path:polygon(4.8% 0,100% 0,100% 100%,4.1% 100%,.9% 93%,5.2% 86%,1.3% 79%,
-    4.8% 72%,.7% 65%,5.5% 58%,1.1% 51%,5% 44%,1% 37%,5.3% 30%,1.5% 23%,4.5% 16%,.8% 9%);
-}
-/* сначала лист натягивается в обратную сторону, потом рвётся
-   и куски долго доезжают по инерции */
-@keyframes ripLeft{
-  0%  {transform:translateX(var(--rip));}
-  9%  {transform:translate(calc(var(--rip) + 3px),-1px) rotate(.22deg);}
-  38% {transform:translate(-10px,5px) rotate(-2.1deg);}
-  100%{transform:translate(-6px,3px) rotate(-1.3deg);}
-}
-@keyframes ripMid{
-  0%  {transform:none;}
-  9%  {transform:translateY(1px);}
-  38% {transform:translateY(-7px) rotate(.95deg);}
-  100%{transform:translateY(-3px) rotate(.5deg);}
-}
-@keyframes ripRight{
-  0%  {transform:translateX(calc(-1 * var(--rip)));}
-  9%  {transform:translate(calc(-1 * var(--rip) - 3px),-1px) rotate(-.2deg);}
-  38% {transform:translate(10px,7px) rotate(1.9deg);}
-  100%{transform:translate(6px,4px) rotate(1.15deg);}
-}
-
-.piece-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;}
-.piece-ico{flex:none;width:24px;height:24px;stroke:var(--grey);fill:none;stroke-width:1.5;margin-top:1px;}
-.piece h3{
-  margin:0 0 3px;font-size:clamp(11px,1vw,13px);font-weight:600;
-  letter-spacing:.16em;text-transform:uppercase;
-}
-.piece .by{display:block;font-size:clamp(11px,.92vw,13px);color:var(--grey);}
-.piece p{
-  margin:0;padding-top:14px;border-top:1px solid var(--line);
-  font-size:clamp(12px,.98vw,14px);line-height:1.55;color:rgba(241,233,220,.7);
-}
-
-.nobody{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
-  padding-inline:clamp(12px,1.8vw,26px);text-align:center;
-  opacity:0;transform:scale(.8);
-  transition:opacity .7s var(--ease),transform .7s var(--ease);
-}
-.split.torn .nobody{opacity:1;transform:none;transition-delay:1.5s;}
-.nobody svg{width:30px;height:30px;stroke:#E24C3F;stroke-width:1.8;}
-.nobody span{
-  font-size:clamp(9.5px,.8vw,11px);font-weight:600;
-  letter-spacing:.18em;text-transform:uppercase;color:var(--grey);line-height:1.5;
-}
-
-/* панель «Управляемость» */
-.control{
-  position:relative;margin-top:clamp(30px,3.8vw,54px);
-  border:1px solid rgba(168,220,40,.5);border-radius:var(--radius);
-  padding:clamp(36px,4.2vw,58px) clamp(24px,3.2vw,50px) clamp(30px,3.4vw,48px);
-  display:grid;grid-template-columns:auto minmax(0,1fr);
-  gap:clamp(18px,2.4vw,38px);align-items:center;
-}
-/* подпись врезана в верхнюю рамку, по бокам — короткие штрихи */
-.control-label{
-  position:absolute;top:0;left:50%;translate:-50% -50%;
-  display:flex;align-items:center;gap:14px;
-  background:var(--graphite);padding:0 14px;
-  font-size:clamp(9.5px,.82vw,11.5px);font-weight:600;
-  letter-spacing:.3em;text-transform:uppercase;color:var(--green);
-  white-space:nowrap;
-}
-.control-label::before,.control-label::after{
-  content:"";width:clamp(14px,1.6vw,26px);height:1px;background:rgba(168,220,40,.55);
-}
-.chain{display:flex;align-items:center;justify-content:flex-start;}
-.node{
-  /* align-content:center обязательно: иначе две строки растягиваются на всю
-     высоту круга и между иконкой и подписью появляется пустота */
-  flex:none;display:grid;place-items:center;align-content:center;
-  gap:clamp(5px,.5vw,7px);
-  width:clamp(80px,7.6vw,104px);aspect-ratio:1;border-radius:50%;
-  border:1px solid rgba(168,220,40,.65);
-  opacity:0;scale:.85;
-  transition:opacity .7s var(--ease),scale .7s var(--ease);
-  transition-delay:calc(var(--i) * 900ms);
-}
-.seen .node{opacity:1;scale:1;}
-.node svg{width:clamp(25px,2.5vw,32px);height:clamp(25px,2.5vw,32px);stroke:var(--green);fill:none;stroke-width:1.4;}
-.node b{
-  font-size:clamp(8.5px,.78vw,11px);font-weight:600;
-  letter-spacing:.12em;text-transform:uppercase;color:rgba(241,233,220,.92);
-}
-/* пунктирная волнистая перемычка; проявляется слева направо
-   через clip-path, чтобы штрихи не растягивались */
-.link{
-  flex:0 0 auto;width:clamp(30px,3vw,44px);height:14px;
-  margin:0 clamp(5px,.6vw,9px);
-  clip-path:inset(0 100% 0 0);
-  transition:clip-path .6s var(--ease);
-  transition-delay:calc((var(--i) * 900ms) + 520ms);
-}
-.seen .link{clip-path:inset(0 0 0 0);}
-.link svg{display:block;width:100%;height:100%;overflow:visible;}
-.link path{
-  fill:none;stroke:var(--green);stroke-width:1.7;
-  stroke-dasharray:5 4.4;stroke-dashoffset:-2.2;stroke-linecap:round;
-}
-/* стрелка — те же штрихи, что и перемычки, плюс наконечник */
-.chain-arrow{
-  flex:none;width:clamp(40px,3.9vw,58px);height:14px;margin-left:clamp(12px,1.3vw,20px);
-  opacity:0;transform:translateX(-12px);
-  transition:opacity .7s var(--ease) 3.1s,transform .8s var(--ease) 3.1s;
-}
-.seen .chain-arrow{opacity:1;transform:none;}
-.chain-arrow svg{display:block;width:100%;height:100%;stroke:var(--green);fill:none;overflow:visible;}
-.chain-arrow .shaft{stroke-width:1.7;stroke-dasharray:5 4.4;stroke-dashoffset:-2.2;stroke-linecap:round;}
-.chain-arrow .head{stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
-.control h3{
-  margin:0 0 12px;font-family:var(--serif);font-weight:400;
-  font-size:clamp(17px,1.75vw,25px);line-height:1.24;
-  text-transform:uppercase;letter-spacing:.03em;color:var(--green);
-}
-.control p{margin:0;font-size:clamp(13px,1.05vw,16px);line-height:1.6;color:rgba(241,233,220,.76);}
-
-/* ═══ 02. ЧЕТЫРЕ ШАГА ════════════════════════════════════ */
-/* Кадр макета — это снимок, обрезанный до 1557×923 из 1672×941
-   (слева 60 px, сверху 18 px). Все подписи заданы в долях этого кадра,
-   размеры шрифтов — в cqw, поэтому композиция масштабируется целиком. */
-.steps-sec{padding:0;}
-.stairs{
-  position:relative;container-type:inline-size;
-  width:100vw;margin-left:calc(50% - 50vw);
-  aspect-ratio:1557/923;
-}
-.stairs-frame{position:absolute;inset:0;z-index:1;background:var(--graphite);}
-.stairs-photo{
-  position:absolute;inset:0;overflow:hidden;
-  /* Снимок почти чёрный (фон 2/255), фон страницы — 23/255, поэтому
-     врезанный кадр читался тёмной плашкой. Режим screen поднимает чёрный
-     ровно до фона страницы: подложка исчезает, ступени и свечение целы.
-     Маска добирает края там, где снимок чуть светлее чёрного. */
-  mix-blend-mode:screen;
-  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 6%,#000 93%,transparent 100%);
-          mask-image:linear-gradient(to bottom,transparent 0,#000 6%,#000 93%,transparent 100%);
-}
-.stairs-photo img{
-  position:absolute;display:block;
-  left:-3.854%;top:0;margin-top:-1.156%;
-  width:107.386%;height:auto;
-}
-
-.stairs-head,.stairs-lead{
-  position:absolute;z-index:2;left:var(--l);top:var(--t);width:var(--w);
-  opacity:0;transform:translateY(20px);
-  transition:opacity .9s var(--ease) .1s,transform 1s var(--ease) .1s;
-}
-.stairs-head{--l:8.09%;--t:2.40%;--w:46%;}
-.stairs-lead{--l:8.2%;--t:29.6%;--w:34%;transition-delay:.28s;}
-.stairs.run .stairs-head,.stairs.run .stairs-lead{opacity:1;transform:none;}
-.stairs-head h2{font-size:6.4cqw;line-height:1.16;margin:0;}
-.stairs-lead{font-size:1.25cqw;line-height:1.45;margin:0;max-width:none;}
-
-/* Ступени проявляются по очереди: сначала цифра, затем название,
-   затем описание. Наблюдатель снимает класс при уходе с экрана,
-   поэтому появление показывается заново на каждой прокрутке. */
-.stair-n,.stair-txt{position:absolute;left:var(--l);top:var(--t);}
-.stair-txt{width:var(--w,16%);}
-.stair-n{
-  font-family:var(--serif);font-weight:300;
-  font-size:6.30cqw;line-height:.72;
-  color:rgba(241,233,220,.94);
-  opacity:0;transform:translateY(26px) scale(.94);
-  transition:opacity .75s var(--ease),transform .95s var(--ease);
-  transition-delay:calc(var(--i) * 340ms + 180ms);
-}
-.stair-txt h3,.stair-txt p{
-  opacity:0;transform:translateY(14px);
-  transition:opacity .7s var(--ease),transform .8s var(--ease);
-}
-.stair-txt h3{
-  margin:0 0 .67em;font-size:1.78cqw;font-weight:500;
-  letter-spacing:.01em;line-height:1.1;color:rgba(241,233,220,.96);
-  transition-delay:calc(var(--i) * 340ms + 430ms);
-}
-.stair-txt .s-short{display:none;}
-.stair-txt p{
-  margin:0;font-size:1.12cqw;line-height:1.55;
-  color:rgba(241,233,220,.62);
-  transition-delay:calc(var(--i) * 340ms + 560ms);
-}
-.stairs.run .stair-n,.stairs.run .stair-txt h3,.stairs.run .stair-txt p{
-  opacity:1;transform:none;
-}
-/* уход с экрана — без ступенчатых задержек, чтобы возврат всегда
-   начинался с чистого листа */
-.stairs:not(.run) .stair-n,.stairs:not(.run) .stair-txt h3,
-.stairs:not(.run) .stair-txt p,.stairs:not(.run) .stairs-head,
-.stairs:not(.run) .stairs-lead{transition-delay:0s;transition-duration:.25s;}
-
-.steps-list{display:none;list-style:none;margin:0;padding:0;}
-.steps-list li{
-  background:var(--card);border:1px solid var(--line);
-  border-radius:14px;padding:clamp(14px,3.4vw,20px);
-}
-.steps-list b{
-  display:block;font-family:var(--serif);font-weight:400;
-  font-size:clamp(24px,7vw,34px);line-height:1;color:var(--green);margin-bottom:6px;
-}
-.steps-list h3{margin:0 0 6px;font-size:clamp(12px,3.4vw,15px);font-weight:600;letter-spacing:.04em;}
-.steps-list p{margin:0;font-size:clamp(12px,3.2vw,14px);line-height:1.5;color:rgba(241,233,220,.68);}
-
-/* ═══ 03. ЧЕГО МЫ НЕ ДЕЛАЕМ ══════════════════════════════ */
-/* Базовая раскладка — узкий экран: снимок, под ним текст.
-   Полнокадровая композиция макета включается от 901 px. */
-.princ-sec{padding:0;}
-.princ{position:relative;container-type:inline-size;}
-/* Снимок во всю ширину экрана и растворяется книзу в фон страницы —
-   как на первом экране, без жёстко обрезанного прямоугольника. */
-.princ-photo{
-  width:100vw;margin-left:calc(50% - 50vw);
-  aspect-ratio:4/5;
-  background:url("assets/sasha-wall.jpg") center 12%/cover;
-  -webkit-mask-image:linear-gradient(to bottom,#000 40%,rgba(0,0,0,.42) 70%,rgba(0,0,0,.10) 86%,transparent 96%);
-          mask-image:linear-gradient(to bottom,#000 40%,rgba(0,0,0,.42) 70%,rgba(0,0,0,.10) 86%,transparent 96%);
-}
-.princ-body{
+.closer.run .closer-wire{scale:1 1;}
+.closer-cta .cta{
   position:relative;z-index:2;
-  margin-top:-11%;
-  padding:0 clamp(18px,5vw,32px);
+  padding:1.45cqw 3.4cqw;font-size:1.18cqw;letter-spacing:.14em;
+  opacity:0;scale:.94;
+  transition:opacity .8s var(--ease) .8s,scale .9s var(--ease) .8s,box-shadow .35s var(--ease);
 }
-.princ-rule,.mk,.ghost-num{display:none;}
+.closer.run .closer-cta .cta{opacity:1;scale:1;}
 
-.nope{list-style:none;margin:clamp(18px,4vw,26px) 0 clamp(20px,4.5vw,30px);padding:0;}
-.nope li{
-  display:flex;gap:clamp(12px,2.6vw,18px);align-items:flex-start;
-  padding:clamp(8px,2vw,12px) 0;
-  font-size:clamp(13px,3.4vw,16px);line-height:1.5;color:rgba(241,233,220,.86);
-  opacity:0;transform:translateX(18px);
-  transition:opacity .7s var(--ease),transform .7s var(--ease);
-  transition-delay:calc(var(--i) * 130ms + 200ms);
+.closer-foot{
+  position:absolute;left:50%;bottom:5.2cqh;translate:-50% 0;
+  display:flex;align-items:center;justify-content:center;
+  gap:3.2cqw;white-space:nowrap;
+  font-size:1.12cqw;color:rgba(241,233,220,.72);
+  opacity:0;
+  transition:opacity .9s var(--ease) 1.05s;
 }
-.seen .nope li{opacity:1;transform:none;}
-/* тонкий крестик, как в макете, а не жирная плашка */
-.nope i{
-  flex:none;width:1em;height:1em;margin-top:.28em;position:relative;
-  background:
-    linear-gradient(45deg,transparent calc(50% - .6px),var(--green) calc(50% - .6px),
-                    var(--green) calc(50% + .6px),transparent calc(50% + .6px)),
-    linear-gradient(-45deg,transparent calc(50% - .6px),var(--green) calc(50% - .6px),
-                    var(--green) calc(50% + .6px),transparent calc(50% + .6px));
+.closer.run .closer-foot{opacity:1;}
+.closer-foot::before{
+  content:"";position:absolute;left:-6cqw;right:-6cqw;top:-3.4cqh;height:1px;
+  background:rgba(241,233,220,.13);
 }
-.claim{
-  position:relative;padding:clamp(16px,2vw,26px) clamp(18px,2.2vw,30px);
-  border:1px solid rgba(168,220,40,.42);
-  background:
-    linear-gradient(112deg,transparent 38%,rgba(168,220,40,.17) 48%,
-                    rgba(168,220,40,.05) 54%,rgba(168,220,40,.13) 62%,transparent 72%),
-    linear-gradient(115deg,rgba(168,220,40,.10),rgba(168,220,40,.02) 60%);
-  background-size:230% 100%,100% 100%;
-  background-repeat:no-repeat;
-  font-size:clamp(13px,3.4vw,16px);line-height:1.55;color:var(--green);
+.closer-foot a{color:inherit;text-decoration:none;transition:color .3s var(--ease);}
+.closer-foot a:hover{color:var(--green);}
+.closer-foot > *:not(:last-child)::after{
+  content:"";position:absolute;width:4px;height:4px;border-radius:50%;
+  background:var(--green);margin-left:1.55cqw;margin-top:.62em;
 }
-.claim::before,.claim::after{
-  content:"";position:absolute;width:14px;height:14px;border:1px solid var(--green);
-}
-.claim::before{top:-1px;left:-1px;border-right:none;border-bottom:none;}
-.claim::after{bottom:-1px;right:-1px;border-left:none;border-top:none;}
-
-
-/* ── Движение блока. Всё привязано к классу .run, который наблюдатель
-      снимает при уходе с экрана, поэтому появление играет заново. ── */
-.princ-photo{
-  opacity:0;scale:1.06;
-  transition:opacity 1.1s var(--ease),scale 1.7s var(--ease);
-}
-.princ.run .princ-photo{opacity:1;scale:1;}
-
-.princ-rule{transform-origin:top;scale:1 0;transition:scale 1.15s var(--ease) .2s;}
-.princ.run .princ-rule{scale:1 1;}
-
-.mk{opacity:0;rotate:-30deg;transition:opacity .7s var(--ease),rotate .9s var(--ease);}
-.princ.run .mk{opacity:1;rotate:0deg;}
-.princ.run .mk-plus{animation:mkPulse 3.4s ease-in-out infinite 1.4s;}
-.princ.run .mk-ring{animation:mkPulse 3.4s ease-in-out infinite 2s;}
-@keyframes mkPulse{0%,100%{opacity:.45}50%{opacity:1}}
-
-.ghost-num{opacity:0;translate:34px 0;transition:opacity 1.3s var(--ease) .35s,translate 1.5s var(--ease) .35s;}
-.princ.run .ghost-num{opacity:1;translate:0 0;}
-
-.princ-body .sec-eyebrow{opacity:0;translate:0 -10px;transition:opacity .7s var(--ease) .3s,translate .8s var(--ease) .3s;}
-.princ-body h2{opacity:0;translate:0 24px;transition:opacity .9s var(--ease) .42s,translate 1s var(--ease) .42s;}
-.princ.run .sec-eyebrow,.princ.run h2{opacity:1;translate:0 0;}
-
-.nope li{opacity:0;translate:24px 0;}
-.nope li{transition:opacity .7s var(--ease),translate .8s var(--ease);
-  transition-delay:calc(var(--i) * 170ms + 620ms);}
-.princ.run .nope li{opacity:1;translate:0 0;}
-/* крестик прорисовывается, затем мягко дышит — по очереди, слева направо */
-.nope i{scale:.2;transition:scale .55s var(--ease);
-  transition-delay:calc(var(--i) * 170ms + 760ms);}
-.princ.run .nope i{
-  scale:1;
-  animation:xBreathe 3.2s ease-in-out infinite;
-  animation-delay:calc(var(--i) * 240ms + 1.5s);
-}
-@keyframes xBreathe{0%,100%{opacity:.5}45%{opacity:1}}
-/* световой блик пробегает по плашке */
-@keyframes claimSweep{
-  from{background-position:145% 0,0 0;}
-  to{background-position:-55% 0,0 0;}
-}
-
-.claim{opacity:0;translate:0 22px;
-  transition:opacity .9s var(--ease) 1.32s,translate 1s var(--ease) 1.32s;}
-.princ.run .claim{opacity:1;translate:0 0;animation:claimSweep 6s linear infinite 2s;}
-.claim::before,.claim::after{opacity:0;transition:opacity .5s var(--ease) 1.9s;}
-.princ.run .claim::before,.princ.run .claim::after{opacity:1;}
-
-@media (prefers-reduced-motion:reduce){
-  /* поворот здесь не сбрасываем: крестик нарисован диагоналями,
-     а не повёрнут, и сброс превращал бы его в плюс */
-  .princ-photo,.princ-rule,.mk,.ghost-num,.princ-body .sec-eyebrow,
-  .princ-body h2,.nope li,.nope i,.claim,.claim::before,.claim::after{
-    opacity:1;scale:1;translate:0 0;
-  }
-}
-
-@media (min-width:901px){
-  .princ{
-    width:100vw;margin-left:calc(50% - 50vw);
-    aspect-ratio:1672/941;
-    /* size, а не inline-size: иначе единицы cqh не работают
-       и все вертикальные отметки съезжают */
-    container-type:size;
-  }
-  .princ-photo{
-    position:absolute;left:0;top:0;width:46%;height:100%;aspect-ratio:auto;
-    background:url("assets/sasha-wall.jpg") center 24%/cover;
-    -webkit-mask-image:linear-gradient(to right,#000 80%,transparent 100%);
-            mask-image:linear-gradient(to right,#000 80%,transparent 100%);
-  }
-  .princ-rule{
-    display:block;position:absolute;left:43.9%;top:0;bottom:0;width:1px;
-    background:linear-gradient(to bottom,transparent,rgba(241,233,220,.16) 12%,
-                               rgba(241,233,220,.16) 88%,transparent);
-  }
-  .mk{display:block;position:absolute;left:var(--l);top:var(--t);translate:-50% -50%;}
-  .mk-plus{width:1.05cqw;height:1.05cqw;}
-  .mk-plus::before,.mk-plus::after{
-    content:"";position:absolute;inset:0;background:rgba(168,220,40,.55);
-  }
-  .mk-plus::before{clip-path:polygon(46% 0,54% 0,54% 100%,46% 100%);}
-  .mk-plus::after{clip-path:polygon(0 46%,100% 46%,100% 54%,0 54%);}
-  .mk-ring{
-    width:1.5cqw;height:1.5cqw;border:1px solid rgba(241,233,220,.32);border-radius:50%;
-  }
-  .mk-ring::before,.mk-ring::after{
-    content:"";position:absolute;background:rgba(241,233,220,.32);
-  }
-  .mk-ring::before{left:50%;top:-55%;width:1px;height:210%;}
-  .mk-ring::after{top:50%;left:-55%;height:1px;width:210%;}
-  .mk-dash{width:1.3cqw;height:1px;background:rgba(241,233,220,.34);}
-
-  .ghost-num{
-    display:block;position:absolute;right:4.5%;top:1.2%;
-    font-family:var(--serif);font-weight:300;
-    font-size:21cqw;line-height:1;color:rgba(241,233,220,.04);
-    pointer-events:none;user-select:none;
-  }
-
-  .princ-body{position:absolute;left:48.03%;top:0;width:48%;padding:0;margin-top:0;}
-  .princ-body .sec-eyebrow{
-    position:absolute;top:11.14cqh;left:0;margin:0;
-    font-size:1cqw;letter-spacing:.363em;
-  }
-  .princ-body h2{
-    position:absolute;top:14.58cqh;left:0;margin:0;
-    font-size:7.0cqw;line-height:1.04;
-  }
-  .nope{position:absolute;top:43.0cqh;left:0;width:83%;margin:0;}
-  .nope li{
-    padding:0 0 3.5cqh;gap:1.64cqw;
-    font-size:1.36cqw;line-height:1.3;
-  }
-  .nope li:last-child{padding-bottom:0;}
-  .nope i{width:.81cqw;height:.81cqw;margin-top:.35cqw;}
-  .claim{
-    position:absolute;top:70.6cqh;left:0;width:100%;
-    background:
-      linear-gradient(112deg,transparent 38%,rgba(168,220,40,.17) 48%,
-                      rgba(168,220,40,.05) 54%,rgba(168,220,40,.13) 62%,transparent 72%),
-      linear-gradient(115deg,rgba(168,220,40,.12),rgba(168,220,40,.03) 70%);
-    background-size:230% 100%,100% 100%;
-    background-repeat:no-repeat;
-    padding:4.9cqh 3.5cqw 4.9cqh 3.5cqw;
-    font-size:1.36cqw;line-height:1.55;
-  }
-}
-
+.closer-foot > *{position:relative;}
 
 /* ═══ 05. КЕЙСЫ ══════════════════════════════════════════ */
 .cases-sec .sec-lead{max-width:64ch;}
@@ -1270,6 +776,22 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   .stair-txt .s-short{display:inline;}
   .stair-txt p{font-size:2.85cqw;line-height:1.35;}
   .steps-list{display:none;}
+  /* финальный экран на телефоне */
+  /* container-type:size схлопнул бы блок без заданной высоты */
+  .closer{container-type:normal;aspect-ratio:auto;padding:clamp(40px,11vw,64px) clamp(18px,5vw,32px) clamp(30px,8vw,48px);}
+  .closer-mark{position:static;display:block;translate:0;width:clamp(40px,12vw,56px);margin:0 auto clamp(18px,5vw,28px);}
+  .closer h2{position:static;translate:0;width:auto;font-size:clamp(30px,9.4vw,54px);line-height:1.06;margin:0 0 clamp(14px,4vw,22px);}
+  .closer > p{position:static;translate:0;width:auto;font-size:clamp(13px,3.6vw,16px);margin:0 0 clamp(24px,7vw,38px);}
+  .closer-cta{position:relative;top:auto;}
+  .closer.run > p,.closer.run .closer-foot,.closer.run h2{translate:0 0;}
+  .closer-cta .cta{padding:1em 2em;font-size:clamp(12px,3.4vw,14px);width:100%;justify-content:center;}
+  .closer-foot{
+    position:static;translate:0;flex-direction:column;gap:clamp(9px,2.6vw,14px);
+    margin-top:clamp(28px,8vw,44px);padding-top:clamp(18px,5vw,26px);
+    font-size:clamp(12px,3.3vw,14px);white-space:normal;
+  }
+  .closer-foot::before{left:0;right:0;top:0;}
+  .closer-foot > *:not(:last-child)::after{display:none;}
   /* кейсы, призыв и подвал на узком экране */
   .case-flow{grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(14px,4vw,22px);}
   .case-roles{grid-template-columns:1fr;}
@@ -1760,48 +1282,30 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
     </div>
   </section>
 
-  <!-- 07 ─ Призыв к действию -->
-  <section class="final reveal">
-    <div class="final-body">
-      <span class="sec-eyebrow">Первый шаг</span>
-      <h2>Готовы навести порядок<br />в продажах?</h2>
-      <p>Бесплатный разбор: отвечаете на несколько вопросов — через двое суток
-        получаете PDF с точками потери и конкретными шагами. Без звонков и давления.</p>
-      <div class="final-actions">
-        <a class="cta" href="#audit">
-          Бесплатный аудит
-          <svg class="arr" width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-            <path d="M2 10L10 2M10 2H3.5M10 2V8.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-          </svg>
-        </a>
-        <a class="ghost-btn" href="tel:+79201461140">+7 (920) 146-11-40</a>
-      </div>
-      <p class="final-micro">Работаем с проектами от 80 000 ₽ · одновременно ведём не больше двух</p>
-    </div>
-    <span class="final-mark" aria-hidden="true"></span>
-  </section>
+  <!-- 07 ─ Финал: разберём, где теряются деньги -->
+  <section class="closer reveal" id="closer">
+    <span class="closer-mark" aria-hidden="true"></span>
+    <h2>Разберём,<br />где теряются<br />деньги</h2>
+    <p>Бесплатный аудит — это не звонок с продажей,<br />
+       а разбор по цифрам с понятным<br />результатом на руках.</p>
 
-  <footer class="foot reveal">
-    <div class="foot-top">
-      <a class="foot-brand" href="#top" aria-label="Аполлонов и Шигапова">
-        <span class="foot-mark" aria-hidden="true"></span>
-        <span class="foot-name">Аполлонов<br />и Шигапова</span>
+    <div class="closer-cta">
+      <span class="closer-wire" aria-hidden="true"></span>
+      <a class="cta" href="tel:+79201461140">
+        Получить бесплатный аудит
+        <svg class="arr" width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <path d="M2 10L10 2M10 2H3.5M10 2V8.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
       </a>
-      <nav class="foot-nav" aria-label="Разделы">
-        <a href="#cases">Кейсы</a>
-        <a href="#audit">Цены</a>
-        <a href="#audit">Аудит</a>
-      </nav>
-      <div class="foot-contacts">
-        <a class="foot-phone" href="tel:+79201461140">+7 (920) 146-11-40</a>
-        <span class="foot-hint">Пишите в MAX — отвечаем в течение дня</span>
-      </div>
     </div>
-    <div class="foot-bottom">
-      <span>© 2026 Аполлонов и Шигапова</span>
-      <span>Системный маркетинг для роста выручки</span>
+
+    <div class="closer-foot">
+      <span>Аполлонов и Шигапова</span>
+      <a href="https://ashpartners.ru">ashpartners.ru</a>
+      <a href="mailto:hello@ashpartners.ru">hello@ashpartners.ru</a>
+      <a href="tel:+79201461140">Написать в WhatsApp</a>
     </div>
-  </footer>
+  </section>
 
 </div>
 
@@ -1840,18 +1344,15 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
     }
   }
 
-  // Блок «Чего мы не делаем» — своя дорожка появления, тоже на каждый заход.
-  var princ = document.querySelector('.princ');
-  if (princ) {
-    if (reduce || !('IntersectionObserver' in window)) {
-      princ.classList.add('run');
-    } else {
-      var po = new IntersectionObserver(function (es) {
-        es.forEach(function (e) { princ.classList.toggle('run', e.isIntersecting); });
-      }, { threshold: 0.16 });
-      po.observe(princ);
-    }
-  }
+  // Блоки со своей дорожкой появления: класс .run ставится на входе
+  // в экран и снимается на выходе, поэтому анимация играет заново.
+  [].forEach.call(document.querySelectorAll('.princ,.closer'), function (el) {
+    if (reduce || !('IntersectionObserver' in window)) { el.classList.add('run'); return; }
+    var io2 = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { el.classList.toggle('run', e.isIntersecting); });
+    }, { threshold: 0.16 });
+    io2.observe(el);
+  });
 
   // Лист приезжает целым и рвётся; при уходе с экрана собирается обратно,
   // поэтому разрыв показывается заново на каждой прокрутке.
