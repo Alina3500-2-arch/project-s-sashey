@@ -595,35 +595,61 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 .control p{margin:0;font-size:clamp(13px,1.05vw,16px);line-height:1.6;color:rgba(241,233,220,.76);}
 
 /* ═══ 02. ЧЕТЫРЕ ШАГА ════════════════════════════════════ */
-/* Подписи посажены на реальные грани ступеней снимка:
-   верх ступеней — 62.4 / 48.4 / 33.6 / 18.7 % высоты,
-   левые края — 7.2 / 25.1 / 50.2 / 71.8 % ширины. */
+/* Кадр макета — это снимок, обрезанный до 1557×923 из 1672×941
+   (слева 60 px, сверху 18 px). Все подписи заданы в долях этого кадра,
+   размеры шрифтов — в cqw, поэтому композиция масштабируется целиком. */
+.steps-sec{padding:0;}
 .stairs{
-  position:relative;margin-top:clamp(16px,2.2vw,30px);
-  aspect-ratio:1672/941;
-  background:url("assets/stairs.jpg") center/cover no-repeat;
+  position:relative;container-type:inline-size;
+  width:100vw;margin-left:calc(50% - 50vw);
+  aspect-ratio:1557/923;
 }
-.stair-cap{
-  position:absolute;left:var(--l);top:var(--t);width:var(--w,20%);
-  opacity:0;transform:translateY(22px);
+.stairs-frame{
+  position:absolute;inset:0;overflow:hidden;
+  /* верх и низ растворяются в фоне страницы, чтобы снимок не читался
+     как чёрная подложка, врезанная в страницу */
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 8%,#000 92%,transparent 100%);
+          mask-image:linear-gradient(to bottom,transparent 0,#000 8%,#000 92%,transparent 100%);
+}
+.stairs-frame img{
+  position:absolute;display:block;
+  left:-3.854%;top:0;margin-top:-1.156%;
+  width:107.386%;height:auto;
+}
+
+.stairs-head,.stairs-lead{
+  position:absolute;left:var(--l);top:var(--t);width:var(--w);
+  opacity:0;transform:translateY(20px);
+  transition:opacity .9s var(--ease) .1s,transform 1s var(--ease) .1s;
+}
+.stairs-head{--l:8.09%;--t:2.40%;--w:48%;}
+.stairs-lead{--l:8.2%;--t:24.35%;--w:34%;transition-delay:.28s;}
+.seen .stairs-head,.seen .stairs-lead{opacity:1;transform:none;}
+.stairs-head h2{font-size:5.64cqw;line-height:1.27;margin:0;}
+.stairs-lead{font-size:1.25cqw;line-height:1.45;margin:0;max-width:none;}
+
+.stair-n,.stair-txt{
+  position:absolute;left:var(--l);top:var(--t);
+  opacity:0;transform:translateY(18px);
   transition:opacity .8s var(--ease),transform .9s var(--ease);
-  transition-delay:calc(var(--i) * 260ms + 300ms);
+  transition-delay:calc(var(--i) * 260ms + 420ms);
 }
-.seen .stair-cap{opacity:1;transform:none;}
+.seen .stair-n,.seen .stair-txt{opacity:1;transform:none;}
 .stair-n{
-  display:block;font-family:var(--serif);
-  font-size:clamp(18px,3.1vw,46px);line-height:1;
-  color:rgba(241,233,220,.92);margin-bottom:.12em;
+  font-family:var(--serif);font-weight:300;
+  font-size:6.30cqw;line-height:.72;
+  color:rgba(241,233,220,.94);
 }
-.stair-cap:last-child .stair-n{color:var(--green);}
-.stair-cap h3{
-  margin:0 0 .35em;font-size:clamp(9px,1.25vw,17px);font-weight:600;
-  letter-spacing:.04em;line-height:1.2;
+.stair-txt{width:var(--w,16%);}
+.stair-txt h3{
+  margin:0 0 .67em;font-size:1.78cqw;font-weight:500;
+  letter-spacing:.01em;line-height:1.1;color:rgba(241,233,220,.96);
 }
-.stair-cap p{
-  margin:0;font-size:clamp(7px,.92vw,13px);line-height:1.42;
-  color:rgba(241,233,220,.66);
+.stair-txt p{
+  margin:0;font-size:1.12cqw;line-height:1.55;
+  color:rgba(241,233,220,.62);
 }
+
 .steps-list{display:none;list-style:none;margin:0;padding:0;}
 .steps-list li{
   background:var(--card);border:1px solid var(--line);
@@ -880,16 +906,27 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   /* На узком экране подписи на ступенях становятся нечитаемыми
      (ступень шириной 18% от 390 px — это 70 px), поэтому снимок
      остаётся картинкой, а шаги идут списком под ним. */
-  .stairs{aspect-ratio:1672/700;background-position:center;}
-  .stair-cap{
-    position:static;width:auto;opacity:1;transform:none;
-    display:none;
+  .stairs{
+    aspect-ratio:auto;display:flex;flex-direction:column;
+    gap:clamp(14px,3.5vw,22px);
   }
+  .stairs-head,.stairs-lead{
+    position:static;width:auto;
+    padding:0 clamp(18px,5vw,32px);
+  }
+  .stairs-head{order:0;}
+  .stairs-lead{order:1;font-size:clamp(13px,3.4vw,16px);margin-top:clamp(8px,2.2vw,14px);}
+  .stairs-head h2{font-size:clamp(26px,7.4vw,44px);line-height:1.1;margin:0;}
+  .stairs-frame{
+    position:relative;inset:auto;order:2;
+    aspect-ratio:1557/923;
+  }
+  .stair-n,.stair-txt{display:none;}
   .steps-list{
     display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
     gap:clamp(12px,3vw,18px);margin-top:clamp(14px,3vw,20px);
+    padding:0 clamp(18px,5vw,32px);
   }
-  .stairs{margin-bottom:0;}
 }
 @media (max-width:560px){
   .steps-list{grid-template-columns:1fr;}
@@ -1190,39 +1227,48 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   </section>
 
   <!-- 02 ─ Четыре шага -->
-  <section class="sec reveal">
-    <h2 class="sec-title low">Четыре шага,<br />а не одна услуга</h2>
-    <p class="sec-lead">Каждый следующий шаг начинается только тогда, когда предыдущий дал цифры.</p>
-
+  <!-- Разметка повторяет макет: снимок во всю ширину, заголовок и подписи
+       лежат на нём. Координаты подписей — доли кадра, снятые с макета. -->
+  <section class="sec reveal steps-sec">
     <div class="stairs">
-      <div class="stair-cap" style="--l:7.6%;--t:55.4%;--w:17%;--i:0">
-        <span class="stair-n">01</span>
+      <div class="stairs-frame"><img src="assets/stairs.jpg" alt="Четыре ступени" /></div>
+
+      <div class="stairs-head">
+        <h2 class="sec-title low">Четыре шага,<br />а не одна услуга</h2>
+      </div>
+      <p class="sec-lead stairs-lead">Каждый следующий шаг начинается только тогда,<br />когда предыдущий дал цифры.</p>
+
+      <span class="stair-n" style="--l:10.61%;--t:50.36%;--i:0">01</span>
+      <div class="stair-txt" style="--l:6.71%;--t:71.97%;--w:15%;--i:0">
         <h3>Разбор</h3>
         <p>Короткий созвон: смотрим, что происходит с продажами сейчас.</p>
       </div>
-      <div class="stair-cap" style="--l:25.5%;--t:41.4%;--w:21%;--i:1">
-        <span class="stair-n">02</span>
+
+      <span class="stair-n" style="--l:32.75%;--t:36.46%;--i:1">02</span>
+      <div class="stair-txt" style="--l:29.83%;--t:57.59%;--w:16.5%;--i:1">
         <h3>Аудит</h3>
         <p>Разбираем воронку по цифрам, отдаём план: что чинить и в каком порядке.</p>
       </div>
-      <div class="stair-cap" style="--l:50.6%;--t:26.6%;--w:17%;--i:2">
-        <span class="stair-n">03</span>
+
+      <span class="stair-n" style="--l:56.54%;--t:21.29%;--i:2">03</span>
+      <div class="stair-txt" style="--l:54.88%;--t:42.10%;--w:14.5%;--i:2">
         <h3>Сборка</h3>
         <p>Оффер, сайт, трафик, CRM, работа менеджера — собираем в одну связку.</p>
       </div>
-      <div class="stair-cap" style="--l:72.2%;--t:11.7%;--w:18%;--i:3">
-        <span class="stair-n">04</span>
+
+      <span class="stair-n" style="--l:79.04%;--t:5.82%;--i:3">04</span>
+      <div class="stair-txt" style="--l:78.73%;--t:26.60%;--w:15%;--i:3">
         <h3>Ведение</h3>
         <p>Управляем продажами дальше и отвечаем за цифры каждый месяц.</p>
       </div>
-
-      <ol class="steps-list">
-        <li><b>01</b><h3>Разбор</h3><p>Короткий созвон: смотрим, что происходит с продажами сейчас.</p></li>
-        <li><b>02</b><h3>Аудит</h3><p>Разбираем воронку по цифрам, отдаём план: что чинить и в каком порядке.</p></li>
-        <li><b>03</b><h3>Сборка</h3><p>Оффер, сайт, трафик, CRM, работа менеджера — собираем в одну связку.</p></li>
-        <li><b>04</b><h3>Ведение</h3><p>Управляем продажами дальше и отвечаем за цифры каждый месяц.</p></li>
-      </ol>
     </div>
+
+    <ol class="steps-list">
+      <li><b>01</b><h3>Разбор</h3><p>Короткий созвон: смотрим, что происходит с продажами сейчас.</p></li>
+      <li><b>02</b><h3>Аудит</h3><p>Разбираем воронку по цифрам, отдаём план: что чинить и в каком порядке.</p></li>
+      <li><b>03</b><h3>Сборка</h3><p>Оффер, сайт, трафик, CRM, работа менеджера — собираем в одну связку.</p></li>
+      <li><b>04</b><h3>Ведение</h3><p>Управляем продажами дальше и отвечаем за цифры каждый месяц.</p></li>
+    </ol>
   </section>
 
   <!-- 03 ─ Чего мы не делаем -->
