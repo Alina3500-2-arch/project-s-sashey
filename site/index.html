@@ -362,20 +362,93 @@ h1 .l3,h1 .l4{font-size:.84em;}
     url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A8DC28' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M4 12h15M13 6l6 6-6 6'/></svg>");
 }
 
+/* ═══ 07. ПРИЗЫВ К ДЕЙСТВИЮ ══════════════════════════════ */
 .final{
-  margin-top:clamp(12px,2vw,24px);
-  display:flex;align-items:center;justify-content:space-between;
-  gap:clamp(18px,3vw,40px);
-  padding:clamp(20px,2.8vw,38px) clamp(20px,3vw,42px);
-  background:var(--card-2);border:1px solid rgba(168,220,40,.55);
-  border-radius:var(--radius);
-  box-shadow:0 0 60px rgba(168,220,40,.14),inset 0 0 40px rgba(168,220,40,.04);
+  position:relative;overflow:hidden;
+  margin-top:clamp(46px,6vw,96px);
+  padding:clamp(34px,4.6vw,80px) clamp(22px,3.4vw,64px);
+  border:1px solid rgba(168,220,40,.5);border-radius:var(--radius);
+  background:
+    radial-gradient(120% 160% at 88% 8%,rgba(168,220,40,.16),transparent 58%),
+    linear-gradient(150deg,rgba(168,220,40,.07),rgba(168,220,40,.015) 60%),
+    var(--card-2);
+  box-shadow:0 0 80px rgba(168,220,40,.12),inset 0 0 60px rgba(168,220,40,.04);
 }
+.final-body{position:relative;z-index:2;width:min(76%,900px);}
+.final .sec-eyebrow{margin-bottom:clamp(10px,1.4vw,18px);}
 .final h2{
-  margin:0 0 6px;font-family:var(--serif);font-weight:400;
-  font-size:clamp(18px,2.3vw,29px);line-height:1.22;
+  margin:0 0 clamp(12px,1.6vw,22px);
+  font-family:var(--serif);font-weight:400;
+  font-size:clamp(28px,4.6vw,72px);line-height:1.06;letter-spacing:.01em;
 }
-.final p{margin:0;font-size:clamp(13px,1.4vw,15px);color:var(--grey);}
+.final p{
+  margin:0 0 clamp(20px,2.6vw,36px);
+  font-size:clamp(13px,1.15vw,17px);line-height:1.6;color:rgba(241,233,220,.76);
+}
+.final-actions{display:flex;flex-wrap:wrap;gap:clamp(10px,1.4vw,18px);align-items:center;}
+.final-micro{
+  margin:clamp(14px,1.8vw,24px) 0 0;
+  font-size:clamp(11.5px,.95vw,14px);color:var(--grey);
+}
+/* фирменный знак крупно и еле заметно — как водяной знак */
+.final-mark{
+  position:absolute;right:-3%;top:50%;translate:0 -50%;
+  width:clamp(200px,26vw,380px);aspect-ratio:1;
+  background:url("assets/ash-mark.svg") center/contain no-repeat;
+  opacity:.045;pointer-events:none;
+  rotate:0deg;
+}
+.reveal.seen .final-mark{animation:markFloat 14s ease-in-out infinite;}
+@keyframes markFloat{
+  0%,100%{translate:0 -50%;opacity:.045;}
+  50%{translate:0 -54%;opacity:.075;}
+}
+
+/* ═══ ПОДВАЛ ═════════════════════════════════════════════ */
+.foot{
+  margin-top:clamp(40px,5vw,80px);
+  padding-top:clamp(26px,3vw,44px);
+  border-top:1px solid var(--line);
+}
+.foot-top{
+  display:grid;grid-template-columns:auto 1fr auto;
+  gap:clamp(20px,3vw,48px);align-items:start;
+}
+.foot-brand{display:flex;align-items:center;gap:clamp(10px,1.2vw,16px);text-decoration:none;}
+.foot-mark{
+  width:clamp(38px,3.4vw,52px);aspect-ratio:1;
+  background:url("assets/ash-mark.svg") center/contain no-repeat;
+}
+.foot-name{
+  font-family:var(--serif);font-size:clamp(12px,1.05vw,15px);
+  letter-spacing:.18em;text-transform:uppercase;line-height:1.5;color:var(--cream);
+}
+.foot-nav{display:flex;flex-wrap:wrap;gap:clamp(14px,2vw,30px);justify-content:center;padding-top:.6em;}
+.foot-nav a{
+  font-size:clamp(12px,1vw,15px);color:rgba(241,233,220,.72);text-decoration:none;
+  position:relative;transition:color .3s var(--ease);
+}
+.foot-nav a::after{
+  content:"";position:absolute;left:0;right:0;bottom:-.35em;height:1px;
+  background:var(--green);scale:0 1;transform-origin:left;
+  transition:scale .35s var(--ease);
+}
+.foot-nav a:hover{color:var(--green);}
+.foot-nav a:hover::after{scale:1 1;}
+.foot-contacts{display:flex;flex-direction:column;align-items:flex-end;gap:.45em;text-align:right;}
+.foot-phone{
+  font-family:var(--serif);font-size:clamp(16px,1.5vw,23px);
+  color:var(--cream);text-decoration:none;transition:color .3s var(--ease);
+}
+.foot-phone:hover{color:var(--green);}
+.foot-hint{font-size:clamp(11px,.92vw,13.5px);color:var(--grey);}
+.foot-bottom{
+  display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;
+  margin-top:clamp(24px,3vw,44px);padding-top:clamp(14px,1.6vw,22px);
+  border-top:1px solid var(--line);
+  font-size:clamp(11px,.9vw,13px);color:var(--grey);
+}
+
 
 /* ── ПОЯВЛЕНИЕ ───────────────────────────────────────────── */
 .rise{
@@ -869,7 +942,110 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   }
 }
 
-/* ═══ 04. С ЧЕГО НАЧАТЬ ══════════════════════════════════ */
+
+/* ═══ 05. КЕЙСЫ ══════════════════════════════════════════ */
+.cases-sec .sec-lead{max-width:64ch;}
+
+.case-main{
+  position:relative;margin-top:clamp(20px,2.6vw,38px);
+  border:1px solid var(--line);border-radius:var(--radius);
+  background:linear-gradient(160deg,rgba(168,220,40,.045),transparent 42%),var(--card);
+  padding:clamp(24px,3.2vw,52px) clamp(20px,3vw,52px) clamp(24px,3vw,44px);
+  overflow:hidden;
+}
+.case-main::before{
+  content:"";position:absolute;left:0;top:0;width:100%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(168,220,40,.75) 22%,rgba(168,220,40,.75) 78%,transparent);
+  transform-origin:left;scale:0 1;
+  transition:scale 1.1s var(--ease) .15s;
+}
+.reveal.seen .case-main::before,.case-main.seen::before{scale:1 1;}
+.case-tag{
+  display:inline-block;margin-bottom:clamp(10px,1.4vw,18px);
+  padding:.42em 1em;border:1px solid rgba(168,220,40,.45);border-radius:999px;
+  font-size:clamp(10px,.82vw,12px);font-weight:600;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--green);
+}
+.case-main h3{
+  margin:0 0 .35em;font-family:var(--serif);font-weight:400;
+  font-size:clamp(26px,3.6vw,54px);line-height:1.06;letter-spacing:.01em;
+}
+.case-sub{
+  margin:0 0 clamp(22px,2.8vw,40px);
+  font-size:clamp(13px,1.15vw,17px);line-height:1.55;color:rgba(241,233,220,.7);
+}
+.case-flow{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:clamp(16px,2vw,34px);
+}
+.case-step{
+  position:relative;padding-top:clamp(14px,1.5vw,22px);
+  border-top:1px solid var(--line);
+  opacity:0;translate:0 20px;
+  transition:opacity .7s var(--ease),translate .8s var(--ease);
+  transition-delay:calc(var(--i) * 150ms + 250ms);
+}
+.seen .case-step{opacity:1;translate:0 0;}
+.case-step::after{
+  content:"";position:absolute;left:0;top:-1px;width:0;height:1px;background:var(--green);
+  transition:width .8s var(--ease);
+  transition-delay:calc(var(--i) * 150ms + 420ms);
+}
+.seen .case-step::after{width:38%;}
+.case-n{
+  display:block;margin-bottom:.6em;
+  font-size:clamp(10px,.86vw,12.5px);font-weight:600;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--green);
+}
+.case-step p{margin:0;font-size:clamp(12.5px,1.02vw,15px);line-height:1.6;color:rgba(241,233,220,.76);}
+
+.case-roles{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:clamp(14px,2vw,32px);margin-top:clamp(24px,3vw,44px);
+}
+.case-role{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:.5em .8em;
+  padding:clamp(12px,1.4vw,20px) clamp(14px,1.6vw,24px);
+  border:1px solid var(--line);border-radius:10px;
+  background:rgba(168,220,40,.035);
+  opacity:0;translate:0 14px;
+  transition:opacity .7s var(--ease),translate .8s var(--ease);
+  transition-delay:calc(var(--i) * 160ms + 900ms);
+}
+.seen .case-role{opacity:1;translate:0 0;}
+.role-name{
+  font-family:var(--serif);font-size:clamp(17px,1.6vw,24px);color:var(--green);
+}
+.role-what{font-size:clamp(12px,.98vw,14.5px);line-height:1.5;color:rgba(241,233,220,.72);}
+.case-note{
+  margin:clamp(18px,2.2vw,30px) 0 0;
+  font-size:clamp(11.5px,.94vw,14px);line-height:1.55;color:var(--grey);
+}
+
+.case-grid{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:clamp(14px,1.8vw,26px);margin-top:clamp(16px,2vw,30px);
+}
+.case-card{
+  border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--card);padding:clamp(18px,2vw,30px);
+  opacity:0;translate:0 24px;
+  transition:opacity .7s var(--ease),translate .8s var(--ease),border-color .35s var(--ease);
+  transition-delay:calc(var(--i) * 120ms + 120ms);
+}
+.case-card.seen{opacity:1;translate:0 0;}
+.case-card:hover{border-color:rgba(168,220,40,.45);}
+.case-by{
+  display:block;margin-bottom:clamp(10px,1.2vw,16px);
+  font-size:clamp(10px,.8vw,11.5px);font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--green);
+}
+.case-card h4{
+  margin:0 0 .55em;font-size:clamp(14px,1.25vw,19px);font-weight:600;line-height:1.25;
+}
+.case-card p{margin:0;font-size:clamp(12.5px,1vw,15px);line-height:1.6;color:rgba(241,233,220,.72);}
+
+/* ═══ 06. С ЧЕГО НАЧАТЬ ══════════════════════════════════ */
 .start-actions{display:flex;flex-wrap:wrap;gap:clamp(10px,1.4vw,18px);align-items:center;}
 .ghost-btn{
   display:inline-flex;align-items:center;justify-content:center;
@@ -884,7 +1060,7 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 .tariffs{
   position:relative;margin-top:clamp(40px,5vw,80px);
   background:var(--green);color:#12140C;
-  padding:clamp(46px,5.6vw,84px) clamp(20px,3vw,48px) clamp(30px,3.6vw,54px);
+  padding:clamp(46px,5.6vw,84px) clamp(20px,3vw,48px) clamp(44px,4.6vw,70px);
 }
 /* рваный край сверху */
 .tariffs::before{
@@ -892,6 +1068,13 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   background:var(--graphite);
   -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 40' preserveAspectRatio='none'><path d='M0 0h1200v13l-38 6-44-9-51 11-46-5-49 9-53-7-41 8-47-4-52 10-45-8-50 6-48-9-43 7-52-5-46 9-51-8-44 6-49-4-53 9-42-7-47 5-52-9-45 8-50-6-48 4-44 8V0z'/></svg>") bottom/100% 100% no-repeat;
   mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 40' preserveAspectRatio='none'><path d='M0 0h1200v13l-38 6-44-9-51 11-46-5-49 9-53-7-41 8-47-4-52 10-45-8-50 6-48-9-43 7-52-5-46 9-51-8-44 6-49-4-53 9-42-7-47 5-52-9-45 8-50-6-48 4-44 8V0z'/></svg>") bottom/100% 100% no-repeat;
+}
+/* рваный край снизу — как в макете, лист оторван с обеих сторон */
+.tariffs::after{
+  content:"";position:absolute;left:0;right:0;bottom:-1px;height:clamp(18px,2.1vw,32px);
+  background:var(--graphite);
+  -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 40' preserveAspectRatio='none'><path d='M0 40h1200V27l-38-6-44 9-51-11-46 5-49-9-53 7-41-8-47 4-52-10-45 8-50-6-48 9-43-7-52 5-46-9-51 8-44-6-49 4-53-9-42 7-47-5-52 9-45-8-50 6-48-4-44-8V40z'/></svg>") top/100% 100% no-repeat;
+          mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 40' preserveAspectRatio='none'><path d='M0 40h1200V27l-38-6-44 9-51-11-46 5-49-9-53 7-41-8-47 4-52-10-45 8-50-6-48 9-43-7-52 5-46-9-51 8-44-6-49 4-53-9-42 7-47-5-52 9-45-8-50 6-48-4-44-8V40z'/></svg>") top/100% 100% no-repeat;
 }
 .tariff-grid{
   display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
@@ -1087,12 +1270,27 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   .stair-txt .s-short{display:inline;}
   .stair-txt p{font-size:2.85cqw;line-height:1.35;}
   .steps-list{display:none;}
+  /* кейсы, призыв и подвал на узком экране */
+  .case-flow{grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(14px,4vw,22px);}
+  .case-roles{grid-template-columns:1fr;}
+  .case-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .final-body{width:auto;}
+  .final h2{font-size:clamp(26px,7.6vw,44px);}
+  .final .cta{width:100%;}
+  .final .ghost-btn{width:100%;}
+  .final-mark{right:-18%;width:clamp(200px,52vw,320px);opacity:.035;}
+  .foot-top{grid-template-columns:1fr;gap:clamp(18px,5vw,28px);}
+  .foot-nav{justify-content:flex-start;padding-top:0;}
+  .foot-contacts{align-items:flex-start;text-align:left;}
+  .foot-bottom{flex-direction:column;gap:6px;}
 }
 @media (max-width:560px){
   .steps-list{grid-template-columns:1fr;}
   .tariff-grid{grid-template-columns:1fr;gap:clamp(14px,4vw,22px);}
   .tariff{border-left:none;padding-left:0;border-top:1px solid rgba(18,20,12,.28);padding-top:14px;}
   .tariff:first-child{border-top:none;padding-top:0;}
+  .case-flow{grid-template-columns:1fr;}
+  .case-grid{grid-template-columns:1fr;}
   .start-actions{flex-direction:column;align-items:stretch;}
   .ghost-btn{width:100%;}
 }
@@ -1113,8 +1311,6 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   .steps li:not(:last-child)::after{
     top:100%;right:50%;translate:50% calc(-50% + var(--sgap)/2);rotate:90deg;
   }
-  .final{flex-direction:column;align-items:stretch;}
-  .final .cta{width:100%;}
 }
 
 @media (prefers-reduced-motion:reduce){
@@ -1291,19 +1487,6 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
     </ol>
   </section>
 
-  <section class="final reveal">
-    <div>
-      <h2>Готовы навести порядок в продажах и вырастить выручку?</h2>
-      <p>Начнём с бесплатного аудита.</p>
-    </div>
-    <a class="cta" href="#audit">
-      Бесплатный аудит
-      <svg class="arr" width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-        <path d="M2 10L10 2M10 2H3.5M10 2V8.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-      </svg>
-    </a>
-  </section>
-
   <!-- 01 ─ Все делают свой кусок -->
   <section class="sec reveal">
     <h2 class="sec-title">Все делают<br />свой кусок</h2>
@@ -1466,7 +1649,88 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
     </div>
   </section>
 
-  <!-- 04 ─ С чего начать -->
+
+  <!-- 05 ─ Кейсы -->
+  <section class="sec reveal cases-sec" id="cases">
+    <span class="sec-eyebrow">Кейсы</span>
+    <h2 class="sec-title low">Как это выглядит<br />в работе</h2>
+    <p class="sec-lead">Один проект разбираем подробно — от первых цифр до системы. Дальше — работы,
+      которые Александр вёл дистанционно: там уже точечные задачи.</p>
+
+    <!-- крупный кейс -->
+    <article class="case-main reveal">
+      <span class="case-tag">Кейс 01</span>
+      <h3>Пересборка системы продаж</h3>
+      <p class="case-sub">Работающий бизнес: сайт, реклама и менеджеры существовали отдельно.</p>
+
+      <div class="case-flow">
+        <div class="case-step" style="--i:0">
+          <span class="case-n">Было</span>
+          <p>Сайт у одного подрядчика, реклама у другого, CRM заполнялась через раз.
+             Собственник не мог сказать, откуда приходят заявки и почему их стало меньше.</p>
+        </div>
+        <div class="case-step" style="--i:1">
+          <span class="case-n">Разобрали</span>
+          <p>Подняли данные за три месяца, прослушали звонки и переписки, посчитали
+             стоимость обращения по каждому источнику. Нашли, где теряются деньги.</p>
+        </div>
+        <div class="case-step" style="--i:2">
+          <span class="case-n">Собрали</span>
+          <p>Переработали предложение, сделали посадочную страницу, пересобрали Директ,
+             завели воронку в CRM и правила обработки заявок.</p>
+        </div>
+        <div class="case-step" style="--i:3">
+          <span class="case-n">Ведём</span>
+          <p>21 день наблюдения, еженедельный разбор цифр, корректировки. Дальше —
+             ежемесячный отчёт и план на следующий месяц.</p>
+        </div>
+      </div>
+
+      <div class="case-roles">
+        <div class="case-role" style="--i:0">
+          <span class="role-name">Алина</span>
+          <span class="role-what">предложение, тексты, дизайн, сайт, мобильная версия</span>
+        </div>
+        <div class="case-role" style="--i:1">
+          <span class="role-name">Александр</span>
+          <span class="role-what">цифры, реклама, CRM, отчётность и контроль</span>
+        </div>
+      </div>
+
+      <p class="case-note">Цифры по этому проекту публикуем только с согласия клиента —
+        показываем их на разборе.</p>
+    </article>
+
+    <!-- компактные работы -->
+    <div class="case-grid">
+      <article class="case-card reveal" style="--i:0">
+        <span class="case-by">Александр · дистанционно</span>
+        <h4>Реклама и аналитика</h4>
+        <p>Яндекс Директ: поиск и РСЯ, минус-слова, сегменты. Метрика, цели, таблица
+           показателей — чтобы стоимость обращения была видна каждую неделю.</p>
+      </article>
+      <article class="case-card reveal" style="--i:1">
+        <span class="case-by">Александр · дистанционно</span>
+        <h4>CRM и обработка заявок</h4>
+        <p>Воронка в Битрикс24, автоматизации, сценарии первого контакта и правила
+           работы с потерянными заявками. Обучающий созвон для менеджеров.</p>
+      </article>
+      <article class="case-card reveal" style="--i:2">
+        <span class="case-by">Александр · дистанционно</span>
+        <h4>Аудит воронки по цифрам</h4>
+        <p>Разбор пути клиента от клика до обращения, прослушивание звонков,
+           расчёт потерь и приоритеты: что чинить в первую очередь.</p>
+      </article>
+      <article class="case-card reveal" style="--i:3">
+        <span class="case-by">Вдвоём</span>
+        <h4>Запуск с нуля</h4>
+        <p>Новое направление без истории: предложение, одностраничный сайт, первая
+           реклама и простая воронка. 14 дней наблюдения и одна корректировка.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- 06 ─ С чего начать -->
   <section class="sec reveal" id="audit">
     <span class="sec-eyebrow">С чего начать</span>
     <h2 class="sec-title low">Начинаем с<br />бесплатного разбора</h2>
@@ -1495,6 +1759,49 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
       <p class="tariffs-note">Бесплатный аудит — первый шаг, а не отдельная услуга.</p>
     </div>
   </section>
+
+  <!-- 07 ─ Призыв к действию -->
+  <section class="final reveal">
+    <div class="final-body">
+      <span class="sec-eyebrow">Первый шаг</span>
+      <h2>Готовы навести порядок<br />в продажах?</h2>
+      <p>Бесплатный разбор: отвечаете на несколько вопросов — через двое суток
+        получаете PDF с точками потери и конкретными шагами. Без звонков и давления.</p>
+      <div class="final-actions">
+        <a class="cta" href="#audit">
+          Бесплатный аудит
+          <svg class="arr" width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <path d="M2 10L10 2M10 2H3.5M10 2V8.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </a>
+        <a class="ghost-btn" href="tel:+79201461140">+7 (920) 146-11-40</a>
+      </div>
+      <p class="final-micro">Работаем с проектами от 80 000 ₽ · одновременно ведём не больше двух</p>
+    </div>
+    <span class="final-mark" aria-hidden="true"></span>
+  </section>
+
+  <footer class="foot reveal">
+    <div class="foot-top">
+      <a class="foot-brand" href="#top" aria-label="Аполлонов и Шигапова">
+        <span class="foot-mark" aria-hidden="true"></span>
+        <span class="foot-name">Аполлонов<br />и Шигапова</span>
+      </a>
+      <nav class="foot-nav" aria-label="Разделы">
+        <a href="#cases">Кейсы</a>
+        <a href="#audit">Цены</a>
+        <a href="#audit">Аудит</a>
+      </nav>
+      <div class="foot-contacts">
+        <a class="foot-phone" href="tel:+79201461140">+7 (920) 146-11-40</a>
+        <span class="foot-hint">Пишите в MAX — отвечаем в течение дня</span>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Аполлонов и Шигапова</span>
+      <span>Системный маркетинг для роста выручки</span>
+    </div>
+  </footer>
 
 </div>
 
@@ -1570,6 +1877,8 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 
 })();
 </script>
+
+
 
 </body>
 </html>
