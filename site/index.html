@@ -869,6 +869,8 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   .chain{flex-wrap:wrap;gap:8px 0;}
   /* на узком экране перемычки короче, иначе три круга не встают в один ряд */
   .link{width:22px;margin:0 3px;}
+  /* стрелка после CRM переносится на свою строку и висит в пустоте — убираем */
+  .chain-arrow{display:none;}
   .principles{grid-template-columns:1fr;}
   .principles-photo{min-height:clamp(240px,58vw,360px);}
   .principles-photo::after{
