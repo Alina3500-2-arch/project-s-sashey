@@ -688,7 +688,7 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 .princ{position:relative;container-type:inline-size;}
 .princ-photo{
   aspect-ratio:4/3;
-  background:url("assets/sasha.jpg") center 18%/cover;
+  background:url("assets/sasha-wall.jpg") center 22%/cover;
 }
 .princ-body{padding:clamp(20px,5vw,32px) clamp(18px,5vw,32px) 0;}
 .princ-rule,.mk,.ghost-num{display:none;}
@@ -720,7 +720,12 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 .claim{
   position:relative;padding:clamp(16px,2vw,26px) clamp(18px,2.2vw,30px);
   border:1px solid rgba(168,220,40,.42);
-  background:linear-gradient(115deg,rgba(168,220,40,.10),rgba(168,220,40,.02) 60%);
+  background:
+    linear-gradient(112deg,transparent 38%,rgba(168,220,40,.17) 48%,
+                    rgba(168,220,40,.05) 54%,rgba(168,220,40,.13) 62%,transparent 72%),
+    linear-gradient(115deg,rgba(168,220,40,.10),rgba(168,220,40,.02) 60%);
+  background-size:230% 100%,100% 100%;
+  background-repeat:no-repeat;
   font-size:clamp(13px,3.4vw,16px);line-height:1.55;color:var(--green);
 }
 .claim::before,.claim::after{
@@ -728,6 +733,63 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 }
 .claim::before{top:-1px;left:-1px;border-right:none;border-bottom:none;}
 .claim::after{bottom:-1px;right:-1px;border-left:none;border-top:none;}
+
+
+/* ── Движение блока. Всё привязано к классу .run, который наблюдатель
+      снимает при уходе с экрана, поэтому появление играет заново. ── */
+.princ-photo{
+  opacity:0;scale:1.06;
+  transition:opacity 1.1s var(--ease),scale 1.7s var(--ease);
+}
+.princ.run .princ-photo{opacity:1;scale:1;}
+
+.princ-rule{transform-origin:top;scale:1 0;transition:scale 1.15s var(--ease) .2s;}
+.princ.run .princ-rule{scale:1 1;}
+
+.mk{opacity:0;rotate:-30deg;transition:opacity .7s var(--ease),rotate .9s var(--ease);}
+.princ.run .mk{opacity:1;rotate:0deg;}
+.princ.run .mk-plus{animation:mkPulse 3.4s ease-in-out infinite 1.4s;}
+.princ.run .mk-ring{animation:mkPulse 3.4s ease-in-out infinite 2s;}
+@keyframes mkPulse{0%,100%{opacity:.45}50%{opacity:1}}
+
+.ghost-num{opacity:0;translate:34px 0;transition:opacity 1.3s var(--ease) .35s,translate 1.5s var(--ease) .35s;}
+.princ.run .ghost-num{opacity:1;translate:0 0;}
+
+.princ-body .sec-eyebrow{opacity:0;translate:0 -10px;transition:opacity .7s var(--ease) .3s,translate .8s var(--ease) .3s;}
+.princ-body h2{opacity:0;translate:0 24px;transition:opacity .9s var(--ease) .42s,translate 1s var(--ease) .42s;}
+.princ.run .sec-eyebrow,.princ.run h2{opacity:1;translate:0 0;}
+
+.nope li{opacity:0;translate:24px 0;}
+.nope li{transition:opacity .7s var(--ease),translate .8s var(--ease);
+  transition-delay:calc(var(--i) * 170ms + 620ms);}
+.princ.run .nope li{opacity:1;translate:0 0;}
+/* крестик прорисовывается, затем мягко дышит — по очереди, слева направо */
+.nope i{scale:.2;transition:scale .55s var(--ease);
+  transition-delay:calc(var(--i) * 170ms + 760ms);}
+.princ.run .nope i{
+  scale:1;
+  animation:xBreathe 3.2s ease-in-out infinite;
+  animation-delay:calc(var(--i) * 240ms + 1.5s);
+}
+@keyframes xBreathe{0%,100%{opacity:.5}45%{opacity:1}}
+/* световой блик пробегает по плашке */
+@keyframes claimSweep{
+  from{background-position:145% 0,0 0;}
+  to{background-position:-55% 0,0 0;}
+}
+
+.claim{opacity:0;translate:0 22px;
+  transition:opacity .9s var(--ease) 1.32s,translate 1s var(--ease) 1.32s;}
+.princ.run .claim{opacity:1;translate:0 0;animation:claimSweep 6s linear infinite 2s;}
+.claim::before,.claim::after{opacity:0;transition:opacity .5s var(--ease) 1.9s;}
+.princ.run .claim::before,.princ.run .claim::after{opacity:1;}
+
+@media (prefers-reduced-motion:reduce){
+  .princ-photo,.princ-rule,.mk,.ghost-num,.princ-body .sec-eyebrow,
+  .princ-body h2,.nope li,.nope i,.claim,.claim::before,.claim::after{
+    opacity:1;scale:1;rotate:0deg;translate:0 0;
+  }
+}
 
 @media (min-width:901px){
   .princ{
@@ -739,7 +801,7 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   }
   .princ-photo{
     position:absolute;left:0;top:0;width:46%;height:100%;aspect-ratio:auto;
-    background:url("assets/sasha.jpg") center 22%/cover;
+    background:url("assets/sasha-wall.jpg") center 24%/cover;
     -webkit-mask-image:linear-gradient(to right,#000 80%,transparent 100%);
             mask-image:linear-gradient(to right,#000 80%,transparent 100%);
   }
@@ -791,9 +853,11 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   .claim{
     position:absolute;top:70.6cqh;left:0;width:100%;
     background:
-      linear-gradient(112deg,rgba(168,220,40,.055) 38%,rgba(168,220,40,.16) 56%,
-                      rgba(168,220,40,.045) 62%,rgba(168,220,40,.10) 78%,rgba(168,220,40,.03) 92%),
+      linear-gradient(112deg,transparent 38%,rgba(168,220,40,.17) 48%,
+                      rgba(168,220,40,.05) 54%,rgba(168,220,40,.13) 62%,transparent 72%),
       linear-gradient(115deg,rgba(168,220,40,.12),rgba(168,220,40,.03) 70%);
+    background-size:230% 100%,100% 100%;
+    background-repeat:no-repeat;
     padding:4.9cqh 3.5cqw 4.9cqh 3.5cqw;
     font-size:1.36cqw;line-height:1.55;
   }
@@ -1456,6 +1520,19 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
         });
       }, { threshold: 0.18 });
       ro.observe(stairs);
+    }
+  }
+
+  // Блок «Чего мы не делаем» — своя дорожка появления, тоже на каждый заход.
+  var princ = document.querySelector('.princ');
+  if (princ) {
+    if (reduce || !('IntersectionObserver' in window)) {
+      princ.classList.add('run');
+    } else {
+      var po = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { princ.classList.toggle('run', e.isIntersecting); });
+      }, { threshold: 0.16 });
+      po.observe(princ);
     }
   }
 
