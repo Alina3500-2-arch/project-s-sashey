@@ -1030,6 +1030,10 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 .cb-frame{display:none;}
 .cb-frame.is-on{display:block;}
 .cb-frame img{display:block;width:100%;height:auto;border-radius:var(--radius) var(--radius) 0 0;}
+/* У финального макета упаковки в исходнике была собственная нижняя
+   навигация. В портфолио она уже находится под кадром, поэтому здесь
+   скрывается только этот служебный хвост. */
+.cb-frame.cb-pack{aspect-ratio:1672/833;overflow:hidden;}
 
 .cb-tabs{
   display:flex;
@@ -1739,18 +1743,21 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
     <div class="cb-frame is-on" data-panel="0">
       <img src="assets/case-analysis.jpg" alt="Кейс Eco-Store — 01. Анализ" />
     </div>
-    <div class="cb-frame" data-panel="1">
-      <img src="assets/case-traffic.jpg" alt="Кейс Eco-Store — 03. Трафик" />
+    <div class="cb-frame cb-pack" data-panel="1">
+      <img src="assets/case-packaging.png" alt="Кейс Eco-Store — 02. Упаковка" />
     </div>
     <div class="cb-frame" data-panel="2">
+      <img src="assets/case-traffic.jpg" alt="Кейс Eco-Store — 03. Трафик" />
+    </div>
+    <div class="cb-frame" data-panel="3">
       <img src="assets/case-system.jpg" alt="Кейс Eco-Store — 04. Система" />
     </div>
 
     <div class="cb-tabs">
       <button class="cb-tab is-on" type="button" data-tab="0"><b>01</b>Анализ</button>
-      <button class="cb-tab is-off" type="button" disabled><b>02</b>Упаковка</button>
-      <button class="cb-tab" type="button" data-tab="1"><b>03</b>Трафик</button>
-      <button class="cb-tab" type="button" data-tab="2"><b>04</b>Система</button>
+      <button class="cb-tab" type="button" data-tab="1"><b>02</b>Упаковка</button>
+      <button class="cb-tab" type="button" data-tab="2"><b>03</b>Трафик</button>
+      <button class="cb-tab" type="button" data-tab="3"><b>04</b>Система</button>
     </div>
   </section>
 
