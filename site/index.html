@@ -13,13 +13,14 @@
   if (w) document.write('<style>html{overflow:hidden;}</style>');
 })();
 </script>
+<script>document.documentElement.classList.add('is-loading');</script>
 <noscript><meta name="viewport" content="width=device-width, initial-scale=1" /></noscript>
 <title>Аполлонов и Шигапова — пересобираем продажи в малом бизнесе</title>
 <meta name="description" content="Показываем, где бизнес теряет деньги, даём конкретные шаги и собираем систему продаж: оффер, сайт, трафик, CRM, работа менеджера." />
 
 <link rel="icon" href="assets/favicon.svg" />
-<link rel="preload" as="image" href="assets/hero-duo-wide.jpg" media="(min-width:1001px)" />
-<link rel="preload" as="image" href="assets/hero-duo-mobile.jpg" media="(max-width:1000px)" />
+<link rel="preload" as="image" href="assets/hero-duo-final.jpg" media="(min-width:1001px)" />
+<link rel="preload" as="image" href="assets/hero-duo-mobile-final.jpg" media="(max-width:1000px)" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -67,6 +68,17 @@ body{
   -webkit-font-smoothing:antialiased;
   overflow-x:hidden;
 }
+/* Единый старт для ПК и телефона: сначала ждём шрифты и изображения,
+   затем показываем уже собранный первый экран. */
+html.is-loading body::before{
+  content:"";position:fixed;z-index:1000;left:50%;top:50%;width:30px;aspect-ratio:1;
+  translate:-50% -50%;border:1px solid rgba(168,220,40,.28);border-top-color:var(--green);
+  border-radius:50%;animation:loaderSpin .8s linear infinite;
+}
+html.is-loading .shell > :not(.media){visibility:hidden;}
+html:not(.is-loading) .shell > :not(.media){animation:heroShellIn .75s var(--ease) both;}
+@keyframes loaderSpin{to{rotate:1turn;}}
+@keyframes heroShellIn{from{opacity:0;translate:0 10px;}to{opacity:1;translate:0 0;}}
 a{color:inherit;text-decoration:none;}
 :focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:6px;}
 
@@ -91,7 +103,7 @@ a{color:inherit;text-decoration:none;}
    теперь фон неподвижен и кадрирование должно быть предсказуемым */
 .photo{
   position:absolute;inset:0;
-  background-image:url("assets/hero-duo-wide.jpg");
+  background-image:url("assets/hero-duo-final.jpg");
   background-size:cover;background-position:center center;
 }
 .photo-in{position:absolute;inset:0;animation:photoIn 1800ms var(--ease) both;}
@@ -282,20 +294,20 @@ h1 .l3,h1 .l4{font-size:.84em;}
 /* заметка справа */
 .note{
   grid-column:2;grid-row:1;
-  justify-self:end;align-self:center;
-  margin:0;width:clamp(150px,13.5vw,200px);
+  justify-self:start;align-self:end;
+  margin:0 0 clamp(30px,6vh,70px) clamp(12px,3vw,48px);width:clamp(150px,13.5vw,200px);
   font-size:clamp(12px,.92vw,14px);line-height:1.6;
   color:rgba(241,233,220,.96);
-  /* цитата лежит на светлом пиджаке — держим её ореолом, а не плашкой:
-     любая подложка даёт заметный прямоугольник на фотографии */
-  text-shadow:
-    0 0 2px rgba(23,22,20,.98), 0 0 6px rgba(23,22,20,.95),
-    0 0 16px rgba(23,22,20,.9), 0 0 34px rgba(23,22,20,.8),
-    0 1px 2px rgba(23,22,20,1);
 }
 .note::before{
   content:"";display:block;width:26px;height:1px;
   background:var(--green);margin-bottom:14px;
+}
+@media (min-width:1001px){
+  .note{
+    position:absolute;right:clamp(18px,5vw,76px);bottom:clamp(24px,5vh,62px);
+    margin:0;
+  }
 }
 
 /* Всплывает последней, через паузу после всей остальной загрузки:
@@ -365,6 +377,11 @@ h1 .l3,h1 .l4{font-size:.84em;}
   border:1px solid rgba(168,220,40,.55);border-radius:50%;
   background:var(--graphite) center/44% no-repeat
     url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A8DC28' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M4 12h15M13 6l6 6-6 6'/></svg>");
+}
+.steps li:not(:last-child).seen::after{animation:stepArrowPulse 2.8s ease-in-out var(--arrow-delay,0s) infinite;}
+@keyframes stepArrowPulse{
+  0%,100%{opacity:.42;box-shadow:0 0 0 rgba(168,220,40,0);}
+  42%{opacity:1;box-shadow:0 0 16px rgba(168,220,40,.24);}
 }
 
 
@@ -482,10 +499,11 @@ h1 .l3,h1 .l4{font-size:.84em;}
 h2.sec-title{
   margin:0 0 clamp(14px,2vw,26px);
   font-family:var(--serif);font-weight:300;
-  font-size:clamp(32px,6.6vw,104px);line-height:1.02;
-  text-transform:uppercase;letter-spacing:.01em;
+  font-size:clamp(30px,5.1vw,80px);line-height:.9;
+  text-transform:uppercase;letter-spacing:.012em;
 }
-h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-height:1.1;}
+.sec-title .title-major,.sec-title .title-minor{display:block;}
+.sec-title .title-minor{font-size:.84em;}
 .sec-lead{
   margin:0 0 clamp(22px,3vw,40px);max-width:60ch;
   font-size:clamp(14px,1.1vw,17px);line-height:1.62;color:rgba(241,233,220,.74);
@@ -593,11 +611,18 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 /* панель «Управляемость» */
 .control{
   position:relative;margin-top:clamp(30px,3.8vw,54px);
-  border:1px solid rgba(168,220,40,.5);border-radius:var(--radius);
+  border:1px solid transparent;border-radius:var(--radius);
   padding:clamp(36px,4.2vw,58px) clamp(24px,3.2vw,50px) clamp(30px,3.4vw,48px);
   display:grid;grid-template-columns:auto minmax(0,1fr);
   gap:clamp(18px,2.4vw,38px);align-items:center;
 }
+.control::after{
+  content:"";position:absolute;inset:-1px;border:1px solid rgba(168,220,40,.5);
+  border-radius:inherit;transform:scaleX(0);transform-origin:left center;pointer-events:none;z-index:0;
+  transition:transform 2.35s var(--ease) 6.75s;
+}
+.control.run::after{transform:scaleX(1);}
+.control > *{position:relative;z-index:1;}
 /* подпись врезана в верхнюю рамку, по бокам — короткие штрихи */
 .control-label{
   position:absolute;top:0;left:50%;translate:-50% -50%;
@@ -605,8 +630,10 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   background:var(--graphite);padding:0 14px;
   font-size:clamp(9.5px,.82vw,11.5px);font-weight:600;
   letter-spacing:.3em;text-transform:uppercase;color:var(--green);
-  white-space:nowrap;
+  white-space:nowrap;opacity:0;z-index:2 !important;
+  transition:opacity .5s var(--ease) 6.35s;
 }
+.control.run .control-label{opacity:1;}
 .control-label::before,.control-label::after{
   content:"";width:clamp(14px,1.6vw,26px);height:1px;background:rgba(168,220,40,.55);
 }
@@ -619,10 +646,10 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   width:clamp(80px,7.6vw,104px);aspect-ratio:1;border-radius:50%;
   border:1px solid rgba(168,220,40,.65);
   opacity:0;scale:.85;
-  transition:opacity .7s var(--ease),scale .7s var(--ease);
-  transition-delay:calc(var(--i) * 900ms);
+  transition:opacity .8s var(--ease),scale .9s var(--ease);
+  transition-delay:var(--node-delay);
 }
-.seen .node{opacity:1;scale:1;}
+.control.run .node{opacity:1;scale:1;}
 .node svg{width:clamp(25px,2.5vw,32px);height:clamp(25px,2.5vw,32px);stroke:var(--green);fill:none;stroke-width:1.4;}
 .node b{
   font-size:clamp(8.5px,.78vw,11px);font-weight:600;
@@ -634,31 +661,40 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   flex:0 0 auto;width:clamp(30px,3vw,44px);height:14px;
   margin:0 clamp(5px,.6vw,9px);
   clip-path:inset(0 100% 0 0);
-  transition:clip-path .6s var(--ease);
-  transition-delay:calc((var(--i) * 900ms) + 520ms);
+  transition:clip-path 1.1s var(--ease);
+  transition-delay:var(--line-delay);
 }
-.seen .link{clip-path:inset(0 0 0 0);}
+.control.run .link{clip-path:inset(0 0 0 0);}
 .link svg{display:block;width:100%;height:100%;overflow:visible;}
 .link path{
   fill:none;stroke:var(--green);stroke-width:1.7;
   stroke-dasharray:5 4.4;stroke-dashoffset:-2.2;stroke-linecap:round;
 }
+.control.run .link path{animation:linkSnake 3.6s linear var(--line-delay) infinite;}
 /* стрелка — те же штрихи, что и перемычки, плюс наконечник */
 .chain-arrow{
   flex:none;width:clamp(40px,3.9vw,58px);height:14px;margin-left:clamp(12px,1.3vw,20px);
   opacity:0;transform:translateX(-12px);
-  transition:opacity .7s var(--ease) 3.1s,transform .8s var(--ease) 3.1s;
+  transition:opacity .72s var(--ease) 4.7s,transform .8s var(--ease) 4.7s;
 }
-.seen .chain-arrow{opacity:1;transform:none;}
+.control.run .chain-arrow{opacity:1;transform:none;}
 .chain-arrow svg{display:block;width:100%;height:100%;stroke:var(--green);fill:none;overflow:visible;}
 .chain-arrow .shaft{stroke-width:1.7;stroke-dasharray:5 4.4;stroke-dashoffset:-2.2;stroke-linecap:round;}
 .chain-arrow .head{stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+.control.run .chain-arrow .shaft{animation:chainSnake 3.2s linear 5.3s infinite;}
+@keyframes linkSnake{to{stroke-dashoffset:-58;}}
+@keyframes chainSnake{to{stroke-dashoffset:-58;}}
 .control h3{
   margin:0 0 12px;font-family:var(--serif);font-weight:400;
   font-size:clamp(17px,1.75vw,25px);line-height:1.24;
   text-transform:uppercase;letter-spacing:.03em;color:var(--green);
 }
 .control p{margin:0;font-size:clamp(13px,1.05vw,16px);line-height:1.6;color:rgba(241,233,220,.76);}
+.control-message{opacity:0;transform:translateY(10px);transition:opacity .65s var(--ease) 2.05s,transform .75s var(--ease) 2.05s;}
+.control.run .control-message{opacity:1;transform:none;}
+.control-keyword{display:inline-block;transform-origin:left center;}
+.control.run .control-keyword{animation:controlAccent 1.75s var(--ease) 5.55s both;}
+@keyframes controlAccent{0%,100%{scale:1;}48%{scale:1.055;}}
 
 /* ═══ 02. ЧЕТЫРЕ ШАГА ════════════════════════════════════ */
 /* Кадр макета — это снимок, обрезанный до 1557×923 из 1672×941
@@ -667,24 +703,15 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 .steps-sec{padding:0;}
 .stairs{
   position:relative;container-type:inline-size;
-  width:100vw;margin-left:calc(50% - 50vw);
-  aspect-ratio:1557/923;
+  width:100%;max-width:1180px;margin:0 auto;
+  aspect-ratio:3/2;
 }
 .stairs-frame{position:absolute;inset:0;z-index:1;background:var(--graphite);}
 .stairs-photo{
   position:absolute;inset:0;overflow:hidden;
-  /* Снимок почти чёрный (фон 2/255), фон страницы — 23/255, поэтому
-     врезанный кадр читался тёмной плашкой. Режим screen поднимает чёрный
-     ровно до фона страницы: подложка исчезает, ступени и свечение целы.
-     Маска добирает края там, где снимок чуть светлее чёрного. */
-  mix-blend-mode:screen;
-  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 6%,#000 93%,transparent 100%);
-          mask-image:linear-gradient(to bottom,transparent 0,#000 6%,#000 93%,transparent 100%);
 }
 .stairs-photo img{
-  position:absolute;display:block;
-  left:-3.854%;top:0;margin-top:-1.156%;
-  width:107.386%;height:auto;
+  display:block;width:100%;height:100%;object-fit:cover;
 }
 
 .stairs-head,.stairs-lead{
@@ -692,43 +719,71 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   opacity:0;transform:translateY(20px);
   transition:opacity .9s var(--ease) .1s,transform 1s var(--ease) .1s;
 }
-.stairs-head{--l:8.09%;--t:2.40%;--w:46%;}
+.stairs-head{--l:8.09%;--t:2.40%;--w:60%;}
 .stairs-lead{--l:8.2%;--t:29.6%;--w:34%;transition-delay:.28s;}
 .stairs.run .stairs-head,.stairs.run .stairs-lead{opacity:1;transform:none;}
-.stairs-head h2{font-size:6.4cqw;line-height:1.16;margin:0;}
+.stairs-head h2{font-size:clamp(30px,5.1vw,80px);line-height:.9;margin:0;}
+.stairs-head .title-minor{font-size:.70em;white-space:nowrap;}
+.stairs-head .title-figure{display:inline-block;translate:0 -.2em;margin-right:.06em;}
+.stairs-head .title-minor{margin-top:.13em;}
 .stairs-lead{font-size:1.25cqw;line-height:1.45;margin:0;max-width:none;}
 
 /* Ступени проявляются по очереди: сначала цифра, затем название,
    затем описание. Наблюдатель снимает класс при уходе с экрана,
    поэтому появление показывается заново на каждой прокрутке. */
-.stair-n,.stair-txt{position:absolute;left:var(--l);top:var(--t);}
-.stair-txt{width:var(--w,16%);}
+.stair-n,.stair-txt{position:absolute;z-index:3;left:var(--l);top:var(--t);}
+.stair-txt{width:var(--w,16%);height:var(--h);display:flex;flex-direction:column;justify-content:center;}
 .stair-n{
   font-family:var(--serif);font-weight:300;
   font-size:6.30cqw;line-height:.72;
   color:rgba(241,233,220,.94);
   opacity:0;transform:translateY(26px) scale(.94);
-  transition:opacity .75s var(--ease),transform .95s var(--ease);
-  transition-delay:calc(var(--i) * 340ms + 180ms);
+  transition:opacity .5s var(--ease),transform .6s var(--ease);
+  transition-delay:calc(var(--i) * 180ms + 120ms);
 }
 .stair-txt h3,.stair-txt p{
   opacity:0;transform:translateY(14px);
-  transition:opacity .7s var(--ease),transform .8s var(--ease);
+  transition:opacity .5s var(--ease),transform .6s var(--ease);
 }
 .stair-txt h3{
-  margin:0 0 .67em;font-size:1.78cqw;font-weight:500;
+  margin:0 0 .67em;font-size:clamp(16px,1.78cqw,22px);font-weight:500;
   letter-spacing:.01em;line-height:1.1;color:rgba(241,233,220,.96);
-  transition-delay:calc(var(--i) * 340ms + 430ms);
+  transition-delay:calc(var(--i) * 180ms + 270ms);
 }
 .stair-txt .s-short{display:none;}
 .stair-txt p{
-  margin:0;font-size:1.12cqw;line-height:1.55;
+  margin:0;font-size:clamp(14px,1.15cqw,18px);line-height:1.55;
   color:rgba(241,233,220,.62);
-  transition-delay:calc(var(--i) * 340ms + 560ms);
+  transition-delay:calc(var(--i) * 180ms + 370ms);
 }
 .stairs.run .stair-n,.stairs.run .stair-txt h3,.stairs.run .stair-txt p{
   opacity:1;transform:none;
 }
+.stairs.run .stair-n{animation:stairNumberDrift 5.8s ease-in-out 1.1s infinite both;}
+@keyframes stairNumberDrift{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-4px) rotate(.45deg)}}
+.stairs::before{
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.45;
+  background:
+    radial-gradient(circle at 14% 20%,rgba(168,220,40,.9) 0 1px,transparent 2px),
+    radial-gradient(circle at 38% 14%,rgba(168,220,40,.55) 0 1px,transparent 2px),
+    radial-gradient(circle at 76% 17%,rgba(168,220,40,.75) 0 1px,transparent 2px),
+    radial-gradient(circle at 91% 9%,rgba(168,220,40,.45) 0 1px,transparent 2px);
+  animation:stairStars 4.8s ease-in-out infinite alternate;
+}
+@keyframes stairStars{from{opacity:.18}to{opacity:.52}}
+.stairs::after{
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:
+    radial-gradient(circle at 4% 78%,rgba(184,255,42,.96) 0 1px,rgba(168,220,40,.35) 2px,transparent 7px),
+    radial-gradient(circle at 7% 31%,rgba(184,255,42,.72) 0 1px,transparent 5px),
+    radial-gradient(circle at 2% 48%,rgba(184,255,42,.72) 0 1px,transparent 6px),
+    radial-gradient(circle at 94% 23%,rgba(184,255,42,.9) 0 1px,rgba(168,220,40,.25) 2px,transparent 8px),
+    radial-gradient(circle at 97% 65%,rgba(184,255,42,.7) 0 1px,transparent 6px),
+    radial-gradient(circle at 91% 83%,rgba(184,255,42,.72) 0 1px,transparent 7px);
+  filter:drop-shadow(0 0 7px rgba(168,220,40,.7));
+  animation:stairsSideGlow 3.8s ease-in-out infinite alternate;
+}
+@keyframes stairsSideGlow{from{opacity:.22;transform:translateY(-2px)}to{opacity:.7;transform:translateY(3px)}}
 /* уход с экрана — без ступенчатых задержек, чтобы возврат всегда
    начинался с чистого листа */
 .stairs:not(.run) .stair-n,.stairs:not(.run) .stair-txt h3,
@@ -736,6 +791,7 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 .stairs:not(.run) .stairs-lead{transition-delay:0s;transition-duration:.25s;}
 
 .steps-list{display:none;list-style:none;margin:0;padding:0;}
+.steps-cta-wrap{display:flex;justify-content:center;margin:clamp(20px,3vw,38px) auto clamp(44px,6vw,80px);}
 .steps-list li{
   background:var(--card);border:1px solid var(--line);
   border-radius:14px;padding:clamp(14px,3.4vw,20px);
@@ -865,14 +921,15 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 
 @media (min-width:901px){
   .princ{
-    width:100vw;margin-left:calc(50% - 50vw);
+    width:100%;max-width:1180px;margin:0 auto;
     aspect-ratio:1672/941;
+    overflow:hidden;background:var(--graphite);
     /* size, а не inline-size: иначе единицы cqh не работают
        и все вертикальные отметки съезжают */
     container-type:size;
   }
   .princ-photo{
-    position:absolute;left:0;top:0;width:46%;height:100%;aspect-ratio:auto;
+    position:absolute;left:0;top:0;width:46%;height:100%;margin-left:0;aspect-ratio:auto;
     background:url("assets/sasha-wall.jpg") center 24%/cover;
     -webkit-mask-image:linear-gradient(to right,#000 80%,transparent 100%);
             mask-image:linear-gradient(to right,#000 80%,transparent 100%);
@@ -909,30 +966,38 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   .princ-body{position:absolute;left:48.03%;top:0;width:48%;padding:0;margin-top:0;}
   .princ-body .sec-eyebrow{
     position:absolute;top:11.14cqh;left:0;margin:0;
-    font-size:1cqw;letter-spacing:.363em;
+    font-family:var(--serif);font-weight:400;
+    font-size:clamp(15px,1.9cqw,22px);letter-spacing:.22em;
   }
   .princ-body h2{
-    position:absolute;top:14.58cqh;left:0;margin:0;
-    font-size:7.0cqw;line-height:1.04;
+    position:absolute;top:17cqh;left:0;margin:0;
+    font-size:5.55cqw;line-height:.9;
   }
-  .nope{position:absolute;top:43.0cqh;left:0;width:83%;margin:0;}
+  .nope{position:absolute;top:40.5cqh;left:0;width:83%;margin:0;}
   .nope li{
     padding:0 0 3.5cqh;gap:1.64cqw;
-    font-size:1.36cqw;line-height:1.3;
+    font-size:clamp(14px,1.15cqw,18px);line-height:1.6;
   }
   .nope li:last-child{padding-bottom:0;}
   .nope i{width:.81cqw;height:.81cqw;margin-top:.35cqw;}
   .claim{
-    position:absolute;top:70.6cqh;left:0;width:100%;
+    position:absolute;top:66.5cqh;left:0;width:100%;
     background:
       linear-gradient(112deg,transparent 38%,rgba(168,220,40,.17) 48%,
                       rgba(168,220,40,.05) 54%,rgba(168,220,40,.13) 62%,transparent 72%),
       linear-gradient(115deg,rgba(168,220,40,.12),rgba(168,220,40,.03) 70%);
     background-size:230% 100%,100% 100%;
     background-repeat:no-repeat;
-    padding:4.9cqh 3.5cqw 4.9cqh 3.5cqw;
-    font-size:1.36cqw;line-height:1.55;
+    padding:2.6cqh 3.5cqw;
+    font-size:clamp(17px,1.55cqw,23px);line-height:1.4;
   }
+  .princ-cta{
+    display:inline-flex;position:absolute;left:0;top:88.5cqh;
+    padding:1.25cqh 2.5cqw;font-size:1cqw;
+    opacity:0;translate:0 14px;
+    transition:opacity .8s var(--ease) 1.7s,translate .9s var(--ease) 1.7s;
+  }
+  .princ.run .princ-cta{opacity:1;translate:0 0;}
 }
 
 /* ═══ 04. КТО МЫ: ДВА ИМЕНИ ══════════════════════════════ */
@@ -988,8 +1053,8 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   clip-path:inset(0 0 0 0);
   opacity:0;transition:opacity .7s var(--ease) .55s,clip-path .9s var(--ease) .55s;
 }
-.duo-bracket-l{left:26.7%;border-left:2px solid #22C55E;clip-path:inset(0 100% 0 0);}
-.duo-bracket-r{right:26.7%;border-right:2px solid #22C55E;clip-path:inset(0 0 0 100%);}
+.duo-bracket-l{left:25.3%;border-left:2px solid #22C55E;clip-path:inset(0 100% 0 0);}
+.duo-bracket-r{right:25.3%;border-right:2px solid #22C55E;clip-path:inset(0 0 0 100%);}
 .duo.run .duo-bracket{opacity:1;clip-path:inset(0 0 0 0);}
 
 .duo-card{
@@ -1009,7 +1074,7 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 .duo-card p{margin:0;font-size:.96cqw;line-height:1.72;color:rgba(21,21,15,.72);}
 
 .duo-together{
-  position:absolute;left:29.5%;top:68cqh;width:43%;
+  position:absolute;left:29.5%;top:65cqh;width:43%;
   opacity:0;translate:0 16px;
   transition:opacity .8s var(--ease) 1s,translate .9s var(--ease) 1s;
 }
@@ -1020,23 +1085,45 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 }
 .duo-rule{flex:1;height:1px;background:#22C55E;}
 .duo-together p{margin:0;font-size:.96cqw;line-height:1.72;color:rgba(21,21,15,.72);}
+.duo-cta{
+  position:absolute;left:50%;top:85cqh;translate:-50% 0;
+  opacity:0;transition:opacity .8s var(--ease) 1.15s,translate .9s var(--ease) 1.15s;
+}
+.duo.run .duo-cta{opacity:1;translate:-50% 0;}
 
 /* ═══ 05. БОЛЬШОЙ КЕЙС ═══════════════════════════════════ */
-/* Слайды перенесены как готовые изображения, без пересборки —
-   так гарантирована точность до пикселя. Рамка растягивается по
-   ширине экрана, пропорции у каждого файла свои (у сохранённого
-   кадра всегда есть высота, поэтому просадок не будет). */
-.casebig{margin-top:clamp(28px,3.6vw,54px);}
+/* Заголовок кейса — самостоятельный HTML-блок. Рабочие слайды ниже
+   будут пересобраны из элементов после получения исходных макетов. */
+.casebig{width:100%;max-width:1180px;margin:clamp(28px,3.6vw,54px) auto 0;}
+.case-intro{max-width:760px;margin:0 0 clamp(26px,3.4vw,46px);}
+.case-intro .sec-eyebrow{margin-bottom:clamp(12px,1.5vw,20px);}
+.case-intro h2{margin:0 0 clamp(14px,1.7vw,22px);}
+.case-intro .case-green{color:var(--green);}
+.case-intro .case-minor{font-size:.72em;}
+.case-intro p{margin:0;max-width:680px;font-size:clamp(15px,1.2vw,18px);line-height:1.6;color:rgba(241,233,220,.76);}
 .cb-frame{display:none;}
 .cb-frame.is-on{display:block;}
 .cb-frame img{display:block;width:100%;height:auto;border-radius:var(--radius) var(--radius) 0 0;}
+.case-slide{position:relative;aspect-ratio:1672/941;overflow:hidden;padding:clamp(28px,4vw,62px);background:#10110e;color:#f1e9dc;border-radius:var(--radius) var(--radius) 0 0;}
+.case-slide--light{background:#f4f0e9;color:#12130f;}
+.case-kicker{margin:0 0 clamp(18px,2.5vw,34px);color:var(--green);font-size:clamp(10px,.9vw,14px);font-weight:600;letter-spacing:.24em;text-transform:uppercase;}
+.case-slide h3{margin:0;font:400 clamp(30px,4.2vw,68px)/.98 var(--serif);letter-spacing:-.025em;}
+.case-slide p{margin:0;}
+.case-cover-copy{position:relative;z-index:2;width:48%;}.case-cover-copy h3{max-width:570px;}.case-cover-copy .case-line{height:1px;width:78%;margin:clamp(30px,6vw,84px) 0;background:linear-gradient(90deg,var(--green),transparent);}
+.case-cover-stat{position:absolute;right:5%;top:10%;z-index:2;text-align:right;}.case-cover-stat span{display:block;color:var(--green);font-size:clamp(26px,4vw,64px);}.case-cover-stat b{display:block;font:400 clamp(54px,9vw,145px)/.9 var(--serif);}
+.case-cover-stat small{font-size:clamp(12px,1.2vw,18px);color:#d9d0c2;}.case-slide .case-cover-site{position:absolute;z-index:1;right:4%;bottom:-3%;width:40%;border-radius:16px 16px 0 0;box-shadow:0 18px 50px #000;}
+.case-analysis-grid,.case-traffic-grid{display:grid;grid-template-columns:48% 52%;height:100%;}.case-analysis-copy,.case-traffic-copy{padding-right:clamp(20px,3vw,48px);}.case-slide .case-sub{margin-top:clamp(18px,2.5vw,34px);font-size:clamp(15px,1.55vw,24px);line-height:1.35;color:#4b9b18;}.case-analysis-photo{width:100%;height:100%;object-fit:cover;border-radius:20px 0 0 20px;}
+.case-facts{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:clamp(28px,4vw,58px);background:rgba(21,21,15,.14);}.case-fact{padding:clamp(14px,1.6vw,25px);background:#f4f0e9;}.case-fact b{display:block;font:400 clamp(23px,2.4vw,38px)/1 var(--serif);}.case-fact span{font-size:clamp(11px,1vw,15px);}
+.case-pack-grid{display:grid;grid-template-columns:37% 63%;height:100%;}.case-pack-copy{display:flex;flex-direction:column;justify-content:center;}.case-pack-copy .case-sub{color:#d9d0c2;}.case-metric{margin-top:clamp(32px,4vw,56px);font:400 clamp(38px,5.2vw,82px)/1 var(--serif);}.case-metric em{color:var(--green);font-style:normal;}.case-site-stack{position:relative;}.case-slide .case-site-old{position:absolute;width:43%;left:0;top:14%;border-radius:14px;opacity:.8;}.case-slide .case-site-new{position:absolute;width:70%;right:0;top:19%;border-radius:16px;box-shadow:0 18px 55px #000;}
+.case-traffic-copy .case-sub{color:#21231d;}.case-table-card{align-self:center;margin:auto 0;padding:clamp(20px,2.4vw,38px);border-radius:26px;background:#fff;box-shadow:0 16px 40px rgba(20,20,15,.1);}.case-table-head{display:grid;grid-template-columns:1fr 70px 34px 1fr;align-items:center;text-align:center;font-size:clamp(12px,1.3vw,20px);}.case-pill{padding:.35em .8em;border-radius:10px;background:#090a08;color:#fff;}.case-pill.green{background:#47aa16;}.case-arrow{font-size:clamp(28px,3vw,45px);color:#48a918;}.case-tables{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,2vw,28px);margin-top:clamp(20px,2.8vw,36px);}.case-table{border:1px solid #d8d8d5;}.case-table div{display:grid;grid-template-columns:44px 1fr 1fr;border-bottom:1px solid #d8d8d5;padding:.5em;font-size:clamp(10px,1vw,15px);}.case-table div:last-child{border:0;}.case-table .hit{outline:2px solid #43a914;outline-offset:-2px;}.case-growth{text-align:center;margin-top:clamp(22px,3vw,38px);font:400 clamp(30px,4.4vw,70px)/1 var(--serif);}.case-growth em{display:block;margin-top:.3em;color:#41a519;font-size:.72em;font-style:normal;}
+.case-system-grid{display:grid;grid-template-columns:37% 63%;height:100%;}.case-system-copy{display:flex;flex-direction:column;justify-content:center;}.case-system-copy h3{font-size:clamp(38px,5vw,80px);}.case-system-copy .case-sub{color:#e5dccf;}.case-system-list{margin:clamp(34px,4vw,58px) 0 0;padding:clamp(18px,2vw,28px) 0 0;list-style:none;border-top:1px solid rgba(241,233,220,.28);}.case-system-list li{margin:.55em 0;font-size:clamp(12px,1.1vw,17px);color:#cfc7bb;}.case-system-list b{display:inline-block;width:2.5em;color:var(--green);font-size:1.4em;}.case-system-visual{width:100%;height:100%;object-fit:cover;object-position:center;border-radius:20px;}
 /* Обложка и рабочие слайды имеют одну высоту: у обложки нижняя
    служебная полоса макета скрывается, как и у «Упаковки». */
 .cb-frame.cb-cover,
 /* У финального макета упаковки в исходнике была собственная нижняя
    навигация. В портфолио она уже находится под кадром, поэтому здесь
    скрывается только этот служебный хвост. */
-.cb-frame.cb-pack{aspect-ratio:1672/833;overflow:hidden;}
+.cb-frame.cb-pack{aspect-ratio:auto;overflow:visible;}
 
 .cb-tabs{
   display:flex;
@@ -1141,7 +1228,7 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   }
   .photo{
     inset:0;
-    background-image:url("assets/hero-duo-mobile.jpg");
+    background-image:url("assets/hero-duo-mobile-final.jpg");
     background-position:center center;
     -webkit-mask-image:linear-gradient(to right,transparent 0,#000 24%);
     mask-image:linear-gradient(to right,transparent 0,#000 24%);
@@ -1261,9 +1348,9 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
     position:static;order:0;width:auto;
     padding:0 clamp(18px,5vw,32px);margin-bottom:clamp(12px,3vw,18px);
   }
-  .stairs-head h2{font-size:clamp(26px,8.2vw,44px);line-height:1.1;}
+  .stairs-head h2{font-size:clamp(30px,7vw,70px);line-height:.96;}
   .stairs-frame{
-    position:relative;inset:auto;order:1;aspect-ratio:1557/923;
+    position:relative;inset:auto;order:1;aspect-ratio:3/2;
     /* нижняя подпись уходит чуть ниже снимка — оставляем ей место */
     margin-bottom:3%;
   }
@@ -1295,7 +1382,7 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   /* «Два имени» на телефоне: снимки сверху, тексты под ними */
   .duo{container-type:normal;aspect-ratio:auto;padding:clamp(30px,8vw,52px) clamp(18px,5vw,32px) clamp(34px,9vw,56px);}
   .duo-ghost{display:none;}
-  .duo-eyebrow,.duo-title,.duo-photo,.duo-card,.duo-together{position:static;translate:0;width:auto;}
+  .duo-eyebrow,.duo-title,.duo-photo,.duo-card,.duo-together,.duo-cta{position:static;translate:0;width:auto;}
   .duo-eyebrow{display:block;text-align:center;font-size:clamp(10px,2.9vw,12px);}
   .duo-title{margin:clamp(10px,3vw,16px) 0 clamp(22px,6vw,32px);font-size:clamp(21px,6.2vw,32px);line-height:1.24;}
   .duo-photos,.duo-cards{display:grid;}
@@ -1308,6 +1395,7 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   .duo-together{margin-top:clamp(22px,6vw,34px);}
   .duo-together h3{font-size:clamp(15px,4.4vw,20px);}
   .duo-together p{font-size:clamp(12px,3.3vw,14px);line-height:1.6;}
+  .duo-cta{display:flex;width:max-content;margin:clamp(22px,6vw,34px) auto 0;}
   /* большой кейс на телефоне: вкладки в две строки, иначе «04 Система» обрезается */
   .cb-tabs{display:grid;grid-template-columns:1fr 1fr;}
   .cb-tab{
@@ -1318,6 +1406,13 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   .cb-tab:nth-child(-n+2){border-bottom:1px solid rgba(241,233,220,.12);}
   .cb-tab.is-on{border-bottom-color:var(--green);}
   .cb-frame img{border-radius:var(--radius) var(--radius) 0 0;}
+  .case-intro{padding:0 clamp(18px,5vw,32px);}
+  .case-slide{aspect-ratio:auto;min-height:560px;padding:clamp(24px,7vw,36px);}
+  .case-slide h3{font-size:clamp(30px,9vw,48px);}
+  .case-analysis-grid,.case-traffic-grid,.case-pack-grid,.case-system-grid{grid-template-columns:1fr;height:auto;gap:clamp(24px,7vw,38px);}
+  .case-cover-copy{width:100%;}.case-cover-stat{position:static;margin-top:24px;text-align:left;}.case-slide .case-cover-site{position:static;display:block;width:100%;margin:26px 0 -24px;}
+  .case-analysis-photo,.case-system-visual{height:auto;border-radius:16px;}.case-site-stack{min-height:310px;}.case-site-old{top:0;}.case-site-new{top:8%;}
+  .case-table-card{margin:0;padding:18px;overflow:hidden;}.case-tables{gap:10px;}.case-table div{grid-template-columns:22px 1fr 1fr;font-size:10px;}.case-growth{font-size:clamp(24px,7.5vw,34px);}
   /* финальный экран на телефоне */
   /* container-type:size схлопнул бы блок без заданной высоты */
   .closer{container-type:normal;aspect-ratio:auto;padding:clamp(40px,11vw,64px) clamp(18px,5vw,32px) clamp(30px,8vw,48px);}
@@ -1433,13 +1528,11 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 
   <div class="rail" aria-hidden="true">
     <span class="rail-dot"></span>
-    <span class="rail-text">Без воды · По делу · С результатом</span>
+    <span class="rail-text">Без воды · Без лишней теории</span>
   </div>
 
   <section class="hero">
     <div class="hero-text">
-      <p class="eyebrow rise" style="--d:320ms">Системный маркетинг для роста выручки</p>
-
       <h1>
         <span class="l l1"><span style="--d:400ms">Пересобираем</span></span>
         <span class="l l2"><span style="--d:500ms">Продажи</span></span>
@@ -1448,7 +1541,7 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
       </h1>
 
       <p class="lead rise" style="--d:820ms">
-        Без воды и лишней теории. Показываем, где бизнес теряет деньги,
+        Показываем, где бизнес теряет деньги,
         даём конкретные шаги и собираем систему, которую можно применить сразу.
       </p>
 
@@ -1527,12 +1620,12 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   <section class="how">
     <h2 class="reveal">Как мы работаем</h2>
     <ol class="steps">
-      <li class="reveal">
+      <li class="reveal" style="--arrow-delay:0s">
         <span class="step-n">01</span>
         <h3>Диагностика</h3>
         <p>Разбираем бизнес, находим потери и точки роста.</p>
       </li>
-      <li class="reveal" style="transition-delay:120ms">
+      <li class="reveal" style="transition-delay:120ms;--arrow-delay:1.4s">
         <span class="step-n">02</span>
         <h3>Конкретные решения</h3>
         <p>Даём план действий и приоритеты.</p>
@@ -1547,7 +1640,7 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 
   <!-- 01 ─ Все делают свой кусок -->
   <section class="sec reveal">
-    <h2 class="sec-title">Все делают<br />свой кусок</h2>
+    <h2 class="sec-title sec-title--piece">Все делают<br />свой кусок</h2>
 
     <div class="split" id="split">
       <article class="piece">
@@ -1585,19 +1678,19 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
       </div>
     </div>
 
-    <div class="control reveal">
+    <div class="control">
       <span class="control-label">Управляемость</span>
       <div class="chain">
-        <span class="node" style="--i:0">
+        <span class="node" style="--node-delay:120ms">
           <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <rect x="3" y="4.2" width="18" height="12.6" rx="1.8"/>
             <path d="M12 16.8v3.2M8.6 20h6.8"/>
           </svg><b>Сайт</b>
         </span>
-        <span class="link" style="--i:0">
+        <span class="link" style="--i:0;--line-delay:3.2s">
           <svg viewBox="0 0 44 14" aria-hidden="true"><path d="M0 7Q11 2.6 22 7T44 7" pathLength="47"/></svg>
         </span>
-        <span class="node" style="--i:1">
+        <span class="node" style="--node-delay:620ms">
           <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M3.6 9.4 16.8 4.4v15.2L3.6 14.6Z"/>
             <path d="M3.6 9.4h-.9A1.3 1.3 0 0 0 1.4 10.7v2.6a1.3 1.3 0 0 0 1.3 1.3h.9"/>
@@ -1605,10 +1698,10 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
             <path d="M19.4 9.6a3.6 3.6 0 0 1 0 4.8"/>
           </svg><b>Реклама</b>
         </span>
-        <span class="link" style="--i:1">
+        <span class="link" style="--i:1;--line-delay:3.8s">
           <svg viewBox="0 0 44 14" aria-hidden="true"><path d="M0 7Q11 2.6 22 7T44 7" pathLength="47"/></svg>
         </span>
-        <span class="node" style="--i:2">
+        <span class="node" style="--node-delay:1120ms">
           <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <ellipse cx="12" cy="5.6" rx="7.4" ry="2.7"/>
             <path d="M4.6 5.6v12.8c0 1.5 3.3 2.7 7.4 2.7s7.4-1.2 7.4-2.7V5.6"/>
@@ -1622,8 +1715,8 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
           </svg>
         </span>
       </div>
-      <div>
-        <h3>Малому бизнесу нужна не реклама, а управляемость</h3>
+      <div class="control-message">
+        <h3><span class="control-keyword">Малому бизнесу нужна не реклама, а управляемость</span></h3>
         <p>Понимать, откуда приходят заявки, почему сегодня их меньше и что делать завтра.</p>
       </div>
     </div>
@@ -1635,35 +1728,35 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   <section class="sec reveal steps-sec">
     <div class="stairs">
       <div class="stairs-head">
-        <h2 class="sec-title low">Четыре шага,<br />а не одна услуга</h2>
+        <h2 class="sec-title low"><span class="title-major"><span class="title-figure">4</span> шага,</span><span class="title-minor">а не одна услуга</span></h2>
       </div>
 
       <div class="stairs-frame">
-        <div class="stairs-photo"><img src="assets/stairs.jpg" alt="Четыре ступени" /></div>
+        <div class="stairs-photo"><img src="assets/stairs-final.png" alt="Четыре ступени" /></div>
 
 
-      <span class="stair-n" style="--l:8.8%;--t:50.36%;--tm:36.9%;--i:0">01</span>
-      <div class="stair-txt" style="--l:4.9%;--t:71.97%;--tm:68.4%;--tno:-5.631cqw;--w:16.6%;--i:0">
+      <span class="stair-n" style="--l:8.8%;--t:50.36%;--tm:36.9%;--i:0;--wave-delay:0s">01</span>
+      <div class="stair-txt" style="--l:6.2%;--t:65.9%;--tm:68.4%;--w:17.2%;--h:20.6%;--i:0">
         <h3>Разбор</h3>
         <p><span class="s-full">Короткий созвон: смотрим, что происходит с продажами сейчас.</span><span class="s-short">Смотрим, что с продажами.</span></p>
       </div>
 
-      <span class="stair-n" style="--l:30.8%;--t:36.46%;--tm:23.0%;--i:1">02</span>
-      <div class="stair-txt" style="--l:27.9%;--t:57.59%;--tm:53.7%;--tno:-5.157cqw;--w:17.4%;--wm:17.6%;--i:1">
+      <span class="stair-n" style="--l:30.8%;--t:36.46%;--tm:23.0%;--i:1;--wave-delay:1.1s">02</span>
+      <div class="stair-txt" style="--l:29%;--t:52.2%;--tm:53.7%;--w:17.2%;--wm:17.6%;--h:28.3%;--i:1">
         <h3>Аудит</h3>
         <p><span class="s-full">Разбираем воронку по цифрам, отдаём план: что чинить и в каком порядке.</span><span class="s-short">Разбираем воронку и даём план.</span></p>
       </div>
 
-      <span class="stair-n" style="--l:54.6%;--t:21.29%;--tm:7.8%;--i:2">03</span>
-      <div class="stair-txt" style="--l:52.9%;--t:42.10%;--tm:38.4%;--tno:-5.098cqw;--w:16.3%;--wm:16.4%;--i:2">
+      <span class="stair-n" style="--l:54.6%;--t:21.29%;--tm:7.8%;--i:2;--wave-delay:2.2s">03</span>
+      <div class="stair-txt" style="--l:51.8%;--t:35.9%;--tm:38.4%;--w:16.5%;--wm:16.4%;--h:41.6%;--i:2">
         <h3>Сборка</h3>
-        <p><span class="s-full">Оффер, сайт, трафик, CRM, работа менеджера — собираем в одну связку.</span><span class="s-short">Сайт, трафик, CRM — в связке.</span></p>
+        <p><span class="s-full">Собираем оффер, сайт, трафик, CRM, аналитику, скрипты и работу менеджера в одну воронку — с понятными этапами и ответственными.</span><span class="s-short">Сайт, трафик, CRM — в связке.</span></p>
       </div>
 
-      <span class="stair-n" style="--l:77.1%;--t:5.82%;--tm:1.0%;--i:3">04</span>
-      <div class="stair-txt" style="--l:76.8%;--t:26.60%;--tm:23.2%;--tno:-5.216cqw;--w:17%;--wm:17.1%;--i:3">
+      <span class="stair-n" style="--l:77.1%;--t:5.82%;--tm:1.0%;--i:3;--wave-delay:3.3s">04</span>
+      <div class="stair-txt" style="--l:75.7%;--t:21%;--tm:23.2%;--w:17%;--wm:17.1%;--h:52.8%;--i:3">
         <h3>Ведение</h3>
-        <p><span class="s-full">Управляем продажами дальше и отвечаем за цифры каждый месяц.</span><span class="s-short">Ведём дальше, отвечаем за цифры.</span></p>
+        <p><span class="s-full">Настраиваем регулярную аналитику, контролируем этапы в CRM, корректируем рекламу, подключаем роботов и держим команду в одном темпе — отвечаем за цифры каждый месяц.</span><span class="s-short">Ведём дальше, отвечаем за цифры.</span></p>
       </div>
       </div>
       <p class="sec-lead stairs-lead">Каждый следующий шаг начинается только тогда,<br />когда предыдущий дал цифры.</p>
@@ -1677,6 +1770,8 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
     </ol>
   </section>
 
+  <div class="steps-cta-wrap reveal"><a class="cta" href="#audit">Получить разбор <b>↗</b></a></div>
+
   <!-- 03 ─ Чего мы не делаем -->
   <!-- Композиция повторяет макет: снимок во всю ширину слева, тонкая
        вертикальная линия, метки по углам, номер-призрак справа вверху. -->
@@ -1688,11 +1783,9 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
       <span class="mk mk-ring" style="--l:6.2%;--t:50%" aria-hidden="true"></span>
       <span class="mk mk-dash" style="--l:43.9%;--t:73%" aria-hidden="true"></span>
       <span class="mk mk-plus" style="--l:97%;--t:95%" aria-hidden="true"></span>
-      <span class="ghost-num" aria-hidden="true">04</span>
-
       <div class="princ-body">
         <span class="sec-eyebrow">Наши принципы</span>
-        <h2 class="sec-title low">Чего мы<br />не делаем</h2>
+        <h2 class="sec-title low"><span class="title-minor">Чего мы</span><span class="title-major">не делаем</span></h2>
         <ul class="nope">
           <li style="--i:0"><i></i><span>Не берём разовые задачи, за результат которых нельзя отвечать.</span></li>
           <li style="--i:1"><i></i><span>Не выдумываем кейсы — только настоящие цифры.</span></li>
@@ -1703,6 +1796,7 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
           Мы зарабатываем на ведении, а не на потоке новых клиентов —
           поэтому нам невыгодно бросать проект после запуска.
         </p>
+        <a class="cta princ-cta" href="#audit">Обсудить проект</a>
       </div>
     </div>
   </section>
@@ -1717,7 +1811,7 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 
     <div class="duo-photos">
       <figure class="duo-photo duo-photo-l"><img src="assets/sasha-portrait.jpg" alt="Александр Аполлонов" /></figure>
-      <figure class="duo-photo duo-photo-r"><img src="assets/alina-portrait.jpg" alt="Алина Шигапова" /></figure>
+      <figure class="duo-photo duo-photo-r"><img src="assets/alina-portrait-final.png" alt="Алина Шигапова" /></figure>
     </div>
 
     <span class="duo-bracket duo-bracket-l" aria-hidden="true"></span>
@@ -1730,7 +1824,7 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
     </div>
     <div class="duo-card duo-card-r" style="--i:1">
       <h3>Алина Шигапова</h3>
-      <p>Три года внутри бизнеса:<br />продавала, вела клиентов,<br />знает цифры не с чужих слов.<br />Отвечает за сайт и тексты.</p>
+      <p>Три года внутри производственного бизнеса:<br />продавала, вела клиентов,<br />знает цифры не с чужих слов.<br />Отвечает за сайт и тексты.</p>
     </div>
     </div>
 
@@ -1739,24 +1833,42 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
       <p>Перестроили путь клиента целиком: оффер → сайт → трафик → CRM → менеджер.<br />
          Работаем удалённо по всей России.</p>
     </div>
+    <a class="cta duo-cta" href="#audit">
+      Получить консультацию
+      <svg class="arr" width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+        <path d="M2 10L10 2M10 2H3.5M10 2V8.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+    </a>
   </section>
 
   <!-- 05 ─ Большой кейс: Eco-Store (обложка + 4 согласованных слайда) -->
   <section class="reveal casebig" id="cases">
+    <header class="case-intro">
+      <p class="sec-eyebrow">Полноценный кейс</p>
+      <h2 class="sec-title"><span class="case-green">Операционное</span><br /><span class="case-minor">ведение бизнеса</span></h2>
+      <p>Вместо тысяч кейсов с недоказанными результатами и вымышленными цифрами — один полноценный кейс. В нём мы берём на себя максимальную часть маркетинга и операционной системы, а собственнику остаётся качественно выполнять свои услуги.</p>
+    </header>
     <div class="cb-frame cb-cover is-on" data-panel="0">
-      <img src="assets/case-cover.webp" alt="Кейс Eco-Store — обложка" />
+      <article class="case-slide case-cover">
+        <div class="case-cover-copy"><p class="case-kicker">Кейс · Eco-Store</p><h3>Из мелких заказов —<br />в коммерческую систему</h3><div class="case-line"></div></div>
+        <div class="case-cover-stat"><span>600 тыс. →</span><b>1,2 млн ₽</b><small>рабочий месячный оборот</small></div>
+        <img class="case-cover-site" src="assets/case-new-site.png" alt="Новый сайт Eco-Store с круглым панно и Линой" />
+      </article>
     </div>
     <div class="cb-frame" data-panel="1">
-      <img src="assets/case-analysis.jpg" alt="Кейс Eco-Store — 01. Анализ" />
+      <article class="case-slide case-slide--light case-analysis-grid">
+        <div class="case-analysis-copy"><p class="case-kicker">01 / Анализ</p><h3>Сначала — понять,<br />где бизнес теряет деньги</h3><p class="case-sub">Я вошла в продажи и разобрала<br />весь путь заказа изнутри</p><div class="case-facts"><div class="case-fact"><b>500 г / 1 000 ₽</b><span>фокус на мелких заказах</span></div><div class="case-fact"><b>300</b><span>объявлений на Авито</span></div><div class="case-fact"><b>ручной расчёт</b><span>каждый заказ — с нуля</span></div><div class="case-fact"><b>1 собственница</b><span>подключалась к каждой сделке</span></div></div></div>
+        <img class="case-analysis-photo" src="assets/case-analysis-desk.jpg" alt="Анализ заказов Eco-Store" />
+      </article>
     </div>
     <div class="cb-frame cb-pack" data-panel="2">
-      <img src="assets/case-packaging.png" alt="Кейс Eco-Store — 02. Упаковка" />
+      <article class="case-slide case-pack-grid"><div class="case-pack-copy"><p class="case-kicker">02 / Упаковка</p><h3>Новый сайт<br />для дорогого продукта</h3><p class="case-sub">После анализа пересобрала продукт и создала новый продающий лендинг.</p><p class="case-metric">29,7 <small>тыс. ₽</small> <em>→</em> 42,9 <small>тыс. ₽</small></p></div><div class="case-site-stack"><img class="case-site-old" src="assets/case-old-site.png" alt="Старый сайт" /><img class="case-site-new" src="assets/case-new-site.png" alt="Новый сайт Eco-Store" /></div></article>
     </div>
     <div class="cb-frame" data-panel="3">
-      <img src="assets/case-traffic.jpg" alt="Кейс Eco-Store — 03. Трафик" />
+      <article class="case-slide case-slide--light case-traffic-grid"><div class="case-traffic-copy"><p class="case-kicker">03 / Трафик</p><h3>Стало видно,<br />как перезапуск<br />повлиял на оборот</h3><p class="case-sub">После перезапуска сайта, обновления предложения и настройки рекламы оборот вырос до 1 606 635 ₽.</p><div class="case-facts"><div class="case-fact"><b>+1 006 635 ₽</b><span>прирост даже к верхней точке «до»</span></div><div class="case-fact"><b>почти 5×</b><span>рост после настройки</span></div></div></div><div class="case-table-card"><div class="case-table-head"><span class="case-pill">До</span><span></span><b class="case-arrow">→</b><span class="case-pill green">После</span></div><div class="case-tables"><div class="case-table"><div><span>1</span><span>ноябрь</span><b>600 000</b></div><div><span>2</span><span>декабрь</span><b>277 488</b></div><div><span>3</span><span>январь</span><b>322 243</b></div></div><div class="case-table"><div><span>7</span><span>июнь</span><b>741 115</b></div><div><span>8</span><span>июль</span><b>866 416</b></div><div class="hit"><span>9</span><span>август</span><b>1 606 635</b></div></div></div><div class="case-growth">277–600 тыс. ₽ → 1 606 635 ₽<em>рост почти в 5×</em></div></div></article>
     </div>
     <div class="cb-frame" data-panel="4">
-      <img src="assets/case-system.jpg" alt="Кейс Eco-Store — 04. Система" />
+      <article class="case-slide case-system-grid"><div class="case-system-copy"><p class="case-kicker">04 / Система</p><h3>Продажи и производство<br />в одном маршруте</h3><p class="case-sub">Заявка больше не живёт в переписке и не держится в голове менеджера.</p><ul class="case-system-list"><li><b>01</b>Bitrix24: этапы сделки, роботы и задачи.</li><li><b>02</b>КП-калькулятор: варианты цены и передача расчёта в CRM.</li><li><b>03</b>Производство: срок и готовое сообщение клиенту.</li><li><b>04</b>Обучение: регламент и база знаний команды.</li></ul></div><img class="case-system-visual" src="assets/case-system-tools.jpg" alt="Калькуляторы и CRM Eco-Store" /></article>
     </div>
 
     <div class="cb-tabs" aria-label="Слайды кейса Eco-Store">
@@ -1830,9 +1942,17 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 (function () {
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  requestAnimationFrame(function () {
-    requestAnimationFrame(function () { document.body.classList.add('ready'); });
-  });
+  var revealFirstScreen = function () {
+    requestAnimationFrame(function () {
+      document.documentElement.classList.remove('is-loading');
+      document.body.classList.add('ready');
+    });
+  };
+  var waitForLoad = document.readyState === 'complete'
+    ? Promise.resolve()
+    : new Promise(function (resolve) { window.addEventListener('load', resolve, { once:true }); });
+  var waitForFonts = document.fonts ? document.fonts.ready : Promise.resolve();
+  Promise.all([waitForLoad, waitForFonts]).then(revealFirstScreen);
 
   var blocks = [].slice.call(document.querySelectorAll('.reveal'));
   if (reduce || !('IntersectionObserver' in window)) {
@@ -1844,6 +1964,25 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
       });
     }, { rootMargin: '0px 0px -12% 0px', threshold: 0.12 });
     blocks.forEach(function (el) { io.observe(el); });
+  }
+
+  // «Управляемость» запускается только когда панель уже заметно в кадре:
+  // сперва три круга, затем две связи, затем финальная стрелка и акцент заголовка.
+  var control = document.querySelector('.control');
+  if (control) {
+    if (reduce || !('IntersectionObserver' in window)) {
+      control.classList.add('run');
+    } else {
+      var controlObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            window.setTimeout(function () { control.classList.add('run'); }, 220);
+            controlObserver.unobserve(control);
+          }
+        });
+      }, { rootMargin: '0px 0px -10% 0px', threshold: 0.45 });
+      controlObserver.observe(control);
+    }
   }
 
   // Ступени появляются по очереди на каждом заходе в экран.
