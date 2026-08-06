@@ -1357,12 +1357,21 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
   /* Ширину и левый край не трогаем: они равны грани своей ступени.
      Шире — и текст заезжает на соседнюю ступень. */
   .stair-txt{top:var(--tm);width:var(--wm,var(--w));}
-  .stair-txt h3{font-size:3.6cqw;margin-bottom:.42em;}
+  /* Заголовок переезжает в пустое поле над пьедесталом, к цифре —
+     описание остаётся внутри самого пьедестала (на грани ступени).
+     Смещение задано в cqw (--tno), а не в %: h3 позиционируется
+     относительно .stair-txt, чья высота — по контенту, а не по кадру,
+     поэтому обычный процент считался бы неверно. cqw — абсолютная по
+     смыслу единица (доля ширины кадра), с высотой контейнера не связана. */
+  .stair-txt h3{
+    position:absolute;left:0;top:var(--tno);width:100%;
+    margin:0;font-size:4.4cqw;line-height:1.05;
+  }
   /* на узкой колонке полный текст даёт семь строк — на телефоне
      показываем короткую формулировку */
   .stair-txt .s-full{display:none;}
   .stair-txt .s-short{display:inline;}
-  .stair-txt p{font-size:2.85cqw;line-height:1.35;}
+  .stair-txt p{margin-top:1.55em;font-size:2.85cqw;line-height:1.35;}
   .steps-list{display:none;}
   /* «Два имени» на телефоне: снимки сверху, тексты под ними */
   .duo{container-type:normal;aspect-ratio:auto;padding:clamp(30px,8vw,52px) clamp(18px,5vw,32px) clamp(34px,9vw,56px);}
@@ -1755,25 +1764,25 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 
 
       <span class="stair-n" style="--l:8.8%;--t:50.36%;--tm:48.9%;--i:0">01</span>
-      <div class="stair-txt" style="--l:4.9%;--t:71.97%;--tm:68.4%;--w:16.6%;--i:0">
+      <div class="stair-txt" style="--l:4.9%;--t:71.97%;--tm:68.4%;--tno:-5.631cqw;--w:16.6%;--i:0">
         <h3>Разбор</h3>
         <p><span class="s-full">Короткий созвон: смотрим, что происходит с продажами сейчас.</span><span class="s-short">Смотрим, что с продажами.</span></p>
       </div>
 
       <span class="stair-n" style="--l:30.8%;--t:36.46%;--tm:35.0%;--i:1">02</span>
-      <div class="stair-txt" style="--l:27.9%;--t:57.59%;--tm:53.7%;--w:17.4%;--wm:17.6%;--i:1">
+      <div class="stair-txt" style="--l:27.9%;--t:57.59%;--tm:53.7%;--tno:-5.157cqw;--w:17.4%;--wm:17.6%;--i:1">
         <h3>Аудит</h3>
         <p><span class="s-full">Разбираем воронку по цифрам, отдаём план: что чинить и в каком порядке.</span><span class="s-short">Разбираем воронку и даём план.</span></p>
       </div>
 
       <span class="stair-n" style="--l:54.6%;--t:21.29%;--tm:19.8%;--i:2">03</span>
-      <div class="stair-txt" style="--l:52.9%;--t:42.10%;--tm:38.4%;--w:16.3%;--wm:16.4%;--i:2">
+      <div class="stair-txt" style="--l:52.9%;--t:42.10%;--tm:38.4%;--tno:-5.098cqw;--w:16.3%;--wm:16.4%;--i:2">
         <h3>Сборка</h3>
         <p><span class="s-full">Оффер, сайт, трафик, CRM, работа менеджера — собираем в одну связку.</span><span class="s-short">Сайт, трафик, CRM — в связке.</span></p>
       </div>
 
       <span class="stair-n" style="--l:77.1%;--t:5.82%;--tm:4.4%;--i:3">04</span>
-      <div class="stair-txt" style="--l:76.8%;--t:26.60%;--tm:23.2%;--w:17%;--wm:17.1%;--i:3">
+      <div class="stair-txt" style="--l:76.8%;--t:26.60%;--tm:23.2%;--tno:-5.216cqw;--w:17%;--wm:17.1%;--i:3">
         <h3>Ведение</h3>
         <p><span class="s-full">Управляем продажами дальше и отвечаем за цифры каждый месяц.</span><span class="s-short">Ведём дальше, отвечаем за цифры.</span></p>
       </div>
