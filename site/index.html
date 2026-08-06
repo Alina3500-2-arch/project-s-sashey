@@ -1030,6 +1030,9 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
 .cb-frame{display:none;}
 .cb-frame.is-on{display:block;}
 .cb-frame img{display:block;width:100%;height:auto;border-radius:var(--radius) var(--radius) 0 0;}
+/* Обложка и рабочие слайды имеют одну высоту: у обложки нижняя
+   служебная полоса макета скрывается, как и у «Упаковки». */
+.cb-frame.cb-cover,
 /* У финального макета упаковки в исходнике была собственная нижняя
    навигация. В портфолио она уже находится под кадром, поэтому здесь
    скрывается только этот служебный хвост. */
@@ -1738,26 +1741,30 @@ h2.sec-title.low{text-transform:none;font-weight:400;letter-spacing:0;line-heigh
     </div>
   </section>
 
-  <!-- 05 ─ Большой кейс: Eco-Store (слайды перенесены как есть) -->
+  <!-- 05 ─ Большой кейс: Eco-Store (обложка + 4 согласованных слайда) -->
   <section class="reveal casebig" id="cases">
-    <div class="cb-frame is-on" data-panel="0">
+    <div class="cb-frame cb-cover is-on" data-panel="0">
+      <img src="assets/case-cover.webp" alt="Кейс Eco-Store — обложка" />
+    </div>
+    <div class="cb-frame" data-panel="1">
       <img src="assets/case-analysis.jpg" alt="Кейс Eco-Store — 01. Анализ" />
     </div>
-    <div class="cb-frame cb-pack" data-panel="1">
+    <div class="cb-frame cb-pack" data-panel="2">
       <img src="assets/case-packaging.png" alt="Кейс Eco-Store — 02. Упаковка" />
     </div>
-    <div class="cb-frame" data-panel="2">
+    <div class="cb-frame" data-panel="3">
       <img src="assets/case-traffic.jpg" alt="Кейс Eco-Store — 03. Трафик" />
     </div>
-    <div class="cb-frame" data-panel="3">
+    <div class="cb-frame" data-panel="4">
       <img src="assets/case-system.jpg" alt="Кейс Eco-Store — 04. Система" />
     </div>
 
-    <div class="cb-tabs">
-      <button class="cb-tab is-on" type="button" data-tab="0"><b>01</b>Анализ</button>
-      <button class="cb-tab" type="button" data-tab="1"><b>02</b>Упаковка</button>
-      <button class="cb-tab" type="button" data-tab="2"><b>03</b>Трафик</button>
-      <button class="cb-tab" type="button" data-tab="3"><b>04</b>Система</button>
+    <div class="cb-tabs" aria-label="Слайды кейса Eco-Store">
+      <button class="cb-tab is-on" type="button" data-tab="0"><b>00</b>Кейс</button>
+      <button class="cb-tab" type="button" data-tab="1"><b>01</b>Анализ</button>
+      <button class="cb-tab" type="button" data-tab="2"><b>02</b>Упаковка</button>
+      <button class="cb-tab" type="button" data-tab="3"><b>03</b>Трафик</button>
+      <button class="cb-tab" type="button" data-tab="4"><b>04</b>Система</button>
     </div>
   </section>
 

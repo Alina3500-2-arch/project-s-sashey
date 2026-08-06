@@ -49,7 +49,7 @@
   }
   .viewport iframe{
     border:0;display:block;transform-origin:top left;background:var(--graphite);
-    pointer-events:none;   /* палец листает внешнюю страницу, а не содержимое кадра */
+    pointer-events:none;   /* прокрутка остаётся внешней; короткие нажатия передаём ниже */
   }
 
   /* Подсказка под «монитором» */
@@ -85,8 +85,9 @@
 </div>
 
 <p class="hint">
-  Листайте страницу как обычно — сайт внутри прокручивается вместе с ней,<br>
-  анимации срабатывают там же, где на настоящем мониторе.<br><br>
+  Листайте страницу как обычно — сайт внутри прокручивается вместе с ней.<br>
+  Вкладки кейса и кнопки можно нажимать.<br>
+  Анимации срабатывают там же, где на настоящем мониторе.<br><br>
   <b>Поверните телефон боком</b> — окно станет примерно вдвое крупнее.
 </p>
 
@@ -163,6 +164,27 @@
   window.addEventListener('resize', layout);
   window.addEventListener('orientationchange', function () { setTimeout(layout, 250); });
   setInterval(layout, 2000);   // страница внутри может подрасти после загрузки шрифтов
+
+  // iframe не перехватывает жесты, иначе на iPhone перестаёт листаться
+  // длинная ПК-страница. Короткое нажатие переводим в координаты сайта и
+  // запускаем настоящий элемент под пальцем — так вкладки кейса работают,
+  // а вертикальная прокрутка остаётся плавной.
+  document.getElementById('viewport').addEventListener('click', function (e) {
+    var doc = frame.contentDocument;
+    if (!doc) return;
+    var rect = this.getBoundingClientRect();
+    var x = (e.clientX - rect.left) / k;
+    var y = (e.clientY - rect.top) / k;
+    var target = doc.elementFromPoint(x, y);
+    var control = target && target.closest('button, a');
+    if (!control) return;
+    if (control.tagName === 'A' && control.href) {
+      if (control.target === '_blank') window.open(control.href, '_blank');
+      else window.location.href = control.href;
+      return;
+    }
+    control.click();
+  });
 
   document.getElementById('widths').addEventListener('click', function (e) {
     var btn = e.target.closest('button');
