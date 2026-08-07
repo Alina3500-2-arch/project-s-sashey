@@ -1110,8 +1110,22 @@ h2.sec-title{
 .case-slide h3{margin:0;font:400 clamp(30px,4.2vw,68px)/.98 var(--serif);letter-spacing:-.025em;}
 .case-slide p{margin:0;}
 .case-cover-copy{position:relative;z-index:2;width:48%;}.case-cover-copy h3{max-width:570px;}.case-cover-copy .case-line{height:1px;width:78%;margin:clamp(30px,6vw,84px) 0;background:linear-gradient(90deg,var(--green),transparent);}
-.case-cover-stat{position:absolute;right:5%;top:10%;z-index:2;text-align:right;}.case-cover-stat span{display:block;color:var(--green);font-size:clamp(26px,4cqw,64px);}.case-cover-stat b{display:block;font:400 clamp(54px,9cqw,145px)/.9 var(--serif);}
-.case-cover-stat small{font-size:clamp(12px,1.2cqw,18px);color:#d9d0c2;}.case-slide .case-cover-site{position:absolute;z-index:1;right:4%;bottom:-3%;width:40%;border-radius:16px 16px 0 0;box-shadow:0 18px 50px #000;}
+.case-cover-stat{position:absolute;right:5%;top:10%;z-index:5;text-align:right;}.case-cover-stat span{display:block;color:var(--green);font-size:clamp(26px,4cqw,64px);}.case-cover-stat b{display:block;font:400 clamp(54px,9cqw,145px)/.9 var(--serif);}
+.case-cover-stat small{font-size:clamp(12px,1.2cqw,18px);color:#d9d0c2;}
+/* Стопка экранов на обложке: настоящий сайт спереди, остальные —
+   плейсхолдеры до реальных скринов (Каталог/Bitrix/CRM). */
+.case-cover-stack{position:absolute;z-index:1;right:1%;bottom:-3%;width:58%;height:56%;}
+.case-cover-stack>*{position:absolute;border-radius:10px;box-shadow:0 18px 45px rgba(0,0,0,.5);overflow:hidden;}
+.case-cover-stack .case-cover-shot{display:block;object-fit:cover;}
+.case-cover-ph{display:flex;align-items:center;justify-content:center;background:#eae6db;color:#8b8676;font-size:clamp(10px,.85vw,12.5px);font-weight:600;letter-spacing:.08em;text-transform:uppercase;text-align:center;padding:10px;}
+.case-cover-stack .case-cover-1{left:0;bottom:0;width:44%;height:70%;z-index:4;border-radius:14px 14px 0 0;}
+.case-cover-stack .case-cover-2{left:30%;top:6%;width:34%;height:84%;z-index:3;}
+.case-cover-stack .case-cover-3{left:54%;top:18%;width:24%;height:56%;z-index:2;}
+.case-cover-stack .case-cover-4{left:68%;top:0;width:32%;height:76%;z-index:1;}
+/* Декоративная линия роста между заголовком и цифрой оборота */
+.case-cover-graph{position:absolute;z-index:2;left:2%;top:52%;width:22%;height:20%;pointer-events:none;overflow:visible;}
+.case-cover-graph .dot-start{fill:rgba(168,220,40,.6);}
+.case-cover-graph .dot-end{fill:var(--green);filter:drop-shadow(0 0 6px rgba(168,220,40,.9));}
 .case-analysis-grid,.case-traffic-grid{display:grid;grid-template-columns:48% 52%;height:100%;}.case-analysis-copy,.case-traffic-copy{padding-right:clamp(20px,3vw,48px);}.case-slide .case-sub{margin-top:clamp(18px,2.5vw,34px);font-size:clamp(15px,1.55vw,24px);line-height:1.35;color:#4b9b18;}.case-analysis-photo{width:100%;height:100%;object-fit:cover;border-radius:20px 0 0 20px;}
 .case-facts{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:clamp(28px,4vw,58px);background:rgba(21,21,15,.14);}.case-fact{padding:clamp(14px,1.6vw,25px);background:#f4f0e9;}.case-fact b{display:block;font:400 clamp(23px,2.4vw,38px)/1 var(--serif);}.case-fact span{font-size:clamp(11px,1vw,15px);}
 .case-analysis-copy .case-facts .case-fact:last-child{grid-column:1/-1;}
@@ -1499,7 +1513,9 @@ h2.sec-title{
   .case-analysis-grid,.case-traffic-grid,.case-pack-grid,.case-system-grid,.case2-grid{grid-template-columns:1fr;height:auto;gap:clamp(14px,4vw,22px);}
   .case2-grid .case2-photo{aspect-ratio:16/10;height:auto;object-fit:cover;}
   .case-cols{grid-template-columns:1fr 1fr;gap:clamp(14px,4vw,22px);}
-  .case-cover-copy{width:100%;}.case-cover-stat{position:static;margin-top:16px;text-align:left;}.case-slide .case-cover-site{position:static;display:block;width:100%;margin:16px 0 0;}
+  .case-cover-copy{width:100%;}.case-cover-stat{position:static;margin-top:16px;text-align:left;}
+  .case-cover-graph{display:none;}
+  .case-cover-stack{position:relative;right:auto;bottom:auto;width:100%;height:220px;margin:16px 0 0;}
   /* картинки не обрезаем — полностью, в своих природных пропорциях */
   .case-analysis-photo,.case-system-visual{width:100%;height:auto;object-fit:contain;border-radius:14px;}
   .case-site-stack{min-height:310px;}.case-site-old{top:0;}.case-site-new{top:8%;}
@@ -1948,7 +1964,17 @@ h2.sec-title{
       <article class="case-slide case-cover">
         <div class="case-cover-copy"><p class="case-kicker">Кейс · Eco-Store</p><h3>Из мелких заказов —<br />в коммерческую систему</h3><div class="case-line"></div><a class="case-next case-view-btn" href="#" data-goto="1">Смотреть кейс <span class="arr">→</span></a></div>
         <div class="case-cover-stat"><span>600 тыс. →</span><b>1,2 млн ₽</b><small>рабочий месячный оборот</small></div>
-        <img class="case-cover-site" src="assets/case-new-site.png" alt="Новый сайт Eco-Store с круглым панно и Линой" />
+        <svg class="case-cover-graph" viewBox="0 0 220 130" fill="none" aria-hidden="true">
+          <path d="M4 122 L70 122 L120 60 L200 14" stroke="var(--green)" stroke-width="1.4" opacity=".85" />
+          <circle class="dot-start" cx="4" cy="122" r="3.5" />
+          <circle class="dot-end" cx="200" cy="14" r="5" />
+        </svg>
+        <div class="case-cover-stack">
+          <img class="case-cover-shot case-cover-1" src="assets/case-new-site.png" alt="Новый сайт Eco-Store с круглым панно и Линой" />
+          <div class="case-cover-ph case-cover-2">Каталог<br />(скрин ожидается)</div>
+          <div class="case-cover-ph case-cover-3">Bitrix24<br />(скрин ожидается)</div>
+          <div class="case-cover-ph case-cover-4">CRM<br />(скрин ожидается)</div>
+        </div>
       </article>
     </div>
     <div class="cb-frame" data-panel="1">
