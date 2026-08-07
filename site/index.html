@@ -1429,26 +1429,34 @@ h2.sec-title{
   .cb-tab.is-on{border-bottom-color:var(--green);}
   .cb-frame img{border-radius:var(--radius) var(--radius) 0 0;}
   .case-intro{padding:0 clamp(18px,5vw,32px);}
-  /* слайд кейса помещается в один экран телефона: внутри — своя
-     прокрутка, если контент всё же не влезает, а не растягивание страницы */
-  .case-slide{aspect-ratio:auto;max-height:calc(100svh - 112px);overflow-y:auto;-webkit-overflow-scrolling:touch;padding:clamp(16px,5vw,26px);}
-  /* стрелки — в самой полоске вкладок, а не поверх слайда: полоска
-     короткая и не прокручивается, поэтому ничего не закрывают */
+  /* Все 5 слайдов должны быть одной высоты (по самому длинному), иначе
+     при переключении вкладки высота блока прыгает и полоска вкладок
+     уезжает — а вместе с ней и точка, куда смотрит пользователь.
+     Классический приём: все .cb-frame ставим в одну ячейку грида (тогда
+     высота строки — по самому высокому), скрываем неактивные через
+     visibility (не display:none — иначе они не участвуют в высоте). */
+  .cb-shell{display:grid;}
+  .cb-frame{display:block;grid-area:1/1;visibility:hidden;pointer-events:none;}
+  .cb-frame.is-on{visibility:visible;pointer-events:auto;}
+  .case-slide{aspect-ratio:auto;height:100%;padding:clamp(20px,6vw,30px);}
+  /* стрелки — в самой полоске вкладок, а не поверх слайда */
   .cb-arrow{
     display:flex;align-items:center;justify-content:center;flex:none;
     width:38px;padding:0;cursor:pointer;border:0;
     background:transparent;color:rgba(241,233,220,.6);
   }
   .cb-arrow:disabled{opacity:.25;pointer-events:none;}
-  .case-slide h3{font-size:clamp(22px,7vw,34px);}
-  .case-slide .case-sub{margin-top:8px !important;font-size:13px !important;line-height:1.35 !important;}
-  .case-analysis-grid,.case-traffic-grid,.case-pack-grid,.case-system-grid{grid-template-columns:1fr;height:auto;gap:clamp(12px,3.4vw,18px);}
+  .case-slide h3{font-size:clamp(24px,7.5vw,36px);}
+  .case-slide .case-sub{margin-top:10px;font-size:14px;line-height:1.4;}
+  .case-analysis-grid,.case-traffic-grid,.case-pack-grid,.case-system-grid{grid-template-columns:1fr;height:auto;gap:clamp(14px,4vw,22px);}
   .case-cover-copy{width:100%;}.case-cover-stat{position:static;margin-top:16px;text-align:left;}.case-slide .case-cover-site{position:static;display:block;width:100%;margin:16px 0 0;}
-  .case-analysis-photo,.case-system-visual{aspect-ratio:16/7;height:auto;object-fit:cover;border-radius:14px;}.case-site-stack{min-height:310px;}.case-site-old{top:0;}.case-site-new{top:8%;}
-  .case-facts{margin-top:12px !important;}
-  .case-fact{padding:8px 10px !important;}
-  .case-fact b{font-size:18px !important;line-height:1.15 !important;}
-  .case-fact span{font-size:11px !important;}
+  /* картинки не обрезаем — полностью, в своих природных пропорциях */
+  .case-analysis-photo,.case-system-visual{width:100%;height:auto;object-fit:contain;border-radius:14px;}
+  .case-site-stack{min-height:310px;}.case-site-old{top:0;}.case-site-new{top:8%;}
+  .case-facts{margin-top:14px;}
+  .case-fact{padding:10px 12px;}
+  .case-fact b{font-size:20px;line-height:1.15;}
+  .case-fact span{font-size:11px;}
   .case-table-card{margin:0;padding:18px;overflow:hidden;}.case-tables{gap:10px;}.case-table div{grid-template-columns:22px 1fr 1fr;font-size:10px;}.case-growth{font-size:clamp(24px,7.5vw,34px);}
   /* финальный экран на телефоне */
   /* container-type:size схлопнул бы блок без заданной высоты */
