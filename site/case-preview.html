@@ -1529,8 +1529,14 @@ h2.sec-title{
      нахлёстом — чтобы весь слайд помещался в экран без прокрутки.
      Размеры в cqw — тянутся за ширину кадра, без фиксированных высот. */
   .case-cover-stack{position:relative;left:auto;right:auto;bottom:auto;width:100%;height:112cqw;margin:14px 0 0;}
-  /* стрелки уводим под кадр, чтобы не ложились на экраны веера */
-  .cb-arrow{top:auto;bottom:10px;translate:0 0;}
+  /* нижние вкладки на телефоне убраны — имя слайда и так есть в кикере
+     каждого экрана, а строка вкладок только мешала свайпом-перетаскиванием.
+     Сами стрелки живут внутри .cb-tabs в разметке, поэтому не прячем блок
+     целиком, а превращаем его в прозрачный оверлей по центру кадра. */
+  .cb-tablist{display:none;}
+  .cb-tabs{position:absolute;inset:0;z-index:6;background:none;border-radius:0;align-items:center;justify-content:space-between;padding:0 10px;pointer-events:none;}
+  /* стрелки — крупные и яркие, по центру слайда, поверх стека экранов */
+  .cb-arrow{pointer-events:auto;width:52px;height:52px;border-width:1.5px;border-color:var(--green);color:var(--green);background:rgba(10,10,8,.6);}
   .case-cover-stack .case-cover-shot{bottom:auto;width:86%;border-radius:10px;box-shadow:0 18px 42px rgba(0,0,0,.62);transform:perspective(1500px) rotateY(-14deg);}
   .case-cover-stack .case-cover-1{left:0;top:0;}
   .case-cover-stack .case-cover-2{left:14%;top:34cqw;}
