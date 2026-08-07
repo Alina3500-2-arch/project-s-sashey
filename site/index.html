@@ -1337,6 +1337,10 @@ h2.sec-title{
      занимают всю ширину до миллиметра и выглядят слипшимися */
   .chain{flex-wrap:wrap;gap:8px 0;justify-content:center;}
   .node{width:clamp(66px,19vw,80px);}
+  .control-message{text-align:center;}
+  /* портрет во весь экран на телефоне выглядел непропорционально
+     огромным (аспект 4/5 от полной ширины); делаем ниже. */
+  .princ-photo{aspect-ratio:4/3;}
   .link{width:clamp(20px,5.6vw,24px);margin:0 clamp(3px,1.2vw,7px);}
   /* стрелка после CRM переносится на свою строку и висит в пустоте — убираем */
   .chain-arrow{display:none;}
@@ -1363,15 +1367,14 @@ h2.sec-title{
   /* Ширину и левый край не трогаем: они равны грани своей ступени.
      Шире — и текст заезжает на соседнюю ступень. */
   .stair-txt{top:var(--tm);width:var(--wm,var(--w));}
-  /* Заголовок переезжает в пустое поле над пьедесталом, к цифре —
-     описание остаётся внутри самого пьедестала (на грани ступени).
-     Смещение задано в cqw (--tno), а не в %: h3 позиционируется
-     относительно .stair-txt, чья высота — по контенту, а не по кадру,
-     поэтому обычный процент считался бы неверно. cqw — абсолютная по
-     смыслу единица (доля ширины кадра), с высотой контейнера не связана. */
+  /* Раньше заголовок пытались увести в поле над пьедесталом через
+     --tno, но эта переменная нигде не задавалась: top:var(--tno) без
+     значения даёт auto, h3 получал гипотетическую flex-позицию по
+     центру блока — точно там же, где центрировался и .stair-txt p,
+     и они накладывались друг на друга. Оставляем заголовок в потоке,
+     над описанием, без абсолютного позиционирования. */
   .stair-txt h3{
-    position:absolute;left:0;top:var(--tno);width:100%;
-    margin:0;font-size:4.4cqw;line-height:1.05;
+    margin:0 0 .35em;font-size:4.4cqw;line-height:1.05;
   }
   /* на узкой колонке полный текст даёт семь строк — на телефоне
      показываем короткую формулировку */
@@ -1396,14 +1399,23 @@ h2.sec-title{
   .duo-together h3{font-size:clamp(15px,4.4vw,20px);}
   .duo-together p{font-size:clamp(12px,3.3vw,14px);line-height:1.6;}
   .duo-cta{display:flex;width:max-content;margin:clamp(22px,6vw,34px) auto 0;}
-  /* большой кейс на телефоне: вкладки в две строки, иначе «04 Система» обрезается */
-  .cb-tabs{display:grid;grid-template-columns:1fr 1fr;}
+  /* .duo.run .duo-cta{translate:-50% 0} из десктопной секции — сильнее по
+     специфичности, чем сброс выше, и на мобильном сдвигал кнопку за
+     левый край экрана. Отменяем той же специфичностью. */
+  .duo.run .duo-cta{translate:0;}
+  /* большой кейс на телефоне: одна строка вкладок со свайпом —
+     сетка в 2 колонки давала рябь в 2-3 неровные строки. */
+  .cb-tabs{
+    display:flex;overflow-x:auto;scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;
+  }
+  .cb-tabs::-webkit-scrollbar{display:none;}
   .cb-tab{
+    flex:none;scroll-snap-align:start;white-space:nowrap;
     border-top:0;border-bottom:2px solid transparent;
-    padding:clamp(12px,3.4vw,16px) clamp(8px,2.4vw,14px);
+    padding:clamp(12px,3.4vw,16px) clamp(14px,3.8vw,18px);
     font-size:clamp(10px,2.9vw,12px);letter-spacing:.06em;
   }
-  .cb-tab:nth-child(-n+2){border-bottom:1px solid rgba(241,233,220,.12);}
   .cb-tab.is-on{border-bottom-color:var(--green);}
   .cb-frame img{border-radius:var(--radius) var(--radius) 0 0;}
   .case-intro{padding:0 clamp(18px,5vw,32px);}
