@@ -1174,6 +1174,9 @@ h2.sec-title{
 .case-view-btn{margin-top:clamp(20px,2.6vw,32px);padding:.75em 1.4em;font-size:clamp(13px,1vw,15px);color:var(--green);border:1.5px solid var(--green);border-radius:10px;background:rgba(168,220,40,.1);box-shadow:0 0 24px rgba(168,220,40,.16);transition:background .25s var(--ease),box-shadow .25s var(--ease);}
 .case-view-btn .arr{color:var(--green);}
 .case-view-btn:hover{background:rgba(168,220,40,.2);box-shadow:0 0 32px rgba(168,220,40,.28);}
+.case-next.case-view-btn{border-bottom:0;padding:.85em 1.5em;}
+/* «Смотреть кейс» — плавающая кнопка по центру справа, как раньше стрелка */
+.case-view-btn--float{position:absolute;z-index:6;right:5%;top:50%;translate:0 -50%;margin-top:0;}
 
 /* Обложка и рабочие слайды имеют одну высоту: у обложки нижняя
    служебная полоса макета скрывается, как и у «Упаковки». */
@@ -1521,7 +1524,14 @@ h2.sec-title{
   .case-analysis-grid,.case-traffic-grid,.case-pack-grid,.case-system-grid,.case2-grid{grid-template-columns:1fr;height:auto;gap:clamp(14px,4vw,22px);}
   .case2-grid .case2-photo{aspect-ratio:16/10;height:auto;object-fit:cover;}
   .case-cols{grid-template-columns:1fr 1fr;gap:clamp(14px,4vw,22px);}
-  .case-cover-copy{width:100%;}
+  /* На телефоне колонки нет — плавающая кнопка справа не помещается,
+     превращаем слайд во flex-колонку и вставляем кнопку обычным блоком
+     между цифрой оборота и стеком экранов (а не поверх фото). */
+  .case-cover{display:flex;flex-direction:column;}
+  .case-cover .case-cover-copy{order:1;width:100%;}
+  .case-cover .case-cover-stat{order:2;}
+  .case-cover .case-view-btn--float{order:3;position:static;top:auto;right:auto;translate:none;align-self:flex-end;margin:14px 0 0;}
+  .case-cover .case-cover-stack{order:4;}
   .case-cover-copy h3{font-size:clamp(30px,8.6vw,48px);line-height:1.08;}
   .case-cover-stat{position:static;margin-top:10px;text-align:left;}
   .case-cover-stat span{font-size:clamp(19px,5.4vw,28px);}
@@ -1626,7 +1636,8 @@ h2.sec-title{
     <div class="cb-shell is-cover">
     <div class="cb-frame cb-cover is-on" data-panel="0">
       <article class="case-slide case-cover">
-        <div class="case-cover-copy"><p class="case-kicker">Кейс · Eco-Store</p><h3>Из мелких заказов —<br />в коммерческую систему</h3><div class="case-line"></div><a class="case-next" href="#" data-goto="1">Смотреть кейс <span class="arr">→</span></a></div>
+        <div class="case-cover-copy"><p class="case-kicker">Кейс · Eco-Store</p><h3>Из мелких заказов —<br />в коммерческую систему</h3><div class="case-line"></div></div>
+        <a class="case-next case-view-btn case-view-btn--float" href="#" data-goto="1">Смотреть кейс <span class="arr">→</span></a>
         <div class="case-cover-stat"><span>600 тыс. →</span><b>1,2 млн ₽</b><small>рабочий месячный оборот</small></div>
         <svg class="case-cover-graph" viewBox="0 0 460 130" fill="none" aria-hidden="true" preserveAspectRatio="none">
           <path d="M8 118 L150 118 L250 56 L440 12" stroke="var(--green)" stroke-width="2" vector-effect="non-scaling-stroke" opacity=".85" />
