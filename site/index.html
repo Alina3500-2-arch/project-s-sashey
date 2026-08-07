@@ -1176,7 +1176,7 @@ h2.sec-title{
 .case-view-btn:hover{background:rgba(168,220,40,.2);box-shadow:0 0 32px rgba(168,220,40,.28);}
 .case-next.case-view-btn{border-bottom:0;padding:.85em 1.5em;}
 /* «Смотреть кейс» — плавающая кнопка по центру справа, как раньше стрелка */
-.case-view-btn--float{position:absolute;z-index:6;right:5%;top:50%;translate:0 -50%;margin-top:0;}
+.case-view-btn--float{position:absolute;z-index:6;right:5%;top:50%;translate:0 -50%;margin-top:0;font-size:clamp(20px,2vw,30px);text-shadow:0 4px 18px rgba(0,0,0,.8);}
 
 /* Обложка и рабочие слайды имеют одну высоту: у обложки нижняя
    служебная полоса макета скрывается, как и у «Упаковки». */
@@ -2002,7 +2002,7 @@ h2.sec-title{
     <div class="cb-frame cb-cover is-on" data-panel="0">
       <article class="case-slide case-cover">
         <div class="case-cover-copy"><p class="case-kicker">Кейс · Eco-Store</p><h3>Из мелких заказов —<br />в коммерческую систему</h3><div class="case-line"></div></div>
-        <a class="case-next case-view-btn case-view-btn--float" href="#" data-goto="1">Смотреть кейс <span class="arr">→</span></a>
+        <a class="case-next case-view-btn--float" href="#" data-goto="1">Смотреть кейс <span class="arr">→</span></a>
         <div class="case-cover-stat"><span>600 тыс. →</span><b>1,2 млн ₽</b><small>рабочий месячный оборот</small></div>
         <svg class="case-cover-graph" viewBox="0 0 460 130" fill="none" aria-hidden="true" preserveAspectRatio="none">
           <path d="M8 118 L150 118 L250 56 L440 12" stroke="var(--green)" stroke-width="2" vector-effect="non-scaling-stroke" opacity=".85" />
