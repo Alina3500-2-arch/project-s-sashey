@@ -1186,13 +1186,16 @@ h2.sec-title{
 .cb-shell{position:relative;}
 .cb-arrow{
   display:flex;align-items:center;justify-content:center;flex:none;
-  width:44px;height:44px;border-radius:50%;padding:0;cursor:pointer;
-  border:1px solid rgba(241,233,220,.32);background:rgba(11,11,9,.5);
-  color:rgba(241,233,220,.75);
-  transition:border-color .25s var(--ease),color .25s var(--ease);
+  width:44px;height:44px;padding:0;cursor:pointer;
+  border:0;background:none;color:var(--green);
+  filter:drop-shadow(0 2px 12px rgba(0,0,0,.6));
+  transition:color .25s var(--ease),transform .25s var(--ease);
 }
-.cb-arrow:not(:disabled):hover{border-color:var(--green);color:var(--green);}
-.cb-arrow:disabled{opacity:.28;pointer-events:none;}
+.cb-arrow svg{width:30px;height:30px;}
+.cb-arrow:not(:disabled):hover{color:#fff;transform:scale(1.1);}
+.cb-arrow:disabled{opacity:.25;pointer-events:none;}
+/* стрелки не показываем на обложке — там "Смотреть кейс" в тексте */
+.cb-shell.is-cover .cb-arrow{display:none;}
 /* Стрелки плавают поверх кадра по бокам (крупные, легко попасть пальцем),
    а не мелкие в строке вкладок — на любой ширине, не только на ПК. */
 .cb-arrow{position:absolute;top:44%;translate:0 -50%;z-index:6;}
@@ -1535,8 +1538,9 @@ h2.sec-title{
      целиком, а превращаем его в прозрачный оверлей по центру кадра. */
   .cb-tablist{display:none;}
   .cb-tabs{position:absolute;inset:0;z-index:6;background:none;border-radius:0;align-items:center;justify-content:space-between;padding:0 10px;pointer-events:none;}
-  /* стрелки — крупные и яркие, по центру слайда, поверх стека экранов */
-  .cb-arrow{pointer-events:auto;width:52px;height:52px;border-width:1.5px;border-color:var(--green);color:var(--green);background:rgba(10,10,8,.6);}
+  /* стрелки — крупные, без подложки, по центру слайда */
+  .cb-arrow{pointer-events:auto;width:56px;height:56px;}
+  .cb-arrow svg{width:34px;height:34px;}
   .case-cover-stack .case-cover-shot{bottom:auto;width:86%;border-radius:10px;box-shadow:0 18px 42px rgba(0,0,0,.62);transform:perspective(1500px) rotateY(-14deg);}
   .case-cover-stack .case-cover-1{left:0;top:0;}
   .case-cover-stack .case-cover-2{left:14%;top:34cqw;}
@@ -1984,10 +1988,10 @@ h2.sec-title{
       <h2 class="sec-title"><span class="case-green">Операционное</span><br /><span class="case-minor">ведение бизнеса</span></h2>
       <p>Вместо тысяч кейсов с недоказанными результатами и вымышленными цифрами — один полноценный кейс. В нём мы берём на себя максимальную часть маркетинга и операционной системы, а собственнику остаётся качественно выполнять свои услуги.</p>
     </header>
-    <div class="cb-shell">
+    <div class="cb-shell is-cover">
     <div class="cb-frame cb-cover is-on" data-panel="0">
       <article class="case-slide case-cover">
-        <div class="case-cover-copy"><p class="case-kicker">Кейс · Eco-Store</p><h3>Из мелких заказов —<br />в коммерческую систему</h3><div class="case-line"></div></div>
+        <div class="case-cover-copy"><p class="case-kicker">Кейс · Eco-Store</p><h3>Из мелких заказов —<br />в коммерческую систему</h3><div class="case-line"></div><a class="case-next" href="#" data-goto="1">Смотреть кейс <span class="arr">→</span></a></div>
         <div class="case-cover-stat"><span>600 тыс. →</span><b>1,2 млн ₽</b><small>рабочий месячный оборот</small></div>
         <svg class="case-cover-graph" viewBox="0 0 460 130" fill="none" aria-hidden="true" preserveAspectRatio="none">
           <path d="M8 118 L150 118 L250 56 L440 12" stroke="var(--green)" stroke-width="2" vector-effect="non-scaling-stroke" opacity=".85" />
@@ -2042,7 +2046,7 @@ h2.sec-title{
       <h2 class="sec-title"><span class="case-green">Управляемый</span><br /><span class="case-minor">трафик</span></h2>
       <p>Не всегда нужен полный операционный цикл. Здесь мы взяли на себя только рекламу и трафик — и сделали стоимость обращения предсказуемой и управляемой.</p>
     </header>
-    <div class="cb-shell">
+    <div class="cb-shell is-cover">
       <div class="cb-frame cb-cover is-on" data-panel="0">
         <article class="case-slide case-cover">
           <div class="case-cover-copy">
@@ -2295,6 +2299,7 @@ h2.sec-title{
       cbCurrent = i;
       [].forEach.call(cbTabs, function (b) { b.classList.toggle('is-on', +b.dataset.tab === i); });
       [].forEach.call(cbFrames, function (f) { f.classList.toggle('is-on', +f.dataset.panel === i); });
+      cbShell.classList.toggle('is-cover', i === 0);
       if (cbPrev) cbPrev.disabled = i === 0;
       if (cbNext) cbNext.disabled = i === cbCount - 1;
       // новая вкладка всегда открывается с начала слайда, а не с той
