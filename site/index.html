@@ -1148,8 +1148,9 @@ h2.sec-title{
 .case-next .arr{color:var(--green);display:inline-block;transition:transform .3s var(--ease);}
 .case-next:hover .arr{transform:translateX(4px);}
 /* «Смотреть кейс» на обложке — обособленная кнопка с рамкой, как на карточке кейса в макете */
-.case-view-btn{margin-top:clamp(20px,2.6vw,32px);padding:.7em 1.3em;font-size:clamp(13px,1vw,15px);border:1px solid var(--green);border-radius:10px;}
-.case-view-btn:hover{background:rgba(168,220,40,.08);}
+.case-view-btn{margin-top:clamp(20px,2.6vw,32px);padding:.75em 1.4em;font-size:clamp(13px,1vw,15px);color:var(--green);border:1.5px solid var(--green);border-radius:10px;background:rgba(168,220,40,.1);box-shadow:0 0 24px rgba(168,220,40,.16);transition:background .25s var(--ease),box-shadow .25s var(--ease);}
+.case-view-btn .arr{color:var(--green);}
+.case-view-btn:hover{background:rgba(168,220,40,.2);box-shadow:0 0 32px rgba(168,220,40,.28);}
 
 /* Обложка и рабочие слайды имеют одну высоту: у обложки нижняя
    служебная полоса макета скрывается, как и у «Упаковки». */
@@ -1495,7 +1496,9 @@ h2.sec-title{
   .cb-arrow:disabled{opacity:.25;pointer-events:none;}
   .case-slide h3{font-size:clamp(24px,7.5vw,36px);}
   .case-slide .case-sub{margin-top:10px;font-size:14px;line-height:1.4;}
-  .case-analysis-grid,.case-traffic-grid,.case-pack-grid,.case-system-grid{grid-template-columns:1fr;height:auto;gap:clamp(14px,4vw,22px);}
+  .case-analysis-grid,.case-traffic-grid,.case-pack-grid,.case-system-grid,.case2-grid{grid-template-columns:1fr;height:auto;gap:clamp(14px,4vw,22px);}
+  .case2-grid .case2-photo{aspect-ratio:16/10;height:auto;object-fit:cover;}
+  .case-cols{grid-template-columns:1fr 1fr;gap:clamp(14px,4vw,22px);}
   .case-cover-copy{width:100%;}.case-cover-stat{position:static;margin-top:16px;text-align:left;}.case-slide .case-cover-site{position:static;display:block;width:100%;margin:16px 0 0;}
   /* картинки не обрезаем — полностью, в своих природных пропорциях */
   .case-analysis-photo,.case-system-visual{width:100%;height:auto;object-fit:contain;border-radius:14px;}
@@ -1943,7 +1946,7 @@ h2.sec-title{
     <div class="cb-shell">
     <div class="cb-frame cb-cover is-on" data-panel="0">
       <article class="case-slide case-cover">
-        <div class="case-cover-copy"><p class="case-kicker">Кейс · Eco-Store</p><h3>Из мелких заказов —<br />в коммерческую систему</h3><div class="case-line"></div></div>
+        <div class="case-cover-copy"><p class="case-kicker">Кейс · Eco-Store</p><h3>Из мелких заказов —<br />в коммерческую систему</h3><div class="case-line"></div><a class="case-next case-view-btn" href="#" data-goto="1">Смотреть кейс <span class="arr">→</span></a></div>
         <div class="case-cover-stat"><span>600 тыс. →</span><b>1,2 млн ₽</b><small>рабочий месячный оборот</small></div>
         <img class="case-cover-site" src="assets/case-new-site.png" alt="Новый сайт Eco-Store с круглым панно и Линой" />
       </article>
