@@ -1139,6 +1139,10 @@ h2.sec-title{
 .case-facts{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:clamp(28px,4vw,58px);background:rgba(21,21,15,.14);}.case-fact{padding:clamp(14px,1.6vw,25px);background:#f4f0e9;}.case-fact b{display:block;font:400 clamp(23px,2.4vw,38px)/1 var(--serif);}.case-fact span{font-size:clamp(11px,1vw,15px);}
 .case-analysis-copy .case-facts .case-fact:last-child{grid-column:1/-1;}
 .case-pack-grid{display:grid;grid-template-columns:37% 63%;height:100%;}.case-pack-copy{display:flex;flex-direction:column;justify-content:center;}.case-pack-copy .case-sub{color:#d9d0c2;}.case-metric{margin-top:clamp(32px,4vw,56px);font:400 clamp(38px,5.2vw,82px)/1 var(--serif);}.case-metric em{color:var(--green);font-style:normal;}.case-site-stack{position:relative;}.case-slide .case-site-old{position:absolute;width:43%;left:0;top:14%;border-radius:14px;opacity:.8;}.case-slide .case-site-new{position:absolute;width:70%;right:0;top:19%;border-radius:16px;box-shadow:0 18px 55px #000;}
+/* На десктопе коллаж внахлёст без подписей (как было) — подписи До/После
+   только на телефоне, где картинки идут крупно и друг под другом */
+.case-site-block{display:contents;}
+.case-site-block .case-pill{display:none;}
 .case-traffic-copy .case-sub{color:#21231d;}.case-table-card{align-self:center;margin:auto 0;padding:clamp(20px,2.4vw,38px);border-radius:26px;background:#fff;box-shadow:0 16px 40px rgba(20,20,15,.1);}.case-table-head{display:grid;grid-template-columns:1fr 70px 34px 1fr;align-items:center;text-align:center;font-size:clamp(12px,1.3vw,20px);}.case-pill{padding:.35em .8em;border-radius:10px;background:#090a08;color:#fff;}.case-pill.green{background:#47aa16;}.case-arrow{font-size:clamp(28px,3vw,45px);color:#48a918;}.case-tables{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,2vw,28px);margin-top:clamp(20px,2.8vw,36px);}.case-table{border:1px solid #d8d8d5;}.case-table div{display:grid;grid-template-columns:44px 1fr 1fr;border-bottom:1px solid #d8d8d5;padding:.5em;font-size:clamp(10px,1vw,15px);}.case-table div:last-child{border:0;}.case-table .hit{outline:2px solid #43a914;outline-offset:-2px;}.case-growth{text-align:center;margin-top:clamp(22px,3vw,38px);font:400 clamp(30px,4.4vw,70px)/1 var(--serif);}.case-growth em{display:block;margin-top:.3em;color:#41a519;font-size:.72em;font-style:normal;}
 .case-system-grid{display:grid;grid-template-columns:37% 63%;height:100%;}.case-system-copy{display:flex;flex-direction:column;justify-content:center;}.case-system-copy h3{font-size:clamp(38px,5vw,80px);}.case-system-copy .case-sub{color:#e5dccf;}.case-system-list{margin:clamp(34px,4vw,58px) 0 0;padding:clamp(18px,2vw,28px) 0 0;list-style:none;border-top:1px solid rgba(241,233,220,.28);}.case-system-list li{margin:.55em 0;font-size:clamp(12px,1.1vw,17px);color:#cfc7bb;}.case-system-list b{display:inline-block;width:2.5em;color:var(--green);font-size:1.4em;}.case-system-visual{width:100%;height:100%;object-fit:cover;object-position:center;border-radius:20px;}
 /* ── Второй кейс: Алмазное бурение. Фото слева, текст справа —
@@ -1530,39 +1534,48 @@ h2.sec-title{
   .case-cover{display:flex;flex-direction:column;}
   .case-cover .case-cover-copy{order:1;width:100%;}
   .case-cover .case-cover-stat{order:2;}
-  .case-cover .case-view-btn--float{order:3;position:static;top:auto;right:auto;translate:none;align-self:flex-end;margin:14px 0 0;}
+  .case-cover .case-view-btn--float{order:3;position:static;top:auto;right:auto;translate:none;align-self:flex-end;margin:10px 0 0;}
   .case-cover .case-cover-stack{order:4;}
-  .case-cover-copy h3{font-size:clamp(30px,8.6vw,48px);line-height:1.08;}
-  .case-cover-stat{position:static;margin-top:10px;text-align:left;}
-  .case-cover-stat span{font-size:clamp(19px,5.4vw,28px);}
-  .case-cover-stat b{font-size:clamp(40px,11.5vw,64px);line-height:1;}
+  .case-cover-copy h3{font-size:clamp(28px,7.8vw,48px);line-height:1.06;}
+  .case-cover-stat{position:static;margin-top:6px;text-align:left;}
+  .case-cover-stat span{font-size:clamp(17px,4.8vw,28px);}
+  .case-cover-stat b{font-size:clamp(34px,10vw,64px);line-height:1;}
   .case-cover-stat small{max-width:none;margin-left:0;font-size:clamp(12px,3.4vw,15px);}
   .case-cover-graph{display:none;}
-  /* На телефоне веер разворачивается сверху вниз, каскадом с бОльшим
-     нахлёстом — чтобы весь слайд помещался в экран без прокрутки.
+  /* На телефоне веер разворачивается сверху вниз, каскадом с большим
+     нахлёстом — чтобы слайд помещался в экран без прокрутки даже с учётом
+     панелей браузера (реальная высота меньше, чем в эмуляции).
      Размеры в cqw — тянутся за ширину кадра, без фиксированных высот. */
-  .case-cover-stack{position:relative;left:auto;right:auto;bottom:auto;width:100%;height:112cqw;margin:14px 0 0;}
+  .case-cover-stack{position:relative;left:auto;right:auto;bottom:auto;width:100%;height:78cqw;margin:10px 0 0;}
   /* нижние вкладки на телефоне убраны — имя слайда и так есть в кикере
      каждого экрана, а строка вкладок только мешала свайпом-перетаскиванием.
      Сами стрелки живут внутри .cb-tabs в разметке, поэтому не прячем блок
      целиком, а превращаем его в прозрачный оверлей по центру кадра. */
   .cb-tablist{display:none;}
-  .cb-tabs{position:absolute;inset:0;z-index:6;background:none;border-radius:0;align-items:center;justify-content:space-between;padding:0 10px;pointer-events:none;}
+  .cb-tabs{position:absolute;inset:0;z-index:6;background:none;border-radius:0;align-items:flex-end;justify-content:space-between;padding:0 10px 16px;pointer-events:none;}
   /* стрелки — крупные, без подложки, по центру слайда */
   .cb-arrow{pointer-events:auto;width:56px;height:56px;}
   .cb-arrow svg{width:34px;height:34px;}
-  .case-cover-stack .case-cover-shot{bottom:auto;width:86%;border-radius:10px;box-shadow:0 18px 42px rgba(0,0,0,.62);transform:perspective(1500px) rotateY(-14deg);}
+  .case-cover-stack .case-cover-shot{bottom:auto;width:78%;border-radius:9px;box-shadow:0 14px 34px rgba(0,0,0,.6);transform:perspective(1500px) rotateY(-14deg);}
   .case-cover-stack .case-cover-1{left:0;top:0;}
-  .case-cover-stack .case-cover-2{left:14%;top:34cqw;}
-  .case-cover-stack .case-cover-3{left:7%;top:66cqw;}
+  .case-cover-stack .case-cover-2{left:16%;top:23cqw;}
+  .case-cover-stack .case-cover-3{left:9%;top:46cqw;}
   /* картинки не обрезаем — полностью, в своих природных пропорциях */
-  .case-analysis-photo,.case-system-visual{width:100%;height:auto;object-fit:contain;border-radius:14px;}
-  .case-site-stack{min-height:310px;}.case-site-old{top:0;}.case-site-new{top:8%;}
-  .case-facts{margin-top:14px;}
-  .case-fact{padding:10px 12px;}
-  .case-fact b{font-size:20px;line-height:1.15;}
-  .case-fact span{font-size:11px;}
-  .case-table-card{margin:0;padding:18px;overflow:hidden;}.case-tables{gap:10px;}.case-table div{grid-template-columns:22px 1fr 1fr;font-size:10px;}.case-growth{font-size:clamp(24px,7.5vw,34px);}
+  .case-analysis-photo{width:100%;height:auto;object-fit:contain;border-radius:14px;}
+  /* коллаж инструментов — портретный кроп без обрезки текста, но по
+     высоте не резиновый: иначе тянет весь слайд, обрезаем снизу */
+  .case-system-visual{width:100%;aspect-ratio:4/3;height:auto;object-fit:cover;object-position:top;border-radius:14px;}
+  /* До/После на "Упаковке": на телефоне — крупно, друг под другом,
+     во всю ширину, с подписью, а не крошечный коллаж внахлёст */
+  .case-site-stack{display:flex;flex-direction:column;gap:16px;min-height:0;}
+  .case-site-block{display:flex;flex-direction:column;gap:8px;}
+  .case-site-block .case-pill{display:inline-block;width:max-content;font-size:12px;}
+  .case-slide .case-site-old,.case-slide .case-site-new{position:static;width:100%;top:auto;left:auto;right:auto;opacity:1;box-shadow:0 14px 34px rgba(0,0,0,.4);aspect-ratio:16/9;object-fit:cover;object-position:top;}
+  .case-facts{margin-top:8px;}
+  .case-fact{padding:8px 10px;}
+  .case-fact b{font-size:17px;line-height:1.15;}
+  .case-fact span{font-size:10px;}
+  .case-table-card{margin:0;padding:18px;overflow:hidden;}.case-tables{gap:10px;}.case-table div{grid-template-columns:22px 1fr 1fr;font-size:10px;}.case-growth{font-size:clamp(19px,5.6vw,26px);}
   /* финальный экран на телефоне */
   /* container-type:size схлопнул бы блок без заданной высоты */
   .closer{container-type:normal;aspect-ratio:auto;padding:clamp(40px,11vw,64px) clamp(18px,5vw,32px) clamp(30px,8vw,48px);}
@@ -1653,15 +1666,15 @@ h2.sec-title{
     </div>
     <div class="cb-frame" data-panel="1">
       <article class="case-slide case-slide--light case-analysis-grid">
-        <div class="case-analysis-copy"><p class="case-kicker">01 / Анализ</p><h3>Сначала — понять,<br />где бизнес теряет деньги</h3><p class="case-sub">Я вошла в продажи и разобрала<br />весь путь заказа изнутри</p><div class="case-facts"><div class="case-fact"><b>500 г / 1 000 ₽</b><span>фокус на мелких заказах</span></div><div class="case-fact"><b>300</b><span>объявлений на Авито</span></div><div class="case-fact"><b>ручной расчёт</b><span>каждый заказ — с нуля</span></div></div></div>
+        <div class="case-analysis-copy"><p class="case-kicker">01 / Анализ</p><h3>Сначала — понять,<br />где бизнес теряет деньги</h3><p class="case-sub">Разобрали весь путь заказа —<br />от заявки до оплаты</p><div class="case-facts"><div class="case-fact"><b>500 г / 1 000 ₽</b><span>фокус на мелких заказах</span></div><div class="case-fact"><b>300</b><span>объявлений на Авито</span></div><div class="case-fact"><b>ручной расчёт</b><span>каждый заказ — с нуля</span></div></div></div>
         <img class="case-analysis-photo" src="assets/case-analysis-desk.jpg" alt="Анализ заказов Eco-Store" />
       </article>
     </div>
     <div class="cb-frame cb-pack" data-panel="2">
-      <article class="case-slide case-pack-grid"><div class="case-pack-copy"><p class="case-kicker">02 / Упаковка</p><h3>Новый сайт<br />для дорогого продукта</h3><p class="case-sub">После анализа пересобрала продукт и создала новый продающий лендинг.</p><p class="case-metric">29,7 <small>тыс. ₽</small> <em>→</em> 42,9 <small>тыс. ₽</small></p></div><div class="case-site-stack"><img class="case-site-old" src="assets/case-old-site.png" alt="Старый сайт" /><img class="case-site-new" src="assets/case-new-site.png" alt="Новый сайт Eco-Store" /></div></article>
+      <article class="case-slide case-pack-grid"><div class="case-pack-copy"><p class="case-kicker">02 / Упаковка</p><h3>Новый сайт<br />для дорогого продукта</h3><p class="case-sub">После анализа пересобрала продукт и создала новый продающий лендинг.</p><p class="case-metric">29,7&nbsp;<small>тыс.&nbsp;₽</small> <em>→</em> 42,9&nbsp;<small>тыс.&nbsp;₽</small></p></div><div class="case-site-stack"><div class="case-site-block"><span class="case-pill">До</span><img class="case-site-old" src="assets/case-old-site.png" alt="Старый сайт" /></div><div class="case-site-block"><span class="case-pill green">После</span><img class="case-site-new" src="assets/case-new-site.png" alt="Новый сайт Eco-Store" /></div></div></article>
     </div>
     <div class="cb-frame" data-panel="3">
-      <article class="case-slide case-slide--light case-traffic-grid"><div class="case-traffic-copy"><p class="case-kicker">03 / Трафик</p><h3>Стало видно,<br />как перезапуск<br />повлиял на оборот</h3><p class="case-sub">После перезапуска сайта, обновления предложения и настройки рекламы оборот вырос до 1 606 635 ₽.</p><div class="case-facts"><div class="case-fact"><b>+1 006 635 ₽</b><span>прирост даже к верхней точке «до»</span></div><div class="case-fact"><b>почти 5×</b><span>рост после настройки</span></div></div></div><div class="case-table-card"><div class="case-table-head"><span class="case-pill">До</span><span></span><b class="case-arrow">→</b><span class="case-pill green">После</span></div><div class="case-tables"><div class="case-table"><div><span>1</span><span>ноябрь</span><b>600 000</b></div><div><span>2</span><span>декабрь</span><b>277 488</b></div><div><span>3</span><span>январь</span><b>322 243</b></div></div><div class="case-table"><div><span>7</span><span>июнь</span><b>741 115</b></div><div><span>8</span><span>июль</span><b>866 416</b></div><div class="hit"><span>9</span><span>август</span><b>1 606 635</b></div></div></div><div class="case-growth">277–600 тыс. ₽ → 1 606 635 ₽<em>рост почти в 5×</em></div></div></article>
+      <article class="case-slide case-slide--light case-traffic-grid"><div class="case-traffic-copy"><p class="case-kicker">03 / Трафик</p><h3>Стало видно,<br />как перезапуск<br />повлиял на оборот</h3><p class="case-sub">После перезапуска сайта, обновления предложения и настройки рекламы оборот вырос до 1 606 635 ₽.</p><div class="case-facts"><div class="case-fact"><b>+1 006 635&nbsp;₽</b><span>прирост даже к верхней точке «до»</span></div><div class="case-fact"><b>почти 5×</b><span>рост после настройки</span></div></div></div><div class="case-table-card"><div class="case-table-head"><span class="case-pill">До</span><span></span><b class="case-arrow">→</b><span class="case-pill green">После</span></div><div class="case-tables"><div class="case-table"><div><span>1</span><span>ноябрь</span><b>600 000</b></div><div><span>2</span><span>декабрь</span><b>277 488</b></div><div><span>3</span><span>январь</span><b>322 243</b></div></div><div class="case-table"><div><span>7</span><span>июнь</span><b>741 115</b></div><div><span>8</span><span>июль</span><b>866 416</b></div><div class="hit"><span>9</span><span>август</span><b>1 606 635</b></div></div></div><div class="case-growth">277–600&nbsp;тыс.&nbsp;₽ → 1&nbsp;606&nbsp;635&nbsp;₽<em>рост почти в 5×</em></div></div></article>
     </div>
     <div class="cb-frame" data-panel="4">
       <article class="case-slide case-system-grid"><div class="case-system-copy"><p class="case-kicker">04 / Система</p><h3>Продажи и производство<br />в одном маршруте</h3><p class="case-sub">Заявка больше не живёт в переписке и не держится в голове менеджера.</p><ul class="case-system-list"><li><b>01</b>Bitrix24: этапы сделки, роботы и задачи.</li><li><b>02</b>КП-калькулятор: варианты цены и передача расчёта в CRM.</li><li><b>03</b>Производство: срок и готовое сообщение клиенту.</li><li><b>04</b>Обучение: регламент и база знаний команды.</li></ul></div><img class="case-system-visual" src="assets/case-system-tools.jpg" alt="Калькуляторы и CRM Eco-Store" /></article>
