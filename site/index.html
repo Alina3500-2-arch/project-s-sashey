@@ -1345,6 +1345,9 @@ h2.sec-title{
   /* портрет во весь экран на телефоне выглядел непропорционально
      огромным (аспект 4/5 от полной ширины); делаем ниже. */
   .princ-photo{aspect-ratio:4/3;}
+  /* зазор до плашки был как у списка выше, а до кнопки под ней —
+     почти нулевой (плашка — <p> без своего нижнего отступа) */
+  .claim{margin:0 0 clamp(20px,4.5vw,30px);}
   .link{width:clamp(20px,5.6vw,24px);margin:0 clamp(3px,1.2vw,7px);}
   /* стрелка после CRM переносится на свою строку и висит в пустоте — убираем */
   .chain-arrow{display:none;}
@@ -1428,7 +1431,7 @@ h2.sec-title{
   .case-intro{padding:0 clamp(18px,5vw,32px);}
   /* слайд кейса помещается в один экран телефона: внутри — своя
      прокрутка, если контент всё же не влезает, а не растягивание страницы */
-  .case-slide{aspect-ratio:auto;max-height:calc(100svh - 112px);overflow-y:auto;-webkit-overflow-scrolling:touch;padding:clamp(24px,7vw,36px);}
+  .case-slide{aspect-ratio:auto;max-height:calc(100svh - 112px);overflow-y:auto;-webkit-overflow-scrolling:touch;padding:clamp(16px,5vw,26px);}
   /* стрелки — в самой полоске вкладок, а не поверх слайда: полоска
      короткая и не прокручивается, поэтому ничего не закрывают */
   .cb-arrow{
@@ -1437,10 +1440,15 @@ h2.sec-title{
     background:transparent;color:rgba(241,233,220,.6);
   }
   .cb-arrow:disabled{opacity:.25;pointer-events:none;}
-  .case-slide h3{font-size:clamp(30px,9vw,48px);}
-  .case-analysis-grid,.case-traffic-grid,.case-pack-grid,.case-system-grid{grid-template-columns:1fr;height:auto;gap:clamp(24px,7vw,38px);}
-  .case-cover-copy{width:100%;}.case-cover-stat{position:static;margin-top:24px;text-align:left;}.case-slide .case-cover-site{position:static;display:block;width:100%;margin:26px 0 -24px;}
-  .case-analysis-photo,.case-system-visual{aspect-ratio:16/10;height:auto;object-fit:cover;border-radius:16px;}.case-site-stack{min-height:310px;}.case-site-old{top:0;}.case-site-new{top:8%;}
+  .case-slide h3{font-size:clamp(22px,7vw,34px);}
+  .case-slide .case-sub{margin-top:8px !important;font-size:13px !important;line-height:1.35 !important;}
+  .case-analysis-grid,.case-traffic-grid,.case-pack-grid,.case-system-grid{grid-template-columns:1fr;height:auto;gap:clamp(12px,3.4vw,18px);}
+  .case-cover-copy{width:100%;}.case-cover-stat{position:static;margin-top:16px;text-align:left;}.case-slide .case-cover-site{position:static;display:block;width:100%;margin:16px 0 0;}
+  .case-analysis-photo,.case-system-visual{aspect-ratio:16/7;height:auto;object-fit:cover;border-radius:14px;}.case-site-stack{min-height:310px;}.case-site-old{top:0;}.case-site-new{top:8%;}
+  .case-facts{margin-top:12px !important;}
+  .case-fact{padding:8px 10px !important;}
+  .case-fact b{font-size:18px !important;line-height:1.15 !important;}
+  .case-fact span{font-size:11px !important;}
   .case-table-card{margin:0;padding:18px;overflow:hidden;}.case-tables{gap:10px;}.case-table div{grid-template-columns:22px 1fr 1fr;font-size:10px;}.case-growth{font-size:clamp(24px,7.5vw,34px);}
   /* финальный экран на телефоне */
   /* container-type:size схлопнул бы блок без заданной высоты */
