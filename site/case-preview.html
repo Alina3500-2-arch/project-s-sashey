@@ -1109,19 +1109,30 @@ h2.sec-title{
 .case-kicker{margin:0 0 clamp(18px,2.5vw,34px);color:var(--green);font-size:clamp(10px,.9vw,14px);font-weight:600;letter-spacing:.24em;text-transform:uppercase;}
 .case-slide h3{margin:0;font:400 clamp(30px,4.2vw,68px)/.98 var(--serif);letter-spacing:-.025em;}
 .case-slide p{margin:0;}
-.case-cover-copy{position:relative;z-index:2;width:48%;}.case-cover-copy h3{max-width:570px;}.case-cover-copy .case-line{height:1px;width:78%;margin:clamp(30px,6vw,84px) 0;background:linear-gradient(90deg,var(--green),transparent);}
-.case-cover-stat{position:absolute;right:5%;top:10%;z-index:5;text-align:right;}.case-cover-stat span{display:block;color:var(--green);font-size:clamp(26px,4cqw,64px);}.case-cover-stat b{display:block;font:400 clamp(54px,9cqw,145px)/.9 var(--serif);}
-.case-cover-stat small{font-size:clamp(12px,1.2cqw,18px);color:#d9d0c2;}
+.case-cover-copy{position:relative;z-index:3;width:56%;}
+.case-cover-copy h3{max-width:640px;font-size:clamp(24px,3.3vw,54px);line-height:1.14;letter-spacing:-.015em;}
+.case-cover-copy .case-line{display:none;}
+.case-cover-stat{position:absolute;right:5%;top:7%;z-index:5;text-align:right;}
+.case-cover-stat span{display:block;color:var(--green);font-size:clamp(22px,3.4cqw,54px);}
+.case-cover-stat b{display:block;font:400 clamp(50px,8.6cqw,140px)/.92 var(--serif);}
+.case-cover-stat small{display:block;max-width:9em;margin-left:auto;font-size:clamp(11px,1.15cqw,17px);line-height:1.3;color:#d9d0c2;}
 /* Стопка экранов на обложке: настоящий сайт спереди, остальные —
    плейсхолдеры до реальных скринов (Каталог/Bitrix/CRM). */
-.case-cover-stack{position:absolute;z-index:1;right:1%;bottom:-3%;width:68%;height:50%;}
-.case-cover-stack>*{position:absolute;border-radius:12px;box-shadow:0 18px 45px rgba(0,0,0,.5);overflow:hidden;}
-.case-cover-stack .case-cover-shot{display:block;object-fit:cover;}
-.case-cover-stack .case-cover-1{left:0;bottom:0;width:44%;height:56%;z-index:3;}
-.case-cover-stack .case-cover-2{left:29%;top:6%;width:48%;height:64%;z-index:2;}
-.case-cover-stack .case-cover-3{left:58%;top:16%;width:42%;height:50%;z-index:1;}
+/* Веер экранов: панели развёрнуты по оси Y (одинаковый угол — как ряд
+   стендов на макете), каждая проецируется своей perspective, поэтому
+   наклон параллельный. Скрины показываются целиком: width + height:auto,
+   без object-fit — ничего не режется. Низ уходит за край кадра. */
+.case-cover-stack{position:absolute;z-index:1;left:1%;right:0;bottom:0;height:62%;}
+.case-cover-stack .case-cover-shot{
+  position:absolute;display:block;height:auto;border-radius:14px;
+  box-shadow:0 26px 60px rgba(0,0,0,.62);
+  transform:perspective(1900px) rotateY(-26deg);
+}
+.case-cover-stack .case-cover-1{left:-1%;bottom:-13%;width:42%;z-index:3;}
+.case-cover-stack .case-cover-2{left:29%;bottom:-7%;width:40%;z-index:2;}
+.case-cover-stack .case-cover-3{left:59%;bottom:-2%;width:38%;z-index:1;}
 /* Декоративная линия роста между заголовком и цифрой оборота */
-.case-cover-graph{position:absolute;z-index:2;left:2%;top:52%;width:22%;height:20%;pointer-events:none;overflow:visible;}
+.case-cover-graph{position:absolute;z-index:2;left:5%;top:31%;width:46%;height:22%;pointer-events:none;overflow:visible;}
 .case-cover-graph .dot-start{fill:rgba(168,220,40,.6);}
 .case-cover-graph .dot-end{fill:var(--green);filter:drop-shadow(0 0 6px rgba(168,220,40,.9));}
 .case-analysis-grid,.case-traffic-grid{display:grid;grid-template-columns:48% 52%;height:100%;}.case-analysis-copy,.case-traffic-copy{padding-right:clamp(20px,3vw,48px);}.case-slide .case-sub{margin-top:clamp(18px,2.5vw,34px);font-size:clamp(15px,1.55vw,24px);line-height:1.35;color:#4b9b18;}.case-analysis-photo{width:100%;height:100%;object-fit:cover;border-radius:20px 0 0 20px;}
@@ -1511,7 +1522,16 @@ h2.sec-title{
   .case-cover-stat span{font-size:18px;}
   .case-cover-stat b{font-size:32px;line-height:1;}
   .case-cover-graph{display:none;}
-  .case-cover-stack{position:relative;right:auto;bottom:auto;width:100%;height:220px;margin:16px 0 0;}
+  .case-cover-stat small{max-width:none;margin-left:0;}
+  /* высота веера пропорциональна ширине кадра (cqw), иначе на планшетных
+     ширинах картинки перерастают фиксированную высоту и лезут на текст */
+  .case-cover-stack{position:relative;left:auto;right:auto;bottom:auto;width:100%;height:44cqw;margin:18px 0 0;}
+  /* стрелки уводим под кадр, чтобы не ложились на экраны веера */
+  .cb-arrow{top:auto;bottom:10px;translate:0 0;}
+  .case-cover-stack .case-cover-shot{transform:perspective(1100px) rotateY(-20deg);border-radius:9px;}
+  .case-cover-stack .case-cover-1{left:-2%;bottom:0;width:52%;}
+  .case-cover-stack .case-cover-2{left:33%;bottom:10%;width:50%;}
+  .case-cover-stack .case-cover-3{left:65%;bottom:20%;width:48%;}
   /* картинки не обрезаем — полностью, в своих природных пропорциях */
   .case-analysis-photo,.case-system-visual{width:100%;height:auto;object-fit:contain;border-radius:14px;}
   .case-site-stack{min-height:310px;}.case-site-old{top:0;}.case-site-new{top:8%;}
@@ -1593,12 +1613,12 @@ h2.sec-title{
     <div class="cb-shell">
     <div class="cb-frame cb-cover is-on" data-panel="0">
       <article class="case-slide case-cover">
-        <div class="case-cover-copy"><p class="case-kicker">Кейс · Eco-Store</p><h3>Из мелких заказов —<br />в коммерческую систему</h3><div class="case-line"></div><a class="case-next case-view-btn" href="#" data-goto="1">Смотреть кейс <span class="arr">→</span></a></div>
+        <div class="case-cover-copy"><p class="case-kicker">Кейс · Eco-Store</p><h3>Из мелких заказов —<br />в коммерческую систему</h3><div class="case-line"></div></div>
         <div class="case-cover-stat"><span>600 тыс. →</span><b>1,2 млн ₽</b><small>рабочий месячный оборот</small></div>
-        <svg class="case-cover-graph" viewBox="0 0 220 130" fill="none" aria-hidden="true">
-          <path d="M4 122 L70 122 L120 60 L200 14" stroke="var(--green)" stroke-width="1.4" opacity=".85" />
-          <circle class="dot-start" cx="4" cy="122" r="3.5" />
-          <circle class="dot-end" cx="200" cy="14" r="5" />
+        <svg class="case-cover-graph" viewBox="0 0 460 130" fill="none" aria-hidden="true" preserveAspectRatio="none">
+          <path d="M8 118 L150 118 L250 56 L440 12" stroke="var(--green)" stroke-width="2" vector-effect="non-scaling-stroke" opacity=".85" />
+          <circle class="dot-start" cx="8" cy="118" r="4" />
+          <circle class="dot-end" cx="440" cy="12" r="6" />
         </svg>
         <div class="case-cover-stack">
           <img class="case-cover-shot case-cover-1" src="assets/case-new-site.png" alt="Новый сайт Eco-Store с круглым панно и Линой" />
