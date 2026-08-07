@@ -1114,6 +1114,7 @@ h2.sec-title{
 .case-cover-stat small{font-size:clamp(12px,1.2cqw,18px);color:#d9d0c2;}.case-slide .case-cover-site{position:absolute;z-index:1;right:4%;bottom:-3%;width:40%;border-radius:16px 16px 0 0;box-shadow:0 18px 50px #000;}
 .case-analysis-grid,.case-traffic-grid{display:grid;grid-template-columns:48% 52%;height:100%;}.case-analysis-copy,.case-traffic-copy{padding-right:clamp(20px,3vw,48px);}.case-slide .case-sub{margin-top:clamp(18px,2.5vw,34px);font-size:clamp(15px,1.55vw,24px);line-height:1.35;color:#4b9b18;}.case-analysis-photo{width:100%;height:100%;object-fit:cover;border-radius:20px 0 0 20px;}
 .case-facts{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:clamp(28px,4vw,58px);background:rgba(21,21,15,.14);}.case-fact{padding:clamp(14px,1.6vw,25px);background:#f4f0e9;}.case-fact b{display:block;font:400 clamp(23px,2.4vw,38px)/1 var(--serif);}.case-fact span{font-size:clamp(11px,1vw,15px);}
+.case-analysis-copy .case-facts .case-fact:last-child{grid-column:1/-1;}
 .case-pack-grid{display:grid;grid-template-columns:37% 63%;height:100%;}.case-pack-copy{display:flex;flex-direction:column;justify-content:center;}.case-pack-copy .case-sub{color:#d9d0c2;}.case-metric{margin-top:clamp(32px,4vw,56px);font:400 clamp(38px,5.2vw,82px)/1 var(--serif);}.case-metric em{color:var(--green);font-style:normal;}.case-site-stack{position:relative;}.case-slide .case-site-old{position:absolute;width:43%;left:0;top:14%;border-radius:14px;opacity:.8;}.case-slide .case-site-new{position:absolute;width:70%;right:0;top:19%;border-radius:16px;box-shadow:0 18px 55px #000;}
 .case-traffic-copy .case-sub{color:#21231d;}.case-table-card{align-self:center;margin:auto 0;padding:clamp(20px,2.4vw,38px);border-radius:26px;background:#fff;box-shadow:0 16px 40px rgba(20,20,15,.1);}.case-table-head{display:grid;grid-template-columns:1fr 70px 34px 1fr;align-items:center;text-align:center;font-size:clamp(12px,1.3vw,20px);}.case-pill{padding:.35em .8em;border-radius:10px;background:#090a08;color:#fff;}.case-pill.green{background:#47aa16;}.case-arrow{font-size:clamp(28px,3vw,45px);color:#48a918;}.case-tables{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,2vw,28px);margin-top:clamp(20px,2.8vw,36px);}.case-table{border:1px solid #d8d8d5;}.case-table div{display:grid;grid-template-columns:44px 1fr 1fr;border-bottom:1px solid #d8d8d5;padding:.5em;font-size:clamp(10px,1vw,15px);}.case-table div:last-child{border:0;}.case-table .hit{outline:2px solid #43a914;outline-offset:-2px;}.case-growth{text-align:center;margin-top:clamp(22px,3vw,38px);font:400 clamp(30px,4.4vw,70px)/1 var(--serif);}.case-growth em{display:block;margin-top:.3em;color:#41a519;font-size:.72em;font-style:normal;}
 .case-system-grid{display:grid;grid-template-columns:37% 63%;height:100%;}.case-system-copy{display:flex;flex-direction:column;justify-content:center;}.case-system-copy h3{font-size:clamp(38px,5vw,80px);}.case-system-copy .case-sub{color:#e5dccf;}.case-system-list{margin:clamp(34px,4vw,58px) 0 0;padding:clamp(18px,2vw,28px) 0 0;list-style:none;border-top:1px solid rgba(241,233,220,.28);}.case-system-list li{margin:.55em 0;font-size:clamp(12px,1.1vw,17px);color:#cfc7bb;}.case-system-list b{display:inline-block;width:2.5em;color:var(--green);font-size:1.4em;}.case-system-visual{width:100%;height:100%;object-fit:cover;object-position:center;border-radius:20px;}
@@ -1125,11 +1126,14 @@ h2.sec-title{
    скрывается только этот служебный хвост. */
 .cb-frame.cb-pack{aspect-ratio:auto;overflow:visible;}
 
+.cb-shell{position:relative;}
+.cb-arrow{display:none;}
 .cb-tabs{
-  display:flex;
+  display:flex;align-items:stretch;
   background:#0B0B09;border-radius:0 0 var(--radius) var(--radius);
   overflow:hidden;
 }
+.cb-tablist{display:flex;flex:1;min-width:0;}
 .cb-tab{
   appearance:none;cursor:pointer;flex:1;
   display:flex;align-items:center;justify-content:center;gap:.6em;
@@ -1367,14 +1371,17 @@ h2.sec-title{
   /* Ширину и левый край не трогаем: они равны грани своей ступени.
      Шире — и текст заезжает на соседнюю ступень. */
   .stair-txt{top:var(--tm);width:var(--wm,var(--w));}
-  /* Раньше заголовок пытались увести в поле над пьедесталом через
-     --tno, но эта переменная нигде не задавалась: top:var(--tno) без
-     значения даёт auto, h3 получал гипотетическую flex-позицию по
-     центру блока — точно там же, где центрировался и .stair-txt p,
-     и они накладывались друг на друга. Оставляем заголовок в потоке,
-     над описанием, без абсолютного позиционирования. */
+  /* Заголовок стоит над пьедесталом, ближе к цифре — описание остаётся
+     внутри самого пьедестала. Раньше это задавалось через переменную
+     --tno, которая нигде не была определена (top:var(--tno) без
+     значения = auto), из-за чего заголовок съезжал в центр блока и
+     накладывался на описание. Отступ от верхней грани пьедестала до
+     заголовка не зависит от высоты конкретной ступени (там всегда
+     нужен один и тот же зазор), поэтому это константа в cqw, а не
+     переменная на каждую ступень. */
   .stair-txt h3{
-    margin:0 0 .35em;font-size:4.4cqw;line-height:1.05;
+    position:absolute;left:0;top:-6.7cqw;width:100%;
+    margin:0;font-size:4.4cqw;line-height:1.05;
   }
   /* на узкой колонке полный текст даёт семь строк — на телефоне
      показываем короткую формулировку */
@@ -1405,11 +1412,11 @@ h2.sec-title{
   .duo.run .duo-cta{translate:0;}
   /* большой кейс на телефоне: одна строка вкладок со свайпом —
      сетка в 2 колонки давала рябь в 2-3 неровные строки. */
-  .cb-tabs{
-    display:flex;overflow-x:auto;scrollbar-width:none;
+  .cb-tablist{
+    overflow-x:auto;scrollbar-width:none;
     -webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;
   }
-  .cb-tabs::-webkit-scrollbar{display:none;}
+  .cb-tablist::-webkit-scrollbar{display:none;}
   .cb-tab{
     flex:none;scroll-snap-align:start;white-space:nowrap;
     border-top:0;border-bottom:2px solid transparent;
@@ -1419,11 +1426,21 @@ h2.sec-title{
   .cb-tab.is-on{border-bottom-color:var(--green);}
   .cb-frame img{border-radius:var(--radius) var(--radius) 0 0;}
   .case-intro{padding:0 clamp(18px,5vw,32px);}
-  .case-slide{aspect-ratio:auto;min-height:560px;padding:clamp(24px,7vw,36px);}
+  /* слайд кейса помещается в один экран телефона: внутри — своя
+     прокрутка, если контент всё же не влезает, а не растягивание страницы */
+  .case-slide{aspect-ratio:auto;max-height:calc(100svh - 112px);overflow-y:auto;-webkit-overflow-scrolling:touch;padding:clamp(24px,7vw,36px);}
+  /* стрелки — в самой полоске вкладок, а не поверх слайда: полоска
+     короткая и не прокручивается, поэтому ничего не закрывают */
+  .cb-arrow{
+    display:flex;align-items:center;justify-content:center;flex:none;
+    width:38px;padding:0;cursor:pointer;border:0;
+    background:transparent;color:rgba(241,233,220,.6);
+  }
+  .cb-arrow:disabled{opacity:.25;pointer-events:none;}
   .case-slide h3{font-size:clamp(30px,9vw,48px);}
   .case-analysis-grid,.case-traffic-grid,.case-pack-grid,.case-system-grid{grid-template-columns:1fr;height:auto;gap:clamp(24px,7vw,38px);}
   .case-cover-copy{width:100%;}.case-cover-stat{position:static;margin-top:24px;text-align:left;}.case-slide .case-cover-site{position:static;display:block;width:100%;margin:26px 0 -24px;}
-  .case-analysis-photo,.case-system-visual{height:auto;border-radius:16px;}.case-site-stack{min-height:310px;}.case-site-old{top:0;}.case-site-new{top:8%;}
+  .case-analysis-photo,.case-system-visual{aspect-ratio:16/10;height:auto;object-fit:cover;border-radius:16px;}.case-site-stack{min-height:310px;}.case-site-old{top:0;}.case-site-new{top:8%;}
   .case-table-card{margin:0;padding:18px;overflow:hidden;}.case-tables{gap:10px;}.case-table div{grid-template-columns:22px 1fr 1fr;font-size:10px;}.case-growth{font-size:clamp(24px,7.5vw,34px);}
   /* финальный экран на телефоне */
   /* container-type:size схлопнул бы блок без заданной высоты */
@@ -1860,6 +1877,7 @@ h2.sec-title{
       <h2 class="sec-title"><span class="case-green">Операционное</span><br /><span class="case-minor">ведение бизнеса</span></h2>
       <p>Вместо тысяч кейсов с недоказанными результатами и вымышленными цифрами — один полноценный кейс. В нём мы берём на себя максимальную часть маркетинга и операционной системы, а собственнику остаётся качественно выполнять свои услуги.</p>
     </header>
+    <div class="cb-shell">
     <div class="cb-frame cb-cover is-on" data-panel="0">
       <article class="case-slide case-cover">
         <div class="case-cover-copy"><p class="case-kicker">Кейс · Eco-Store</p><h3>Из мелких заказов —<br />в коммерческую систему</h3><div class="case-line"></div></div>
@@ -1869,7 +1887,7 @@ h2.sec-title{
     </div>
     <div class="cb-frame" data-panel="1">
       <article class="case-slide case-slide--light case-analysis-grid">
-        <div class="case-analysis-copy"><p class="case-kicker">01 / Анализ</p><h3>Сначала — понять,<br />где бизнес теряет деньги</h3><p class="case-sub">Я вошла в продажи и разобрала<br />весь путь заказа изнутри</p><div class="case-facts"><div class="case-fact"><b>500 г / 1 000 ₽</b><span>фокус на мелких заказах</span></div><div class="case-fact"><b>300</b><span>объявлений на Авито</span></div><div class="case-fact"><b>ручной расчёт</b><span>каждый заказ — с нуля</span></div><div class="case-fact"><b>1 собственница</b><span>подключалась к каждой сделке</span></div></div></div>
+        <div class="case-analysis-copy"><p class="case-kicker">01 / Анализ</p><h3>Сначала — понять,<br />где бизнес теряет деньги</h3><p class="case-sub">Я вошла в продажи и разобрала<br />весь путь заказа изнутри</p><div class="case-facts"><div class="case-fact"><b>500 г / 1 000 ₽</b><span>фокус на мелких заказах</span></div><div class="case-fact"><b>300</b><span>объявлений на Авито</span></div><div class="case-fact"><b>ручной расчёт</b><span>каждый заказ — с нуля</span></div></div></div>
         <img class="case-analysis-photo" src="assets/case-analysis-desk.jpg" alt="Анализ заказов Eco-Store" />
       </article>
     </div>
@@ -1884,11 +1902,20 @@ h2.sec-title{
     </div>
 
     <div class="cb-tabs" aria-label="Слайды кейса Eco-Store">
-      <button class="cb-tab is-on" type="button" data-tab="0"><b>00</b>Кейс</button>
-      <button class="cb-tab" type="button" data-tab="1"><b>01</b>Анализ</button>
-      <button class="cb-tab" type="button" data-tab="2"><b>02</b>Упаковка</button>
-      <button class="cb-tab" type="button" data-tab="3"><b>03</b>Трафик</button>
-      <button class="cb-tab" type="button" data-tab="4"><b>04</b>Система</button>
+      <button class="cb-arrow cb-arrow-prev" type="button" aria-label="Предыдущий слайд кейса" disabled>
+        <svg width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M7.5 2.5L3 6l4.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="cb-tablist">
+        <button class="cb-tab is-on" type="button" data-tab="0"><b>00</b>Кейс</button>
+        <button class="cb-tab" type="button" data-tab="1"><b>01</b>Анализ</button>
+        <button class="cb-tab" type="button" data-tab="2"><b>02</b>Упаковка</button>
+        <button class="cb-tab" type="button" data-tab="3"><b>03</b>Трафик</button>
+        <button class="cb-tab" type="button" data-tab="4"><b>04</b>Система</button>
+      </div>
+      <button class="cb-arrow cb-arrow-next" type="button" aria-label="Следующий слайд кейса">
+        <svg width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M4.5 2.5L9 6l-4.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
     </div>
   </section>
 
@@ -2022,20 +2049,54 @@ h2.sec-title{
     io2.observe(el);
   });
 
-  // Кейс Eco-Store: переключение вкладок.
-  var cbTabs = document.querySelector('.cb-tabs');
-  if (cbTabs) {
-    cbTabs.addEventListener('click', function (e) {
+  // Кейс Eco-Store: переключение вкладок, стрелки, свайп.
+  var cbShell = document.querySelector('.cb-shell');
+  if (cbShell) {
+    var cbTabs = cbShell.querySelectorAll('.cb-tab');
+    var cbFrames = cbShell.querySelectorAll('.cb-frame');
+    var cbPrev = cbShell.querySelector('.cb-arrow-prev');
+    var cbNext = cbShell.querySelector('.cb-arrow-next');
+    var cbCount = cbTabs.length;
+    var cbCurrent = 0;
+
+    var goToTab = function (i) {
+      i = Math.max(0, Math.min(cbCount - 1, i));
+      cbCurrent = i;
+      [].forEach.call(cbTabs, function (b) { b.classList.toggle('is-on', +b.dataset.tab === i); });
+      [].forEach.call(cbFrames, function (f) { f.classList.toggle('is-on', +f.dataset.panel === i); });
+      if (cbPrev) cbPrev.disabled = i === 0;
+      if (cbNext) cbNext.disabled = i === cbCount - 1;
+      // новая вкладка всегда открывается с начала слайда, а не с той
+      // точки прокрутки, где остался предыдущий (более длинный) слайд
+      var activeSlide = cbShell.querySelector('.cb-frame.is-on .case-slide');
+      if (activeSlide) activeSlide.scrollTop = 0;
+      if (window.matchMedia('(max-width:900px)').matches) {
+        cbShell.scrollIntoView({ block: 'start', behavior: 'smooth' });
+      }
+    };
+
+    cbShell.querySelector('.cb-tabs').addEventListener('click', function (e) {
       var btn = e.target.closest('.cb-tab');
       if (!btn) return;
-      var i = btn.dataset.tab;
-      [].forEach.call(cbTabs.querySelectorAll('.cb-tab'), function (b) {
-        b.classList.toggle('is-on', b === btn);
-      });
-      [].forEach.call(document.querySelectorAll('.cb-frame'), function (f) {
-        f.classList.toggle('is-on', f.dataset.panel === i);
-      });
+      goToTab(+btn.dataset.tab);
     });
+    if (cbPrev) cbPrev.addEventListener('click', function () { goToTab(cbCurrent - 1); });
+    if (cbNext) cbNext.addEventListener('click', function () { goToTab(cbCurrent + 1); });
+
+    // свайп влево/вправо по кадру — вертикальный скролл страницы не трогаем
+    var touchX = 0, touchY = 0, touching = false;
+    cbShell.addEventListener('touchstart', function (e) {
+      touchX = e.touches[0].clientX; touchY = e.touches[0].clientY; touching = true;
+    }, { passive: true });
+    cbShell.addEventListener('touchend', function (e) {
+      if (!touching) return;
+      touching = false;
+      var dx = e.changedTouches[0].clientX - touchX;
+      var dy = e.changedTouches[0].clientY - touchY;
+      if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.4) {
+        goToTab(cbCurrent + (dx < 0 ? 1 : -1));
+      }
+    }, { passive: true });
   }
 
   // Лист приезжает целым и рвётся; при уходе с экрана собирается обратно,
