@@ -1118,6 +1118,36 @@ h2.sec-title{
 .case-pack-grid{display:grid;grid-template-columns:37% 63%;height:100%;}.case-pack-copy{display:flex;flex-direction:column;justify-content:center;}.case-pack-copy .case-sub{color:#d9d0c2;}.case-metric{margin-top:clamp(32px,4vw,56px);font:400 clamp(38px,5.2vw,82px)/1 var(--serif);}.case-metric em{color:var(--green);font-style:normal;}.case-site-stack{position:relative;}.case-slide .case-site-old{position:absolute;width:43%;left:0;top:14%;border-radius:14px;opacity:.8;}.case-slide .case-site-new{position:absolute;width:70%;right:0;top:19%;border-radius:16px;box-shadow:0 18px 55px #000;}
 .case-traffic-copy .case-sub{color:#21231d;}.case-table-card{align-self:center;margin:auto 0;padding:clamp(20px,2.4vw,38px);border-radius:26px;background:#fff;box-shadow:0 16px 40px rgba(20,20,15,.1);}.case-table-head{display:grid;grid-template-columns:1fr 70px 34px 1fr;align-items:center;text-align:center;font-size:clamp(12px,1.3vw,20px);}.case-pill{padding:.35em .8em;border-radius:10px;background:#090a08;color:#fff;}.case-pill.green{background:#47aa16;}.case-arrow{font-size:clamp(28px,3vw,45px);color:#48a918;}.case-tables{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,2vw,28px);margin-top:clamp(20px,2.8vw,36px);}.case-table{border:1px solid #d8d8d5;}.case-table div{display:grid;grid-template-columns:44px 1fr 1fr;border-bottom:1px solid #d8d8d5;padding:.5em;font-size:clamp(10px,1vw,15px);}.case-table div:last-child{border:0;}.case-table .hit{outline:2px solid #43a914;outline-offset:-2px;}.case-growth{text-align:center;margin-top:clamp(22px,3vw,38px);font:400 clamp(30px,4.4vw,70px)/1 var(--serif);}.case-growth em{display:block;margin-top:.3em;color:#41a519;font-size:.72em;font-style:normal;}
 .case-system-grid{display:grid;grid-template-columns:37% 63%;height:100%;}.case-system-copy{display:flex;flex-direction:column;justify-content:center;}.case-system-copy h3{font-size:clamp(38px,5vw,80px);}.case-system-copy .case-sub{color:#e5dccf;}.case-system-list{margin:clamp(34px,4vw,58px) 0 0;padding:clamp(18px,2vw,28px) 0 0;list-style:none;border-top:1px solid rgba(241,233,220,.28);}.case-system-list li{margin:.55em 0;font-size:clamp(12px,1.1vw,17px);color:#cfc7bb;}.case-system-list b{display:inline-block;width:2.5em;color:var(--green);font-size:1.4em;}.case-system-visual{width:100%;height:100%;object-fit:cover;object-position:center;border-radius:20px;}
+/* ── Второй кейс: Алмазное бурение. Фото слева, текст справа —
+   зеркально Eco-Store, поэтому отдельная сетка, но типографика и
+   зелёные акценты те же переменные. ── */
+.case2-grid{display:grid;grid-template-columns:44% 56%;height:100%;column-gap:clamp(24px,3vw,48px);}
+.case2-grid .case2-photo{width:100%;height:100%;object-fit:cover;border-radius:20px;}
+.case2-copy{display:flex;flex-direction:column;justify-content:center;}
+.case-cover-copy p.case-cover-desc{margin-top:clamp(14px,1.8vw,22px);max-width:520px;font-size:clamp(14px,1.1vw,17px);line-height:1.55;color:rgba(241,233,220,.72);}
+.case-cover .case-cover-photo{position:absolute;z-index:1;right:4%;bottom:-3%;width:38%;height:auto;aspect-ratio:4/3;border-radius:16px;box-shadow:0 18px 50px #000;object-fit:cover;}
+/* «Было / Цель» — две колонки с тонкими разделителями между пунктами */
+.case-cols{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,3vw,40px);margin-top:clamp(20px,2.5vw,32px);}
+.case-col-h{margin:0 0 clamp(12px,1.6vw,18px);font-size:clamp(11px,.9vw,13px);font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--green);}
+.case-col-item{padding:clamp(12px,1.5vw,18px) 0;border-top:1px solid rgba(241,233,220,.16);}
+.case-col-item b{display:block;font:400 clamp(16px,1.5vw,21px)/1.25 var(--serif);}
+.case-col-item span{display:block;margin-top:.3em;font-size:clamp(12px,.95vw,14px);color:rgba(241,233,220,.6);}
+/* Нумерованная сетка 2×2 — «Что сделали» / «Оптимизация и рост» */
+.case-num-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(22px,2.8vw,36px) clamp(20px,3vw,44px);margin-top:clamp(20px,2.5vw,32px);padding-top:clamp(16px,2vw,24px);border-top:1px solid rgba(241,233,220,.18);}
+.case-num-grid b{display:block;margin:0 0 .3em;font:400 clamp(20px,2vw,30px)/1 var(--serif);color:var(--green);}
+.case-num-grid span{font-size:clamp(12px,1vw,15px);line-height:1.4;color:rgba(241,233,220,.76);}
+/* Статистика на слайде «Результат» — крупнее, с чертой под числом */
+.case-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,1.7vw,22px) clamp(28px,3.6vw,54px);margin-top:clamp(12px,1.5vw,18px);}
+.case-stat b{display:block;padding-bottom:clamp(8px,.9vw,12px);border-bottom:1px solid rgba(241,233,220,.2);font:400 clamp(22px,2.1vw,32px)/1 var(--serif);color:var(--green);}
+.case-stat span{display:block;margin-top:clamp(6px,.8vw,10px);font-size:clamp(11px,.95vw,14px);color:rgba(241,233,220,.6);}
+.case-hire{margin-top:clamp(12px,1.5vw,18px);padding:clamp(10px,1.3vw,16px) clamp(14px,1.7vw,22px);border:1px solid rgba(168,220,40,.4);border-radius:12px;}
+.case-hire b{display:block;margin:0 0 .2em;font:400 clamp(15px,1.4vw,19px)/1.25 var(--serif);}
+.case-hire span{font-size:clamp(12px,.95vw,14px);color:rgba(241,233,220,.62);}
+/* Ссылка-переход к следующему слайду кейса (не якорь, а клик по вкладке) */
+.case-next{display:inline-flex;align-items:center;gap:10px;margin-top:clamp(12px,1.6vw,20px);font:400 clamp(19px,1.9vw,27px)/1 var(--serif);color:var(--cream);text-decoration:none;border-bottom:1px solid var(--green);padding-bottom:6px;cursor:pointer;width:max-content;}
+.case-next .arr{color:var(--green);display:inline-block;transition:transform .3s var(--ease);}
+.case-next:hover .arr{transform:translateX(4px);}
+
 /* Обложка и рабочие слайды имеют одну высоту: у обложки нижняя
    служебная полоса макета скрывается, как и у «Упаковки». */
 .cb-frame.cb-cover,
@@ -1935,6 +1965,120 @@ h2.sec-title{
     </div>
   </section>
 
+  <!-- 05b ─ Второй кейс: Алмазное бурение (обложка + 4 слайда) -->
+  <section class="reveal casebig" id="case2">
+    <header class="case-intro">
+      <p class="sec-eyebrow">Ещё один кейс</p>
+      <h2 class="sec-title"><span class="case-green">Управляемый</span><br /><span class="case-minor">трафик</span></h2>
+      <p>Не всегда нужен полный операционный цикл. Здесь мы взяли на себя только рекламу и трафик — и сделали стоимость обращения предсказуемой и управляемой.</p>
+    </header>
+    <div class="cb-shell">
+      <div class="cb-frame cb-cover is-on" data-panel="0">
+        <article class="case-slide case-cover">
+          <div class="case-cover-copy">
+            <p class="case-kicker">Кейс · Алмазное бурение</p>
+            <h3>Заявки стали дешевле —<br />в 2–4 раза</h3>
+            <p class="case-cover-desc">Пересобрали сайт, аналитику и рекламные кампании — и вывели компанию на максимальный объём трафика в сезон.</p>
+            <div class="case-line"></div>
+          </div>
+          <div class="case-cover-stat"><span>4 000 ₽ →</span><b>1 000–2 000 ₽</b><small>стоимость обращения: было → стало</small></div>
+          <img class="case-cover-photo" src="assets/case-drilling.jpg" alt="Алмазная коронка на буровом станке" />
+        </article>
+      </div>
+      <div class="cb-frame" data-panel="1">
+        <article class="case-slide case2-grid">
+          <img class="case2-photo" src="assets/case-drilling.jpg" alt="Буровой станок с алмазной коронкой" />
+          <div class="case2-copy">
+            <h3>Точка А и задача</h3>
+            <div class="case-cols">
+              <div class="case-col">
+                <p class="case-col-h">Было</p>
+                <div class="case-col-item"><b>Архаичный сайт</b><span>без аналитики</span></div>
+                <div class="case-col-item"><b>60–70 тыс. ₽</b><span>рекламного бюджета</span></div>
+                <div class="case-col-item"><b>4 000 ₽</b><span>за одно обращение</span></div>
+              </div>
+              <div class="case-col">
+                <p class="case-col-h">Цель</p>
+                <div class="case-col-item"><b>Максимум заявок</b><span>в сезон</span></div>
+                <div class="case-col-item"><b>до 2 000 ₽</b><span>удержать стоимость обращения</span></div>
+                <div class="case-col-item"><b>Растить бюджет</b><span>после достижения цели</span></div>
+              </div>
+            </div>
+            <a class="case-next" href="#" data-goto="2">Что сделали <span class="arr">→</span></a>
+          </div>
+        </article>
+      </div>
+      <div class="cb-frame" data-panel="2">
+        <article class="case-slide case2-grid">
+          <img class="case2-photo" src="assets/case-drilling.jpg" alt="Буровой станок с алмазной коронкой" />
+          <div class="case2-copy">
+            <p class="case-kicker">Пересобрали основу</p>
+            <h3>Что сделали</h3>
+            <p class="case-sub">Реклама начала работать не сама по себе, а как часть понятной системы привлечения.</p>
+            <div class="case-num-grid">
+              <div><b>01</b><span>Проанализировали конкурентов, продукт и целевую аудиторию</span></div>
+              <div><b>02</b><span>Изучили путь клиента до обращения</span></div>
+              <div><b>03</b><span>Создали новый сайт и настроили полноценную аналитику</span></div>
+              <div><b>04</b><span>Запустили Яндекс Директ с акцентом на поисковый спрос</span></div>
+            </div>
+            <a class="case-next" href="#" data-goto="3">Как масштабировали <span class="arr">→</span></a>
+          </div>
+        </article>
+      </div>
+      <div class="cb-frame" data-panel="3">
+        <article class="case-slide case2-grid">
+          <img class="case2-photo" src="assets/case-drilling.jpg" alt="Буровой станок с алмазной коронкой" />
+          <div class="case2-copy">
+            <p class="case-kicker">Закрепили экономику</p>
+            <h3>Оптимизация и рост</h3>
+            <p class="case-sub">Сначала добились нужной стоимости обращения — и только после этого начали увеличивать объём.</p>
+            <div class="case-num-grid">
+              <div><b>01</b><span>Отсекли слабые запросы и оставили трафик с коммерческим намерением</span></div>
+              <div><b>02</b><span>Перераспределяли бюджет в пользу кампаний с реальными обращениями</span></div>
+              <div><b>03</b><span>Удерживали стоимость обращения в пределах 1 000–2 000 ₽</span></div>
+              <div><b>04</b><span>Увеличили рекламный бюджет с 60–70 до 200 тыс. ₽</span></div>
+            </div>
+            <a class="case-next" href="#" data-goto="4">Смотреть результат <span class="arr">→</span></a>
+          </div>
+        </article>
+      </div>
+      <div class="cb-frame" data-panel="4">
+        <article class="case-slide case2-grid">
+          <img class="case2-photo" src="assets/case-drilling.jpg" alt="Буровой станок с алмазной коронкой" />
+          <div class="case2-copy">
+            <p class="case-kicker">Точка Б</p>
+            <h3>Результат</h3>
+            <p class="case-sub">Реклама перестала быть экспериментом и стала управляемым источником заказов.</p>
+            <div class="case-stat-grid">
+              <div class="case-stat"><b>1 000–1 500 ₽</b><span>обращение в высокий сезон</span></div>
+              <div class="case-stat"><b>1 500–2 000 ₽</b><span>обращение в остальное время</span></div>
+              <div class="case-stat"><b>до 200 000 ₽</b><span>рекламный бюджет в месяц</span></div>
+              <div class="case-stat"><b>максимум трафика</b><span>в сезон; рекламу останавливали из-за перелидоза</span></div>
+            </div>
+            <div class="case-hire"><b>Наняли новых сотрудников</b><span>Чтобы справляться с выросшим объёмом заказов.</span></div>
+            <a class="case-next" href="#audit">Разобрать мой проект <span class="arr">→</span></a>
+          </div>
+        </article>
+      </div>
+
+      <div class="cb-tabs" aria-label="Слайды кейса «Алмазное бурение»">
+        <button class="cb-arrow cb-arrow-prev" type="button" aria-label="Предыдущий слайд кейса" disabled>
+          <svg width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M7.5 2.5L3 6l4.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="cb-tablist">
+          <button class="cb-tab is-on" type="button" data-tab="0"><b>00</b>Кейс</button>
+          <button class="cb-tab" type="button" data-tab="1"><b>01</b>Точка А</button>
+          <button class="cb-tab" type="button" data-tab="2"><b>02</b>Что сделали</button>
+          <button class="cb-tab" type="button" data-tab="3"><b>03</b>Оптимизация</button>
+          <button class="cb-tab" type="button" data-tab="4"><b>04</b>Результат</button>
+        </div>
+        <button class="cb-arrow cb-arrow-next" type="button" aria-label="Следующий слайд кейса">
+          <svg width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M4.5 2.5L9 6l-4.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
   <!-- 06 ─ С чего начать -->
   <section class="sec reveal" id="audit">
     <span class="sec-eyebrow">С чего начать</span>
@@ -2065,9 +2209,9 @@ h2.sec-title{
     io2.observe(el);
   });
 
-  // Кейс Eco-Store: переключение вкладок, стрелки, свайп.
-  var cbShell = document.querySelector('.cb-shell');
-  if (cbShell) {
+  // Кейсы (Eco-Store, Алмазное бурение, ...): переключение вкладок,
+  // стрелки, свайп — одна и та же логика на каждый .cb-shell на странице.
+  [].forEach.call(document.querySelectorAll('.cb-shell'), function (cbShell) {
     var cbTabs = cbShell.querySelectorAll('.cb-tab');
     var cbFrames = cbShell.querySelectorAll('.cb-frame');
     var cbPrev = cbShell.querySelector('.cb-arrow-prev');
@@ -2099,6 +2243,15 @@ h2.sec-title{
     if (cbPrev) cbPrev.addEventListener('click', function () { goToTab(cbCurrent - 1); });
     if (cbNext) cbNext.addEventListener('click', function () { goToTab(cbCurrent + 1); });
 
+    // Ссылки внутри слайда вида «Что сделали →» переключают вкладку;
+    // ссылка последнего слайда на #audit — обычный якорь, не трогаем.
+    [].forEach.call(cbShell.querySelectorAll('.case-next[data-goto]'), function (a) {
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        goToTab(+a.dataset.goto);
+      });
+    });
+
     // свайп влево/вправо по кадру — вертикальный скролл страницы не трогаем
     var touchX = 0, touchY = 0, touching = false;
     cbShell.addEventListener('touchstart', function (e) {
@@ -2113,7 +2266,7 @@ h2.sec-title{
         goToTab(cbCurrent + (dx < 0 ? 1 : -1));
       }
     }, { passive: true });
-  }
+  });
 
   // Лист приезжает целым и рвётся; при уходе с экрана собирается обратно,
   // поэтому разрыв показывается заново на каждой прокрутке.
