@@ -1115,11 +1115,11 @@ h2.sec-title{
 /* Стопка экранов на обложке: настоящий сайт спереди, остальные —
    плейсхолдеры до реальных скринов (Каталог/Bitrix/CRM). */
 .case-cover-stack{position:absolute;z-index:1;right:1%;bottom:-3%;width:62%;height:56%;}
-.case-cover-stack>*{position:absolute;border-radius:10px;box-shadow:0 18px 45px rgba(0,0,0,.5);overflow:hidden;}
+.case-cover-stack>*{position:absolute;border-radius:12px;box-shadow:0 18px 45px rgba(0,0,0,.5);overflow:hidden;}
 .case-cover-stack .case-cover-shot{display:block;object-fit:cover;}
-.case-cover-stack .case-cover-1{left:0;bottom:0;width:46%;height:72%;z-index:3;border-radius:14px 14px 0 0;}
-.case-cover-stack .case-cover-2{left:32%;top:4%;width:38%;height:88%;z-index:2;}
-.case-cover-stack .case-cover-3{left:62%;top:16%;width:34%;height:62%;z-index:1;}
+.case-cover-stack .case-cover-1{left:0;bottom:0;width:46%;height:64%;z-index:3;}
+.case-cover-stack .case-cover-2{left:32%;top:10%;width:38%;height:70%;z-index:2;}
+.case-cover-stack .case-cover-3{left:62%;top:20%;width:34%;height:56%;z-index:1;}
 /* Декоративная линия роста между заголовком и цифрой оборота */
 .case-cover-graph{position:absolute;z-index:2;left:2%;top:52%;width:22%;height:20%;pointer-events:none;overflow:visible;}
 .case-cover-graph .dot-start{fill:rgba(168,220,40,.6);}
@@ -1507,7 +1507,9 @@ h2.sec-title{
   .case-analysis-grid,.case-traffic-grid,.case-pack-grid,.case-system-grid,.case2-grid{grid-template-columns:1fr;height:auto;gap:clamp(14px,4vw,22px);}
   .case2-grid .case2-photo{aspect-ratio:16/10;height:auto;object-fit:cover;}
   .case-cols{grid-template-columns:1fr 1fr;gap:clamp(14px,4vw,22px);}
-  .case-cover-copy{width:100%;}.case-cover-stat{position:static;margin-top:16px;text-align:left;}
+  .case-cover-copy{width:100%;}.case-cover-stat{position:static;margin-top:8px;text-align:left;}
+  .case-cover-stat span{font-size:18px;}
+  .case-cover-stat b{font-size:32px;line-height:1;}
   .case-cover-graph{display:none;}
   .case-cover-stack{position:relative;right:auto;bottom:auto;width:100%;height:220px;margin:16px 0 0;}
   /* картинки не обрезаем — полностью, в своих природных пропорциях */
