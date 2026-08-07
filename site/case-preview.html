@@ -1520,21 +1520,21 @@ h2.sec-title{
   .case-cols{grid-template-columns:1fr 1fr;gap:clamp(14px,4vw,22px);}
   .case-cover-copy{width:100%;}
   .case-cover-copy h3{font-size:clamp(30px,8.6vw,48px);line-height:1.08;}
-  .case-cover-stat{position:static;margin-top:16px;text-align:left;}
+  .case-cover-stat{position:static;margin-top:10px;text-align:left;}
   .case-cover-stat span{font-size:clamp(19px,5.4vw,28px);}
   .case-cover-stat b{font-size:clamp(40px,11.5vw,64px);line-height:1;}
   .case-cover-stat small{max-width:none;margin-left:0;font-size:clamp(12px,3.4vw,15px);}
   .case-cover-graph{display:none;}
-  /* На телефоне веер разворачивается сверху вниз: экраны крупные, каскадом
-     с перекрытием. Горизонтальный ряд тут мельчит и оставляет пустой низ.
+  /* На телефоне веер разворачивается сверху вниз, каскадом с бОльшим
+     нахлёстом — чтобы весь слайд помещался в экран без прокрутки.
      Размеры в cqw — тянутся за ширину кадра, без фиксированных высот. */
-  .case-cover-stack{position:relative;left:auto;right:auto;bottom:auto;width:100%;height:150cqw;margin:26px 0 0;}
+  .case-cover-stack{position:relative;left:auto;right:auto;bottom:auto;width:100%;height:112cqw;margin:14px 0 0;}
   /* стрелки уводим под кадр, чтобы не ложились на экраны веера */
   .cb-arrow{top:auto;bottom:10px;translate:0 0;}
   .case-cover-stack .case-cover-shot{bottom:auto;width:86%;border-radius:10px;box-shadow:0 18px 42px rgba(0,0,0,.62);transform:perspective(1500px) rotateY(-14deg);}
   .case-cover-stack .case-cover-1{left:0;top:0;}
-  .case-cover-stack .case-cover-2{left:14%;top:49cqw;}
-  .case-cover-stack .case-cover-3{left:7%;top:98cqw;}
+  .case-cover-stack .case-cover-2{left:14%;top:34cqw;}
+  .case-cover-stack .case-cover-3{left:7%;top:66cqw;}
   /* картинки не обрезаем — полностью, в своих природных пропорциях */
   .case-analysis-photo,.case-system-visual{width:100%;height:auto;object-fit:contain;border-radius:14px;}
   .case-site-stack{min-height:310px;}.case-site-old{top:0;}.case-site-new{top:8%;}
