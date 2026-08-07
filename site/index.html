@@ -1114,14 +1114,12 @@ h2.sec-title{
 .case-cover-stat small{font-size:clamp(12px,1.2cqw,18px);color:#d9d0c2;}
 /* Стопка экранов на обложке: настоящий сайт спереди, остальные —
    плейсхолдеры до реальных скринов (Каталог/Bitrix/CRM). */
-.case-cover-stack{position:absolute;z-index:1;right:1%;bottom:-3%;width:58%;height:56%;}
+.case-cover-stack{position:absolute;z-index:1;right:1%;bottom:-3%;width:62%;height:56%;}
 .case-cover-stack>*{position:absolute;border-radius:10px;box-shadow:0 18px 45px rgba(0,0,0,.5);overflow:hidden;}
 .case-cover-stack .case-cover-shot{display:block;object-fit:cover;}
-.case-cover-ph{display:flex;align-items:center;justify-content:center;background:#eae6db;color:#8b8676;font-size:clamp(10px,.85vw,12.5px);font-weight:600;letter-spacing:.08em;text-transform:uppercase;text-align:center;padding:10px;}
-.case-cover-stack .case-cover-1{left:0;bottom:0;width:44%;height:70%;z-index:4;border-radius:14px 14px 0 0;}
-.case-cover-stack .case-cover-2{left:30%;top:6%;width:34%;height:84%;z-index:3;}
-.case-cover-stack .case-cover-3{left:54%;top:18%;width:24%;height:56%;z-index:2;}
-.case-cover-stack .case-cover-4{left:68%;top:0;width:32%;height:76%;z-index:1;}
+.case-cover-stack .case-cover-1{left:0;bottom:0;width:46%;height:72%;z-index:3;border-radius:14px 14px 0 0;}
+.case-cover-stack .case-cover-2{left:32%;top:4%;width:38%;height:88%;z-index:2;}
+.case-cover-stack .case-cover-3{left:62%;top:16%;width:34%;height:62%;z-index:1;}
 /* Декоративная линия роста между заголовком и цифрой оборота */
 .case-cover-graph{position:absolute;z-index:2;left:2%;top:52%;width:22%;height:20%;pointer-events:none;overflow:visible;}
 .case-cover-graph .dot-start{fill:rgba(168,220,40,.6);}
@@ -1184,9 +1182,12 @@ h2.sec-title{
 }
 .cb-arrow:not(:disabled):hover{border-color:var(--green);color:var(--green);}
 .cb-arrow:disabled{opacity:.28;pointer-events:none;}
+/* Стрелки плавают поверх кадра по бокам (крупные, легко попасть пальцем),
+   а не мелкие в строке вкладок — на любой ширине, не только на ПК. */
+.cb-arrow{position:absolute;top:44%;translate:0 -50%;z-index:6;}
+.cb-arrow-prev{left:8px;}
+.cb-arrow-next{right:8px;}
 @media (min-width:901px){
-  /* стрелки плавают по бокам кадра, как в макете, а не в строке вкладок */
-  .cb-arrow{position:absolute;top:44%;translate:0 -50%;z-index:6;}
   .cb-arrow-prev{left:-22px;}
   .cb-arrow-next{right:-22px;}
 }
@@ -1501,13 +1502,6 @@ h2.sec-title{
   .cb-frame{display:block;grid-area:1/1;visibility:hidden;pointer-events:none;}
   .cb-frame.is-on{visibility:visible;pointer-events:auto;}
   .case-slide{aspect-ratio:auto;height:100%;padding:clamp(20px,6vw,30px);}
-  /* стрелки — в самой полоске вкладок, а не поверх слайда */
-  .cb-arrow{
-    display:flex;align-items:center;justify-content:center;flex:none;
-    width:38px;padding:0;cursor:pointer;border:0;
-    background:transparent;color:rgba(241,233,220,.6);
-  }
-  .cb-arrow:disabled{opacity:.25;pointer-events:none;}
   .case-slide h3{font-size:clamp(24px,7.5vw,36px);}
   .case-slide .case-sub{margin-top:10px;font-size:14px;line-height:1.4;}
   .case-analysis-grid,.case-traffic-grid,.case-pack-grid,.case-system-grid,.case2-grid{grid-template-columns:1fr;height:auto;gap:clamp(14px,4vw,22px);}
@@ -1971,9 +1965,8 @@ h2.sec-title{
         </svg>
         <div class="case-cover-stack">
           <img class="case-cover-shot case-cover-1" src="assets/case-new-site.png" alt="Новый сайт Eco-Store с круглым панно и Линой" />
-          <div class="case-cover-ph case-cover-2">Каталог<br />(скрин ожидается)</div>
-          <div class="case-cover-ph case-cover-3">Bitrix24<br />(скрин ожидается)</div>
-          <div class="case-cover-ph case-cover-4">CRM<br />(скрин ожидается)</div>
+          <img class="case-cover-shot case-cover-2" src="assets/case-eco-catalog.jpg" alt="Каталог Eco-Store" />
+          <img class="case-cover-shot case-cover-3" src="assets/case-eco-bitrix.jpg" alt="Аналитика Bitrix24 Eco-Store" />
         </div>
       </article>
     </div>
@@ -2299,23 +2292,45 @@ h2.sec-title{
       });
     });
 
-    // Свайп/протяжка влево-вправо по кадру — и пальцем, и мышью
-    // (Pointer Events покрывают оба случая одним кодом). Вертикальный
-    // скролл страницы не трогаем — решает порог: по горизонтали
-    // сдвиг должен быть заметно больше, чем по вертикали.
+    // Протяжка мышью на ПК — Pointer Events, только для мыши.
     var dragX = 0, dragY = 0, dragging = false;
     cbShell.addEventListener('pointerdown', function (e) {
-      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      if (e.pointerType !== 'mouse') return;
       dragX = e.clientX; dragY = e.clientY; dragging = true;
     }, { passive: true });
     cbShell.addEventListener('pointerup', function (e) {
-      if (!dragging) return;
+      if (e.pointerType !== 'mouse' || !dragging) return;
       dragging = false;
       var dx = e.clientX - dragX;
       var dy = e.clientY - dragY;
       if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.4) {
         goToTab(cbCurrent + (dx < 0 ? 1 : -1));
       }
+    }, { passive: true });
+
+    // Свайп пальцем — отдельные touch-обработчики, не Pointer Events:
+    // на iOS горизонтальный жест внутри страницы, которая сама скроллится
+    // вертикально, браузер может забрать себе и прислать touchcancel вместо
+    // touchend — pointerup в этом случае просто не срабатывает. Здесь сами
+    // решаем по первому заметному сдвигу, что это горизонтальный жест, и
+    // явно отменяем нативную прокрутку (preventDefault), чтобы жест
+    // долистал до конца.
+    var touchX = 0, touchY = 0, touchAxis = null;
+    cbShell.addEventListener('touchstart', function (e) {
+      touchX = e.touches[0].clientX; touchY = e.touches[0].clientY; touchAxis = null;
+    }, { passive: true });
+    cbShell.addEventListener('touchmove', function (e) {
+      var dx = e.touches[0].clientX - touchX;
+      var dy = e.touches[0].clientY - touchY;
+      if (touchAxis === null && (Math.abs(dx) > 10 || Math.abs(dy) > 10)) {
+        touchAxis = Math.abs(dx) > Math.abs(dy) * 1.2 ? 'x' : 'y';
+      }
+      if (touchAxis === 'x') e.preventDefault();
+    }, { passive: false });
+    cbShell.addEventListener('touchend', function (e) {
+      if (touchAxis !== 'x') return;
+      var dx = e.changedTouches[0].clientX - touchX;
+      if (Math.abs(dx) > 48) goToTab(cbCurrent + (dx < 0 ? 1 : -1));
     }, { passive: true });
   });
 
