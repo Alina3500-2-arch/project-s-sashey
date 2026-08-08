@@ -1522,7 +1522,7 @@ h2.sec-title{
   .cb-shell{display:grid;}
   .cb-frame{display:block;grid-area:1/1;visibility:hidden;pointer-events:none;}
   .cb-frame.is-on{visibility:visible;pointer-events:auto;}
-  .case-slide{aspect-ratio:auto;height:100%;padding:clamp(20px,6vw,30px);}
+  .case-slide{aspect-ratio:auto;height:100%;padding:clamp(20px,6vw,30px);border-radius:var(--radius);}
   .case-slide h3{font-size:clamp(24px,7.5vw,36px);}
   .case-slide .case-sub{margin-top:10px;font-size:14px;line-height:1.4;}
   .case-analysis-grid,.case-traffic-grid,.case-pack-grid,.case-system-grid,.case2-grid{grid-template-columns:1fr;height:auto;gap:clamp(14px,4vw,22px);}
@@ -1553,24 +1553,28 @@ h2.sec-title{
      целиком, а превращаем его в прозрачный оверлей по центру кадра. */
   .cb-tablist{display:none;}
   .cb-tabs{position:absolute;inset:0;z-index:6;background:none;border-radius:0;align-items:flex-end;justify-content:space-between;padding:0 10px 16px;pointer-events:none;}
-  /* стрелки — крупные, без подложки, по центру слайда */
-  .cb-arrow{pointer-events:auto;width:56px;height:56px;}
+  /* .cb-arrow сам position:absolute с top:44% (см. базовое правило) —
+     flex родителя на него не действует, поэтому позицию переопределяем
+     явно: у нижнего края карточки, а не по центру поверх текста */
+  .cb-arrow{pointer-events:auto;position:absolute;top:auto;bottom:16px;left:auto;right:auto;translate:0;width:56px;height:56px;}
+  .cb-arrow-prev{left:10px;}
+  .cb-arrow-next{right:10px;}
   .cb-arrow svg{width:34px;height:34px;}
   .case-cover-stack .case-cover-shot{bottom:auto;width:78%;border-radius:9px;box-shadow:0 14px 34px rgba(0,0,0,.6);transform:perspective(1500px) rotateY(-14deg);}
   .case-cover-stack .case-cover-1{left:0;top:0;}
   .case-cover-stack .case-cover-2{left:16%;top:23cqw;}
   .case-cover-stack .case-cover-3{left:9%;top:46cqw;}
   /* картинки не обрезаем — полностью, в своих природных пропорциях */
-  .case-analysis-photo{width:100%;height:auto;object-fit:contain;border-radius:14px;}
+  .case-analysis-photo{width:100%;aspect-ratio:4/3;height:auto;object-fit:cover;object-position:center;border-radius:14px;}
   /* коллаж инструментов — портретный кроп без обрезки текста, но по
      высоте не резиновый: иначе тянет весь слайд, обрезаем снизу */
-  .case-system-visual{width:100%;aspect-ratio:4/3;height:auto;object-fit:cover;object-position:top;border-radius:14px;}
+  .case-system-visual{width:100%;aspect-ratio:2/1;height:auto;object-fit:cover;object-position:top;border-radius:14px;}
   /* До/После на "Упаковке": на телефоне — крупно, друг под другом,
      во всю ширину, с подписью, а не крошечный коллаж внахлёст */
   .case-site-stack{display:flex;flex-direction:column;gap:16px;min-height:0;}
   .case-site-block{display:flex;flex-direction:column;gap:8px;}
   .case-site-block .case-pill{display:inline-block;width:max-content;font-size:12px;}
-  .case-slide .case-site-old,.case-slide .case-site-new{position:static;width:100%;top:auto;left:auto;right:auto;opacity:1;box-shadow:0 14px 34px rgba(0,0,0,.4);aspect-ratio:16/9;object-fit:cover;object-position:top;}
+  .case-slide .case-site-old,.case-slide .case-site-new{position:static;width:100%;top:auto;left:auto;right:auto;opacity:1;box-shadow:0 14px 34px rgba(0,0,0,.4);aspect-ratio:5/2;object-fit:cover;object-position:top;}
   .case-facts{margin-top:8px;}
   .case-fact{padding:8px 10px;}
   .case-fact b{font-size:17px;line-height:1.15;}
