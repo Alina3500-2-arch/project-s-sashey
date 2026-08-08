@@ -10,7 +10,7 @@
 Деплой — `.github/workflows/pages.yml`, публикует папку `site/` как корень.
 
 Превью-инструмент для проверки ПК-версии с телефона:
-`https://alina3500-2-arch.github.io/project-s-sashey/site/pc.html`
+`https://alina3500-2-arch.github.io/project-s-sashey/pc.html`
 
 ## Кто где правил
 
