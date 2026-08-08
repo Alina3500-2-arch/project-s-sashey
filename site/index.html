@@ -1135,16 +1135,29 @@ h2.sec-title{
 .case-cover-graph{position:absolute;z-index:2;left:5%;top:31%;width:46%;height:22%;pointer-events:none;overflow:visible;}
 .case-cover-graph .dot-start{fill:rgba(168,220,40,.6);}
 .case-cover-graph .dot-end{fill:var(--green);filter:drop-shadow(0 0 6px rgba(168,220,40,.9));}
-.case-analysis-grid,.case-traffic-grid{display:grid;grid-template-columns:48% 52%;height:100%;}.case-analysis-copy,.case-traffic-copy{padding-right:clamp(20px,3vw,48px);}.case-slide .case-sub{margin-top:clamp(18px,2.5vw,34px);font-size:clamp(15px,1.55vw,24px);line-height:1.35;color:#4b9b18;}.case-analysis-photo{width:100%;height:100%;object-fit:cover;border-radius:20px 0 0 20px;}
-.case-facts{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:clamp(28px,4vw,58px);background:rgba(21,21,15,.14);}.case-fact{padding:clamp(14px,1.6vw,25px);background:#f4f0e9;}.case-fact b{display:block;font:400 clamp(23px,2.4vw,38px)/1 var(--serif);}.case-fact span{font-size:clamp(11px,1vw,15px);}
+.case-analysis-grid,.case-traffic-grid{display:grid;grid-template-columns:48% 52%;height:100%;}.case-analysis-copy,.case-traffic-copy{padding-right:clamp(20px,3vw,48px);}.case-slide .case-sub{margin-top:clamp(14px,1.8vw,26px);font-size:clamp(15px,1.55vw,24px);line-height:1.35;color:#4b9b18;}.case-analysis-photo{width:100%;height:100%;object-fit:cover;border-radius:20px 0 0 20px;}
+/* Заголовки этих двух слайдов длиннее, чем в остальном дизайне — при
+   базовом клампе до 68px разъезжались в 4 строки и вылезали за рамку
+   слайда (overflow:hidden молча резал текст снизу). Уже, чтобы влезало. */
+.case-analysis-copy h3,.case-traffic-copy h3{font-size:clamp(26px,3.1vw,44px);}
+.case-facts{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:clamp(16px,2vw,28px);background:rgba(21,21,15,.14);}.case-fact{padding:clamp(10px,1.1vw,18px);background:#f4f0e9;}.case-fact b{display:block;font:400 clamp(19px,2vw,29px)/1.05 var(--serif);}.case-fact span{font-size:clamp(11px,1vw,15px);}
 .case-analysis-copy .case-facts .case-fact:last-child{grid-column:1/-1;}
-.case-pack-grid{display:grid;grid-template-columns:37% 63%;height:100%;}.case-pack-copy{display:flex;flex-direction:column;justify-content:center;}.case-pack-copy .case-sub{color:#d9d0c2;}.case-metric{margin-top:clamp(24px,3vw,40px);font:400 clamp(28px,3.6vw,56px)/1 var(--serif);}.case-metric em{color:var(--green);font-style:normal;}.case-metric-label{margin-top:6px;font-size:clamp(12px,1vw,15px);letter-spacing:.06em;text-transform:uppercase;color:#a99f8f;}.case-site-stack{position:relative;}.case-slide .case-site-old{position:absolute;width:43%;left:0;top:14%;border-radius:14px;opacity:.8;}.case-slide .case-site-new{position:absolute;width:70%;right:0;top:19%;border-radius:16px;box-shadow:0 18px 55px #000;}
+.case-pack-grid{display:grid;grid-template-columns:37% 63%;height:100%;}.case-pack-copy{display:flex;flex-direction:column;justify-content:center;}.case-pack-copy .case-sub{color:#d9d0c2;}.case-metric{margin-top:clamp(24px,3vw,40px);font:400 clamp(28px,3.6vw,56px)/1 var(--serif);}.case-metric em{color:var(--green);font-style:normal;}.case-metric-label{margin-top:6px;font-size:clamp(12px,1vw,15px);letter-spacing:.06em;text-transform:uppercase;color:#a99f8f;}.case-site-stack{position:relative;}.case-slide .case-site-old{position:absolute;width:43%;left:0;top:14%;border-radius:14px;opacity:.8;aspect-ratio:296/392;object-fit:cover;}
+/* "После" теперь ссылается на длинный мобильный скриншот (для телефона,
+   где он не обрезается по бокам) — на десктопе без aspect-ratio+cover он
+   тянулся на всю природную высоту (тысячи px) и вылезал далеко за рамку
+   слайда, невидимо из-за overflow:hidden. */
+.case-slide .case-site-new{position:absolute;width:70%;right:0;top:19%;border-radius:16px;box-shadow:0 18px 55px #000;aspect-ratio:3/2;object-fit:cover;object-position:top;}
 /* На десктопе коллаж внахлёст без подписей (как было) — подписи До/После
    только на телефоне, где картинки идут крупно и друг под другом */
 .case-site-block{display:contents;}
 .case-site-block .case-pill{display:none;}
+/* стрелка между До/После нужна только в мобильной раскладке (там она
+   в ряду flex); на десктопе для неё нет стилей вообще — без display:none
+   она всплывает обычным текстом в начале потока, поверх коллажа */
+.case-site-arrow{display:none;}
 .case-traffic-copy .case-sub{color:#21231d;}.case-table-card{align-self:center;margin:auto 0;padding:clamp(20px,2.4vw,38px);border-radius:26px;background:#fff;box-shadow:0 16px 40px rgba(20,20,15,.1);}.case-table-head{display:grid;grid-template-columns:1fr 70px 34px 1fr;align-items:center;text-align:center;font-size:clamp(12px,1.3vw,20px);}.case-pill{padding:.35em .8em;border-radius:10px;background:#090a08;color:#fff;}.case-pill.green{background:#47aa16;}.case-arrow{font-size:clamp(28px,3vw,45px);color:#48a918;}.case-tables{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,2vw,28px);margin-top:clamp(20px,2.8vw,36px);}.case-table{border:1px solid #d8d8d5;}.case-table div{display:grid;grid-template-columns:44px 1fr 1fr;border-bottom:1px solid #d8d8d5;padding:.5em;font-size:clamp(10px,1vw,15px);}.case-table div:last-child{border:0;}.case-table .hit{outline:2px solid #43a914;outline-offset:-2px;}.case-growth{text-align:center;margin-top:clamp(22px,3vw,38px);font:400 clamp(30px,4.4vw,70px)/1 var(--serif);}.case-growth em{display:block;margin-top:.3em;color:#41a519;font-size:.72em;font-style:normal;}
-.case-system-grid{display:grid;grid-template-columns:37% 63%;height:100%;}.case-system-copy{display:flex;flex-direction:column;justify-content:center;}.case-system-copy h3{font-size:clamp(32px,3.6vw,58px);}.case-system-copy .case-sub{color:#e5dccf;}.case-system-list{margin:clamp(34px,4vw,58px) 0 0;padding:clamp(18px,2vw,28px) 0 0;list-style:none;border-top:1px solid rgba(241,233,220,.28);}.case-system-list li{margin:.55em 0;font-size:clamp(12px,1.1vw,17px);color:#cfc7bb;}.case-system-list b{display:inline-block;width:2.5em;color:var(--green);font-size:1.4em;}.case-system-stack{position:relative;}
+.case-system-grid{display:grid;grid-template-columns:37% 63%;height:100%;}.case-system-copy{display:flex;flex-direction:column;justify-content:center;}.case-system-copy h3{font-size:clamp(20px,2.3vw,32px);}.case-system-copy .case-sub{color:#e5dccf;}.case-system-list{margin:clamp(8px,1vw,14px) 0 0;padding:clamp(6px,.7vw,10px) 0 0;list-style:none;border-top:1px solid rgba(241,233,220,.28);}.case-system-list li{margin:.22em 0;font-size:clamp(11px,1vw,15px);color:#cfc7bb;}.case-system-list b{display:inline-block;width:2.5em;color:var(--green);font-size:1.4em;}.case-system-copy .case-next{margin-top:6px;font-size:clamp(14px,1.3vw,19px);}.case-system-stack{position:relative;}
 .case-system-block{border-radius:16px;overflow:hidden;box-shadow:0 18px 45px rgba(0,0,0,.4);}
 .case-system-block:first-child{position:relative;width:56%;}
 .case-system-block:last-child{position:absolute;right:0;top:14%;width:72%;z-index:2;}
@@ -1221,8 +1234,10 @@ h2.sec-title{
 .cb-arrow-prev{left:8px;}
 .cb-arrow-next{right:8px;}
 @media (min-width:901px){
-  .cb-arrow-prev{left:-22px;}
-  .cb-arrow-next{right:-22px;}
+  /* На ПК стрелки сбоку карточки перекрывали контент и дублировали
+     вкладки снизу. Убираем плавающее позиционирование — стрелки
+     встают обычными элементами в строке вкладок (::before/после списка). */
+  .cb-arrow{position:static;translate:none;}
 }
 .cb-tabs{
   display:flex;align-items:stretch;
@@ -1594,7 +1609,7 @@ h2.sec-title{
   .case-site-stack{display:flex;align-items:center;gap:8px;margin-top:14px;}
   .case-site-block{display:block;position:relative;flex:1;min-width:0;aspect-ratio:3/4;border-radius:12px;overflow:hidden;box-shadow:0 14px 34px rgba(0,0,0,.4);}
   .case-site-block .case-pill{display:inline-block;position:absolute;top:8px;left:8px;z-index:3;font-size:11px;}
-  .case-site-arrow{flex:none;color:var(--green);font-size:22px;line-height:1;}
+  .case-site-arrow{display:block;flex:none;color:var(--green);font-size:22px;line-height:1;}
   .case-slide .case-site-old,.case-slide .case-site-new{position:static;width:100%;height:100%;top:auto;left:auto;right:auto;opacity:1;box-shadow:none;border-radius:0;display:block;object-fit:cover;object-position:top;}
   .case-facts{margin-top:8px;}
   .case-fact{padding:8px 10px;}
