@@ -1158,6 +1158,11 @@ h2.sec-title{
 .case2-copy{display:flex;flex-direction:column;justify-content:center;}
 .case-cover-copy p.case-cover-desc{margin-top:clamp(14px,1.8vw,22px);max-width:520px;font-size:clamp(14px,1.1vw,17px);line-height:1.55;color:rgba(241,233,220,.72);}
 .case-cover .case-cover-photo{position:absolute;z-index:1;right:4%;bottom:-3%;width:38%;height:auto;aspect-ratio:4/3;border-radius:16px;box-shadow:0 18px 50px #000;object-fit:cover;}
+/* цифра "1 000–2 000 ₽" шире, чем у Eco-Store, и наезжала на двустрочный
+   заголовок — опускаем ниже */
+.case-cover--drilling .case-cover-stat{top:26%;}
+.case-cover--drilling .case-cover-stat small{max-width:14em;}
+
 /* «Было / Цель» — две колонки с тонкими разделителями между пунктами */
 .case-cols{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,3vw,40px);margin-top:clamp(20px,2.5vw,32px);}
 .case-col-h{margin:0 0 clamp(12px,1.6vw,18px);font-size:clamp(11px,.9vw,13px);font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--green);}
@@ -1543,6 +1548,10 @@ h2.sec-title{
   .case-cover .case-cover-stat{order:2;}
   .case-cover .case-view-btn--float{order:3;position:static;top:auto;right:auto;translate:none;align-self:flex-end;margin:10px 0 0;}
   .case-cover .case-cover-stack{order:4;}
+  /* Фото обложки "Алмазного бурения" на телефоне было абсолютным (по
+     десктопной раскладке) и почти не помещалось в кадр — крошечный
+     обрезок в углу. Переводим в обычный поток, во всю ширину. */
+  .case-cover .case-cover-photo{order:4;position:static;width:100%;right:auto;bottom:auto;aspect-ratio:16/10;margin-top:14px;}
   .case-cover-copy h3{font-size:clamp(28px,7.8vw,48px);line-height:1.06;}
   /* Кнопка "дальше" — там же, где и была, просто прижата вправо
      (не вниз, не в угол) — понятнее, что жать сюда, чтобы листать вперёд */
@@ -2088,13 +2097,13 @@ h2.sec-title{
     </header>
     <div class="cb-shell is-cover">
       <div class="cb-frame cb-cover is-on" data-panel="0">
-        <article class="case-slide case-cover">
+        <article class="case-slide case-cover case-cover--drilling">
           <div class="case-cover-copy">
             <p class="case-kicker">Кейс · Алмазное бурение</p>
             <h3>Заявки стали дешевле —<br />в 2–4 раза</h3>
             <p class="case-cover-desc">Пересобрали сайт, аналитику и рекламные кампании — и вывели компанию на максимальный объём трафика в сезон.</p>
             <div class="case-line"></div>
-            <a class="case-next case-view-btn" href="#" data-goto="1">Смотреть кейс <span class="arr">→</span></a>
+            <a class="case-next" href="#" data-goto="1">Смотреть кейс <span class="arr">→</span></a>
           </div>
           <div class="case-cover-stat"><span>4 000 ₽ →</span><b>1 000–2 000 ₽</b><small>стоимость обращения: было → стало</small></div>
           <img class="case-cover-photo" src="assets/case-drilling.jpg" alt="Алмазная коронка на буровом станке" />
@@ -2119,7 +2128,7 @@ h2.sec-title{
                 <div class="case-col-item"><b>Растить бюджет</b><span>после достижения цели</span></div>
               </div>
             </div>
-            <a class="case-next" href="#" data-goto="2">Что сделали <span class="arr">→</span></a>
+            <a class="case-next case-next--corner" href="#" data-goto="2">Что сделали <span class="arr">→</span></a>
           </div>
         </article>
       </div>
@@ -2136,7 +2145,7 @@ h2.sec-title{
               <div><b>03</b><span>Создали новый сайт и настроили полноценную аналитику</span></div>
               <div><b>04</b><span>Запустили Яндекс Директ с акцентом на поисковый спрос</span></div>
             </div>
-            <a class="case-next" href="#" data-goto="3">Как масштабировали <span class="arr">→</span></a>
+            <a class="case-next case-next--corner" href="#" data-goto="3">Как масштабировали <span class="arr">→</span></a>
           </div>
         </article>
       </div>
@@ -2153,7 +2162,7 @@ h2.sec-title{
               <div><b>03</b><span>Удерживали стоимость обращения в пределах 1 000–2 000 ₽</span></div>
               <div><b>04</b><span>Увеличили рекламный бюджет с 60–70 до 200 тыс. ₽</span></div>
             </div>
-            <a class="case-next" href="#" data-goto="4">Смотреть результат <span class="arr">→</span></a>
+            <a class="case-next case-next--corner" href="#" data-goto="4">Смотреть результат <span class="arr">→</span></a>
           </div>
         </article>
       </div>
@@ -2171,7 +2180,7 @@ h2.sec-title{
               <div class="case-stat"><b>максимум трафика</b><span>в сезон; рекламу останавливали из-за перелидоза</span></div>
             </div>
             <div class="case-hire"><b>Наняли новых сотрудников</b><span>Чтобы справляться с выросшим объёмом заказов.</span></div>
-            <a class="case-next" href="#audit">Разобрать мой проект <span class="arr">→</span></a>
+            <a class="case-next case-next--corner" href="#audit">Разобрать мой проект <span class="arr">→</span></a>
           </div>
         </article>
       </div>
