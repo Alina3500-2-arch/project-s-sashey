@@ -11,7 +11,15 @@
     ? Promise.resolve()
     : new Promise(function (resolve) { window.addEventListener('load', resolve, { once:true }); });
   var waitForFonts = document.fonts ? document.fonts.ready : Promise.resolve();
-  Promise.all([waitForLoad, waitForFonts]).then(revealFirstScreen);
+  // Пока висит is-loading, CSS прячет всё содержимое (visibility:hidden).
+  // Раньше класс снимался строго после window.load, то есть после ВСЕХ
+  // ресурсов — и если один запрос тормозил или падал (например, шрифты
+  // с fonts.googleapis.com, недоступного в России), сайт оставался
+  // пустым экраном сколько угодно долго. Теперь ждём не дольше 1,5 с:
+  // что не успело — доедет и появится само, но страница уже видна.
+  var failsafe = new Promise(function (resolve) { setTimeout(resolve, 1500); });
+  Promise.race([Promise.all([waitForLoad, waitForFonts]), failsafe])
+    .then(revealFirstScreen);
 
   var blocks = [].slice.call(document.querySelectorAll('.reveal'));
   if (reduce || !('IntersectionObserver' in window)) {
