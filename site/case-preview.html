@@ -1578,17 +1578,15 @@ h2.sec-title{
   .case-system-stack{margin-top:14px;}
   .case-system-block:last-child{top:10%;width:76%;}
   .case-system-block .case-pill{font-size:11px;}
-  /* До/После на "Упаковке": коллаж внахлёст, как на обложке кейса —
-     "До" начинается слева не во всю ширину, "После" крупнее и наезжает
-     поверх справа. Высоту не задаём жёстко и не режем object-fit:cover —
-     картинки идут в своих природных пропорциях, чтобы не обрезались
-     по бокам (было). "До" в обычном потоке — задаёт высоту стека. */
-  .case-site-stack{position:relative;margin-top:14px;}
-  .case-site-block{display:block;border-radius:12px;overflow:hidden;box-shadow:0 14px 34px rgba(0,0,0,.45);}
-  .case-site-block:first-child{position:relative;width:54%;}
-  .case-site-block:last-child{position:absolute;right:2%;top:10%;width:72%;z-index:2;}
+  /* До/После на "Упаковке": не коллаж внахлёст, а два экрана рядом,
+     одинакового размера, на одном уровне, со стрелкой между ними —
+     наглядно, без наложения. Уже, чем на всю ширину, зато без обрезки
+     по бокам (было при коллаже). */
+  .case-site-stack{display:flex;align-items:center;gap:8px;margin-top:14px;}
+  .case-site-block{display:block;position:relative;flex:1;min-width:0;aspect-ratio:3/4;border-radius:12px;overflow:hidden;box-shadow:0 14px 34px rgba(0,0,0,.4);}
   .case-site-block .case-pill{display:inline-block;position:absolute;top:8px;left:8px;z-index:3;font-size:11px;}
-  .case-slide .case-site-old,.case-slide .case-site-new{position:static;width:100%;height:auto;top:auto;left:auto;right:auto;opacity:1;box-shadow:none;border-radius:0;display:block;}
+  .case-site-arrow{flex:none;color:var(--green);font-size:22px;line-height:1;}
+  .case-slide .case-site-old,.case-slide .case-site-new{position:static;width:100%;height:100%;top:auto;left:auto;right:auto;opacity:1;box-shadow:none;border-radius:0;display:block;object-fit:cover;object-position:top;}
   .case-facts{margin-top:8px;}
   .case-fact{padding:8px 10px;}
   .case-fact b{font-size:17px;line-height:1.15;}
@@ -1689,7 +1687,7 @@ h2.sec-title{
       </article>
     </div>
     <div class="cb-frame cb-pack" data-panel="2">
-      <article class="case-slide case-pack-grid"><div class="case-pack-copy"><p class="case-kicker">02 / Упаковка</p><h3>Новый сайт<br />для дорогого продукта</h3><p class="case-sub">После анализа пересобрала продукт и создала новый продающий лендинг.</p><p class="case-metric">29,7&nbsp;<small>тыс.&nbsp;₽</small> <em>→</em> 42,9&nbsp;<small>тыс.&nbsp;₽</small></p><p class="case-metric-label">средний чек</p><a class="case-next case-next--corner" href="#" data-goto="3">Трафик <span class="arr">→</span></a></div><div class="case-site-stack"><div class="case-site-block"><span class="case-pill">До</span><img class="case-site-old" src="assets/case-old-site.png" alt="Старый сайт" /></div><div class="case-site-block"><span class="case-pill green">После</span><img class="case-site-new" src="assets/case-new-site.png" alt="Новый сайт Eco-Store" /></div></div></article>
+      <article class="case-slide case-pack-grid"><div class="case-pack-copy"><p class="case-kicker">02 / Упаковка</p><h3>Новый сайт<br />для дорогого продукта</h3><p class="case-sub">После анализа пересобрала продукт и создала новый продающий лендинг.</p><p class="case-metric">29,7&nbsp;<small>тыс.&nbsp;₽</small> <em>→</em> 42,9&nbsp;<small>тыс.&nbsp;₽</small></p><p class="case-metric-label">средний чек</p><a class="case-next case-next--corner" href="#" data-goto="3">Трафик <span class="arr">→</span></a></div><div class="case-site-stack"><div class="case-site-block"><span class="case-pill">До</span><img class="case-site-old" src="assets/case-old-site.png" alt="Старый сайт" /></div><span class="case-site-arrow">→</span><div class="case-site-block"><span class="case-pill green">После</span><img class="case-site-new" src="assets/case-new-site.png" alt="Новый сайт Eco-Store" /></div></div></article>
     </div>
     <div class="cb-frame" data-panel="3">
       <article class="case-slide case-slide--light case-traffic-grid"><div class="case-traffic-copy"><p class="case-kicker">03 / Трафик</p><h3>Стало видно,<br />как перезапуск<br />повлиял на оборот</h3><p class="case-sub">После перезапуска сайта, обновления предложения и настройки рекламы оборот вырос до 1 606 635 ₽.</p><div class="case-facts"><div class="case-fact"><b>+1 006 635&nbsp;₽</b><span>прирост даже к верхней точке «до»</span></div><div class="case-fact"><b>почти 5×</b><span>рост после настройки</span></div></div><a class="case-next case-next--corner" href="#" data-goto="4">Система <span class="arr">→</span></a></div><div class="case-table-card"><div class="case-table-head"><span class="case-pill">До</span><span></span><b class="case-arrow">→</b><span class="case-pill green">После</span></div><div class="case-tables"><div class="case-table"><div><span>1</span><span>ноябрь</span><b>600 000</b></div><div><span>2</span><span>декабрь</span><b>277 488</b></div><div><span>3</span><span>январь</span><b>322 243</b></div></div><div class="case-table"><div><span>7</span><span>июнь</span><b>741 115</b></div><div><span>8</span><span>июль</span><b>866 416</b></div><div class="hit"><span>9</span><span>август</span><b>1 606 635</b></div></div></div><div class="case-growth">277–600&nbsp;тыс.&nbsp;₽ → 1&nbsp;606&nbsp;635&nbsp;₽<em>рост почти в 5×</em></div></div></article>
