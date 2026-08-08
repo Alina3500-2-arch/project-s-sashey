@@ -78,7 +78,7 @@
     <button data-w="1440" aria-pressed="true">1440</button>
     <button data-w="1920">1920</button>
   </div>
-  <a class="home" href="index.html">Моб.</a>
+  <a class="home" id="homeLink" href="index.html">Моб.</a>
 </div>
 
 <div class="viewport" id="viewport">
@@ -99,11 +99,17 @@
   var W = 1440;              // ширина «монитора»
   var RATIO = 900 / 1440;    // высота монитора = 16:10, как у настоящего экрана
 
+  // ?page=case-preview.html — какую страницу грузить внутрь «монитора»,
+  // по умолчанию index.html (основной сайт).
+  var page = (location.search.match(/[?&]page=([^&]+)/) || [])[1] || 'index.html';
+
   var frame    = document.getElementById('frame');
   var spacer   = document.getElementById('spacer');
   var bar      = document.getElementById('bar');
   var info     = document.getElementById('info');
   var root     = document.documentElement;
+  var homeLink = document.getElementById('homeLink');
+  if (homeLink) homeLink.href = page;
 
   var k = 1, H = 900, innerH = 0;
 
@@ -116,7 +122,7 @@
   //    ровно 900 px высотой, то есть настоящим монитором, и анимации
   //    срабатывают там же, где на компьютере.
   function build() {
-    frame.src = 'index.html?w=' + W;
+    frame.src = page + '?w=' + W;
   }
   build();
 
