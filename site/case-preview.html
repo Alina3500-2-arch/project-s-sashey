@@ -1158,11 +1158,13 @@ h2.sec-title{
 .case-site-arrow{display:none;}
 .case-traffic-copy .case-sub{color:#21231d;}.case-table-card{align-self:center;margin:auto 0;padding:clamp(20px,2.4vw,38px);border-radius:26px;background:#fff;box-shadow:0 16px 40px rgba(20,20,15,.1);}.case-table-head{display:grid;grid-template-columns:1fr 70px 34px 1fr;align-items:center;text-align:center;font-size:clamp(12px,1.3vw,20px);}.case-pill{padding:.35em .8em;border-radius:10px;background:#090a08;color:#fff;}.case-pill.green{background:#47aa16;}.case-arrow{font-size:clamp(28px,3vw,45px);color:#48a918;}.case-tables{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,2vw,28px);margin-top:clamp(20px,2.8vw,36px);}.case-table{border:1px solid #d8d8d5;}.case-table div{display:grid;grid-template-columns:44px 1fr 1fr;border-bottom:1px solid #d8d8d5;padding:.5em;font-size:clamp(10px,1vw,15px);}.case-table div:last-child{border:0;}.case-table .hit{outline:2px solid #43a914;outline-offset:-2px;}.case-growth{text-align:center;margin-top:clamp(22px,3vw,38px);font:400 clamp(30px,4.4vw,70px)/1 var(--serif);}.case-growth em{display:block;margin-top:.3em;color:#41a519;font-size:.72em;font-style:normal;}
 .case-system-grid{display:grid;grid-template-columns:37% 63%;height:100%;}.case-system-copy{display:flex;flex-direction:column;justify-content:center;}.case-system-copy h3{font-size:clamp(20px,2.3vw,32px);}.case-system-copy .case-sub{color:#e5dccf;}.case-system-list{margin:clamp(8px,1vw,14px) 0 0;padding:clamp(6px,.7vw,10px) 0 0;list-style:none;border-top:1px solid rgba(241,233,220,.28);}.case-system-list li{margin:.22em 0;font-size:clamp(11px,1vw,15px);color:#cfc7bb;}.case-system-list b{display:inline-block;width:2.5em;color:var(--green);font-size:1.4em;}.case-system-copy .case-next{margin-top:6px;font-size:clamp(14px,1.3vw,19px);}.case-system-stack{position:relative;}
-.case-system-block{border-radius:16px;overflow:hidden;box-shadow:0 18px 45px rgba(0,0,0,.4);}
-.case-system-block:first-child{position:relative;width:56%;}
-.case-system-block:last-child{position:absolute;right:0;top:14%;width:72%;z-index:2;}
-.case-system-block img{width:100%;height:auto;display:block;}
-.case-system-block .case-pill{position:absolute;top:10px;left:10px;z-index:3;}
+/* Было 2 экрана каскадом внахлёст, стало 4 (Bitrix24, КП-калькулятор,
+   Расчёт сроков, Обучение) — каскад на четыре плитки не масштабируется,
+   поэтому сетка 2×2 с одинаковым размером тайлов. */
+.case-system-stack{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.case-system-block{position:relative;border-radius:14px;overflow:hidden;box-shadow:0 14px 34px rgba(0,0,0,.4);aspect-ratio:4/3;}
+.case-system-block img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;}
+.case-system-block .case-pill{position:absolute;top:8px;left:8px;z-index:3;font-size:11px;}
 /* ── Второй кейс: Алмазное бурение. Фото слева, текст справа —
    зеркально Eco-Store, поэтому отдельная сетка, но типографика и
    зелёные акценты те же переменные. ── */
@@ -1595,13 +1597,8 @@ h2.sec-title{
   .case-cover-stack .case-cover-3{left:9%;top:46cqw;}
   /* картинки не обрезаем — полностью, в своих природных пропорциях */
   .case-analysis-photo{width:100%;aspect-ratio:4/3;height:auto;object-fit:cover;object-position:center;border-radius:14px;}
-  /* коллаж инструментов — портретный кроп без обрезки текста, но по
-     высоте не резиновый: иначе тянет весь слайд, обрезаем снизу */
-  /* каскад из двух реальных экранов вместо растянутой одной картинки:
-     ничего не режем, оба скрина показываются целиком */
-  .case-system-stack{margin-top:14px;}
-  .case-system-block:last-child{top:10%;width:76%;}
-  .case-system-block .case-pill{font-size:11px;}
+  .case-system-stack{margin-top:14px;gap:8px;}
+  .case-system-block .case-pill{font-size:10px;padding:.3em .6em;}
   /* До/После на "Упаковке": не коллаж внахлёст, а два экрана рядом,
      одинакового размера, на одном уровне, со стрелкой между ними —
      наглядно, без наложения. Уже, чем на всю ширину, зато без обрезки
@@ -1717,7 +1714,7 @@ h2.sec-title{
       <article class="case-slide case-slide--light case-traffic-grid"><div class="case-traffic-copy"><p class="case-kicker">03 / Трафик</p><h3>Стало видно,<br />как перезапуск<br />повлиял на оборот</h3><p class="case-sub">После перезапуска сайта, обновления предложения и настройки рекламы оборот вырос до 1 606 635 ₽.</p><div class="case-facts"><div class="case-fact"><b>+1 006 635&nbsp;₽</b><span>прирост даже к верхней точке «до»</span></div><div class="case-fact"><b>почти 5×</b><span>рост после настройки</span></div></div><a class="case-next case-next--corner" href="#" data-goto="4">Система <span class="arr">→</span></a></div><div class="case-table-card"><div class="case-table-head"><span class="case-pill">До</span><span></span><b class="case-arrow">→</b><span class="case-pill green">После</span></div><div class="case-tables"><div class="case-table"><div><span>1</span><span>ноябрь</span><b>600 000</b></div><div><span>2</span><span>декабрь</span><b>277 488</b></div><div><span>3</span><span>январь</span><b>322 243</b></div></div><div class="case-table"><div><span>7</span><span>июнь</span><b>741 115</b></div><div><span>8</span><span>июль</span><b>866 416</b></div><div class="hit"><span>9</span><span>август</span><b>1 606 635</b></div></div></div><div class="case-growth">277–600&nbsp;тыс.&nbsp;₽ → 1&nbsp;606&nbsp;635&nbsp;₽<em>рост почти в 5×</em></div></div></article>
     </div>
     <div class="cb-frame" data-panel="4">
-      <article class="case-slide case-system-grid"><div class="case-system-copy"><p class="case-kicker">04 / Система</p><h3>Продажи и производство<br />в одном маршруте</h3><p class="case-sub">Сначала нарастили поток заказов — а когда стало тяжело успевать руками, выстроили систему и убрали рутину.</p><ul class="case-system-list"><li><b>01</b>Bitrix24: этапы сделки, роботы и задачи.</li><li><b>02</b>КП-калькулятор: варианты цены и передача расчёта в CRM.</li><li><b>03</b>Производство: срок и готовое сообщение клиенту.</li><li><b>04</b>Обучение: регламент и база знаний команды.</li></ul><a class="case-next case-next--corner" href="#" data-goto="0">Заново <span class="arr">→</span></a><a class="case-next case-next--corner" href="#audit">Разобрать мой проект <span class="arr">→</span></a></div><div class="case-system-stack"><div class="case-system-block"><span class="case-pill">Расчёт сроков</span><img class="case-system-visual" src="assets/case-system-timeline.jpg" alt="Калькулятор сроков производства Eco-Store" /></div><div class="case-system-block"><span class="case-pill green">КП-калькулятор</span><img class="case-system-visual" src="assets/case-system-kp.jpg" alt="КП-калькулятор Eco-Store" /></div></div></article>
+      <article class="case-slide case-system-grid"><div class="case-system-copy"><p class="case-kicker">04 / Система</p><h3>Продажи и производство<br />в одном маршруте</h3><p class="case-sub">Сначала нарастили поток заказов — а когда стало тяжело успевать руками, выстроили систему и убрали рутину.</p><ul class="case-system-list"><li><b>01</b>Bitrix24: этапы сделки, роботы и задачи.</li><li><b>02</b>КП-калькулятор: варианты цены и передача расчёта в CRM.</li><li><b>03</b>Производство: срок и готовое сообщение клиенту.</li><li><b>04</b>Обучение: регламент и база знаний команды.</li></ul><a class="case-next case-next--corner" href="#" data-goto="0">Заново <span class="arr">→</span></a><a class="case-next case-next--corner" href="#audit">Разобрать мой проект <span class="arr">→</span></a></div><div class="case-system-stack"><div class="case-system-block"><span class="case-pill">Bitrix24</span><img class="case-system-visual" src="assets/case-system-bitrix.jpg" alt="Bitrix24 CRM Eco-Store" /></div><div class="case-system-block"><span class="case-pill green">КП-калькулятор</span><img class="case-system-visual" src="assets/case-system-kp.jpg" alt="КП-калькулятор Eco-Store" /></div><div class="case-system-block"><span class="case-pill">Расчёт сроков</span><img class="case-system-visual" src="assets/case-system-timeline.jpg" alt="Калькулятор сроков производства Eco-Store" /></div><div class="case-system-block"><span class="case-pill green">Обучение</span><img class="case-system-visual" src="assets/case-system-academy.jpg" alt="Академия обучения менеджеров Eco-Store" /></div></div></article>
     </div>
 
     <div class="cb-tabs" aria-label="Слайды кейса Eco-Store">
