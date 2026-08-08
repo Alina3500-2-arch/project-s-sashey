@@ -24,7 +24,15 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
+<!-- Шрифты грузятся НЕблокирующе (media=print + onload). Обычный
+     rel="stylesheet" блокирует отрисовку: если fonts.googleapis.com
+     недоступен или медленный (в России это обычное дело), страница
+     висела пустой до таймаута ~15 сек. Теперь текст рисуется сразу
+     системным шрифтом и переключается на фирменный, когда тот доедет;
+     если не доедет — сайт просто остаётся читаемым. -->
+<link rel="stylesheet" media="print" onload="this.media='all';this.onload=null"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Manrope:wght@400;500;600&display=swap" />
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Manrope:wght@400;500;600&display=swap" /></noscript>
 
 <link rel="stylesheet" href="site.css" />
 </head>
@@ -365,8 +373,8 @@
     <h2 class="duo-title">Не агентство — два человека,<br />у которых есть имена</h2>
 
     <div class="duo-photos">
-      <figure class="duo-photo duo-photo-l"><img src="assets/sasha-portrait.jpg" alt="Александр Аполлонов" /></figure>
-      <figure class="duo-photo duo-photo-r"><img src="assets/alina-portrait-final.jpg" alt="Алина Шигапова" /></figure>
+      <figure class="duo-photo duo-photo-l"><img loading="lazy" decoding="async" src="assets/sasha-portrait.jpg" alt="Александр Аполлонов" /></figure>
+      <figure class="duo-photo duo-photo-r"><img loading="lazy" decoding="async" src="assets/alina-portrait-final.jpg" alt="Алина Шигапова" /></figure>
     </div>
 
     <span class="duo-bracket duo-bracket-l" aria-hidden="true"></span>
@@ -415,9 +423,9 @@
           <circle class="dot-end" cx="440" cy="12" r="6" />
         </svg>
         <div class="case-cover-stack">
-          <img class="case-cover-shot case-cover-1" src="assets/case-new-site.jpg" alt="Новый сайт Eco-Store с круглым панно и Линой" />
-          <img class="case-cover-shot case-cover-2" src="assets/case-eco-catalog.jpg" alt="Каталог Eco-Store" />
-          <img class="case-cover-shot case-cover-3" src="assets/case-eco-bitrix.jpg" alt="Аналитика Bitrix24 Eco-Store" />
+          <img loading="lazy" decoding="async" class="case-cover-shot case-cover-1" src="assets/case-new-site.jpg" alt="Новый сайт Eco-Store с круглым панно и Линой" />
+          <img loading="lazy" decoding="async" class="case-cover-shot case-cover-2" src="assets/case-eco-catalog.jpg" alt="Каталог Eco-Store" />
+          <img loading="lazy" decoding="async" class="case-cover-shot case-cover-3" src="assets/case-eco-bitrix.jpg" alt="Аналитика Bitrix24 Eco-Store" />
         </div>
       </article>
     </div>
@@ -430,7 +438,7 @@
         <div class="case-fact"><b>300</b><span>объявлений на Авито</span></div>
         <div class="case-fact"><b>ручной расчёт</b><span>каждый заказ — с нуля</span></div></div>
         <a class="case-next case-next--corner" href="#" data-goto="2">Упаковка <span class="arr">→</span></a></div>
-        <img class="case-analysis-photo" src="assets/case-analysis-desk.jpg" alt="Анализ заказов Eco-Store" />
+        <img loading="lazy" decoding="async" class="case-analysis-photo" src="assets/case-analysis-desk.jpg" alt="Анализ заказов Eco-Store" />
       </article>
     </div>
     <div class="cb-frame cb-pack" data-panel="2">
@@ -440,7 +448,7 @@
       <p class="case-metric">29,7&nbsp;<small>тыс.&nbsp;₽</small> <em>→</em> 42,9&nbsp;<small>тыс.&nbsp;₽</small></p>
       <p class="case-metric-label">средний чек</p>
       <a class="case-next case-next--corner" href="#" data-goto="3">Трафик <span class="arr">→</span></a></div>
-      <div class="case-site-stack"><div class="case-site-block"><span class="case-pill">До</span><picture><source media="(max-width:900px)" srcset="assets/case-old-site-mobile.jpg" /><img class="case-site-old" src="assets/case-old-site-desktop.jpg" alt="Старый сайт" /></picture></div><span class="case-site-arrow">→</span><div class="case-site-block"><span class="case-pill green">После</span><img class="case-site-new" src="assets/case-eco-mobile-full.jpg" alt="Новый сайт Eco-Store (актуальный скриншот)" /></div></div></article>
+      <div class="case-site-stack"><div class="case-site-block"><span class="case-pill">До</span><picture><source media="(max-width:900px)" srcset="assets/case-old-site-mobile.jpg" /><img loading="lazy" decoding="async" class="case-site-old" src="assets/case-old-site-desktop.jpg" alt="Старый сайт" /></picture></div><span class="case-site-arrow">→</span><div class="case-site-block"><span class="case-pill green">После</span><img loading="lazy" decoding="async" class="case-site-new" src="assets/case-eco-mobile-full.jpg" alt="Новый сайт Eco-Store (актуальный скриншот)" /></div></div></article>
     </div>
     <div class="cb-frame" data-panel="3">
       <article class="case-slide case-slide--light case-traffic-grid"><div class="case-traffic-copy"><p class="case-kicker">03 / Трафик</p>
@@ -468,10 +476,10 @@
       <li><b>04</b>Обучение: регламент и база знаний команды.</li></ul>
       <a class="case-next case-next--corner" href="#" data-goto="0">Заново <span class="arr">→</span></a>
       <a class="case-next case-next--corner" href="#audit">Разобрать мой проект <span class="arr">→</span></a></div>
-      <div class="case-system-stack"><div class="case-system-block"><span class="case-pill">Bitrix24</span><img class="case-system-visual" src="assets/case-system-bitrix.jpg" alt="Bitrix24 CRM Eco-Store" /></div>
-      <div class="case-system-block"><span class="case-pill green">КП-калькулятор</span><img class="case-system-visual" src="assets/case-system-kp.jpg" alt="КП-калькулятор Eco-Store" /></div>
-      <div class="case-system-block"><span class="case-pill">Расчёт сроков</span><img class="case-system-visual" src="assets/case-system-timeline.jpg" alt="Калькулятор сроков производства Eco-Store" /></div>
-      <div class="case-system-block"><span class="case-pill green">Обучение</span><img class="case-system-visual" src="assets/case-system-academy.jpg" alt="Академия обучения менеджеров Eco-Store" /></div></div></article>
+      <div class="case-system-stack"><div class="case-system-block"><span class="case-pill">Bitrix24</span><img loading="lazy" decoding="async" class="case-system-visual" src="assets/case-system-bitrix.jpg" alt="Bitrix24 CRM Eco-Store" /></div>
+      <div class="case-system-block"><span class="case-pill green">КП-калькулятор</span><img loading="lazy" decoding="async" class="case-system-visual" src="assets/case-system-kp.jpg" alt="КП-калькулятор Eco-Store" /></div>
+      <div class="case-system-block"><span class="case-pill">Расчёт сроков</span><img loading="lazy" decoding="async" class="case-system-visual" src="assets/case-system-timeline.jpg" alt="Калькулятор сроков производства Eco-Store" /></div>
+      <div class="case-system-block"><span class="case-pill green">Обучение</span><img loading="lazy" decoding="async" class="case-system-visual" src="assets/case-system-academy.jpg" alt="Академия обучения менеджеров Eco-Store" /></div></div></article>
     </div>
 
     <div class="cb-tabs" aria-label="Слайды кейса Eco-Store">
@@ -510,12 +518,12 @@
             <a class="case-next" href="#" data-goto="1">Смотреть кейс <span class="arr">→</span></a>
           </div>
           <div class="case-cover-stat"><span>4 000 ₽ →</span><b>1 000–2 000 ₽</b><small>стоимость обращения: было → стало</small></div>
-          <img class="case-cover-photo" src="assets/case-drilling.jpg" alt="Алмазная коронка на буровом станке" />
+          <img loading="lazy" decoding="async" class="case-cover-photo" src="assets/case-drilling.jpg" alt="Алмазная коронка на буровом станке" />
         </article>
       </div>
       <div class="cb-frame" data-panel="1">
         <article class="case-slide case2-grid">
-          <img class="case2-photo" src="assets/case-drilling-detail.jpg" alt="Буровой станок с алмазной коронкой" />
+          <img loading="lazy" decoding="async" class="case2-photo" src="assets/case-drilling-detail.jpg" alt="Буровой станок с алмазной коронкой" />
           <div class="case2-copy">
             <h3>Точка А и задача</h3>
             <div class="case-cols">
@@ -538,7 +546,7 @@
       </div>
       <div class="cb-frame" data-panel="2">
         <article class="case-slide case2-grid">
-          <img class="case2-photo" src="assets/case-drilling-detail.jpg" alt="Буровой станок с алмазной коронкой" />
+          <img loading="lazy" decoding="async" class="case2-photo" src="assets/case-drilling-detail.jpg" alt="Буровой станок с алмазной коронкой" />
           <div class="case2-copy">
             <p class="case-kicker">Пересобрали основу</p>
             <h3>Что сделали</h3>
@@ -555,7 +563,7 @@
       </div>
       <div class="cb-frame" data-panel="3">
         <article class="case-slide case2-grid">
-          <img class="case2-photo" src="assets/case-drilling-detail.jpg" alt="Буровой станок с алмазной коронкой" />
+          <img loading="lazy" decoding="async" class="case2-photo" src="assets/case-drilling-detail.jpg" alt="Буровой станок с алмазной коронкой" />
           <div class="case2-copy">
             <p class="case-kicker">Закрепили экономику</p>
             <h3>Оптимизация и рост</h3>
@@ -572,7 +580,7 @@
       </div>
       <div class="cb-frame" data-panel="4">
         <article class="case-slide case2-grid">
-          <img class="case2-photo" src="assets/case-drilling-detail.jpg" alt="Буровой станок с алмазной коронкой" />
+          <img loading="lazy" decoding="async" class="case2-photo" src="assets/case-drilling-detail.jpg" alt="Буровой станок с алмазной коронкой" />
           <div class="case2-copy">
             <p class="case-kicker">Точка Б</p>
             <h3>Результат</h3>

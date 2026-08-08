@@ -170,7 +170,23 @@
   window.addEventListener('scroll', sync, { passive: true });
   window.addEventListener('resize', layout);
   window.addEventListener('orientationchange', function () { setTimeout(layout, 250); });
-  setInterval(layout, 2000);   // страница внутри может подрасти после загрузки шрифтов
+  // Страница внутри подрастает после загрузки шрифтов и ленивых картинок.
+  // Раньше здесь был вечный setInterval(layout, 2000): каждый тик читал
+  // scrollHeight тяжёлого документа, то есть форсировал полный пересчёт
+  // раскладки — на телефоне страница от этого заметно подвисала. Теперь
+  // пересчитываем по факту изменения размера, а не по таймеру.
+  if (window.ResizeObserver) {
+    var ro = new ResizeObserver(function () { layout(); });
+    frame.addEventListener('load', function () {
+      var body = frame.contentDocument && frame.contentDocument.body;
+      if (body) ro.observe(body);
+    });
+  } else {
+    var ticks = 0, iv = setInterval(function () {
+      layout();
+      if (++ticks > 8) clearInterval(iv);
+    }, 2000);
+  }
 
   // iframe не перехватывает жесты, иначе на iPhone перестаёт листаться
   // длинная ПК-страница. Короткое нажатие переводим в координаты сайта и
