@@ -1172,6 +1172,8 @@ h2.sec-title{
 .case-hire span{font-size:clamp(12px,.95vw,14px);color:rgba(241,233,220,.62);}
 /* Ссылка-переход к следующему слайду кейса (не якорь, а клик по вкладке) */
 .case-next{display:inline-flex;align-items:center;gap:10px;margin-top:clamp(12px,1.6vw,20px);font:400 clamp(19px,1.9vw,27px)/1 var(--serif);color:var(--cream);text-decoration:none;border-bottom:1px solid var(--green);padding-bottom:6px;cursor:pointer;width:max-content;}
+/* на светлых слайдах (Анализ, Трафик) кремовый текст не виден на кремовом фоне */
+.case-slide--light .case-next{color:#12130f;}
 .case-next .arr{color:var(--green);display:inline-block;transition:transform .3s var(--ease);}
 .case-next:hover .arr{transform:translateX(4px);}
 /* «Смотреть кейс» на обложке — обособленная кнопка с рамкой, как на карточке кейса в макете */
@@ -1548,18 +1550,13 @@ h2.sec-title{
      Размеры в cqw — тянутся за ширину кадра, без фиксированных высот. */
   .case-cover-stack{position:relative;left:auto;right:auto;bottom:auto;width:100%;height:78cqw;margin:10px 0 0;}
   /* нижние вкладки на телефоне убраны — имя слайда и так есть в кикере
-     каждого экрана, а строка вкладок только мешала свайпом-перетаскиванием.
-     Сами стрелки живут внутри .cb-tabs в разметке, поэтому не прячем блок
-     целиком, а превращаем его в прозрачный оверлей по центру кадра. */
+     каждого экрана, а строка вкладок только мешала свайпом-перетаскиванием. */
   .cb-tablist{display:none;}
-  .cb-tabs{position:absolute;inset:0;z-index:6;background:none;border-radius:0;align-items:flex-end;justify-content:space-between;padding:0 10px 16px;pointer-events:none;}
-  /* .cb-arrow сам position:absolute с top:44% (см. базовое правило) —
-     flex родителя на него не действует, поэтому позицию переопределяем
-     явно: у нижнего края карточки, а не по центру поверх текста */
-  .cb-arrow{pointer-events:auto;position:absolute;top:auto;bottom:16px;left:auto;right:auto;translate:0;width:56px;height:56px;}
-  .cb-arrow-prev{left:10px;}
-  .cb-arrow-next{right:10px;}
-  .cb-arrow svg{width:34px;height:34px;}
+  .cb-tabs{display:none;}
+  /* Круглые стрелки на телефоне тоже убраны — вперёд теперь ведёт
+     именная кнопка в тексте слайда ("Упаковка →" и т.п.), назад —
+     свайп (он не завязан на .cb-tabs и продолжает работать). */
+  .cb-arrow{display:none;}
   .case-cover-stack .case-cover-shot{bottom:auto;width:78%;border-radius:9px;box-shadow:0 14px 34px rgba(0,0,0,.6);transform:perspective(1500px) rotateY(-14deg);}
   .case-cover-stack .case-cover-1{left:0;top:0;}
   .case-cover-stack .case-cover-2{left:16%;top:23cqw;}
@@ -1670,15 +1667,15 @@ h2.sec-title{
     </div>
     <div class="cb-frame" data-panel="1">
       <article class="case-slide case-slide--light case-analysis-grid">
-        <div class="case-analysis-copy"><p class="case-kicker">01 / Анализ</p><h3>Сначала — понять,<br />где бизнес теряет деньги</h3><p class="case-sub">Разобрали весь путь заказа —<br />от заявки до оплаты</p><div class="case-facts"><div class="case-fact"><b>500 г / 1 000 ₽</b><span>фокус на мелких заказах</span></div><div class="case-fact"><b>300</b><span>объявлений на Авито</span></div><div class="case-fact"><b>ручной расчёт</b><span>каждый заказ — с нуля</span></div></div></div>
+        <div class="case-analysis-copy"><p class="case-kicker">01 / Анализ</p><h3>Сначала — понять,<br />где бизнес теряет деньги</h3><p class="case-sub">Разобрали весь путь заказа —<br />от заявки до оплаты</p><div class="case-facts"><div class="case-fact"><b>500 г / 1 000 ₽</b><span>фокус на мелких заказах</span></div><div class="case-fact"><b>300</b><span>объявлений на Авито</span></div><div class="case-fact"><b>ручной расчёт</b><span>каждый заказ — с нуля</span></div></div><a class="case-next" href="#" data-goto="2">Упаковка <span class="arr">→</span></a></div>
         <img class="case-analysis-photo" src="assets/case-analysis-desk.jpg" alt="Анализ заказов Eco-Store" />
       </article>
     </div>
     <div class="cb-frame cb-pack" data-panel="2">
-      <article class="case-slide case-pack-grid"><div class="case-pack-copy"><p class="case-kicker">02 / Упаковка</p><h3>Новый сайт<br />для дорогого продукта</h3><p class="case-sub">После анализа пересобрала продукт и создала новый продающий лендинг.</p><p class="case-metric">29,7&nbsp;<small>тыс.&nbsp;₽</small> <em>→</em> 42,9&nbsp;<small>тыс.&nbsp;₽</small></p></div><div class="case-site-stack"><div class="case-site-block"><span class="case-pill">До</span><img class="case-site-old" src="assets/case-old-site.png" alt="Старый сайт" /></div><div class="case-site-block"><span class="case-pill green">После</span><img class="case-site-new" src="assets/case-new-site.png" alt="Новый сайт Eco-Store" /></div></div></article>
+      <article class="case-slide case-pack-grid"><div class="case-pack-copy"><p class="case-kicker">02 / Упаковка</p><h3>Новый сайт<br />для дорогого продукта</h3><p class="case-sub">После анализа пересобрала продукт и создала новый продающий лендинг.</p><p class="case-metric">29,7&nbsp;<small>тыс.&nbsp;₽</small> <em>→</em> 42,9&nbsp;<small>тыс.&nbsp;₽</small></p><a class="case-next" href="#" data-goto="3">Трафик <span class="arr">→</span></a></div><div class="case-site-stack"><div class="case-site-block"><span class="case-pill">До</span><img class="case-site-old" src="assets/case-old-site.png" alt="Старый сайт" /></div><div class="case-site-block"><span class="case-pill green">После</span><img class="case-site-new" src="assets/case-new-site.png" alt="Новый сайт Eco-Store" /></div></div></article>
     </div>
     <div class="cb-frame" data-panel="3">
-      <article class="case-slide case-slide--light case-traffic-grid"><div class="case-traffic-copy"><p class="case-kicker">03 / Трафик</p><h3>Стало видно,<br />как перезапуск<br />повлиял на оборот</h3><p class="case-sub">После перезапуска сайта, обновления предложения и настройки рекламы оборот вырос до 1 606 635 ₽.</p><div class="case-facts"><div class="case-fact"><b>+1 006 635&nbsp;₽</b><span>прирост даже к верхней точке «до»</span></div><div class="case-fact"><b>почти 5×</b><span>рост после настройки</span></div></div></div><div class="case-table-card"><div class="case-table-head"><span class="case-pill">До</span><span></span><b class="case-arrow">→</b><span class="case-pill green">После</span></div><div class="case-tables"><div class="case-table"><div><span>1</span><span>ноябрь</span><b>600 000</b></div><div><span>2</span><span>декабрь</span><b>277 488</b></div><div><span>3</span><span>январь</span><b>322 243</b></div></div><div class="case-table"><div><span>7</span><span>июнь</span><b>741 115</b></div><div><span>8</span><span>июль</span><b>866 416</b></div><div class="hit"><span>9</span><span>август</span><b>1 606 635</b></div></div></div><div class="case-growth">277–600&nbsp;тыс.&nbsp;₽ → 1&nbsp;606&nbsp;635&nbsp;₽<em>рост почти в 5×</em></div></div></article>
+      <article class="case-slide case-slide--light case-traffic-grid"><div class="case-traffic-copy"><p class="case-kicker">03 / Трафик</p><h3>Стало видно,<br />как перезапуск<br />повлиял на оборот</h3><p class="case-sub">После перезапуска сайта, обновления предложения и настройки рекламы оборот вырос до 1 606 635 ₽.</p><div class="case-facts"><div class="case-fact"><b>+1 006 635&nbsp;₽</b><span>прирост даже к верхней точке «до»</span></div><div class="case-fact"><b>почти 5×</b><span>рост после настройки</span></div></div><a class="case-next" href="#" data-goto="4">Система <span class="arr">→</span></a></div><div class="case-table-card"><div class="case-table-head"><span class="case-pill">До</span><span></span><b class="case-arrow">→</b><span class="case-pill green">После</span></div><div class="case-tables"><div class="case-table"><div><span>1</span><span>ноябрь</span><b>600 000</b></div><div><span>2</span><span>декабрь</span><b>277 488</b></div><div><span>3</span><span>январь</span><b>322 243</b></div></div><div class="case-table"><div><span>7</span><span>июнь</span><b>741 115</b></div><div><span>8</span><span>июль</span><b>866 416</b></div><div class="hit"><span>9</span><span>август</span><b>1 606 635</b></div></div></div><div class="case-growth">277–600&nbsp;тыс.&nbsp;₽ → 1&nbsp;606&nbsp;635&nbsp;₽<em>рост почти в 5×</em></div></div></article>
     </div>
     <div class="cb-frame" data-panel="4">
       <article class="case-slide case-system-grid"><div class="case-system-copy"><p class="case-kicker">04 / Система</p><h3>Продажи и производство<br />в одном маршруте</h3><p class="case-sub">Заявка больше не живёт в переписке и не держится в голове менеджера.</p><ul class="case-system-list"><li><b>01</b>Bitrix24: этапы сделки, роботы и задачи.</li><li><b>02</b>КП-калькулятор: варианты цены и передача расчёта в CRM.</li><li><b>03</b>Производство: срок и готовое сообщение клиенту.</li><li><b>04</b>Обучение: регламент и база знаний команды.</li></ul></div><img class="case-system-visual" src="assets/case-system-tools.jpg" alt="Калькуляторы и CRM Eco-Store" /></article>
@@ -1906,12 +1903,12 @@ h2.sec-title{
       if (cbPrev) cbPrev.disabled = i === 0;
       if (cbNext) cbNext.disabled = i === cbCount - 1;
       // новая вкладка всегда открывается с начала слайда, а не с той
-      // точки прокрутки, где остался предыдущий (более длинный) слайд
+      // точки прокрутки, где остался предыдущий слайд
       var activeSlide = cbShell.querySelector('.cb-frame.is-on .case-slide');
       if (activeSlide) activeSlide.scrollTop = 0;
-      if (window.matchMedia('(max-width:900px)').matches) {
-        cbShell.scrollIntoView({ block: 'start', behavior: 'smooth' });
-      }
+      // Раньше здесь был scrollIntoView на телефоне — сейчас высоты
+      // слайдов почти совпадают, страница и так не прыгает, а сам
+      // scrollIntoView дёргал экран при каждом клике. Убрано.
     };
 
     cbShell.querySelector('.cb-tabs').addEventListener('click', function (e) {
