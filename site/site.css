@@ -1121,14 +1121,62 @@ h2.sec-title{
 .case-system-block{position:relative;border-radius:14px;overflow:hidden;box-shadow:0 14px 34px rgba(0,0,0,.4);aspect-ratio:4/3;}
 .case-system-block img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;}
 .case-system-block .case-pill{position:absolute;top:8px;left:8px;z-index:3;font-size:11px;}
-/* ── Второй кейс: Алмазное бурение. Фото слева, текст справа —
-   зеркально Eco-Store, поэтому отдельная сетка, но типографика и
-   зелёные акценты те же переменные. ── */
-.case2-grid{display:grid;grid-template-columns:44% 56%;height:100%;column-gap:clamp(24px,3vw,48px);}
-.case2-grid .case2-photo{width:100%;height:100%;object-fit:cover;border-radius:20px;}
-.case2-copy{display:flex;flex-direction:column;justify-content:flex-start;padding-top:clamp(16px,3vw,40px);}
+/* ── Второй кейс: Алмазное бурение. Сетка один в один с Eco-Store
+   (48% / 52%, текст слева): раньше кейс был зеркальным, и текст слайдов
+   не совпадал по левому краю ни с обложкой кейса, ни с первым кейсом. ── */
+.case2-grid{display:grid;grid-template-columns:48% 52%;height:100%;min-height:0;}
+.case2-copy{display:flex;flex-direction:column;justify-content:flex-start;min-width:0;min-height:0;padding-right:clamp(20px,4cqw,48px);}
+/* заголовок слайда — как у Eco-Store, но короче: иначе колонка перерастает
+   кадр и «Точка А» визуально выше обложки */
+/* Плотная типографика колонки: все четыре слайда должны укладываться
+   в тот же кадр, что и обложка, — иначе «Результат» вылезал под вкладки.
+   Размеры здесь — в cqw (ширина самого слайда), а не vw: карточка упёрта
+   в max-width:1180px, и на широких экранах vw-текст продолжал расти и
+   вылезал за кадр. */
+.case2-copy h3{font-size:clamp(24px,3.85cqw,44px);line-height:1.06;}
+.case2-copy .case-kicker{margin-bottom:clamp(10px,1.7cqw,18px);}
+.case-slide .case2-copy .case-sub{margin-top:clamp(10px,1.6cqw,16px);font-size:clamp(13px,1.5cqw,17px);line-height:1.4;}
+.case2-copy .case-next{margin-top:clamp(8px,1.3cqw,14px);font-size:clamp(15px,1.85cqw,21px);}
+.case2-copy .case-actions{margin-top:clamp(8px,1.3cqw,14px);gap:clamp(14px,2.6cqw,28px);}
+.case2-copy .case-cols,.case2-copy .case-num-grid{margin-top:clamp(12px,2.1cqw,22px);}
+.case2-copy .case-num-grid{gap:clamp(12px,2.1cqw,22px) clamp(20px,4cqw,44px);padding-top:clamp(10px,1.8cqw,16px);}
+.case2-copy .case-num-grid b{font-size:clamp(18px,2.4cqw,28px);}
+.case2-copy .case-num-grid span{font-size:clamp(12px,1.3cqw,15px);}
+.case2-copy .case-col-item{padding:clamp(8px,1.4cqw,14px) 0;}
+.case2-copy .case-col-item b{font-size:clamp(16px,1.9cqw,21px);}
+.case2-copy .case-col-item span{font-size:clamp(12px,1.25cqw,14px);}
+.case2-copy .case-stat-grid{gap:clamp(8px,1.2cqw,13px) clamp(20px,3.4cqw,38px);margin-top:clamp(10px,1.7cqw,16px);}
+.case2-copy .case-stat b{font-size:clamp(17px,2.1cqw,24px);padding-bottom:clamp(5px,.8cqw,8px);}
+.case2-copy .case-stat span{margin-top:clamp(4px,.7cqw,7px);font-size:clamp(11px,1.15cqw,13px);}
+.case2-copy .case-hire{margin-top:clamp(8px,1.3cqw,13px);padding:clamp(7px,1.1cqw,11px) clamp(12px,1.8cqw,18px);}
+.case2-copy .case-hire b{font-size:clamp(14px,1.65cqw,18px);}
+.case2-copy .case-hire span{font-size:clamp(11px,1.2cqw,13px);}
+/* Фото растворяется в фоне слайда: ни рамки, ни скруглений — мягкая
+   маска по всем четырём краям (сильнее со стороны текста). */
+.case2-grid .case2-photo{
+  width:100%;height:100%;min-height:0;object-fit:cover;border-radius:0;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 26%),
+              linear-gradient(180deg,transparent 0,#000 15%,#000 85%,transparent 100%),
+              linear-gradient(270deg,transparent 0,#000 12%);
+          mask-image:linear-gradient(90deg,transparent 0,#000 26%),
+              linear-gradient(180deg,transparent 0,#000 15%,#000 85%,transparent 100%),
+              linear-gradient(270deg,transparent 0,#000 12%);
+  -webkit-mask-composite:source-in;mask-composite:intersect;
+}
 .case-cover-copy p.case-cover-desc{margin-top:clamp(14px,1.8vw,22px);max-width:520px;font-size:clamp(14px,1.1vw,17px);line-height:1.55;color:rgba(241,233,220,.72);}
-.case-cover .case-cover-photo{position:absolute;z-index:1;right:4%;bottom:-3%;width:38%;height:auto;aspect-ratio:4/3;border-radius:16px;box-shadow:0 18px 50px #000;object-fit:cover;}
+/* Фото на обложке второго кейса — тоже без рамки: раньше оно уходило
+   под полосу вкладок и обрезалось жёстким прямоугольником. */
+.case-cover .case-cover-photo{
+  position:absolute;z-index:1;right:0;bottom:0;width:42%;height:47%;
+  border-radius:0;object-fit:cover;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 30%),
+              linear-gradient(0deg,transparent 0,#000 18%),
+              linear-gradient(180deg,transparent 0,#000 16%);
+          mask-image:linear-gradient(90deg,transparent 0,#000 30%),
+              linear-gradient(0deg,transparent 0,#000 18%),
+              linear-gradient(180deg,transparent 0,#000 16%);
+  -webkit-mask-composite:source-in;mask-composite:intersect;
+}
 /* цифра "1 000–2 000 ₽" шире, чем у Eco-Store, и наезжала на двустрочный
    заголовок — опускаем ниже */
 .case-cover--drilling .case-cover-stat{top:26%;}
@@ -1157,6 +1205,10 @@ h2.sec-title{
 .case-slide--light .case-next{color:#12130f;}
 .case-next .arr{color:var(--green);display:inline-block;transition:transform .3s var(--ease);}
 .case-next:hover .arr{transform:translateX(4px);}
+/* Две ссылки на финальном слайде («Заново» + «Разобрать мой проект») —
+   в один ряд: столбиком они не помещались в кадр и уходили под вкладки. */
+.case-actions{display:flex;flex-wrap:wrap;align-items:center;gap:clamp(14px,2vw,28px);margin-top:clamp(10px,1.4vw,18px);}
+.case-actions .case-next{margin-top:0;}
 /* «Смотреть кейс» на обложке — обособленная кнопка с рамкой, как на карточке кейса в макете */
 .case-view-btn{margin-top:clamp(20px,2.6vw,32px);padding:.75em 1.4em;font-size:clamp(13px,1vw,15px);color:var(--green);border:1.5px solid var(--green);border-radius:10px;background:rgba(168,220,40,.1);box-shadow:0 0 24px rgba(168,220,40,.16);transition:background .25s var(--ease),box-shadow .25s var(--ease);}
 .case-view-btn .arr{color:var(--green);}
@@ -1511,7 +1563,17 @@ h2.sec-title{
   .case-slide h3{font-size:clamp(24px,7.5vw,36px);}
   .case-slide .case-sub{margin-top:10px;font-size:14px;line-height:1.4;}
   .case-analysis-grid,.case-traffic-grid,.case-pack-grid,.case-system-grid,.case2-grid{grid-template-columns:1fr;height:auto;gap:clamp(14px,4vw,22px);}
-  .case2-grid .case2-photo{aspect-ratio:16/10;height:auto;object-fit:cover;}
+  /* на телефоне фото во всю ширину — растворяем симметрично, иначе
+     сильный левый градиент (он для ПК, со стороны текста) кособочит кадр */
+  .case2-grid .case2-photo{
+    aspect-ratio:16/10;height:auto;object-fit:cover;
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 11%),
+                linear-gradient(270deg,transparent 0,#000 11%),
+                linear-gradient(180deg,transparent 0,#000 13%,#000 87%,transparent 100%);
+            mask-image:linear-gradient(90deg,transparent 0,#000 11%),
+                linear-gradient(270deg,transparent 0,#000 11%),
+                linear-gradient(180deg,transparent 0,#000 13%,#000 87%,transparent 100%);
+  }
   .case-cols{grid-template-columns:1fr 1fr;gap:clamp(14px,4vw,22px);}
   /* На телефоне колонки нет — плавающая кнопка справа не помещается,
      превращаем слайд во flex-колонку и вставляем кнопку обычным блоком
@@ -1524,7 +1586,15 @@ h2.sec-title{
   /* Фото обложки "Алмазного бурения" на телефоне было абсолютным (по
      десктопной раскладке) и почти не помещалось в кадр — крошечный
      обрезок в углу. Переводим в обычный поток, во всю ширину. */
-  .case-cover .case-cover-photo{order:4;position:static;width:100%;right:auto;bottom:auto;aspect-ratio:16/10;margin-top:14px;}
+  .case-cover .case-cover-photo{
+    order:4;position:static;width:100%;height:auto;right:auto;bottom:auto;aspect-ratio:16/10;margin-top:14px;
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 11%),
+                linear-gradient(270deg,transparent 0,#000 11%),
+                linear-gradient(180deg,transparent 0,#000 13%,#000 87%,transparent 100%);
+            mask-image:linear-gradient(90deg,transparent 0,#000 11%),
+                linear-gradient(270deg,transparent 0,#000 11%),
+                linear-gradient(180deg,transparent 0,#000 13%,#000 87%,transparent 100%);
+  }
   .case-cover-copy h3{font-size:clamp(28px,7.8vw,48px);line-height:1.06;}
   /* Кнопка "дальше" — там же, где и была, просто прижата вправо
      (не вниз, не в угол) — понятнее, что жать сюда, чтобы листать вперёд */
