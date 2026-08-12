@@ -1,5 +1,29 @@
 (function () {
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* На мобильном макете анимация — часть согласованной композиции, поэтому
+     системный Reduce Motion не переводит страницу в статичное состояние. */
+  var reduce = window.innerWidth > 1000 && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hasObserver = 'IntersectionObserver' in window;
+  var afterPaint = function (fn, delay) {
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { window.setTimeout(fn, delay || 0); });
+    });
+  };
+  // Некоторые мобильные webview не дают IntersectionObserver. В таком случае
+  // запускаем дорожки при реальном входе блока в экран, а не при загрузке.
+  var watchFallback = function (el, enter, leave) {
+    if (hasObserver) return false;
+    var visible = false;
+    var check = function () {
+      var rect = el.getBoundingClientRect();
+      var inside = rect.top < window.innerHeight * .88 && rect.bottom > window.innerHeight * .12;
+      if (inside && !visible) { visible = true; afterPaint(enter, 80); }
+      if (!inside && visible && leave) { visible = false; leave(); }
+    };
+    window.addEventListener('scroll', check, { passive:true });
+    window.addEventListener('resize', check);
+    window.setTimeout(check, 120);
+    return true;
+  };
 
   var revealFirstScreen = function () {
     requestAnimationFrame(function () {
@@ -22,8 +46,11 @@
     .then(revealFirstScreen);
 
   var blocks = [].slice.call(document.querySelectorAll('.reveal'));
-  if (reduce || !('IntersectionObserver' in window)) {
+  if (reduce) {
     blocks.forEach(function (el) { el.classList.add('seen'); });
+  } else if (watchFallback(document.documentElement, function () {
+    blocks.forEach(function (el) { el.classList.add('seen'); });
+  })) {
   } else {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
@@ -33,12 +60,26 @@
     blocks.forEach(function (el) { io.observe(el); });
   }
 
+  // Видео в шапке кейса: без стандартных контролов, чтобы кнопка оставалась
+  // частью визуального языка страницы. Повторный клик по ролику ставит паузу.
+  [].forEach.call(document.querySelectorAll('.case-video-card'), function (card) {
+    var video = card.querySelector('.case-video');
+    var play = card.querySelector('.case-video-play');
+    if (!video || !play) return;
+    play.addEventListener('click', function () { video.play(); });
+    video.addEventListener('click', function () { if (!video.paused) video.pause(); });
+    video.addEventListener('play', function () { card.classList.add('is-playing'); });
+    video.addEventListener('pause', function () { card.classList.remove('is-playing'); });
+    video.addEventListener('ended', function () { card.classList.remove('is-playing'); });
+  });
+
   // «Управляемость» запускается только когда панель уже заметно в кадре:
   // сперва три круга, затем две связи, затем финальная стрелка и акцент заголовка.
   var control = document.querySelector('.control');
   if (control) {
-    if (reduce || !('IntersectionObserver' in window)) {
+    if (reduce) {
       control.classList.add('run');
+    } else if (watchFallback(control, function () { control.classList.add('run'); })) {
     } else {
       var controlObserver = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
@@ -55,8 +96,9 @@
   // Ступени появляются по очереди на каждом заходе в экран.
   var stairs = document.querySelector('.stairs');
   if (stairs) {
-    if (reduce || !('IntersectionObserver' in window)) {
+    if (reduce) {
       stairs.classList.add('run');
+    } else if (watchFallback(stairs, function () { stairs.classList.add('run'); }, function () { stairs.classList.remove('run'); })) {
     } else {
       var ro = new IntersectionObserver(function (es) {
         es.forEach(function (e) {
@@ -70,7 +112,8 @@
   // Блоки со своей дорожкой появления: класс .run ставится на входе
   // в экран и снимается на выходе, поэтому анимация играет заново.
   [].forEach.call(document.querySelectorAll('.princ,.closer,.duo'), function (el) {
-    if (reduce || !('IntersectionObserver' in window)) { el.classList.add('run'); return; }
+    if (reduce) { el.classList.add('run'); return; }
+    if (watchFallback(el, function () { el.classList.add('run'); }, function () { el.classList.remove('run'); })) return;
     var io2 = new IntersectionObserver(function (es) {
       es.forEach(function (e) { el.classList.toggle('run', e.isIntersecting); });
     }, { threshold: 0.16 });
@@ -167,8 +210,11 @@
   // поэтому разрыв показывается заново на каждой прокрутке.
   var split = document.getElementById('split');
   if (split) {
-    if (reduce || !('IntersectionObserver' in window)) {
+    if (reduce) {
       split.classList.add('torn');
+    } else if (watchFallback(split, function () {
+      window.setTimeout(function () { split.classList.add('torn'); }, 1350);
+    }, function () { split.classList.remove('torn'); })) {
     } else {
       var tearTimer = null;
       var so = new IntersectionObserver(function (es) {
