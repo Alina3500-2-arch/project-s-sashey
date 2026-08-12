@@ -390,7 +390,8 @@ h1 .l3,h1 .l4{font-size:.84em;}
   transition:opacity 1.4s var(--ease) .2s,scale 1.8s var(--ease) .2s;
   scale:1.05;
 }
-.closer.run .closer-photo{opacity:.62;scale:1;}
+/* Лицо на фоне финального блока просили убрать — и на ПК, и на мобильном. */
+.closer-photo{display:none;}
 .closer-mark{
   position:absolute;left:50%;top:5.4cqh;translate:-50% 0;
   width:3.5cqw;aspect-ratio:1;
@@ -1526,6 +1527,9 @@ h2.sec-title{
   .levels.seen .level-price,
   .levels.seen .level-card--3 .level-price{animation:none;}
 }
+/* Подсказка про свайп нужна только на мобильном — на ПК карточки видно
+   все сразу, никакого скролла нет. */
+.swipe-hint{display:none;}
 .level-details{margin:0;padding:0;list-style:none;border-top:1px dotted rgba(241,233,220,.16);}
 .level-details li{padding:clamp(6px,.62vw,9px) 0;border-bottom:1px dotted rgba(241,233,220,.16);font-size:clamp(9.5px,.8vw,12px);line-height:1.4;color:rgba(241,233,220,.82);}
 .level-details .is-check::before{content:"✓";margin-right:9px;color:var(--green);font-size:1.2em;}
@@ -1547,6 +1551,24 @@ h2.sec-title{
   .levels-lead br{display:none;}
   .levels-guide{display:grid;grid-template-columns:1fr 1fr;gap:0 18px;}
   .levels-guide li{min-height:54px;font-size:clamp(12px,3.3vw,15px);}
+  /* Подсказка «листайте дальше»: видна, пока лента не тронута, гаснет
+     после первого скролла — иначе мешала бы, когда пользователь уже понял. */
+  .swipe-hint{
+    display:flex;align-items:center;gap:8px;
+    margin:0 clamp(18px,5vw,32px) 6px;
+    color:var(--green);font-size:11px;font-weight:600;
+    letter-spacing:.1em;text-transform:uppercase;
+    animation:swipeFade 2.6s ease-in-out infinite;
+  }
+  .swipe-hint i{
+    width:16px;height:9px;
+    background:linear-gradient(90deg,transparent,var(--green) 70%);
+    clip-path:polygon(0 20%,60% 20%,60% 0,100% 50%,60% 100%,60% 80%,0 80%);
+    animation:swipeSlide 1.4s ease-in-out infinite;
+  }
+  @keyframes swipeFade{0%,100%{opacity:.55;}50%{opacity:1;}}
+  @keyframes swipeSlide{0%,100%{translate:0 0;}50%{translate:6px 0;}}
+  .level-cards.is-touched ~ .swipe-hint,.level-cards ~ .swipe-hint.is-hidden{opacity:0;pointer-events:none;}
   .level-cards{display:flex;gap:10px;overflow-x:auto;padding:8px clamp(18px,5vw,32px) 16px;scroll-snap-type:x mandatory;scrollbar-width:none;}
   .level-cards::-webkit-scrollbar{display:none;}
   /* На телефоне блок цен был почти на два экрана. Карточки уже и ниже,
@@ -1916,9 +1938,25 @@ h2.sec-title{
   }
   .case-cover-live-title{display:none;}
   .case-cover-copy h3{font-size:clamp(28px,7.8vw,48px);line-height:1.06;}
-  /* Кнопка "дальше" — там же, где и была, просто прижата вправо
-     (не вниз, не в угол) — понятнее, что жать сюда, чтобы листать вперёд */
-  .case-next--corner{display:flex;margin-left:auto;}
+  /* Кнопка "дальше" на телефоне была обычной мелкой текстовой ссылкой —
+     теперь крупная пилюля с мигающей стрелкой, как переход между слайдами
+     на ПК, только не в углу, а по центру справа, чтобы точно бросалась
+     в глаза, куда тапать. */
+  .case-detail .case-next--corner,
+  #cases .case-next--corner{
+    display:inline-flex;align-self:flex-end;margin:auto 0 0 auto;
+    padding:12px 18px;border:0;border-radius:999px;
+    background:rgba(168,220,40,.14);
+    box-shadow:0 0 0 1px rgba(168,220,40,.5),0 10px 26px rgba(0,0,0,.35);
+    color:var(--cream);font-size:15px;
+    animation:tapPulse 2.2s ease-in-out infinite;
+  }
+  .case-slide--light .case-next--corner{color:#12130f;}
+  .case-next--corner .arr{color:var(--green);font-size:1.3em;}
+  @keyframes tapPulse{
+    0%,100%{box-shadow:0 0 0 1px rgba(168,220,40,.5),0 10px 26px rgba(0,0,0,.35);}
+    50%{box-shadow:0 0 0 1px rgba(168,220,40,.8),0 0 22px rgba(168,220,40,.55),0 10px 26px rgba(0,0,0,.35);}
+  }
   .case-cover-stat{position:static;margin-top:6px;text-align:left;}
   .case-cover-stat span{font-size:clamp(17px,4.8vw,28px);}
   .case-cover-stat b{font-size:clamp(34px,10vw,64px);line-height:1;}
@@ -2100,6 +2138,12 @@ h2.sec-title{
   flex:1;min-height:0;display:flex;flex-direction:column;gap:7px;
   padding:12px 10px;overflow:hidden;background:#ECE5DC;
 }
+/* 4 экрана переписки в одном телефоне: виден только активный.
+   На ПК это тоже основной механизм — там всегда показан review 0,
+   остальные три дублируются полными карточками рядом (.trust-cards). */
+.rv-chat{display:none;min-height:0;flex-direction:column;}
+.rv-chat.is-on{display:flex;flex:1;}
+.rv-nav{display:none;}
 .msg{
   position:relative;max-width:86%;padding:7px 30px 8px 10px;
   border-radius:12px;font-size:11.5px;line-height:1.35;color:#12141a;
@@ -2188,8 +2232,9 @@ h2.sec-title{
   font-size:clamp(13px,1.05vw,16px);line-height:1.55;color:rgba(241,233,220,.72);
 }
 .steps7{
-  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:clamp(22px,2.6vw,40px) clamp(14px,1.8vw,28px);
+  /* 6 шагов вместо 7 — ровные 2 ряда по 3, без лишнего висящего элемента. */
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(26px,3vw,46px) clamp(14px,1.8vw,28px);
   margin:clamp(26px,3.2vw,48px) 0 0;padding:0;list-style:none;
 }
 .steps7 li{
@@ -2211,16 +2256,19 @@ h2.sec-title{
   transition-delay:calc(var(--i) * .09s + .25s);
 }
 .process.seen .steps7 li::after{scale:1 1;}
-.steps7 li:nth-child(4)::after,.steps7 li:last-child::after{content:none;}
+.steps7 li:nth-child(3)::after,.steps7 li:last-child::after{content:none;}
+/* Кружки ярче: заливка вместо пустоты, толще кант, лёгкое свечение всегда
+   (не только на hover) — просили заметнее и «живее». */
 .s-num{
   position:relative;z-index:1;display:grid;place-items:center;
-  width:clamp(38px,3.8vw,54px);height:clamp(38px,3.8vw,54px);margin:0 auto;
-  border:1px solid rgba(168,220,40,.55);border-radius:50%;
-  background:rgba(10,12,8,.9);
-  color:var(--green);font:400 clamp(14px,1.4vw,20px)/1 var(--serif);
-  transition:box-shadow .3s,border-color .3s;
+  width:clamp(40px,4vw,56px);height:clamp(40px,4vw,56px);margin:0 auto;
+  border:1.5px solid var(--green);border-radius:50%;
+  background:radial-gradient(circle at 32% 28%,rgba(168,220,40,.28),rgba(10,12,8,.95) 72%);
+  color:var(--green);font:600 clamp(14px,1.4vw,20px)/1 var(--serif);
+  box-shadow:0 0 0 4px rgba(168,220,40,.08),0 0 20px rgba(168,220,40,.22);
+  transition:box-shadow .3s,scale .3s;
 }
-.steps7 li:hover .s-num{border-color:var(--green);box-shadow:0 0 22px rgba(168,220,40,.35);}
+.steps7 li:hover .s-num{scale:1.08;box-shadow:0 0 0 6px rgba(168,220,40,.12),0 0 30px rgba(168,220,40,.45);}
 .s-ico{display:block;margin:clamp(10px,1.2vw,16px) auto clamp(6px,.8vw,10px);width:clamp(20px,2vw,28px);}
 .s-ico svg{
   width:100%;height:auto;fill:none;stroke:var(--cream);
@@ -2231,33 +2279,59 @@ h2.sec-title{
   margin:clamp(5px,.6vw,9px) auto 0;max-width:19ch;
   font-size:clamp(10.5px,.85vw,13px);line-height:1.45;color:rgba(241,233,220,.62);
 }
-/* змейка: изгиб от 04 вниз к 05 */
-.steps7 li:nth-child(4)::before{
+/* змейка: изгиб от конца 1-го ряда (03) вниз к началу 2-го (04) */
+.steps7 li:nth-child(3)::before{
   content:"";position:absolute;z-index:0;pointer-events:none;
-  left:50%;top:clamp(19px,1.9vw,27px);
+  left:50%;top:clamp(20px,2vw,28px);
   width:calc(100% + clamp(14px,1.8vw,28px));
-  height:calc(100% + clamp(22px,2.6vw,40px) - clamp(19px,1.9vw,27px));
-  border-right:1px dashed rgba(168,220,40,.5);
-  border-bottom:1px dashed rgba(168,220,40,.5);
-  border-bottom-right-radius:18px;
+  height:calc(100% + clamp(26px,3vw,46px) - clamp(20px,2vw,28px));
+  border-right:1.5px dashed rgba(168,220,40,.6);
+  border-bottom:1.5px dashed rgba(168,220,40,.6);
+  border-bottom-right-radius:22px;
   opacity:0;transition:opacity .5s var(--ease) .55s;
 }
-.process.seen .steps7 li:nth-child(4)::before{opacity:1;}
+.process.seen .steps7 li:nth-child(3)::before{opacity:1;}
 
 @media (max-width:900px){
   .trust{padding-inline:clamp(18px,5vw,32px);margin-top:clamp(30px,8vw,48px);}
   .trust::before{display:none;}
   .trust-head h2{font-size:clamp(26px,7.6vw,38px);}
   .trust-grid{grid-template-columns:1fr;gap:clamp(18px,5vw,28px);}
-  .phone{width:min(100%,270px);}
-  .trust-stats{margin-top:-16px;width:100%;}
+  /* На телефоне это не "телефон рядом с карточками", а сам просмотрщик
+     отзывов — во всю доступную ширину, крупный. */
+  .phone{width:100%;max-width:340px;}
+  /* Карточки-отзывы полностью дублируются каруселью внутри телефона —
+     на мобильном их не показываем отдельным списком. */
+  .trust-cards > .tcard{display:none;}
+  .rv-nav{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    margin-top:14px;width:100%;max-width:340px;
+  }
+  .rv-arrow{
+    flex:none;display:grid;place-items:center;width:34px;height:34px;
+    border:1px solid rgba(168,220,40,.5);border-radius:50%;
+    background:rgba(168,220,40,.08);color:var(--green);
+    font-size:19px;line-height:1;padding:0;
+    transition:background .2s,box-shadow .2s;
+  }
+  .rv-arrow:active{background:rgba(168,220,40,.22);box-shadow:0 0 16px rgba(168,220,40,.4);}
+  .rv-thumb{
+    flex:1;min-width:0;max-width:64px;padding:7px 4px;
+    border:1px solid rgba(241,233,220,.16);border-radius:10px;
+    background:rgba(255,255,255,.03);color:rgba(241,233,220,.62);
+    font-size:10px;letter-spacing:.02em;
+    transition:border-color .2s,color .2s,background .2s;
+  }
+  .rv-thumb i{font-style:normal;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .rv-thumb.is-on{border-color:var(--green);color:var(--green);background:rgba(168,220,40,.1);}
+  .trust-stats{margin-top:16px;width:100%;}
   .trust-stat-row{gap:8px;}
   .trust-stat b{font-size:clamp(17px,4.8vw,22px);}
   .trust-stat+.trust-stat{padding-left:8px;}
   .trust-all{align-self:center;}
   .process{padding-inline:clamp(18px,5vw,32px);margin-top:clamp(30px,8vw,48px);}
   .steps7{grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(18px,5vw,26px) clamp(10px,3vw,16px);}
-  .steps7 li::after,.steps7 li:nth-child(4)::before{content:none;}
+  .steps7 li::after,.steps7 li:nth-child(3)::before{content:none;}
   .steps7 p{font-size:11.5px;max-width:22ch;}
 }
 @media (prefers-reduced-motion:reduce){
@@ -2460,6 +2534,9 @@ h2.sec-title{
   padding-top:clamp(13px,1.5vw,20px);border-top:1px solid rgba(241,233,220,.1);
   font-size:clamp(10px,.8vw,12.5px);color:rgba(241,233,220,.44);
 }
+.foot-logo{flex:none;display:block;line-height:0;opacity:.9;transition:opacity .25s;}
+.foot-logo:hover{opacity:1;}
+.foot-logo img{display:block;width:26px;height:26px;}
 .foot-brand{color:rgba(241,233,220,.72);font-weight:600;letter-spacing:.04em;}
 .foot-copy{margin-left:auto;}
 

@@ -686,24 +686,58 @@
 
     <div class="trust-grid">
       <div class="trust-main">
-        <div class="phone" aria-hidden="true">
+        <div class="phone">
           <span class="phone-notch"></span>
           <div class="phone-screen">
-            <div class="chat-bar">
-              <span class="chat-back">‹</span>
-              <span class="chat-ava"></span>
-              <span class="chat-who"><b>Проект, Дмитрий</b><i>в сети</i></span>
-              <span class="chat-icons"><svg viewBox="0 0 24 24"><path d="M4 7h11v10H4zM16 10l4-3v10l-4-3z"/></svg><svg viewBox="0 0 24 24"><path d="M6 3c1 4 2 5 4 6l-2 3c2 3 5 6 8 8l3-2c1 2 2 3 6 4v3c-10 0-19-9-19-19z"/></svg></span>
+            <div class="rv-chat is-on" data-review="0">
+              <div class="chat-bar">
+                <span class="chat-back">‹</span>
+                <span class="chat-ava"></span>
+                <span class="chat-who"><b>Проект, Дмитрий</b><i>в сети</i></span>
+                <span class="chat-icons"><svg viewBox="0 0 24 24"><path d="M4 7h11v10H4zM16 10l4-3v10l-4-3z"/></svg><svg viewBox="0 0 24 24"><path d="M6 3c1 4 2 5 4 6l-2 3c2 3 5 6 8 8l3-2c1 2 2 3 6 4v3c-10 0-19-9-19-19z"/></svg></span>
+              </div>
+              <div class="chat-body">
+                <p class="msg in" style="--d:.15s">Привет! <em>09:15</em></p>
+                <p class="msg in" style="--d:.45s">Хочу отметить, как изменилась схема продаж после вашей работы. <em>09:16</em></p>
+                <p class="msg in" style="--d:.75s">Стало больше лидов, выше конверсия и средний чек. <em>09:16</em></p>
+                <p class="msg out" style="--d:1.05s">Привет! Рад слышать. Продолжаем двигаться! <em>09:17 <span class="tick">✓✓</span></em></p>
+                <p class="msg in" style="--d:1.35s">Да, результат отличный. Спасибо команде! <em>09:18</em></p>
+                <p class="msg in msg-emoji" style="--d:1.6s">👍 <em>09:19</em></p>
+              </div>
             </div>
-            <div class="chat-body">
-              <p class="msg in" style="--d:.15s">Привет! <em>09:15</em></p>
-              <p class="msg in" style="--d:.45s">Хочу отметить, как изменилась схема продаж после вашей работы. <em>09:16</em></p>
-              <p class="msg in" style="--d:.75s">Стало больше лидов, выше конверсия и средний чек. <em>09:16</em></p>
-              <p class="msg out" style="--d:1.05s">Привет! Рад слышать. Продолжаем двигаться! <em>09:17 <span class="tick">✓✓</span></em></p>
-              <p class="msg in" style="--d:1.35s">Да, результат отличный. Спасибо команде! <em>09:18</em></p>
-              <p class="msg in msg-emoji" style="--d:1.6s">👍 <em>09:19</em></p>
+            <div class="rv-chat" data-review="1">
+              <div class="chat-bar"><span class="chat-back">‹</span><span class="chat-ava"></span><span class="chat-who"><b>Мерентьев, Слава</b><i>в сети</i></span></div>
+              <div class="chat-body">
+                <p class="msg in">Аудит супер полезный, много инсайтов. <em>16:10</em></p>
+                <p class="msg out">Рады, что помогли! <em>16:12 <span class="tick">✓✓</span></em></p>
+              </div>
+            </div>
+            <div class="rv-chat" data-review="2">
+              <div class="chat-bar"><span class="chat-back">‹</span><span class="chat-ava"></span><span class="chat-who"><b>Баженс, Сергей</b><i>в сети</i></span></div>
+              <div class="chat-body">
+                <p class="msg in">Запустили систему заново — пошли первые клиенты. <em>11:20</em></p>
+                <p class="msg out">Отличный старт! Держим темп. <em>11:22 <span class="tick">✓✓</span></em></p>
+              </div>
+            </div>
+            <div class="rv-chat" data-review="3">
+              <div class="chat-bar"><span class="chat-back">‹</span><span class="chat-ava"></span><span class="chat-who"><b>Павликова, Анна</b><i>в сети</i></span></div>
+              <div class="chat-body">
+                <p class="msg in">Пересобрали отдел продаж, стало намного лучше. <em>14:45</em></p>
+                <p class="msg out">Продолжаем улучшать! <em>14:48 <span class="tick">✓✓</span></em></p>
+              </div>
             </div>
           </div>
+        </div>
+
+        <!-- Карусель отзывов только для мобильной версии: большой экран
+             телефона сверху (тот же .phone), под ним стрелки и мини-превью. -->
+        <div class="rv-nav" role="tablist" aria-label="Выбор отзыва">
+          <button class="rv-arrow rv-prev" type="button" aria-label="Предыдущий отзыв">‹</button>
+          <button class="rv-thumb is-on" type="button" data-review="0" aria-label="Отзыв: Дмитрий"><i>Дмитрий</i></button>
+          <button class="rv-thumb" type="button" data-review="1" aria-label="Отзыв: Слава"><i>Слава</i></button>
+          <button class="rv-thumb" type="button" data-review="2" aria-label="Отзыв: Сергей"><i>Сергей</i></button>
+          <button class="rv-thumb" type="button" data-review="3" aria-label="Отзыв: Анна"><i>Анна</i></button>
+          <button class="rv-arrow rv-next" type="button" aria-label="Следующий отзыв">›</button>
         </div>
 
         <div class="trust-stats">
@@ -755,14 +789,13 @@
     <h2 class="sec-title" id="process-title">Как мы работаем</h2>
     <p class="process-lead">Прозрачный процесс от первого звонка до результата.</p>
 
-    <ol class="steps7">
+    <ol class="steps7 steps6">
       <li style="--i:0"><span class="s-num">01</span><span class="s-ico"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg></span><b>Аудит</b><p>Изучаем ваш бизнес, цифры и текущую ситуацию.</p></li>
-      <li style="--i:1"><span class="s-num">02</span><span class="s-ico"><svg viewBox="0 0 24 24"><path d="M8 3h8v3H8zM6 6h12v15H6z"/><path d="M9 11h6M9 15h4"/></svg></span><b>Договор</b><p>Обсуждаем условия и подписываем договор.</p></li>
-      <li style="--i:2"><span class="s-num">03</span><span class="s-ico"><svg viewBox="0 0 24 24"><path d="M3 7h18v12H3z"/><path d="M3 7l4-4h10l4 4M16 13h3"/></svg></span><b>Аванс</b><p>Вы вносите аванс для старта работ по проекту.</p></li>
-      <li style="--i:3"><span class="s-num">04</span><span class="s-ico"><svg viewBox="0 0 24 24"><path d="M9 3h6v4h4v6h-4v4H9v-4H5V7h4z"/></svg></span><b>Сборка</b><p>Собираем систему: сайт, трафик, CRM, аналитика.</p></li>
-      <li style="--i:4"><span class="s-num">05</span><span class="s-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg></span><b>Сдача</b><p>Показываем результат и передаём доступы.</p></li>
-      <li style="--i:5"><span class="s-num">06</span><span class="s-ico"><svg viewBox="0 0 24 24"><path d="M4 14v-3a8 8 0 0 1 16 0v3"/><path d="M4 14h3v5H5a2 2 0 0 1-2-2zM20 14h-3v5h2a2 2 0 0 0 2-2z"/></svg></span><b>Введение</b><p>Обучаем вас и вашу команду работе с системой.</p></li>
-      <li style="--i:6"><span class="s-num">07</span><span class="s-ico"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></span><b>Ведение</b><p>Управляем системой и улучшаем результаты.</p></li>
+      <li style="--i:1"><span class="s-num">02</span><span class="s-ico"><svg viewBox="0 0 24 24"><path d="M8 3h8v3H8zM6 6h12v15H6z"/><path d="M9 11h6M9 15h4"/></svg></span><b>Договор и аванс</b><p>Обсуждаем условия, подписываем договор и стартуем с аванса.</p></li>
+      <li style="--i:2"><span class="s-num">03</span><span class="s-ico"><svg viewBox="0 0 24 24"><path d="M9 3h6v4h4v6h-4v4H9v-4H5V7h4z"/></svg></span><b>Сборка</b><p>Собираем систему: сайт, трафик, CRM, аналитика.</p></li>
+      <li style="--i:3"><span class="s-num">04</span><span class="s-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg></span><b>Сдача</b><p>Показываем результат и передаём доступы.</p></li>
+      <li style="--i:4"><span class="s-num">05</span><span class="s-ico"><svg viewBox="0 0 24 24"><path d="M4 14v-3a8 8 0 0 1 16 0v3"/><path d="M4 14h3v5H5a2 2 0 0 1-2-2zM20 14h-3v5h2a2 2 0 0 0 2-2z"/></svg></span><b>Введение</b><p>Обучаем вас и вашу команду работе с системой.</p></li>
+      <li style="--i:5"><span class="s-num">06</span><span class="s-ico"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></span><b>Ведение</b><p>Управляем системой и улучшаем результаты.</p></li>
     </ol>
   </section>
 
@@ -782,6 +815,7 @@
         </ul>
       </div>
 
+      <div class="swipe-hint" aria-hidden="true"><span>Листайте дальше</span><i></i></div>
       <div class="level-cards">
         <article class="level-card level-card--0">
           <p class="level-label">Уровень 0</p>
@@ -950,6 +984,7 @@
     </div>
 
     <div class="foot-bottom">
+      <a class="foot-logo" href="/" aria-label="Аполлонов и Шигапова"><img src="assets/ash-mark.svg" alt="" width="30" height="30" loading="lazy" /></a>
       <span class="foot-brand">Аполлонов и Шигапова</span>
       <span class="foot-legal">ИП Аполлонов А. · ИНН 000000000000 · ОГРНИП 000000000000000</span>
       <span class="foot-copy">© 2026 · Все права защищены</span>
@@ -958,7 +993,7 @@
 
 </div>
 
-<script src="site.js?v=20260809-3" defer></script>
+<script src="site.js?v=20260812-1" defer></script>
 
 
 
