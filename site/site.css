@@ -29,7 +29,10 @@
 }
 
 *{box-sizing:border-box;}
-html{scroll-behavior:smooth;overflow-x:hidden;}
+/* text-size-adjust:100% обязателен: без него Safari на iPhone сам
+   увеличивает кегль в отдельных широких абзацах (сильнее всего это было
+   видно на блоке «Вместе»), и вёрстка перестаёт совпадать с макетом. */
+html{scroll-behavior:smooth;overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%;}
 body{
   margin:0;
   background:var(--graphite);
@@ -395,14 +398,16 @@ h1 .l3,h1 .l4{font-size:.84em;}
 }
 /* Лицо на фоне финального блока просили убрать — и на ПК, и на мобильном. */
 .closer-photo{display:none;}
-.closer-mark{
-  position:absolute;left:50%;top:5.4cqh;translate:-50% 0;
-  width:3.5cqw;aspect-ratio:1;
-  background:url("assets/favicon.svg") center/contain no-repeat;
-  opacity:0;
-  transition:opacity .9s var(--ease),translate 1s var(--ease);
+/* В финале стоит тот же логотип, что и в шапке: знак плюс имена.
+   Раньше здесь был favicon-значок — читался как чужой элемент. */
+.closer-brand{
+  position:absolute;left:50%;top:4.6cqh;translate:-50% 0;
+  display:flex;align-items:center;gap:clamp(8px,.9cqw,14px);
+  opacity:0;transition:opacity .9s var(--ease);
 }
-.closer.run .closer-mark{opacity:1;}
+.closer-brand svg.mark{width:clamp(34px,3.4cqw,52px);height:auto;flex:none;overflow:visible;}
+.closer-brand .brand-name{font-size:clamp(10px,1cqw,15px);color:var(--cream);}
+.closer.run .closer-brand{opacity:1;}
 .closer h2{
   position:absolute;left:50%;top:17.4cqh;translate:-50% 0;width:64%;
   margin:0;font-family:var(--serif);font-weight:400;
@@ -1355,6 +1360,14 @@ h2.sec-title{
     translate:0 -18px;padding:clamp(14px,1.25vw,18px) clamp(22px,2.3vw,32px);white-space:nowrap;
     text-decoration:none;
   }
+  /* «Разобрать мой проект» на последнем слайде вставала вплотную к строке
+     вкладок — приподнимаем и подрезаем верхний отступ. */
+  .case-detail .case-next--project{margin-top:clamp(12px,1.4vw,19px);translate:0 -6px;}
+  /* на слайде «Результат» контент почти упирался в низ кадра, из-за чего
+     кнопка вставала вплотную к строке вкладок — поджимаем отступы */
+  .case-detail .case2-grid--result .case2-copy{padding-top:clamp(6px,.9vw,12px);}
+  .case-detail .case2-grid--result .case-stat-grid{margin-top:clamp(6px,.8vw,11px);gap:clamp(9px,1.1vw,15px) clamp(28px,3.6vw,54px);}
+  .case-detail .case2-grid--result .case-hire{margin-top:clamp(5px,.7vw,9px);padding:clamp(6px,.75vw,9px) clamp(11px,1.3vw,16px);}
   #cases .case-slide,
   .case-detail .case-slide{overflow:visible;}
   /* Появление слайда — общее для всех кейсов: Eco-Store и «детальных»
@@ -2045,7 +2058,9 @@ h2.sec-title{
   /* финальный экран на телефоне */
   /* container-type:size схлопнул бы блок без заданной высоты */
   .closer{container-type:normal;aspect-ratio:auto;padding:clamp(40px,11vw,64px) clamp(18px,5vw,32px) clamp(30px,8vw,48px);}
-  .closer-mark{position:static;display:block;translate:0;width:clamp(40px,12vw,56px);margin:0 auto clamp(18px,5vw,28px);}
+  .closer-brand{position:static;translate:0;justify-content:center;margin:0 auto clamp(18px,5vw,28px);}
+  .closer-brand svg.mark{width:clamp(38px,11vw,52px);}
+  .closer-brand .brand-name{font-size:clamp(11px,3vw,14px);}
   .closer h2{position:static;translate:0;width:auto;font-size:clamp(30px,9.4vw,54px);line-height:1.06;margin:0 0 clamp(14px,4vw,22px);}
   .closer > p{position:static;translate:0;width:auto;font-size:clamp(13px,3.6vw,16px);margin:0 0 clamp(24px,7vw,38px);}
   .closer-cta{position:relative;top:auto;}
@@ -2272,48 +2287,46 @@ h2.sec-title{
   position:absolute;z-index:0;inset:0;width:100%;height:100%;
   pointer-events:none;overflow:visible;
 }
-.route-line path{
-  fill:none;stroke:var(--green);stroke-width:1.4;stroke-linecap:round;
+.route-line .route-path{
+  fill:none;stroke:url(#routeGrad);stroke-width:2;stroke-linecap:round;
   vector-effect:non-scaling-stroke;
-  filter:drop-shadow(0 0 6px rgba(168,220,40,.45));
+  filter:drop-shadow(0 0 7px rgba(168,220,40,.4));
   stroke-dasharray:100;stroke-dashoffset:100;
   transition:stroke-dashoffset 2.4s var(--ease) .25s;
 }
-.process.seen .route-line path{stroke-dashoffset:0;}
+.process.seen .route-line .route-path{stroke-dashoffset:0;}
 .steps7{
   display:grid;grid-template-columns:repeat(6,minmax(0,1fr));
+  /* align-items:start — карточки по своему содержимому, а не растянутые
+     до нижнего края строки: иначе половина плашек пустует внизу */
+  align-items:start;
   gap:0 clamp(8px,1.1vw,18px);
   margin:0;padding:0;list-style:none;
 }
 /* лесенка: нечётные шаги опущены — кривая проходит между рядами */
 .steps7 li:nth-child(odd){margin-top:clamp(40px,5vw,80px);}
+/* Карточка шага: плашка на фоне маршрута. Иконки убраны — они дробили
+   карточку и спорили с номером. */
 .steps7 li{
-  position:relative;z-index:1;text-align:center;
+  position:relative;z-index:1;text-align:left;
+  padding:clamp(14px,1.5vw,22px) clamp(13px,1.4vw,20px) clamp(16px,1.7vw,24px);
+  border:1px solid rgba(241,233,220,.11);border-radius:18px;
+  background:linear-gradient(160deg,rgba(23,25,20,.96),rgba(12,14,11,.96));
+  box-shadow:0 18px 40px rgba(0,0,0,.4);
   opacity:0;translate:0 20px;
-  transition:opacity .6s var(--ease),translate .6s var(--ease);
+  transition:opacity .6s var(--ease),translate .6s var(--ease),border-color .3s,box-shadow .3s;
   transition-delay:calc(var(--i) * .09s);
 }
+.steps7 li:hover{border-color:rgba(168,220,40,.45);box-shadow:0 18px 40px rgba(0,0,0,.4),0 0 26px rgba(168,220,40,.16);}
 .process.seen .steps7 li{opacity:1;translate:0 0;}
-/* Кружки ярче: заливка вместо пустоты, толще кант, лёгкое свечение всегда
-   (не только на hover) — просили заметнее и «живее». */
 .s-num{
-  position:relative;z-index:1;display:grid;place-items:center;
-  width:clamp(40px,4vw,56px);height:clamp(40px,4vw,56px);margin:0 auto;
-  border:1.5px solid var(--green);border-radius:50%;
-  background:radial-gradient(circle at 32% 28%,rgba(168,220,40,.28),rgba(10,12,8,.95) 72%);
-  color:var(--green);font:600 clamp(14px,1.4vw,20px)/1 var(--serif);
-  box-shadow:0 0 0 4px rgba(168,220,40,.08),0 0 20px rgba(168,220,40,.22);
-  transition:box-shadow .3s,scale .3s;
-}
-.steps7 li:hover .s-num{scale:1.08;box-shadow:0 0 0 6px rgba(168,220,40,.12),0 0 30px rgba(168,220,40,.45);}
-.s-ico{display:block;margin:clamp(10px,1.2vw,16px) auto clamp(6px,.8vw,10px);width:clamp(20px,2vw,28px);}
-.s-ico svg{
-  width:100%;height:auto;fill:none;stroke:var(--cream);
-  stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;
+  display:block;margin:0 0 clamp(8px,.9vw,12px);
+  color:var(--green);font:400 clamp(20px,2.1vw,30px)/1 var(--serif);
+  letter-spacing:.04em;
 }
 .steps7 b{display:block;font:400 clamp(15px,1.5vw,21px)/1.2 var(--serif);}
 .steps7 p{
-  margin:clamp(5px,.6vw,9px) auto 0;max-width:19ch;
+  margin:clamp(6px,.7vw,10px) 0 0;
   font-size:clamp(10.5px,.85vw,13px);line-height:1.45;color:rgba(241,233,220,.62);
 }
 
