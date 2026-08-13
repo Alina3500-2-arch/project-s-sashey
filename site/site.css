@@ -62,9 +62,6 @@ a{color:inherit;text-decoration:none;}
   padding:clamp(16px,2.2vw,30px) var(--pad) clamp(20px,2.6vw,36px);
   padding-left:calc(var(--pad) + var(--rail));
   isolation:isolate;
-  /* чтобы дуга орбиты, выходящая за низ первого экрана, ложилась поверх
-     следующего блока, а не пряталась под ним */
-  z-index:1;
 }
 
 /* фото уходит на всю ширину окна, а не только контейнера */
@@ -101,16 +98,13 @@ body.ready .photo-in{animation:photoIn 1800ms var(--ease) both;}
   background:radial-gradient(120% 90% at 60% 45%, transparent 42%, rgba(0,0,0,.55) 100%);
 }
 
-/* Орбита вынесена из .media: та обрезает всё по первому экрану (иначе
-   фон, увеличенный на 7%, лез бы на соседние блоки). Здесь обрезки нет,
-   поэтому нижняя дуга свободно заходит на второй блок.
-   Отсчёт по-прежнему от окна, а не от .shell: центр орбиты стоял на 64%
-   ширины окна, а .shell уже 1440 px — отсюда поправка на его отступ. */
+/* Орбита живёт внутри .media и обрезается по первому экрану. Попытка
+   выпустить её на второй блок выглядела как дуга, случайно съехавшая
+   вниз по странице — вернули как было. */
 .orbit{
-  position:absolute;top:50%;
-  left:calc(var(--orbit-cx,64vw) - max(0px,(100vw - 1440px) / 2));
-  width:min(82vw,1060px);aspect-ratio:1;
-  translate:-50% -50%;pointer-events:none;z-index:1;
+  position:absolute;top:50%;left:64%;
+  width:min(78vw,980px);aspect-ratio:1;
+  translate:-50% -50%;pointer-events:none;
 }
 .orbit svg{width:100%;height:100%;overflow:visible;animation:spin 80s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -1148,7 +1142,11 @@ h2.sec-title{
 /* Декоративная линия роста между заголовком и цифрой оборота */
 /* График упирался в кнопку «Смотреть кейс» и налезал на второй скриншот.
    Сдвигаем левее и выше — линия остаётся, но идёт в чистом поле. */
-.case-cover-graph{position:absolute;z-index:2;left:30%;top:12%;width:35%;height:23%;pointer-events:none;overflow:visible;}
+/* Линия роста идёт в свободном коридоре между заголовком и цифрой
+   оборота. Левая граница — правее самой длинной строки заголовка (на
+   широком экране она доходит до 54% кадра), поэтому на текст линия не
+   заходит ни при какой ширине окна. */
+.case-cover-graph{position:absolute;z-index:2;left:56%;top:12%;width:11%;height:30%;pointer-events:none;overflow:visible;}
 .case-cover-graph .dot-start{fill:rgba(168,220,40,.6);}
 .case-cover-graph .dot-end{fill:var(--green);filter:drop-shadow(0 0 6px rgba(168,220,40,.9));}
 .case-analysis-grid,.case-traffic-grid{display:grid;grid-template-columns:48% 52%;height:100%;}.case-analysis-copy,.case-traffic-copy{padding-right:clamp(20px,3vw,48px);}.case-slide .case-sub{margin-top:clamp(14px,1.8vw,26px);font-size:clamp(15px,1.55vw,24px);line-height:1.35;color:#4b9b18;}.case-analysis-photo{width:100%;height:100%;border-radius:20px;overflow:hidden;}.case-analysis-photo img{display:block;width:100%;height:100%;object-fit:cover;}
@@ -1198,6 +1196,23 @@ h2.sec-title{
      обязан скруглять углы сам, иначе кадр наверху получается прямым. */
   .case-detail .case2-grid::before{content:"";position:absolute;inset:0;z-index:0;border-radius:var(--radius) var(--radius) 0 0;background-image:linear-gradient(90deg,rgba(6,7,5,0) 0%,rgba(6,7,5,.06) 31%,rgba(6,7,5,.48) 44%,rgba(6,7,5,.9) 56%,#060705 66%),linear-gradient(180deg,#060705 0%,rgba(6,7,5,.5) 9%,rgba(6,7,5,0) 24%,rgba(6,7,5,0) 74%,rgba(6,7,5,.5) 90%,#060705 100%),var(--case-detail-image);background-position:center,center,left center;background-size:cover,cover,auto 100%;background-repeat:no-repeat;}
   .case-detail .case2-grid > *{position:relative;z-index:1;}
+  /* Чередование фонов, как в Eco-Store: обложка тёмная, «Точка А» светлая,
+     «Что сделали» тёмная, «Оптимизация» светлая, «Результат» тёмный.
+     Фото слева остаётся, растворяется не в графите, а в кремовом. */
+  .case-detail .case-slide--light.case2-grid::before{
+    background-image:linear-gradient(90deg,rgba(244,240,233,0) 0%,rgba(244,240,233,.06) 31%,rgba(244,240,233,.48) 44%,rgba(244,240,233,.9) 56%,#f4f0e9 66%),
+      linear-gradient(180deg,#f4f0e9 0%,rgba(244,240,233,.5) 9%,rgba(244,240,233,0) 24%,rgba(244,240,233,0) 74%,rgba(244,240,233,.5) 90%,#f4f0e9 100%),
+      var(--case-detail-image);
+  }
+  .case-detail .case-slide--light .case-col-item{border-top-color:rgba(18,19,15,.16);}
+  .case-detail .case-slide--light .case-num-grid{border-top-color:rgba(18,19,15,.18);}
+  .case-detail .case-slide--light .case-col-item span{color:rgba(18,19,15,.6);}
+  .case-detail .case-slide--light .case-num-grid span{color:rgba(18,19,15,.76);}
+  /* лаймовый на кремовом не читается — берём тот же тёмно-зелёный, что и
+     в подзаголовках слайдов */
+  .case-detail .case-slide--light .case-kicker,
+  .case-detail .case-slide--light .case-col-h,
+  .case-detail .case-slide--light .case-num-grid b{color:#4b9b18;}
   .case-detail .case2-grid .case2-photo{visibility:hidden;}
 }
 /* Содержимое рабочих слайдов компактнее и чуть выше: переход к следующему
@@ -1328,10 +1343,9 @@ h2.sec-title{
   #cases .case-next--corner:hover,
   .case-detail .case-next--corner:hover{background:#181b12;}
   #cases .case-system-copy .case-next--corner[data-goto="0"]{top:50%;}
-  /* В детальных кейсах текст занимает правую половину кадра целиком, и
-     кнопка по центру ложилась поверх строк. Опускаем её в промежуток
-     между третьим и четвёртым пунктом — там всегда пусто. */
-  .case-detail .case-next--corner{top:68%;}
+  /* Кнопка стоит ровно по центру кадра, как в Eco-Store; чтобы она не
+     легла на строки, текстовая колонка не доходит до правого края. */
+  .case-detail .case-next--corner{top:50%;}
   /* и сама колонка не доходит до правого края — кнопка встаёт в это поле,
      а не поверх строк */
   .case-detail .case2-copy{padding-right:clamp(180px,16vw,215px);}
@@ -1356,7 +1370,7 @@ h2.sec-title{
     #cases .case-next--corner,
     .case-detail .case-next--corner{right:-80px;}
     /* кнопка ушла за край кадра — поле под неё внутри слайда больше не нужно */
-    .case-detail .case2-copy{padding-right:clamp(90px,7vw,120px);}
+    .case-detail .case2-copy{padding-right:clamp(130px,10vw,165px);}
   }
 
   @keyframes case-next-appear{
@@ -1663,7 +1677,7 @@ h2.sec-title{
     mask-image:linear-gradient(to bottom,transparent 0,#000 7%,#000 74%,transparent 100%);
   }
   .scrim,.vignette{display:none;}
-  .orbit{top:38%;--orbit-cx:50vw;width:150vw;}
+  .orbit{top:38%;left:50%;width:150%;}
 
   .phone,.pill{display:none;}
   .call{display:grid;}
