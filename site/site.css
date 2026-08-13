@@ -2251,32 +2251,35 @@ h2.sec-title{
   margin:clamp(10px,1.2vw,16px) 0 0;
   font-size:clamp(13px,1.05vw,16px);line-height:1.55;color:rgba(241,233,220,.72);
 }
-.steps7{
-  /* 6 шагов вместо 7 — ровные 2 ряда по 3, без лишнего висящего элемента. */
-  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:clamp(26px,3vw,46px) clamp(14px,1.8vw,28px);
-  margin:clamp(26px,3.2vw,48px) 0 0;padding:0;list-style:none;
+/* Маршрут: шесть шагов в один ряд «лесенкой», за ними — сплошная кривая.
+   Ломаные пунктирные перемычки между ячейками сетки заменены на неё. */
+.route{position:relative;margin:clamp(26px,3.2vw,48px) 0 0;}
+.route-line{
+  position:absolute;z-index:0;inset:0;width:100%;height:100%;
+  pointer-events:none;overflow:visible;
 }
+.route-line path{
+  fill:none;stroke:var(--green);stroke-width:1.4;stroke-linecap:round;
+  vector-effect:non-scaling-stroke;
+  filter:drop-shadow(0 0 6px rgba(168,220,40,.45));
+  stroke-dasharray:100;stroke-dashoffset:100;
+  transition:stroke-dashoffset 2.4s var(--ease) .25s;
+}
+.process.seen .route-line path{stroke-dashoffset:0;}
+.steps7{
+  display:grid;grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:0 clamp(8px,1.1vw,18px);
+  margin:0;padding:0;list-style:none;
+}
+/* лесенка: нечётные шаги опущены — кривая проходит между рядами */
+.steps7 li:nth-child(odd){margin-top:clamp(40px,5vw,80px);}
 .steps7 li{
-  position:relative;text-align:center;
+  position:relative;z-index:1;text-align:center;
   opacity:0;translate:0 20px;
   transition:opacity .6s var(--ease),translate .6s var(--ease);
   transition-delay:calc(var(--i) * .09s);
 }
 .process.seen .steps7 li{opacity:1;translate:0 0;}
-/* пунктирная связь между шагами в строке */
-.steps7 li::after{
-  content:"";position:absolute;z-index:0;
-  left:calc(50% + clamp(24px,2.4vw,34px));
-  right:calc(-50% + clamp(24px,2.4vw,34px));
-  top:clamp(19px,1.9vw,27px);height:1px;
-  background:repeating-linear-gradient(90deg,rgba(168,220,40,.55) 0 4px,transparent 4px 9px);
-  scale:0 1;transform-origin:left center;
-  transition:scale .5s var(--ease);
-  transition-delay:calc(var(--i) * .09s + .25s);
-}
-.process.seen .steps7 li::after{scale:1 1;}
-.steps7 li:nth-child(3)::after,.steps7 li:last-child::after{content:none;}
 /* Кружки ярче: заливка вместо пустоты, толще кант, лёгкое свечение всегда
    (не только на hover) — просили заметнее и «живее». */
 .s-num{
@@ -2299,18 +2302,6 @@ h2.sec-title{
   margin:clamp(5px,.6vw,9px) auto 0;max-width:19ch;
   font-size:clamp(10.5px,.85vw,13px);line-height:1.45;color:rgba(241,233,220,.62);
 }
-/* змейка: изгиб от конца 1-го ряда (03) вниз к началу 2-го (04) */
-.steps7 li:nth-child(3)::before{
-  content:"";position:absolute;z-index:0;pointer-events:none;
-  left:50%;top:clamp(20px,2vw,28px);
-  width:calc(100% + clamp(14px,1.8vw,28px));
-  height:calc(100% + clamp(26px,3vw,46px) - clamp(20px,2vw,28px));
-  border-right:1.5px dashed rgba(168,220,40,.6);
-  border-bottom:1.5px dashed rgba(168,220,40,.6);
-  border-bottom-right-radius:22px;
-  opacity:0;transition:opacity .5s var(--ease) .55s;
-}
-.process.seen .steps7 li:nth-child(3)::before{opacity:1;}
 
 @media (max-width:900px){
   .trust{padding-inline:clamp(18px,5vw,32px);margin-top:clamp(30px,8vw,48px);}
@@ -2350,14 +2341,15 @@ h2.sec-title{
   .trust-stat+.trust-stat{padding-left:8px;}
   .trust-all{align-self:center;}
   .process{padding-inline:clamp(18px,5vw,32px);margin-top:clamp(30px,8vw,48px);}
+  /* на телефоне лесенка и кривая не читаются — обычная сетка 2x3 */
   .steps7{grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(18px,5vw,26px) clamp(10px,3vw,16px);}
-  .steps7 li::after,.steps7 li:nth-child(3)::before{content:none;}
+  .steps7 li:nth-child(odd){margin-top:0;}
+  .route-line{display:none;}
   .steps7 p{font-size:11.5px;max-width:22ch;}
 }
 @media (prefers-reduced-motion:reduce){
   .trust .rv-phone,.trust-stats,.tcard,.steps7 li{opacity:1;translate:none;transition:none;}
   .trust.seen .msg{animation:none;opacity:1;transform:none;}
-  .steps7 li::after{scale:1 1;}
 }
 
 /* ═══ 06b. ОТВЕТЫ НА ВОПРОСЫ ═════════════════════════════ */
