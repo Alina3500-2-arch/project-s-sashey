@@ -49,7 +49,13 @@ html.is-loading body::before{
   translate:-50% -50%;border:1px solid rgba(168,220,40,.28);border-top-color:var(--green);
   border-radius:50%;animation:loaderSpin .8s linear infinite;
 }
-html.is-loading .shell > :not(.media){visibility:hidden;}
+/* Страховка без JS: если site.js не загрузился или не выполнился, класс
+   is-loading остаётся навсегда и сайт выглядит как вечный спиннер. Через
+   3 секунды содержимое показывается само, силами одного CSS. */
+html.is-loading body::before{animation:loaderSpin .8s linear infinite,loaderGiveUp 0s linear 3s forwards;}
+@keyframes loaderGiveUp{to{opacity:0;visibility:hidden;}}
+html.is-loading .shell > :not(.media){visibility:hidden;animation:shellGiveUp 0s linear 3s forwards;}
+@keyframes shellGiveUp{to{visibility:visible;}}
 html:not(.is-loading) .shell > :not(.media){animation:heroShellIn .75s var(--ease) both;}
 @keyframes loaderSpin{to{rotate:1turn;}}
 @keyframes heroShellIn{from{opacity:0;translate:0 10px;}to{opacity:1;translate:0 0;}}

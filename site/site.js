@@ -25,12 +25,17 @@
     return true;
   };
 
+  // Без requestAnimationFrame: в Safari кадры не идут, пока страница не
+  // видна на экране (свёрнутая вкладка, iframe за пределами прокрутки —
+  // например, в pc.html), и сайт так и оставался пустым, потому что
+  // is-loading прячет всё содержимое. Снимаем класс напрямую.
   var revealFirstScreen = function () {
-    requestAnimationFrame(function () {
-      document.documentElement.classList.remove('is-loading');
-      document.body.classList.add('ready');
-    });
+    document.documentElement.classList.remove('is-loading');
+    document.body.classList.add('ready');
   };
+  // Жёсткая страховка: что бы ни случилось с промисами ниже, через 2,5 с
+  // страница обязана быть видимой.
+  setTimeout(revealFirstScreen, 2500);
   var waitForLoad = document.readyState === 'complete'
     ? Promise.resolve()
     : new Promise(function (resolve) { window.addEventListener('load', resolve, { once:true }); });
