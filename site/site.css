@@ -1125,7 +1125,13 @@ h2.sec-title{
 #cases .case-cover-visual{left:2.5%;right:2.5%;bottom:3%;height:49%;}
 /* Края картинки со скриншотами видны прямоугольником на фоне слайда —
    растушёвываем их, чтобы блок «садился» в фон без границы. */
-#cases .case-cover-visual img{width:100%;height:100%;object-fit:contain;object-position:center bottom;
+#cases .case-cover-visual img{
+  /* height:100% + width:auto — рамка элемента совпадает с самой картинкой.
+     При width:100% контейнер был шире картинки (contain оставлял пустые
+     поля по бокам), растушёвка уходила в пустоту, а край скриншота
+     оставался резкой линией на фоне слайда. */
+  display:block;height:100%;width:auto;max-width:100%;margin-inline:auto;
+  object-fit:contain;object-position:center bottom;
   -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%),linear-gradient(180deg,transparent 0,#000 9%,#000 92%,transparent 100%);
   -webkit-mask-composite:source-in;
   mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%),linear-gradient(180deg,transparent 0,#000 9%,#000 92%,transparent 100%);
@@ -1294,7 +1300,8 @@ h2.sec-title{
   /* Переходы между экранами Eco-Store живут в одном месте — в центре
      правой части кадра. Подложка отделяет их от фотографии, а появление
      повторяется при каждом переключении вкладки. */
-  #cases .case-next--corner{
+  #cases .case-next--corner,
+  .case-detail .case-next--corner{
     position:absolute;z-index:7;right:4%;top:50%;translate:0 -50%;
     margin:0;padding:13px 19px 14px;border:0;border-radius:999px;
     background:rgba(10,11,8,.88);box-shadow:0 12px 30px rgba(0,0,0,.26);
@@ -1302,16 +1309,20 @@ h2.sec-title{
     letter-spacing:.08em;text-transform:uppercase;backdrop-filter:blur(8px);
     animation:case-next-appear .48s var(--ease) both;
   }
-  #cases .case-slide--light .case-next--corner{color:#f4f0e9;}
-  #cases .case-next--corner .arr{font-size:1.25em;}
-  #cases .case-next--corner:hover{background:#181b12;}
+  #cases .case-slide--light .case-next--corner,
+  .case-detail .case-slide--light .case-next--corner{color:#f4f0e9;}
+  #cases .case-next--corner .arr,
+  .case-detail .case-next--corner .arr{font-size:1.25em;}
+  #cases .case-next--corner:hover,
+  .case-detail .case-next--corner:hover{background:#181b12;}
   #cases .case-system-copy .case-next--corner[data-goto="0"]{top:50%;}
   #cases .case-next--project{
     position:static;align-self:flex-start;margin-top:clamp(14px,1.7vw,22px);
     translate:0 -18px;padding:clamp(14px,1.25vw,18px) clamp(22px,2.3vw,32px);white-space:nowrap;
     text-decoration:none;
   }
-  #cases .case-slide{overflow:visible;}
+  #cases .case-slide,
+  .case-detail .case-slide{overflow:visible;}
   /* Появление слайда — общее для всех кейсов: Eco-Store и «детальных»
      (бурение, тара, логистика), иначе переключение вкладок у них «сухое». */
   #cases .cb-frame.is-on .case-slide,
@@ -1322,7 +1333,8 @@ h2.sec-title{
      слайда. На более узком ПК она остаётся внутри, чтобы не дать странице
      горизонтальную прокрутку. */
   @media (min-width:1400px){
-    #cases .case-next--corner{right:-80px;}
+    #cases .case-next--corner,
+    .case-detail .case-next--corner{right:-80px;}
   }
 
   @keyframes case-next-appear{
@@ -1937,26 +1949,9 @@ h2.sec-title{
     font-size:clamp(15px,4.3vw,19px);
   }
   .case-cover-live-title{display:none;}
-  .case-cover-copy h3{font-size:clamp(28px,7.8vw,48px);line-height:1.06;}
-  /* Кнопка "дальше" на телефоне была обычной мелкой текстовой ссылкой —
-     теперь крупная пилюля с мигающей стрелкой, как переход между слайдами
-     на ПК, только не в углу, а по центру справа, чтобы точно бросалась
-     в глаза, куда тапать. */
-  .case-detail .case-next--corner,
-  #cases .case-next--corner{
-    display:inline-flex;align-self:flex-end;margin:auto 0 0 auto;
-    padding:12px 18px;border:0;border-radius:999px;
-    background:rgba(168,220,40,.14);
-    box-shadow:0 0 0 1px rgba(168,220,40,.5),0 10px 26px rgba(0,0,0,.35);
-    color:var(--cream);font-size:15px;
-    animation:tapPulse 2.2s ease-in-out infinite;
-  }
-  .case-slide--light .case-next--corner{color:#12130f;}
-  .case-next--corner .arr{color:var(--green);font-size:1.3em;}
-  @keyframes tapPulse{
-    0%,100%{box-shadow:0 0 0 1px rgba(168,220,40,.5),0 10px 26px rgba(0,0,0,.35);}
-    50%{box-shadow:0 0 0 1px rgba(168,220,40,.8),0 0 22px rgba(168,220,40,.55),0 10px 26px rgba(0,0,0,.35);}
-  }
+  /* Кнопка "дальше" — там же, где и была, просто прижата вправо
+     (не вниз, не в угол) — понятнее, что жать сюда, чтобы листать вперёд */
+  .case-next--corner{display:flex;margin-left:auto;}
   .case-cover-stat{position:static;margin-top:6px;text-align:left;}
   .case-cover-stat span{font-size:clamp(17px,4.8vw,28px);}
   .case-cover-stat b{font-size:clamp(34px,10vw,64px);line-height:1;}
@@ -2098,7 +2093,7 @@ h2.sec-title{
 
 /* ── мокап телефона ── */
 .trust-main{display:flex;flex-direction:column;align-items:center;}
-.phone{
+.rv-phone{
   /* flex:none — иначе колонка сжимает мокап по высоте, а aspect-ratio
      пересчитывает ширину, и телефон получается втрое меньше нужного */
   position:relative;flex:none;align-self:stretch;
@@ -2109,12 +2104,12 @@ h2.sec-title{
   opacity:0;translate:0 26px;
   transition:opacity .8s var(--ease),translate .8s var(--ease);
 }
-.trust.seen .phone{opacity:1;translate:0 0;}
-.phone-notch{
+.trust.seen .rv-phone{opacity:1;translate:0 0;}
+.rv-phone-notch{
   position:absolute;z-index:3;left:50%;top:11px;translate:-50% 0;
   width:38%;height:20px;border-radius:0 0 14px 14px;background:#111;
 }
-.phone-screen{
+.rv-phone-screen{
   position:relative;height:100%;overflow:hidden;border-radius:30px;
   background:#ECE5DC;display:flex;flex-direction:column;
 }
@@ -2299,7 +2294,7 @@ h2.sec-title{
   .trust-grid{grid-template-columns:1fr;gap:clamp(18px,5vw,28px);}
   /* На телефоне это не "телефон рядом с карточками", а сам просмотрщик
      отзывов — во всю доступную ширину, крупный. */
-  .phone{width:100%;max-width:340px;}
+  .rv-phone{width:100%;max-width:340px;}
   /* Карточки-отзывы полностью дублируются каруселью внутри телефона —
      на мобильном их не показываем отдельным списком. */
   .trust-cards > .tcard{display:none;}
@@ -2335,7 +2330,7 @@ h2.sec-title{
   .steps7 p{font-size:11.5px;max-width:22ch;}
 }
 @media (prefers-reduced-motion:reduce){
-  .trust .phone,.trust-stats,.tcard,.steps7 li{opacity:1;translate:none;transition:none;}
+  .trust .rv-phone,.trust-stats,.tcard,.steps7 li{opacity:1;translate:none;transition:none;}
   .trust.seen .msg{animation:none;opacity:1;transform:none;}
   .steps7 li::after{scale:1 1;}
 }
