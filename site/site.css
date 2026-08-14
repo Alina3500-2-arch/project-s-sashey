@@ -1157,7 +1157,7 @@ h2.sec-title{
    оборота. Левая граница — правее самой длинной строки заголовка (на
    широком экране она доходит до 54% кадра), поэтому на текст линия не
    заходит ни при какой ширине окна. */
-.case-cover-graph{position:absolute;z-index:2;left:55.5%;top:11%;width:12%;height:33%;pointer-events:none;overflow:visible;}
+.case-cover-graph{position:absolute;z-index:2;left:56%;top:19%;width:12.5%;height:15%;pointer-events:none;overflow:visible;}
 .case-cover-graph .dot-start{fill:rgba(168,220,40,.6);}
 .case-cover-graph .dot-end{fill:var(--green);filter:drop-shadow(0 0 6px rgba(168,220,40,.9));}
 .case-analysis-grid,.case-traffic-grid{display:grid;grid-template-columns:48% 52%;height:100%;}.case-analysis-copy,.case-traffic-copy{padding-right:clamp(20px,3vw,48px);}.case-slide .case-sub{margin-top:clamp(14px,1.8vw,26px);font-size:clamp(15px,1.55vw,24px);line-height:1.35;color:#4b9b18;}.case-analysis-photo{width:100%;height:100%;border-radius:20px;overflow:hidden;}.case-analysis-photo img{display:block;width:100%;height:100%;object-fit:cover;}
