@@ -1157,7 +1157,7 @@ h2.sec-title{
    оборота. Левая граница — правее самой длинной строки заголовка (на
    широком экране она доходит до 54% кадра), поэтому на текст линия не
    заходит ни при какой ширине окна. */
-.case-cover-graph{position:absolute;z-index:2;left:56%;top:12%;width:11%;height:30%;pointer-events:none;overflow:visible;}
+.case-cover-graph{position:absolute;z-index:2;left:55.5%;top:11%;width:12%;height:33%;pointer-events:none;overflow:visible;}
 .case-cover-graph .dot-start{fill:rgba(168,220,40,.6);}
 .case-cover-graph .dot-end{fill:var(--green);filter:drop-shadow(0 0 6px rgba(168,220,40,.9));}
 .case-analysis-grid,.case-traffic-grid{display:grid;grid-template-columns:48% 52%;height:100%;}.case-analysis-copy,.case-traffic-copy{padding-right:clamp(20px,3vw,48px);}.case-slide .case-sub{margin-top:clamp(14px,1.8vw,26px);font-size:clamp(15px,1.55vw,24px);line-height:1.35;color:#4b9b18;}.case-analysis-photo{width:100%;height:100%;border-radius:20px;overflow:hidden;}.case-analysis-photo img{display:block;width:100%;height:100%;object-fit:cover;}
@@ -1195,7 +1195,9 @@ h2.sec-title{
 /* ── Второй кейс: Алмазное бурение. Фото слева, текст справа —
    зеркально Eco-Store, поэтому отдельная сетка, но типографика и
    зелёные акценты те же переменные. ── */
-.case2-grid{display:grid;grid-template-columns:44% 56%;height:100%;column-gap:clamp(24px,3vw,48px);}
+/* 40/60 вместо 44/56: под кнопку перехода отведено поле справа, и текстовой
+   колонке не хватало ширины — строки рвались по два-три слова. */
+.case2-grid{display:grid;grid-template-columns:40% 60%;height:100%;column-gap:clamp(20px,2.4vw,38px);}
 .case2-grid .case2-photo{width:100%;height:100%;object-fit:cover;border-radius:20px;}
 .case2-copy{display:flex;flex-direction:column;justify-content:flex-start;padding-top:clamp(16px,3vw,40px);}
 /* На широком экране технический визуал не выглядит вставленной карточкой:
@@ -1210,15 +1212,29 @@ h2.sec-title{
   /* Чередование фонов, как в Eco-Store: обложка тёмная, «Точка А» светлая,
      «Что сделали» тёмная, «Оптимизация» светлая, «Результат» тёмный.
      Фото слева остаётся, растворяется не в графите, а в кремовом. */
+  /* У светлых слайдов своя, изначально светлая фотография: тёмный кадр,
+     вытянутый в кремовый градиентом, выглядел грязно. Затемняющие слои
+     здесь почти не нужны — только мягкий увод в фон справа и по краям. */
   .case-detail .case-slide--light.case2-grid::before{
-    background-image:linear-gradient(90deg,rgba(244,240,233,0) 0%,rgba(244,240,233,.06) 31%,rgba(244,240,233,.48) 44%,rgba(244,240,233,.9) 56%,#f4f0e9 66%),
-      linear-gradient(180deg,#f4f0e9 0%,rgba(244,240,233,.5) 9%,rgba(244,240,233,0) 24%,rgba(244,240,233,0) 74%,rgba(244,240,233,.5) 90%,#f4f0e9 100%),
-      var(--case-detail-image);
+    background-image:linear-gradient(90deg,rgba(244,240,233,0) 0%,rgba(244,240,233,0) 34%,rgba(244,240,233,.35) 48%,rgba(244,240,233,.86) 60%,#f4f0e9 70%),
+      linear-gradient(180deg,#f4f0e9 0%,rgba(244,240,233,.35) 8%,rgba(244,240,233,0) 22%,rgba(244,240,233,0) 78%,rgba(244,240,233,.45) 92%,#f4f0e9 100%),
+      var(--case-light-image,var(--case-detail-image));
+    background-size:cover,cover,auto 92%;
+    background-position:center,center,left center;
   }
   .case-detail .case-slide--light .case-col-item{border-top-color:rgba(18,19,15,.16);}
   .case-detail .case-slide--light .case-num-grid{border-top-color:rgba(18,19,15,.18);}
-  .case-detail .case-slide--light .case-col-item span{color:rgba(18,19,15,.6);}
-  .case-detail .case-slide--light .case-num-grid span{color:rgba(18,19,15,.76);}
+  /* На кремовом фоне тонкий серифный текст «плыл» — заголовки строк
+     делаем плотнее и полностью чёрными, подписи темнее. */
+  .case-detail .case-slide--light .case-col-item span{color:rgba(18,19,15,.74);}
+  .case-detail .case-slide--light .case-num-grid span{color:rgba(18,19,15,.86);}
+  .case-detail .case-slide--light .case-col-item b,
+  .case-detail .case-slide--light .case-stat b,
+  .case-detail .case-slide--light h3{color:#0b0c09;font-weight:500;}
+  .case-detail .case-slide--light .case-sub{color:#3d7f12;}
+  /* Заголовок слайда не должен разваливаться на «Точка А и / задача» —
+     колонка стала уже, поэтому переносим его по смыслу и чуть плотнее. */
+  .case-detail .case2-copy h3{text-wrap:balance;line-height:1.04;}
   /* лаймовый на кремовом не читается — берём тот же тёмно-зелёный, что и
      в подзаголовках слайдов */
   .case-detail .case-slide--light .case-kicker,
@@ -2331,6 +2347,11 @@ h2.sec-title{
   letter-spacing:.04em;
 }
 .steps7 b{display:block;font:400 clamp(15px,1.5vw,21px)/1.2 var(--serif);}
+.route-cta{
+  display:flex;flex-direction:column;align-items:center;gap:clamp(9px,1vw,14px);
+  margin:clamp(28px,3.4vw,52px) 0 0;text-align:center;
+}
+.route-cta p{margin:0;font-size:clamp(12px,.95vw,15px);color:rgba(241,233,220,.6);}
 .steps7 p{
   margin:clamp(6px,.7vw,10px) 0 0;
   font-size:clamp(10.5px,.85vw,13px);line-height:1.45;color:rgba(241,233,220,.62);
@@ -2404,6 +2425,25 @@ h2.sec-title{
   color:var(--green);font-size:clamp(11px,.95vw,14px);font-weight:600;
   letter-spacing:.1em;text-transform:uppercase;text-decoration:none;
 }
+/* Портрет под колонкой вопросов. Не «фотография в рамке», а фон: снимок
+   растворяется книзу и вправо в графит страницы, как на первом экране. */
+.faq-portrait{position:relative;margin:clamp(26px,3vw,44px) 0 0;}
+.faq-portrait img{
+  display:block;width:min(100%,320px);aspect-ratio:3/4;object-fit:cover;object-position:center 18%;
+  filter:grayscale(.25) contrast(1.03);
+  -webkit-mask-image:linear-gradient(to bottom,#000 34%,rgba(0,0,0,.55) 68%,transparent 97%),
+                     linear-gradient(to right,#000 58%,rgba(0,0,0,.5) 84%,transparent 100%);
+  -webkit-mask-composite:source-in;
+          mask-image:linear-gradient(to bottom,#000 34%,rgba(0,0,0,.55) 68%,transparent 97%),
+                     linear-gradient(to right,#000 58%,rgba(0,0,0,.5) 84%,transparent 100%);
+          mask-composite:intersect;
+}
+.faq-portrait figcaption{
+  position:absolute;left:0;bottom:clamp(6px,1vw,14px);
+  display:flex;flex-direction:column;gap:3px;
+}
+.faq-portrait figcaption b{font:400 clamp(15px,1.35vw,20px)/1 var(--serif);color:var(--cream);}
+.faq-portrait figcaption span{font-size:clamp(10.5px,.85vw,13px);color:rgba(241,233,220,.55);max-width:24ch;line-height:1.4;}
 .faq-ask .arr{font-size:1.4em;transition:translate .25s var(--ease);}
 .faq-ask:hover .arr{translate:6px 0;}
 
@@ -2588,6 +2628,9 @@ h2.sec-title{
 @media (max-width:900px){
   .faq{grid-template-columns:1fr;gap:clamp(18px,5vw,26px);padding-inline:clamp(18px,5vw,32px);margin-top:clamp(30px,8vw,48px);}
   .faq-head{position:static;}
+  /* на телефоне колонка вопросов идёт сразу под шапкой блока — портрет
+     между ними только отодвигал бы сами вопросы вниз */
+  .faq-portrait{display:none;}
   .faq-head .sec-title{font-size:clamp(26px,7.6vw,38px);}
   .faq-item summary{font-size:clamp(13.5px,3.9vw,16px);padding:13px 14px;}
   .faq-a{padding:0 14px 13px;}
