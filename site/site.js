@@ -241,11 +241,13 @@
   if (rvList) {
     var rvShots = [].slice.call(document.querySelectorAll('.rv-shot'));
     var rvCards = [].slice.call(document.querySelectorAll('.rv-card'));
+    var rvSets = [].slice.call(document.querySelectorAll('.trust-stat-set'));
     rvList.addEventListener('click', function (e) {
       var card = e.target.closest('.rv-card');
       if (!card) { return; }
       var id = card.dataset.review;
       rvShots.forEach(function (img) { img.classList.toggle('is-on', img.dataset.review === id); });
+      rvSets.forEach(function (set) { set.classList.toggle('is-on', set.dataset.review === id); });
       rvCards.forEach(function (b) {
         var on = b === card;
         b.classList.toggle('is-on', on);

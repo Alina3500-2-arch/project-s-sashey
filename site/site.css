@@ -1089,7 +1089,7 @@ h2.sec-title{
 .case-intro .case-green{color:var(--green);}
 .case-intro .case-minor{font-size:.72em;}
 .case-intro p{margin:0;max-width:680px;font-size:clamp(15px,1.2vw,18px);line-height:1.6;color:rgba(241,233,220,.76);}
-.case-video-card{position:relative;justify-self:end;width:min(100%,300px);aspect-ratio:458/433;overflow:hidden;border:1px solid rgba(168,220,40,.35);border-radius:22px;background:#090a08 url("assets/case-elina-video-cover.png") center/cover no-repeat;box-shadow:0 22px 52px rgba(0,0,0,.42),0 0 0 1px rgba(168,220,40,.08);opacity:0;translate:0 22px;transition:opacity .75s var(--ease) .15s,translate .75s var(--ease) .15s;}
+.case-video-card{position:relative;justify-self:end;width:min(100%,300px);aspect-ratio:458/433;overflow:hidden;border:1px solid rgba(168,220,40,.35);border-radius:22px;background:#090a08 url("assets/case-elina-video-cover.jpg") center/cover no-repeat;box-shadow:0 22px 52px rgba(0,0,0,.42),0 0 0 1px rgba(168,220,40,.08);opacity:0;translate:0 22px;transition:opacity .75s var(--ease) .15s,translate .75s var(--ease) .15s;}
 .casebig.seen .case-video-card{opacity:1;translate:0 0;}
 .case-video{display:block;width:100%;height:100%;object-fit:cover;background:#090a08;opacity:0;transition:opacity .2s ease;}
 .case-video-card.is-playing .case-video{opacity:1;}
@@ -1157,9 +1157,24 @@ h2.sec-title{
    оборота. Левая граница — правее самой длинной строки заголовка (на
    широком экране она доходит до 54% кадра), поэтому на текст линия не
    заходит ни при какой ширине окна. */
-.case-cover-graph{position:absolute;z-index:2;left:56%;top:19%;width:12.5%;height:15%;pointer-events:none;overflow:visible;}
-.case-cover-graph .dot-start{fill:rgba(168,220,40,.6);}
-.case-cover-graph .dot-end{fill:var(--green);filter:drop-shadow(0 0 6px rgba(168,220,40,.9));}
+/* График роста стоит под цифрой оборота, в её же колонке: узкий коридор
+   между заголовком и цифрой давал «закорючку» — линию было некуда вести.
+   Здесь у графика своя полоса во всю ширину колонки, с базовой линией
+   отсчёта и заливкой под кривой. */
+.case-cover-graph{position:absolute;z-index:2;left:68.5%;top:33.5%;width:26.5%;height:10%;pointer-events:none;overflow:visible;}
+.case-cover-graph .graph-line{
+  stroke-dasharray:100;stroke-dashoffset:100;
+  transition:stroke-dashoffset 1.9s var(--ease) .45s;
+}
+.casebig.seen .case-cover-graph .graph-line{stroke-dashoffset:0;}
+.case-cover-graph .graph-area{opacity:0;transition:opacity 1s var(--ease) 1.5s;}
+.casebig.seen .case-cover-graph .graph-area{opacity:1;}
+.case-cover-graph .dot-start{fill:rgba(168,220,40,.55);}
+.case-cover-graph .dot-end{
+  fill:var(--green);filter:drop-shadow(0 0 7px rgba(168,220,40,.9));
+  opacity:0;transition:opacity .5s var(--ease) 2.1s;
+}
+.casebig.seen .case-cover-graph .dot-end{opacity:1;}
 .case-analysis-grid,.case-traffic-grid{display:grid;grid-template-columns:48% 52%;height:100%;}.case-analysis-copy,.case-traffic-copy{padding-right:clamp(20px,3vw,48px);}.case-slide .case-sub{margin-top:clamp(14px,1.8vw,26px);font-size:clamp(15px,1.55vw,24px);line-height:1.35;color:#4b9b18;}.case-analysis-photo{width:100%;height:100%;border-radius:20px;overflow:hidden;}.case-analysis-photo img{display:block;width:100%;height:100%;object-fit:cover;}
 /* Заголовки этих двух слайдов длиннее, чем в остальном дизайне — при
    базовом клампе до 68px разъезжались в 4 строки и вылезали за рамку
@@ -2201,6 +2216,8 @@ h2.sec-title{
   transition:opacity .7s var(--ease) .25s,translate .7s var(--ease) .25s;
 }
 .trust.seen .trust-stats{opacity:1;translate:0 0;}
+.trust-stat-set{display:none;}
+.trust-stat-set.is-on{display:block;}
 .trust-stats-label{
   display:block;margin-bottom:clamp(8px,1vw,13px);
   font-size:clamp(9.5px,.8vw,12px);letter-spacing:.22em;text-transform:uppercase;color:rgba(241,233,220,.5);
@@ -2248,6 +2265,7 @@ h2.sec-title{
   position:absolute;z-index:0;inset:0;width:100%;height:100%;
   pointer-events:none;overflow:visible;
 }
+.route-line--mob{display:none;}
 .route-line .route-path{
   fill:none;stroke:url(#routeGrad);stroke-width:2;stroke-linecap:round;
   vector-effect:non-scaling-stroke;
@@ -2321,22 +2339,29 @@ h2.sec-title{
   .trust::before{display:none;}
   .trust-head h2{font-size:clamp(26px,7.6vw,38px);}
   .trust-grid{grid-template-columns:1fr;gap:clamp(18px,5vw,28px);}
-  /* На телефоне телефон-мокап шире, а превью переписок идут под ним
-     в две колонки. */
-  .rv-device{width:100%;max-width:340px;}
-  .trust-stats{margin-top:-52px;width:100%;}
-  .trust-stat-row{gap:8px;}
-  .trust-stat b{font-size:clamp(17px,4.8vw,22px);}
-  .trust-stat+.trust-stat{padding-left:8px;}
-  .rv-list{grid-template-columns:repeat(2,minmax(0,1fr));}
-  .rv-card{grid-template-columns:1fr;gap:9px;}
-  .rv-card-shot{width:100%;aspect-ratio:4/3;}
-  .rv-card-copy em{display:none;}
+  /* На телефоне переписки не уезжают под экран: слева уменьшенный
+     телефон, справа столбик окошек — оба видны одновременно. */
+  .trust-grid{grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:clamp(10px,3vw,16px);}
+  .trust-main{align-items:stretch;}
+  .rv-device{width:100%;max-width:none;}
+  .trust-stats{margin-top:-42px;width:100%;padding:11px 12px 13px;}
+  .trust-stat-row{grid-template-columns:1fr;gap:7px;}
+  .trust-stat b{font-size:clamp(15px,4.2vw,19px);}
+  .trust-stat+.trust-stat{padding-left:0;padding-top:7px;border-left:0;border-top:1px solid rgba(241,233,220,.16);}
+  .trust-stats-label{font-size:9.5px;margin-bottom:8px;}
+  .rv-list{grid-template-columns:1fr;gap:8px;width:clamp(72px,22vw,96px);}
+  .rv-card{grid-template-columns:1fr;gap:6px;padding:6px;border-radius:12px;}
+  .rv-card-shot{width:100%;aspect-ratio:3/4;border-radius:8px;}
+  .rv-card-copy i,.rv-card-copy em{display:none;}
+  .rv-card-copy b{font-size:11.5px;text-align:center;}
   .process{padding-inline:clamp(18px,5vw,32px);margin-top:clamp(30px,8vw,48px);}
   /* на телефоне лесенка и кривая не читаются — обычная сетка 2x3 */
   .steps7{grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(18px,5vw,26px) clamp(10px,3vw,16px);}
   .steps7 li:nth-child(odd){margin-top:0;}
-  .route-line{display:none;}
+  /* линия остаётся и на телефоне, но идёт змейкой сверху вниз:
+     01 -> 02, вниз на 03, влево-вниз на 04 и так до 06 */
+  .route-line--pc{display:none;}
+  .route-line--mob{display:block;}
   .steps7 p{font-size:11.5px;max-width:22ch;}
 }
 @media (prefers-reduced-motion:reduce){

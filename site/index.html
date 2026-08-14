@@ -49,7 +49,7 @@
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Manrope:wght@400;500;600&display=swap" />
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Manrope:wght@400;500;600&display=swap" /></noscript>
 
-<link rel="stylesheet" href="site.css?v=20260814-3" />
+<link rel="stylesheet" href="site.css?v=20260814-4" />
 <!-- Yandex.Metrika counter -->
 <script>
   /* Счётчик грузится после полной загрузки страницы: tag.js не должен
@@ -451,7 +451,7 @@
         <p>Вместо тысяч кейсов с недоказанными результатами и вымышленными цифрами — один полноценный кейс. В нём мы берём на себя максимальную часть маркетинга и операционной системы, а собственнику остаётся качественно выполнять свои услуги.</p>
       </div>
       <div class="case-video-card">
-        <video class="case-video" poster="assets/case-elina-video-cover.png" preload="metadata" playsinline aria-label="Видео кейса Eco-Store">
+        <video class="case-video" poster="assets/case-elina-video-cover.jpg" preload="none" playsinline aria-label="Видео кейса Eco-Store">
           <source src="assets/case-elina-web.mp4" type="video/mp4" />
         </video>
         <button class="case-video-play" type="button" aria-label="Воспроизвести видео">
@@ -466,14 +466,31 @@
         <div class="case-cover-copy"><p class="case-kicker">Кейс · Eco-Store</p><h3>Из мелких заказов —<br />в коммерческую систему</h3><div class="case-line"></div><p class="case-cover-desc">Производственная компания выросла из небольших заказов мха — в заказы премиальных изделий из мха по всей России.</p></div>
         <a class="case-next case-view-btn--float" href="#" data-goto="1">Смотреть кейс <span class="arr">→</span></a>
         <div class="case-cover-stat"><span>600 тыс. →</span><b>1,2 млн ₽</b><small>рабочий месячный оборот</small></div>
-        <svg class="case-cover-graph" viewBox="0 0 460 130" fill="none" aria-hidden="true" preserveAspectRatio="none">
-          <path d="M8 118 C 110 112 200 88 300 62 C 360 46 400 28 452 14" stroke="var(--green)" stroke-width="2" vector-effect="non-scaling-stroke" opacity=".85" />
-          <circle class="dot-start" cx="8" cy="118" r="4" />
-          <circle class="dot-end" cx="452" cy="14" r="6" />
+        <svg class="case-cover-graph" viewBox="0 0 280 64" fill="none" aria-hidden="true" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="ecoGraphLine" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#A8DC28" stop-opacity=".12" />
+              <stop offset=".45" stop-color="#A8DC28" stop-opacity=".7" />
+              <stop offset="1" stop-color="#A8DC28" />
+            </linearGradient>
+            <linearGradient id="ecoGraphFill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#A8DC28" stop-opacity=".22" />
+              <stop offset="1" stop-color="#A8DC28" stop-opacity="0" />
+            </linearGradient>
+          </defs>
+          <!-- базовая линия отсчёта -->
+          <path class="graph-base" d="M2 58 H278" stroke="rgba(241,233,220,.14)" stroke-width="1" vector-effect="non-scaling-stroke" />
+          <!-- площадь под графиком -->
+          <path class="graph-area" d="M4 52 C 60 50 96 44 132 36 C 168 28 210 17 274 6 L274 58 L4 58 Z" fill="url(#ecoGraphFill)" />
+          <!-- сам график роста -->
+          <path class="graph-line" pathLength="100" d="M4 52 C 60 50 96 44 132 36 C 168 28 210 17 274 6"
+                stroke="url(#ecoGraphLine)" stroke-width="2.2" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+          <circle class="dot-start" cx="4" cy="52" r="3" />
+          <circle class="dot-end" cx="274" cy="6" r="5" />
         </svg>
         <picture class="case-cover-stack case-cover-visual">
-          <source media="(max-width:900px)" srcset="assets/case-eco-cover-mobile-2up.png" />
-          <img loading="lazy" decoding="async" src="assets/case-eco-cover-desktop.png" alt="Сайт, аналитика и CRM Eco-Store" />
+          <source media="(max-width:900px)" srcset="assets/case-eco-cover-mobile-2up.jpg" />
+          <img loading="lazy" decoding="async" src="assets/case-eco-cover-desktop.jpg" alt="Сайт, аналитика и CRM Eco-Store" />
         </picture>
       </article>
     </div>
@@ -486,7 +503,7 @@
         <div class="case-fact"><b>300</b><span>объявлений на Авито</span></div>
         <div class="case-fact"><b>ручной расчёт</b><span>каждый заказ — с нуля</span></div></div>
         <a class="case-next case-next--corner" href="#" data-goto="2">Упаковка <span class="arr">→</span></a></div>
-        <picture class="case-analysis-photo"><source media="(max-width:900px)" srcset="assets/case-analysis-desk.jpg" /><img loading="lazy" decoding="async" src="assets/case-analysis-desk-final.png" alt="Анализ заказов Eco-Store" /></picture>
+        <picture class="case-analysis-photo"><source media="(max-width:900px)" srcset="assets/case-analysis-desk.jpg" /><img loading="lazy" decoding="async" src="assets/case-analysis-desk-final.jpg" alt="Анализ заказов Eco-Store" /></picture>
       </article>
     </div>
     <div class="cb-frame cb-pack" data-panel="2">
@@ -497,7 +514,7 @@
       <p class="case-metric">29,7&nbsp;<small>тыс.&nbsp;₽</small> <em>→</em> 42,9&nbsp;<small>тыс.&nbsp;₽</small></p>
       <div class="case-metric-compare"><div><span>Было</span><b>29,7 тыс. ₽</b></div><div><span>Стало</span><b>42,9 тыс. ₽</b></div></div>
       <a class="case-next case-next--corner" href="#" data-goto="3">Трафик <span class="arr">→</span></a></div>
-      <div class="case-site-stack"><div class="case-site-block"><span class="case-pill">Сайт до</span><picture><source media="(max-width:900px)" srcset="assets/case-old-site-mobile.jpg" /><img loading="lazy" decoding="async" class="case-site-old" src="assets/case-old-site-desktop-final.jpg" alt="Старый сайт" /></picture></div><span class="case-site-arrow">→</span><div class="case-site-block"><span class="case-pill green">Сайт после</span><picture><source media="(max-width:900px)" srcset="assets/case-eco-mobile-full.jpg" /><img loading="lazy" decoding="async" class="case-site-new" src="assets/case-eco-new-desktop.png" alt="Новый сайт Eco-Store (актуальный скриншот)" /></picture></div></div></article>
+      <div class="case-site-stack"><div class="case-site-block"><span class="case-pill">Сайт до</span><picture><source media="(max-width:900px)" srcset="assets/case-old-site-mobile.jpg" /><img loading="lazy" decoding="async" class="case-site-old" src="assets/case-old-site-desktop-final.jpg" alt="Старый сайт" /></picture></div><span class="case-site-arrow">→</span><div class="case-site-block"><span class="case-pill green">Сайт после</span><picture><source media="(max-width:900px)" srcset="assets/case-eco-mobile-full.jpg" /><img loading="lazy" decoding="async" class="case-site-new" src="assets/case-eco-new-desktop.jpg" alt="Новый сайт Eco-Store (актуальный скриншот)" /></picture></div></div></article>
     </div>
     <div class="cb-frame" data-panel="3">
       <article class="case-slide case-slide--light case-traffic-grid"><div class="case-traffic-copy"><p class="case-kicker">Трафик</p>
@@ -561,7 +578,7 @@
       <div class="cb-frame cb-cover is-on" data-panel="0">
         <article class="case-slide case-cover case-cover--drilling">
           <picture class="case-drilling-cover-art">
-            <source media="(max-width:900px)" srcset="assets/case-drilling-cover-mobile.png" />
+            <source media="(max-width:900px)" srcset="assets/case-drilling-cover-mobile.jpg" />
             <img loading="lazy" decoding="async" src="assets/case-drilling-detail-2026.jpg" alt="Кейс по алмазному бурению: стоимость обращения снижена с 4 000 до 1 000–2 000 ₽" />
           </picture>
           <a class="case-next case-view-btn--float" href="#" data-goto="1">Смотреть кейс <span class="arr">→</span></a>
@@ -665,24 +682,24 @@
   <!-- 05c ─ Кейс: B2B-логистика (временные тексты скопированы из кейса выше) -->
   <!-- 05c ─ Кейс: международные грузоперевозки. Клиент под NDA: ниша и цифры
        настоящие, название компании и узнаваемые детали не раскрываем. -->
-  <section class="reveal casebig case-detail case-detail--extra" id="case3" style="--case-detail-image:url('assets/case-logistics-detail.png');--case-light-image:url('assets/case-logistics-light.jpg')">
+  <section class="reveal casebig case-detail case-detail--extra" id="case3" style="--case-detail-image:url('assets/case-logistics-detail.jpg');--case-light-image:url('assets/case-logistics-light.jpg')">
     <h3 class="case-project-title"><span>Международные </span>грузоперевозки</h3>
     <div class="cb-shell is-cover">
-      <div class="cb-frame cb-cover is-on" data-panel="0"><article class="case-slide case-cover case-cover--drilling"><picture class="case-drilling-cover-art"><source media="(max-width:900px)" srcset="assets/case-logistics-cover-mobile.png" /><img loading="lazy" decoding="async" src="assets/case-logistics-cover-desktop.png" alt="Кейс B2B-логистики" /></picture><a class="case-next case-view-btn--float" href="#" data-goto="1">Смотреть кейс <span class="arr">→</span></a></article></div>
+      <div class="cb-frame cb-cover is-on" data-panel="0"><article class="case-slide case-cover case-cover--drilling"><picture class="case-drilling-cover-art"><source media="(max-width:900px)" srcset="assets/case-logistics-cover-mobile.jpg" /><img loading="lazy" decoding="async" src="assets/case-logistics-cover-desktop.jpg" alt="Кейс B2B-логистики" /></picture><a class="case-next case-view-btn--float" href="#" data-goto="1">Смотреть кейс <span class="arr">→</span></a></article></div>
       <div class="cb-frame" data-panel="1"><article class="case-slide case-slide--light case2-grid">
-        <img loading="lazy" decoding="async" class="case2-photo" src="assets/case-logistics-detail.png" alt="Карта международной логистики и контейнеры" />
+        <img loading="lazy" decoding="async" class="case2-photo" src="assets/case-logistics-detail.jpg" alt="Карта международной логистики и контейнеры" />
         <div class="case2-copy"><h3>Точка А и задача</h3><div class="case-cols"><div class="case-col"><p class="case-col-h">Было</p><div class="case-col-item"><b>100 000 ₽</b><span>рекламного бюджета в месяц</span></div><div class="case-col-item"><b>2–3 заявки в день</b><span>со всех направлений сразу</span></div><div class="case-col-item"><b>Китай недобирал</b><span>ключевое направление давало меньше всего обращений</span></div></div><div class="case-col"><p class="case-col-h">Цель</p><div class="case-col-item"><b>7–10 заявок в день</b><span>с последующим ростом до 30</span></div><div class="case-col-item"><b>Половина — Китай</b><span>заявки по ключевому направлению</span></div><div class="case-col-item"><b>Только бизнес</b><span>отсечь обращения от частных лиц</span></div></div></div><a class="case-next case-next--corner" href="#" data-goto="2">Что сделали <span class="arr">→</span></a></div>
       </article></div>
       <div class="cb-frame" data-panel="2"><article class="case-slide case2-grid case2-grid--compact">
-        <img loading="lazy" decoding="async" class="case2-photo" src="assets/case-logistics-detail.png" alt="Карта международной логистики и контейнеры" />
+        <img loading="lazy" decoding="async" class="case2-photo" src="assets/case-logistics-detail.jpg" alt="Карта международной логистики и контейнеры" />
         <div class="case2-copy"><p class="case-kicker">Пересобрали основу</p><h3>Что сделали</h3><p class="case-sub">Одна общая страница не могла продавать десяток разных услуг — под каждую сделали свою.</p><div class="case-num-grid"><div><b>01</b><span>Полностью переделали сайт</span></div><div><b>02</b><span>Отдельные посадочные под каждую услугу: авиа, море, сборные и мультимодальные грузы</span></div><div><b>03</b><span>Отдельные страницы под направления — Китай, США, Индия и другие</span></div><div><b>04</b><span>Настроили аналитику и коллтрекинг, запустили поиск отдельно по каждому направлению</span></div></div><a class="case-next case-next--corner" href="#" data-goto="3">Масштаб <span class="arr">→</span></a></div>
       </article></div>
       <div class="cb-frame" data-panel="3"><article class="case-slide case-slide--light case2-grid case2-grid--compact">
-        <img loading="lazy" decoding="async" class="case2-photo" src="assets/case-logistics-detail.png" alt="Карта международной логистики и контейнеры" />
+        <img loading="lazy" decoding="async" class="case2-photo" src="assets/case-logistics-detail.jpg" alt="Карта международной логистики и контейнеры" />
         <div class="case2-copy"><p class="case-kicker">Чистили поток</p><h3>Оптимизация и рост</h3><p class="case-sub">Заявка заявке рознь: сначала добивались, чтобы приходил бизнес, и только потом наращивали объём.</p><div class="case-num-grid"><div><b>01</b><span>Приходили частные лица — планомерно вычищали запросы, которые их приводили</span></div><div><b>02</b><span>Другие источники в Директе давали заявки, но те плохо закрывались — отключили</span></div><div><b>03</b><span>Где клик стоил дорого, перевели кампании на оплату за конверсии</span></div><div><b>04</b><span>Пошёл спам — подключили офлайн-конверсии, и качество заявок выросло</span></div></div><a class="case-next case-next--corner" href="#" data-goto="4">Результат <span class="arr">→</span></a></div>
       </article></div>
       <div class="cb-frame" data-panel="4"><article class="case-slide case2-grid case2-grid--compact case2-grid--result">
-        <img loading="lazy" decoding="async" class="case2-photo" src="assets/case-logistics-detail.png" alt="Карта международной логистики и контейнеры" />
+        <img loading="lazy" decoding="async" class="case2-photo" src="assets/case-logistics-detail.jpg" alt="Карта международной логистики и контейнеры" />
         <div class="case2-copy"><p class="case-kicker">Точка Б</p><h3>Результат</h3><p class="case-sub">Реклама стала управляемым каналом: бюджет растёт — поток заявок растёт вместе с ним.</p><div class="case-stat-grid"><div class="case-stat"><b>30 заявок в день</b><span>было 2–3</span></div><div class="case-stat"><b>1 500 ₽</b><span>стоимость заявки на старте</span></div><div class="case-stat"><b>100 тыс. → 2 млн ₽</b><span>рекламный бюджет за год</span></div><div class="case-stat"><b>Китай</b><span>вышел в ключевое направление по заявкам</span></div></div><div class="case-hire"><b>Рост занял год</b><span>Бюджет увеличивали только после того, как удерживали стоимость заявки.</span></div><a class="case-next case-next--corner" href="#" data-goto="0">Заново <span class="arr">→</span></a><a class="cta case-next--project" href="#audit">Разобрать мой проект</a></div>
       </article></div>
       <div class="cb-tabs" aria-label="Слайды кейса B2B-логистики"><button class="cb-arrow cb-arrow-prev" type="button" aria-label="Предыдущий слайд кейса" disabled><svg width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M7.5 2.5L3 6l4.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="cb-tablist"><button class="cb-tab is-on" type="button" data-tab="0">Кейс</button><button class="cb-tab" type="button" data-tab="1">Точка А</button><button class="cb-tab" type="button" data-tab="2">Что сделали</button><button class="cb-tab" type="button" data-tab="3">Оптимизация</button><button class="cb-tab" type="button" data-tab="4">Результат</button></div><button class="cb-arrow cb-arrow-next" type="button" aria-label="Следующий слайд кейса"><svg width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M4.5 2.5L9 6l-4.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
@@ -690,14 +707,14 @@
   </section>
 
   <!-- 05d ─ Кейс: Пластиковая тара (временные тексты скопированы из кейса выше) -->
-  <section class="reveal casebig case-detail case-detail--extra" id="case4" style="--case-detail-image:url('assets/case-packaging-detail.png');--case-light-image:url('assets/case-packaging-light.jpg')">
+  <section class="reveal casebig case-detail case-detail--extra" id="case4" style="--case-detail-image:url('assets/case-packaging-detail.jpg');--case-light-image:url('assets/case-packaging-light.jpg')">
     <h3 class="case-project-title">Пластиковая тара</h3>
     <div class="cb-shell is-cover">
-      <div class="cb-frame cb-cover is-on" data-panel="0"><article class="case-slide case-cover case-cover--drilling"><picture class="case-drilling-cover-art"><source media="(max-width:900px)" srcset="assets/case-packaging-cover-mobile.png" /><img loading="lazy" decoding="async" src="assets/case-packaging-cover-desktop.png" alt="Кейс производителя пластиковой тары" /></picture><a class="case-next case-view-btn--float" href="#" data-goto="1">Смотреть кейс <span class="arr">→</span></a></article></div>
-      <div class="cb-frame" data-panel="1"><article class="case-slide case-slide--light case2-grid"><img loading="lazy" decoding="async" class="case2-photo" src="assets/case-packaging-detail.png" alt="Пластиковая тара" /><div class="case2-copy"><h3>Точка А и задача</h3><div class="case-cols"><div class="case-col"><p class="case-col-h">Было</p><div class="case-col-item"><b>Архаичный сайт</b><span>без аналитики</span></div><div class="case-col-item"><b>60–70 тыс. ₽</b><span>рекламного бюджета</span></div><div class="case-col-item"><b>4 000 ₽</b><span>за одно обращение</span></div></div><div class="case-col"><p class="case-col-h">Цель</p><div class="case-col-item"><b>Максимум заявок</b><span>в сезон</span></div><div class="case-col-item"><b>до 2 000 ₽</b><span>удержать стоимость обращения</span></div><div class="case-col-item"><b>Растить бюджет</b><span>после достижения цели</span></div></div></div><a class="case-next case-next--corner" href="#" data-goto="2">Что сделали <span class="arr">→</span></a></div></article></div>
-      <div class="cb-frame" data-panel="2"><article class="case-slide case2-grid case2-grid--compact"><img loading="lazy" decoding="async" class="case2-photo" src="assets/case-packaging-detail.png" alt="Пластиковая тара" /><div class="case2-copy"><p class="case-kicker">Пересобрали основу</p><h3>Что сделали</h3><p class="case-sub">Реклама начала работать не сама по себе, а как часть понятной системы привлечения.</p><div class="case-num-grid"><div><b>01</b><span>Проанализировали конкурентов, продукт и целевую аудиторию</span></div><div><b>02</b><span>Изучили путь клиента до обращения</span></div><div><b>03</b><span>Создали новый сайт и настроили полноценную аналитику</span></div><div><b>04</b><span>Запустили Яндекс Директ с акцентом на поисковый спрос</span></div></div><a class="case-next case-next--corner" href="#" data-goto="3">Масштаб <span class="arr">→</span></a></div></article></div>
-      <div class="cb-frame" data-panel="3"><article class="case-slide case-slide--light case2-grid case2-grid--compact"><img loading="lazy" decoding="async" class="case2-photo" src="assets/case-packaging-detail.png" alt="Пластиковая тара" /><div class="case2-copy"><p class="case-kicker">Закрепили экономику</p><h3>Оптимизация и рост</h3><p class="case-sub">Сначала добились нужной стоимости обращения — и только после этого начали увеличивать объём.</p><div class="case-num-grid"><div><b>01</b><span>Отсекли слабые запросы и оставили трафик с коммерческим намерением</span></div><div><b>02</b><span>Перераспределяли бюджет в пользу кампаний с реальными обращениями</span></div><div><b>03</b><span>Удерживали стоимость обращения в заданных пределах</span></div><div><b>04</b><span>Увеличили рекламный бюджет после достижения цели</span></div></div><a class="case-next case-next--corner" href="#" data-goto="4">Результат <span class="arr">→</span></a></div></article></div>
-      <div class="cb-frame" data-panel="4"><article class="case-slide case2-grid case2-grid--compact case2-grid--result"><img loading="lazy" decoding="async" class="case2-photo" src="assets/case-packaging-detail.png" alt="Пластиковая тара" /><div class="case2-copy"><p class="case-kicker">Точка Б</p><h3>Результат</h3><p class="case-sub">Реклама перестала быть экспериментом и стала управляемым источником заказов.</p><div class="case-stat-grid"><div class="case-stat"><b>Результат</b><span>показатель проекта</span></div><div class="case-stat"><b>Результат</b><span>показатель проекта</span></div><div class="case-stat"><b>Результат</b><span>показатель проекта</span></div><div class="case-stat"><b>Максимум</b><span>целевых обращений</span></div></div><div class="case-hire"><b>Система готова к росту</b><span>Точный текст добавим после получения данных.</span></div><a class="case-next case-next--corner" href="#" data-goto="0">Заново <span class="arr">→</span></a><a class="cta case-next--project" href="#audit">Разобрать мой проект</a></div></article></div>
+      <div class="cb-frame cb-cover is-on" data-panel="0"><article class="case-slide case-cover case-cover--drilling"><picture class="case-drilling-cover-art"><source media="(max-width:900px)" srcset="assets/case-packaging-cover-mobile.jpg" /><img loading="lazy" decoding="async" src="assets/case-packaging-cover-desktop.jpg" alt="Кейс производителя пластиковой тары" /></picture><a class="case-next case-view-btn--float" href="#" data-goto="1">Смотреть кейс <span class="arr">→</span></a></article></div>
+      <div class="cb-frame" data-panel="1"><article class="case-slide case-slide--light case2-grid"><img loading="lazy" decoding="async" class="case2-photo" src="assets/case-packaging-detail.jpg" alt="Пластиковая тара" /><div class="case2-copy"><h3>Точка А и задача</h3><div class="case-cols"><div class="case-col"><p class="case-col-h">Было</p><div class="case-col-item"><b>Архаичный сайт</b><span>без аналитики</span></div><div class="case-col-item"><b>60–70 тыс. ₽</b><span>рекламного бюджета</span></div><div class="case-col-item"><b>4 000 ₽</b><span>за одно обращение</span></div></div><div class="case-col"><p class="case-col-h">Цель</p><div class="case-col-item"><b>Максимум заявок</b><span>в сезон</span></div><div class="case-col-item"><b>до 2 000 ₽</b><span>удержать стоимость обращения</span></div><div class="case-col-item"><b>Растить бюджет</b><span>после достижения цели</span></div></div></div><a class="case-next case-next--corner" href="#" data-goto="2">Что сделали <span class="arr">→</span></a></div></article></div>
+      <div class="cb-frame" data-panel="2"><article class="case-slide case2-grid case2-grid--compact"><img loading="lazy" decoding="async" class="case2-photo" src="assets/case-packaging-detail.jpg" alt="Пластиковая тара" /><div class="case2-copy"><p class="case-kicker">Пересобрали основу</p><h3>Что сделали</h3><p class="case-sub">Реклама начала работать не сама по себе, а как часть понятной системы привлечения.</p><div class="case-num-grid"><div><b>01</b><span>Проанализировали конкурентов, продукт и целевую аудиторию</span></div><div><b>02</b><span>Изучили путь клиента до обращения</span></div><div><b>03</b><span>Создали новый сайт и настроили полноценную аналитику</span></div><div><b>04</b><span>Запустили Яндекс Директ с акцентом на поисковый спрос</span></div></div><a class="case-next case-next--corner" href="#" data-goto="3">Масштаб <span class="arr">→</span></a></div></article></div>
+      <div class="cb-frame" data-panel="3"><article class="case-slide case-slide--light case2-grid case2-grid--compact"><img loading="lazy" decoding="async" class="case2-photo" src="assets/case-packaging-detail.jpg" alt="Пластиковая тара" /><div class="case2-copy"><p class="case-kicker">Закрепили экономику</p><h3>Оптимизация и рост</h3><p class="case-sub">Сначала добились нужной стоимости обращения — и только после этого начали увеличивать объём.</p><div class="case-num-grid"><div><b>01</b><span>Отсекли слабые запросы и оставили трафик с коммерческим намерением</span></div><div><b>02</b><span>Перераспределяли бюджет в пользу кампаний с реальными обращениями</span></div><div><b>03</b><span>Удерживали стоимость обращения в заданных пределах</span></div><div><b>04</b><span>Увеличили рекламный бюджет после достижения цели</span></div></div><a class="case-next case-next--corner" href="#" data-goto="4">Результат <span class="arr">→</span></a></div></article></div>
+      <div class="cb-frame" data-panel="4"><article class="case-slide case2-grid case2-grid--compact case2-grid--result"><img loading="lazy" decoding="async" class="case2-photo" src="assets/case-packaging-detail.jpg" alt="Пластиковая тара" /><div class="case2-copy"><p class="case-kicker">Точка Б</p><h3>Результат</h3><p class="case-sub">Реклама перестала быть экспериментом и стала управляемым источником заказов.</p><div class="case-stat-grid"><div class="case-stat"><b>Результат</b><span>показатель проекта</span></div><div class="case-stat"><b>Результат</b><span>показатель проекта</span></div><div class="case-stat"><b>Результат</b><span>показатель проекта</span></div><div class="case-stat"><b>Максимум</b><span>целевых обращений</span></div></div><div class="case-hire"><b>Система готова к росту</b><span>Точный текст добавим после получения данных.</span></div><a class="case-next case-next--corner" href="#" data-goto="0">Заново <span class="arr">→</span></a><a class="cta case-next--project" href="#audit">Разобрать мой проект</a></div></article></div>
       <div class="cb-tabs" aria-label="Слайды кейса пластиковой тары"><button class="cb-arrow cb-arrow-prev" type="button" aria-label="Предыдущий слайд кейса" disabled><svg width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M7.5 2.5L3 6l4.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="cb-tablist"><button class="cb-tab is-on" type="button" data-tab="0">Кейс</button><button class="cb-tab" type="button" data-tab="1">Точка А</button><button class="cb-tab" type="button" data-tab="2">Что сделали</button><button class="cb-tab" type="button" data-tab="3">Оптимизация</button><button class="cb-tab" type="button" data-tab="4">Результат</button></div><button class="cb-arrow cb-arrow-next" type="button" aria-label="Следующий слайд кейса"><svg width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M4.5 2.5L9 6l-4.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
     </div>
   </section>
@@ -724,12 +741,39 @@
           <img class="rv-frame" src="assets/phone-frame.png" alt="" aria-hidden="true" />
         </div>
 
+        <!-- Плашка меняется вместе с отзывом: у каждого проекта свои цифры -->
         <div class="trust-stats">
-          <span class="trust-stats-label">Результат проекта</span>
-          <div class="trust-stat-row">
-            <div class="trust-stat"><b>+180%</b><span>рост звонков</span></div>
-            <div class="trust-stat"><b>в 2,3 раза</b><span>рост конверсии</span></div>
-            <div class="trust-stat"><b>+75%</b><span>рост среднего чека</span></div>
+          <div class="trust-stat-set is-on" data-review="0">
+            <span class="trust-stats-label">Автоюрист · Москва</span>
+            <div class="trust-stat-row">
+              <div class="trust-stat"><b>3–6</b><span>клиентов в день</span></div>
+              <div class="trust-stat"><b>2 200 ₽</b><span>квалифицированный лид</span></div>
+              <div class="trust-stat"><b>каждый 3-й</b><span>контакт доходит до оплаты</span></div>
+            </div>
+          </div>
+          <div class="trust-stat-set" data-review="1">
+            <span class="trust-stats-label">Проект на двух площадках</span>
+            <div class="trust-stat-row">
+              <div class="trust-stat"><b>41</b><span>обращение за неделю</span></div>
+              <div class="trust-stat"><b>50 ₽ тыс.</b><span>недельный бюджет на два канала</span></div>
+              <div class="trust-stat"><b>еженедельно</b><span>сверяем траты и заявки</span></div>
+            </div>
+          </div>
+          <div class="trust-stat-set" data-review="2">
+            <span class="trust-stats-label">Мебель и интерьер</span>
+            <div class="trust-stat-row">
+              <div class="trust-stat"><b>3 недели</b><span>подряд заявок больше</span></div>
+              <div class="trust-stat"><b>больше гостей</b><span>в зале, а не только заявок</span></div>
+              <div class="trust-stat"><b>по будням</b><span>подстраиваем показы под график</span></div>
+            </div>
+          </div>
+          <div class="trust-stat-set" data-review="3">
+            <span class="trust-stats-label">Ремонт станков ЧПУ</span>
+            <div class="trust-stat-row">
+              <div class="trust-stat"><b>100–120</b><span>обращений в месяц</span></div>
+              <div class="trust-stat"><b>350 ₽</b><span>за обращение</span></div>
+              <div class="trust-stat"><b>80–90%</b><span>загрузка специалиста</span></div>
+            </div>
           </div>
         </div>
       </div>
@@ -763,7 +807,23 @@
     <p class="process-lead">Видно не только что мы делаем, но и в какой момент вы подключаетесь к процессу.</p>
 
     <div class="route">
-      <svg class="route-line" viewBox="0 0 1200 260" preserveAspectRatio="none" aria-hidden="true">
+      <!-- мобильная змейка: 01->02 вправо, вниз к 03, влево к 04 и так далее -->
+      <svg class="route-line route-line--mob" viewBox="0 0 300 600" preserveAspectRatio="none" aria-hidden="true">
+        <path class="route-path" pathLength="100"
+              d="M 74 62 C 150 62 226 62 226 62 C 262 62 262 128 226 128
+                 C 190 128 110 128 74 128 C 38 128 38 262 74 262
+                 C 110 262 190 262 226 262 C 262 262 262 396 226 396
+                 C 190 396 110 396 74 396 C 38 396 38 530 74 530
+                 C 110 530 190 530 226 530"
+              stroke="url(#routeGrad)" stroke-width="1.6" fill="none" />
+        <path class="route-pulse" pathLength="100"
+              d="M 74 62 C 150 62 226 62 226 62 C 262 62 262 128 226 128
+                 C 190 128 110 128 74 128 C 38 128 38 262 74 262
+                 C 110 262 190 262 226 262 C 262 262 262 396 226 396
+                 C 190 396 110 396 74 396 C 38 396 38 530 74 530
+                 C 110 530 190 530 226 530" fill="none" />
+      </svg>
+      <svg class="route-line route-line--pc" viewBox="0 0 1200 260" preserveAspectRatio="none" aria-hidden="true">
         <defs>
           <linearGradient id="routeGrad" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0" stop-color="#A8DC28" stop-opacity=".15" />
@@ -1018,7 +1078,7 @@
 
 </div>
 
-<script src="site.js?v=20260814-1" defer></script>
+<script src="site.js?v=20260814-2" defer></script>
 
 
 
