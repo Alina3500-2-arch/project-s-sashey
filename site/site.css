@@ -1669,8 +1669,65 @@ h2.sec-title{
 /* Подсказка про свайп нужна только на мобильном — на ПК карточки видно
    все сразу, никакого скролла нет. */
 .swipe-hint{display:none;}
-.level-details{margin:0;padding:0;list-style:none;border-top:1px dotted rgba(241,233,220,.16);}
-.level-details li{padding:clamp(6px,.62vw,9px) 0;border-bottom:1px dotted rgba(241,233,220,.16);font-size:clamp(9.5px,.8vw,12px);line-height:1.4;color:rgba(241,233,220,.82);}
+/* Строки тарифов совпадают с пунктами слева: и список, и детали карточек
+   прижаты к низу колонки, а высота строки у них общая. */
+.levels-stage{--lv-row:clamp(46px,4.6vw,62px);--lv-btn:clamp(58px,5.8vw,80px);}
+.level-card{display:flex;flex-direction:column;}
+.level-details{margin:auto 0 0;padding:0;list-style:none;border-top:1px dotted rgba(241,233,220,.16);}
+.level-details li{
+  display:flex;align-items:center;min-height:var(--lv-row);
+  padding:clamp(5px,.5vw,8px) 0;border-bottom:1px dotted rgba(241,233,220,.16);
+  font-size:clamp(9.5px,.8vw,12px);line-height:1.35;color:rgba(241,233,220,.82);
+}
+.levels-copy{display:flex;flex-direction:column;}
+.levels-guide{margin-top:auto;}
+.levels-guide li{min-height:var(--lv-row);}
+/* пустое место под кнопкой карточки, чтобы строки не разъезжались */
+.levels-guide::after{content:"";display:block;height:var(--lv-btn);}
+
+/* пунктирная ссылка «Подробнее» и всплывающее описание тарифа */
+.level-more{
+  appearance:none;cursor:pointer;align-self:flex-start;
+  margin:clamp(8px,.9vw,12px) 0 0;padding:0 0 2px;border:0;background:none;
+  color:rgba(241,233,220,.7);font:inherit;font-size:clamp(9.5px,.8vw,12px);
+  border-bottom:1px dashed rgba(241,233,220,.45);
+  transition:color .25s,border-color .25s;
+}
+.level-more:hover{color:var(--green);border-bottom-color:var(--green);}
+.lv-modal{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:clamp(16px,4vw,40px);}
+.lv-modal[hidden]{display:none;}
+.lv-modal-back{position:absolute;inset:0;background:rgba(6,7,5,.78);backdrop-filter:blur(6px);}
+.lv-modal-card{
+  position:relative;width:min(100%,560px);max-height:86vh;overflow:auto;
+  padding:clamp(22px,2.6vw,38px);border:1px solid rgba(168,220,40,.34);border-radius:20px;
+  background:linear-gradient(160deg,#14170f,#0a0c08);
+  box-shadow:0 40px 90px rgba(0,0,0,.6);color:var(--cream);
+  animation:lvIn .32s var(--ease) both;
+}
+@keyframes lvIn{from{opacity:0;translate:0 16px;}to{opacity:1;translate:0 0;}}
+.lv-modal-x{
+  position:absolute;right:14px;top:12px;appearance:none;cursor:pointer;
+  width:34px;height:34px;border:1px solid rgba(241,233,220,.2);border-radius:50%;
+  background:none;color:var(--cream);font-size:20px;line-height:1;
+}
+.lv-modal-x:hover{border-color:var(--green);color:var(--green);}
+.lv-modal-label{margin:0;color:var(--green);font-size:clamp(10px,.9vw,13px);letter-spacing:.16em;text-transform:uppercase;}
+.lv-modal-card h3{margin:clamp(8px,1vw,14px) 0 0;font:400 clamp(21px,2.2vw,32px)/1.15 var(--serif);}
+.lv-modal-price{margin:clamp(6px,.8vw,10px) 0 0;color:var(--green);font:400 clamp(19px,1.9vw,28px)/1 var(--sans);letter-spacing:-.03em;}
+.lv-modal-body{margin-top:clamp(14px,1.6vw,22px);}
+.lv-modal-body p{margin:0 0 clamp(10px,1.2vw,16px);font-size:clamp(13px,1.05vw,16px);line-height:1.6;color:rgba(241,233,220,.82);}
+.lv-modal-body ul{margin:0;padding:0;list-style:none;}
+.lv-modal-body li{
+  position:relative;padding:0 0 clamp(9px,1vw,13px) clamp(20px,1.6vw,26px);
+  font-size:clamp(12.5px,1vw,15px);line-height:1.5;color:rgba(241,233,220,.8);
+}
+.lv-modal-body li::before{content:"";position:absolute;left:0;top:.55em;width:9px;height:1px;background:var(--green);}
+.lv-modal-body .level-note{margin-top:clamp(8px,1vw,14px);font-size:clamp(11.5px,.92vw,14px);color:rgba(241,233,220,.6);}
+.lv-modal-cta{margin-top:clamp(16px,1.8vw,24px);}
+@media (max-width:900px){
+  .levels-guide::after{display:none;}
+  .level-details li{min-height:0;}
+}
 .level-details .is-check::before{content:"✓";margin-right:9px;color:var(--green);font-size:1.2em;}
 .level-card > a{position:relative;z-index:2;display:grid;place-items:center;min-height:46px;margin-top:auto;padding:7px 6px;border:1.5px solid var(--green);border-radius:11px;color:var(--green);font-size:clamp(9.5px,.82vw,12.5px);font-weight:600;line-height:1.35;letter-spacing:.05em;text-align:center;text-decoration:none;text-transform:uppercase;transition:background .25s,color .25s,box-shadow .25s;}
 .level-card > a:hover{background:rgba(168,220,40,.1);box-shadow:0 0 22px rgba(168,220,40,.2);}
@@ -2059,8 +2116,36 @@ h2.sec-title{
   /* Высоту кадра НЕ фиксируем жёстко (слайды с overflow:hidden резали бы
      контент), но задаём общий минимум — тогда все три кейса одинаковы
      между собой, а не 681 у бурения против 657 у остальных. */
-  .case-detail .cb-shell{min-height:681px;}
-  .case-detail .cb-frame .case-slide{height:100%;}
+  .case-detail .cb-shell{min-height:0;}
+  .case-detail .cb-frame .case-slide{height:auto;}
+  /* Кейсы Александра на телефоне занимали по полтора экрана: жёсткая
+     минимальная высота кадра плюс десктопные отступы внутри колонки.
+     Здесь кадр по содержимому, а сам текст компактнее. */
+  .case-detail .case2-copy{padding:0;}
+  .case-detail .case2-grid{gap:clamp(10px,3vw,16px);}
+  .case-detail .case2-copy h3{font-size:clamp(23px,6.4vw,30px);line-height:1.08;margin-bottom:clamp(10px,3vw,16px);}
+  .case-detail .case-cols{gap:clamp(10px,3vw,18px);}
+  .case-detail .case-col-item{padding:clamp(7px,2vw,10px) 0;}
+  .case-detail .case-col-item b{font-size:clamp(14px,4vw,17px);line-height:1.2;}
+  .case-detail .case-col-item span{font-size:clamp(11px,3vw,12.5px);line-height:1.35;}
+  .case-detail .case-num-grid{gap:clamp(10px,3vw,14px) clamp(12px,3.4vw,18px);margin-top:clamp(10px,3vw,14px);padding-top:clamp(10px,3vw,14px);}
+  .case-detail .case-num-grid b{font-size:clamp(15px,4.4vw,19px);}
+  .case-detail .case-num-grid span{font-size:clamp(11px,3vw,12.5px);line-height:1.35;}
+  .case-detail .case-sub{font-size:clamp(12px,3.4vw,14px);margin-top:clamp(7px,2vw,10px);}
+  .case-detail .case-stat-grid{gap:clamp(9px,2.6vw,13px) clamp(14px,4vw,20px);}
+  .case-detail .case-stat b{font-size:clamp(16px,4.6vw,20px);padding-bottom:5px;}
+  .case-detail .case-stat span{font-size:clamp(10.5px,2.9vw,12px);}
+  /* На кремовом фоне подписи были почти невидимы — правило контраста
+     раньше действовало только на широких экранах. */
+  .case-detail .case-slide--light .case-col-item b,
+  .case-detail .case-slide--light .case-stat b,
+  .case-detail .case-slide--light h3{color:#0b0c09;}
+  .case-detail .case-slide--light .case-col-item span,
+  .case-detail .case-slide--light .case-num-grid span,
+  .case-detail .case-slide--light .case-stat span{color:rgba(18,19,15,.78);}
+  .case-detail .case-slide--light .case-sub{color:#3d7f12;}
+  .case-detail .case-slide--light .case-col-item{border-top-color:rgba(18,19,15,.18);}
+  .case-detail .case-slide--light .case-num-grid{border-top-color:rgba(18,19,15,.2);}
   /* Обложка тянулась во всю высоту вертикальной картинки и была заметно
      выше рабочих слайдов. Теперь она занимает высоту кадра, как остальные,
      а картинка вписывается целиком (contain) — ничего не обрезается. */
@@ -2390,11 +2475,17 @@ h2.sec-title{
   .trust-stat b{font-size:clamp(15px,4.2vw,19px);}
   .trust-stat+.trust-stat{padding-left:0;padding-top:7px;border-left:0;border-top:1px solid rgba(241,233,220,.16);}
   .trust-stats-label{font-size:9.5px;margin-bottom:8px;}
-  .rv-list{grid-template-columns:1fr;gap:8px;width:clamp(72px,22vw,96px);}
-  .rv-card{grid-template-columns:1fr;gap:6px;padding:6px;border-radius:12px;}
-  .rv-card-shot{width:100%;aspect-ratio:3/4;border-radius:8px;}
+  /* Правый столбик ровно той же высоты, что и левая колонка: четыре
+     окошка делят её поровну, поэтому низ у колонок совпадает. */
+  .trust-main{min-width:0;}
+  .rv-list{
+    grid-template-columns:1fr;grid-template-rows:repeat(4,minmax(0,1fr));
+    gap:8px;width:clamp(72px,22vw,96px);height:100%;align-content:stretch;
+  }
+  .rv-card{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) auto;gap:5px;padding:5px;border-radius:12px;min-height:0;}
+  .rv-card-shot{width:100%;height:100%;aspect-ratio:auto;border-radius:8px;min-height:0;}
   .rv-card-copy i,.rv-card-copy em{display:none;}
-  .rv-card-copy b{font-size:11.5px;text-align:center;}
+  .rv-card-copy b{font-size:11px;text-align:center;}
   .process{padding-inline:clamp(18px,5vw,32px);margin-top:clamp(30px,8vw,48px);}
   /* на телефоне лесенка и кривая не читаются — обычная сетка 2x3 */
   .steps7{grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(18px,5vw,26px) clamp(10px,3vw,16px);}
@@ -2428,21 +2519,33 @@ h2.sec-title{
   color:var(--green);font-size:clamp(11px,.95vw,14px);font-weight:600;
   letter-spacing:.1em;text-transform:uppercase;text-decoration:none;
 }
-/* Портрет под колонкой вопросов. Не «фотография в рамке», а фон: снимок
-   растворяется книзу и вправо в графит страницы, как на первом экране. */
-.faq-portrait{position:relative;margin:clamp(26px,3vw,44px) 0 0;}
+/* Портрет под колонкой вопросов. Снимок лежит на подложке из тех же
+   диагональных граней, что и фон на самой фотографии: получается не
+   «вставленная картинка», а продолжение кадра, которое книзу растворяется
+   в графите страницы. */
+.faq-portrait{
+  position:relative;margin:clamp(26px,3vw,44px) 0 0;
+  width:min(100%,360px);aspect-ratio:4/5;overflow:hidden;border-radius:20px;
+  background:
+    repeating-linear-gradient(126deg,rgba(255,255,255,.055) 0 1px,transparent 1px 92px),
+    repeating-linear-gradient(-126deg,rgba(255,255,255,.04) 0 1px,transparent 1px 128px),
+    linear-gradient(160deg,#1d2320,#121512 58%,#0d0f0c);
+  -webkit-mask-image:linear-gradient(to bottom,#000 46%,rgba(0,0,0,.6) 76%,transparent 99%);
+          mask-image:linear-gradient(to bottom,#000 46%,rgba(0,0,0,.6) 76%,transparent 99%);
+}
 .faq-portrait img{
-  display:block;width:min(100%,320px);aspect-ratio:3/4;object-fit:cover;object-position:center 18%;
-  filter:grayscale(.25) contrast(1.03);
-  -webkit-mask-image:linear-gradient(to bottom,#000 34%,rgba(0,0,0,.55) 68%,transparent 97%),
-                     linear-gradient(to right,#000 58%,rgba(0,0,0,.5) 84%,transparent 100%);
+  position:absolute;left:0;bottom:0;width:100%;height:100%;
+  object-fit:cover;object-position:center 12%;
+  filter:grayscale(.3) contrast(1.05);
+  -webkit-mask-image:linear-gradient(to bottom,#000 40%,rgba(0,0,0,.5) 72%,transparent 96%),
+                     linear-gradient(to right,#000 62%,rgba(0,0,0,.45) 86%,transparent 100%);
   -webkit-mask-composite:source-in;
-          mask-image:linear-gradient(to bottom,#000 34%,rgba(0,0,0,.55) 68%,transparent 97%),
-                     linear-gradient(to right,#000 58%,rgba(0,0,0,.5) 84%,transparent 100%);
+          mask-image:linear-gradient(to bottom,#000 40%,rgba(0,0,0,.5) 72%,transparent 96%),
+                     linear-gradient(to right,#000 62%,rgba(0,0,0,.45) 86%,transparent 100%);
           mask-composite:intersect;
 }
 .faq-portrait figcaption{
-  position:absolute;left:0;bottom:clamp(6px,1vw,14px);
+  position:absolute;left:clamp(14px,1.4vw,20px);bottom:clamp(14px,1.6vw,22px);z-index:2;
   display:flex;flex-direction:column;gap:3px;
 }
 .faq-portrait figcaption b{font:400 clamp(15px,1.35vw,20px)/1 var(--serif);color:var(--cream);}

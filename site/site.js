@@ -256,6 +256,44 @@
     });
   }
 
+  // Тариф подробно: «Подробнее» открывает описание из <template>
+  // рядом с карточкой, вместе с ценой и кнопкой заказа.
+  var lvModal = document.getElementById('lv-modal');
+  if (lvModal) {
+    var lvBody = lvModal.querySelector('.lv-modal-body');
+    var lvTitle = lvModal.querySelector('#lv-modal-title');
+    var lvPrice = lvModal.querySelector('.lv-modal-price');
+    var lvLabel = lvModal.querySelector('.lv-modal-label');
+    var lvOpener = null;
+    var lvClose = function () {
+      lvModal.hidden = true;
+      document.body.style.overflow = '';
+      if (lvOpener) { lvOpener.focus(); }
+    };
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('.level-more');
+      if (btn) {
+        var card = btn.closest('.level-card');
+        var tpl = card.querySelector('.level-full');
+        if (!tpl) { return; }
+        lvOpener = btn;
+        lvLabel.textContent = card.querySelector('.level-label').textContent;
+        lvTitle.innerHTML = card.querySelector('h3').innerHTML;
+        lvPrice.textContent = card.querySelector('.level-price').textContent;
+        lvBody.innerHTML = '';
+        lvBody.appendChild(tpl.content.cloneNode(true));
+        lvModal.hidden = false;
+        document.body.style.overflow = 'hidden';
+        lvModal.querySelector('.lv-modal-x').focus();
+        return;
+      }
+      if (e.target.closest('[data-close]')) { lvClose(); }
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !lvModal.hidden) { lvClose(); }
+    });
+  }
+
   // Подсказка «Листайте дальше» у тарифов — гаснет после первого свайпа.
   var levelCards = document.querySelector('.level-cards');
   if (levelCards) {
