@@ -236,25 +236,21 @@
     }
   }
 
-  // Карусель отзывов на телефоне: один большой экран, переключается
-  // стрелками или тапом по мини-превью.
-  var rvNav = document.querySelector('.rv-nav');
-  if (rvNav) {
-    var rvChats = [].slice.call(document.querySelectorAll('.rv-chat'));
-    var rvThumbs = [].slice.call(document.querySelectorAll('.rv-thumb'));
-    var rvShow = function (i) {
-      var n = rvChats.length;
-      var idx = ((i % n) + n) % n;
-      rvChats.forEach(function (c) { c.classList.toggle('is-on', c.dataset.review === String(idx)); });
-      rvThumbs.forEach(function (t) { t.classList.toggle('is-on', t.dataset.review === String(idx)); });
-      return idx;
-    };
-    var rvCurrent = 0;
-    rvNav.addEventListener('click', function (e) {
-      var thumb = e.target.closest('.rv-thumb');
-      if (thumb) { rvCurrent = rvShow(Number(thumb.dataset.review)); return; }
-      if (e.target.closest('.rv-next')) { rvCurrent = rvShow(rvCurrent + 1); return; }
-      if (e.target.closest('.rv-prev')) { rvCurrent = rvShow(rvCurrent - 1); }
+  // Отзывы: превью справа переключают скриншот в телефоне слева.
+  var rvList = document.querySelector('.rv-list');
+  if (rvList) {
+    var rvShots = [].slice.call(document.querySelectorAll('.rv-shot'));
+    var rvCards = [].slice.call(document.querySelectorAll('.rv-card'));
+    rvList.addEventListener('click', function (e) {
+      var card = e.target.closest('.rv-card');
+      if (!card) { return; }
+      var id = card.dataset.review;
+      rvShots.forEach(function (img) { img.classList.toggle('is-on', img.dataset.review === id); });
+      rvCards.forEach(function (b) {
+        var on = b === card;
+        b.classList.toggle('is-on', on);
+        b.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
     });
   }
 
