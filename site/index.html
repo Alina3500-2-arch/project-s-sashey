@@ -49,7 +49,7 @@
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Manrope:wght@400;500;600&display=swap" />
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Manrope:wght@400;500;600&display=swap" /></noscript>
 
-<link rel="stylesheet" href="site.css?v=20260814-4" />
+<link rel="stylesheet" href="site.css?v=20260814-5" />
 <!-- Yandex.Metrika counter -->
 <script>
   /* Счётчик грузится после полной загрузки страницы: tag.js не должен
@@ -577,6 +577,26 @@
     <div class="cb-shell is-cover">
       <div class="cb-frame cb-cover is-on" data-panel="0">
         <article class="case-slide case-cover case-cover--drilling">
+          <!-- Сводка по кейсу — живым текстом поверх кадра. Раньше она была
+               впечатана в саму картинку и потерялась вместе с ней. -->
+          <div class="cover-brief">
+            <div class="cover-brief-scale">
+              <span class="cbs-label">До</span>
+              <span class="cbs-track" aria-hidden="true"><i></i><b></b></span>
+              <span class="cbs-label cbs-label--end">Результат</span>
+            </div>
+            <div class="cover-brief-row">
+              <div class="cbs-fig"><b>4 000</b><span>₽ за обращение</span></div>
+              <div class="cbs-fig cbs-fig--now"><b>1 000–2 000</b><span>₽ за обращение</span></div>
+            </div>
+            <span class="cover-brief-geo">Гео: Москва</span>
+            <ul class="cover-brief-list">
+              <li>Новый сайт</li>
+              <li>Аналитика</li>
+              <li>Поиск</li>
+              <li>Масштабирование</li>
+            </ul>
+          </div>
           <picture class="case-drilling-cover-art">
             <source media="(max-width:900px)" srcset="assets/case-drilling-cover-mobile.jpg" />
             <img loading="lazy" decoding="async" src="assets/case-drilling-detail-2026.jpg" alt="Кейс по алмазному бурению: стоимость обращения снижена с 4 000 до 1 000–2 000 ₽" />

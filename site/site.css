@@ -1157,6 +1157,47 @@ h2.sec-title{
    оборота. Левая граница — правее самой длинной строки заголовка (на
    широком экране она доходит до 54% кадра), поэтому на текст линия не
    заходит ни при какой ширине окна. */
+/* ── Сводка на обложке кейса (было -> стало, гео, объём работ) ──
+   Текстом, а не впечатанная в картинку: правится дёшево и читается
+   на любом экране. */
+.cover-brief{
+  position:absolute;z-index:3;left:clamp(20px,3.4vw,54px);right:clamp(20px,3.4vw,54px);
+  top:clamp(16px,2.6vw,40px);pointer-events:none;
+}
+.cover-brief-scale{display:grid;grid-template-columns:auto 1fr auto;gap:clamp(10px,1.4vw,20px);align-items:center;}
+.cbs-label{
+  font-size:clamp(9.5px,.82vw,12px);letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(241,233,220,.6);
+}
+.cbs-label--end{color:var(--green);}
+.cbs-track{position:relative;display:block;height:1px;background:linear-gradient(90deg,rgba(168,220,40,.25),rgba(168,220,40,.85));}
+.cbs-track i,.cbs-track b{position:absolute;top:50%;translate:0 -50%;width:5px;height:5px;border-radius:50%;background:var(--green);}
+.cbs-track i{left:0;opacity:.5;}
+.cbs-track b{right:0;box-shadow:0 0 10px rgba(168,220,40,.8);}
+.cover-brief-row{display:flex;justify-content:space-between;gap:clamp(16px,3vw,60px);margin-top:clamp(10px,1.3vw,18px);}
+.cbs-fig{max-width:46%;}
+.cbs-fig--now{text-align:right;}
+.cbs-fig b{display:block;font:400 clamp(26px,3.4vw,52px)/1 var(--sans);letter-spacing:-.01em;color:var(--cream);}
+.cbs-fig--now b{color:var(--green);}
+.cbs-fig span{display:block;margin-top:.35em;font-size:clamp(11px,1vw,15px);color:rgba(241,233,220,.7);}
+.cover-brief-geo{
+  display:inline-block;margin-top:clamp(10px,1.4vw,18px);float:right;
+  padding:clamp(5px,.6vw,8px) clamp(10px,1.1vw,15px);
+  border:1px solid rgba(168,220,40,.55);border-radius:8px;
+  font-size:clamp(9.5px,.82vw,12px);letter-spacing:.16em;text-transform:uppercase;color:var(--green);
+}
+.cover-brief-list{clear:both;list-style:none;margin:clamp(24px,4vw,64px) 0 0;padding:0;max-width:42%;}
+.cover-brief-list li{
+  padding:clamp(7px,.9vw,12px) 0;border-bottom:1px solid rgba(241,233,220,.14);
+  font-size:clamp(12px,1.1vw,17px);color:rgba(241,233,220,.86);
+}
+.cover-brief-list li:first-child{border-top:1px solid rgba(241,233,220,.14);}
+@media (max-width:900px){
+  .cover-brief{position:static;padding:0 0 clamp(10px,3vw,16px);}
+  .cbs-fig b{font-size:clamp(20px,6.4vw,30px);}
+  .cover-brief-list{display:none;}
+}
+
 /* График роста стоит под цифрой оборота, в её же колонке: узкий коридор
    между заголовком и цифрой давал «закорючку» — линию было некуда вести.
    Здесь у графика своя полоса во всю ширину колонки, с базовой линией
