@@ -2659,9 +2659,16 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
   /* Правый столбик ровно той же высоты, что и левая колонка: четыре
      окошка делят её поровну, поэтому низ у колонок совпадает. */
   .trust-main{min-width:0;}
+  /* height:100% у грид-элемента не работал: высоту строки задавал сам
+     столбик окошек, поэтому он всегда оказывался длиннее телефона слева.
+     Выносим его из потока — тогда высоту ряда диктует только левая колонка,
+     а окошки растягиваются ровно по ней и низ у колонок совпадает. */
+  .trust-grid{display:block;position:relative;
+    padding-right:calc(clamp(72px,22vw,96px) + clamp(10px,3vw,16px));}
   .rv-list{
+    position:absolute;top:0;right:0;bottom:0;
     grid-template-columns:1fr;grid-template-rows:repeat(4,minmax(0,1fr));
-    gap:8px;width:clamp(72px,22vw,96px);height:100%;align-content:stretch;
+    gap:8px;width:clamp(72px,22vw,96px);align-content:stretch;
   }
   .rv-card{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) auto;gap:5px;padding:5px;border-radius:12px;min-height:0;}
   .rv-card-shot{width:100%;height:100%;aspect-ratio:auto;border-radius:8px;min-height:0;}
@@ -2676,6 +2683,14 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
   .route-line--pc{display:none;}
   .route-line--mob{display:block;}
   .steps7 p{font-size:11.5px;max-width:22ch;}
+  /* Кнопка и подпись под ней — каждая в одну строку: на телефоне «Записаться
+     на бесплатный аудит» ломалось на две, и подпись следом тоже. */
+  .route-cta .cta{
+    white-space:nowrap;
+    font-size:clamp(9.5px,2.7vw,12px);letter-spacing:.1em;
+    gap:10px;padding-inline:16px;
+  }
+  .route-cta p{white-space:nowrap;font-size:clamp(9px,2.6vw,12px);}
 }
 @media (prefers-reduced-motion:reduce){
   .trust .rv-device,.trust-stats,.steps7 li{opacity:1;translate:none;transition:none;}
@@ -3074,9 +3089,8 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
 @media (max-width:900px){
   .faq{grid-template-columns:1fr;gap:clamp(14px,4vw,20px);padding-inline:clamp(18px,5vw,32px);margin-top:clamp(30px,8vw,48px);}
   .faq-head{position:static;
-    /* сдвигаем блок вниз, на уровень груди Александра на фоне, чтобы
-       заголовок не перекрывал лицо */
-    padding-top:clamp(110px,34vw,190px);}
+    /* текст начинается ниже подбородка: голова целиком над заголовком */
+    padding-top:clamp(180px,55vw,300px);}
   /* Экран узкий, кадр обрезается сильно — держим фигуру в видимой части:
      точка привязки уходит правее левого края, чтобы Александр не срезался,
      и фон уводится в графит книзу, под колонку вопросов. Блок стал ниже —
@@ -3084,15 +3098,18 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
   .faq-bg{
     /* колонок больше нет — снимок обратно во всю ширину экрана,
        портретной полосой над текстом, как и был до правки под ПК */
-    left:calc(50% - 50vw);top:0;width:100vw;height:100%;
-    /* на мобильном кадр не приближаем — колонка одна и во всю ширину */
-    background-size:cover;background-position:26% top;opacity:.72;
+    /* Кадр не растягиваем на всю высоту блока (иначе cover раздувал снимок
+       и Александр наполовину уезжал за левый край). Высота задана в vw, а
+       ширина кадра — 241% ширины экрана: при такой раскладке фигура ровно
+       по центру (по 59px стены слева и справа на экране 393px). */
+    left:calc(50% - 50vw);top:0;width:100vw;height:181vw;
+    background-size:241% auto;background-position:1.2% 0;opacity:.72;
     /* так же, как на ПК: снимок сходит на нет со всех сторон, без резаных
        верхнего и правого краёв */
-    -webkit-mask-image:linear-gradient(to right,transparent 0,#000 7%,#000 84%,transparent 100%),
-                       linear-gradient(to bottom,transparent 0,#000 12%,rgba(0,0,0,.55) 56%,transparent 92%);
-            mask-image:linear-gradient(to right,transparent 0,#000 7%,#000 84%,transparent 100%),
-                       linear-gradient(to bottom,transparent 0,#000 12%,rgba(0,0,0,.55) 56%,transparent 92%);
+    -webkit-mask-image:linear-gradient(to right,transparent 0,#000 8%,#000 92%,transparent 100%),
+                       linear-gradient(to bottom,transparent 0,#000 6%,rgba(0,0,0,.55) 62%,transparent 97%);
+            mask-image:linear-gradient(to right,transparent 0,#000 8%,#000 92%,transparent 100%),
+                       linear-gradient(to bottom,transparent 0,#000 6%,rgba(0,0,0,.55) 62%,transparent 97%);
   }
   .faq-head .sec-title{font-size:clamp(26px,7.6vw,38px);}
   /* список вопросов — одной колонкой с собственной прокруткой, чтобы весь

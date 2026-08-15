@@ -527,7 +527,10 @@
         if (hidden) {
           s.frame.style.cssText = 'display:block;position:absolute;visibility:hidden;left:0;right:0;';
         }
-        tallest = Math.max(tallest, s.slide.getBoundingClientRect().height);
+        // у слайда overflow:hidden — видимая высота равна высоте кадра, и
+        // содержимое, которое не влезло (нижние цифры на обложках), в замер
+        // не попадало. scrollHeight показывает реальную высоту содержимого.
+        tallest = Math.max(tallest, s.slide.getBoundingClientRect().height, s.slide.scrollHeight);
         if (hidden) { s.frame.style.cssText = ''; }
       });
       if (tallest > 0) {
