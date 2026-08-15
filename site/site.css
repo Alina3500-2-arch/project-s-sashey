@@ -407,9 +407,10 @@ h1 .l3,h1 .l4{font-size:.84em;}
     #0B0B09;
   overflow:hidden;
 }
-/* Подвал идёт сразу за финалом: его собственный отступ показывал полосу
-   фона страницы — она и читалась как разрыв между блоками. */
-.closer + .foot{margin-top:0;}
+/* Подвал идёт сразу за финалом: его собственный отступ плюс gap у .page
+   показывали полосу фона страницы — она и читалась как разрыв между
+   блоками и рвала градиентный переход. */
+.closer + .foot{margin-top:calc(-1 * var(--gap));}
 /* Портрет живёт слева и растворяется в фоне — центральная колонка
    макета (знак, заголовок, кнопка, контакты) остаётся нетронутой. */
 .closer-photo{
@@ -2691,7 +2692,8 @@ h2.sec-title{
    так весь блок укладывается в один экран и фотография не растягивается. */
 .faq-list{
   display:flex;flex-direction:column;gap:clamp(7px,.8vw,11px);
-  max-height:clamp(380px,54vh,560px);
+  /* видно примерно половину списка — остальное за прокруткой */
+  max-height:clamp(300px,44vh,470px);
   overflow-y:auto;overscroll-behavior:contain;
   /* полоса прокрутки тонкая и в цвет блока, чтобы не спорила с карточками */
   scrollbar-width:thin;scrollbar-color:rgba(168,220,40,.45) transparent;
@@ -2735,9 +2737,9 @@ h2.sec-title{
 .faq-item[open]{border-color:rgba(168,220,40,.5);background:linear-gradient(150deg,rgba(28,32,22,.95),rgba(13,15,11,.98));}
 .faq-item summary{
   display:flex;align-items:center;gap:clamp(12px,1.4vw,20px);
-  padding:clamp(13px,1.4vw,20px) clamp(14px,1.6vw,24px);
+  padding:clamp(14px,1.5vw,21px) clamp(14px,1.6vw,24px);
   cursor:pointer;list-style:none;
-  font:400 clamp(14px,1.28vw,19px)/1.35 var(--serif);color:var(--cream);
+  font:400 clamp(15px,1.38vw,20px)/1.35 var(--serif);color:var(--cream);
 }
 .faq-item summary::-webkit-details-marker{display:none;}
 .faq-item summary span{flex:1;min-width:0;}
