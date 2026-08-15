@@ -1098,21 +1098,12 @@ h2.sec-title{
    Раньше здесь стояло `display:none` — из-за него вся нижняя часть
    страницы не открывалась ни на телефоне, ни в других браузерах. */
 .case-intro{max-width:760px;margin:0 0 clamp(26px,3.4vw,46px);}
-.case-intro--video{max-width:1180px;display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,300px);gap:clamp(28px,5vw,78px);align-items:center;}
 .case-intro-copy{min-width:0;}
 .case-intro .sec-eyebrow{margin-bottom:clamp(12px,1.5vw,20px);}
 .case-intro h2{margin:0 0 clamp(14px,1.7vw,22px);}
 .case-intro .case-green{color:var(--green);}
 .case-intro .case-minor{font-size:.72em;}
 .case-intro p{margin:0;max-width:680px;font-size:clamp(15px,1.2vw,18px);line-height:1.6;color:rgba(241,233,220,.76);}
-.case-video-card{position:relative;justify-self:end;width:min(100%,300px);aspect-ratio:458/433;overflow:hidden;border:1px solid rgba(168,220,40,.35);border-radius:22px;background:#090a08 url("assets/case-elina-video-cover.jpg") center/cover no-repeat;box-shadow:0 22px 52px rgba(0,0,0,.42),0 0 0 1px rgba(168,220,40,.08);opacity:0;translate:0 22px;transition:opacity .75s var(--ease) .15s,translate .75s var(--ease) .15s;}
-.casebig.seen .case-video-card{opacity:1;translate:0 0;}
-.case-video{display:block;width:100%;height:100%;object-fit:cover;background:#090a08;opacity:0;transition:opacity .2s ease;}
-.case-video-card.is-playing .case-video{opacity:1;}
-.case-video-play{position:absolute;inset:0;display:block;width:100%;height:100%;padding:0;border:0;background:transparent;color:transparent;cursor:pointer;transition:opacity .2s var(--ease);}
-.case-video-play svg{display:none;}
-.case-video-play:hover{transform:none;}
-.case-video-card.is-playing .case-video-play{opacity:0;pointer-events:none;}
 .cb-frame{display:none;}
 .cb-frame.is-on{display:block;}
 .cb-frame img{display:block;width:100%;height:auto;border-radius:var(--radius) var(--radius) 0 0;}
@@ -1662,10 +1653,10 @@ h2.sec-title{
 }
 /* Как в макете: карточки строго вертикальные, без поворота. «Стопка»
    создаётся ступенькой — верх поднимается, низ опускается к 3-му уровню. */
-.level-card--0{height:clamp(390px,33vw,455px);margin-bottom:clamp(16px,1.9vw,30px);}
-.level-card--1{height:clamp(415px,34.5vw,485px);margin-bottom:clamp(13px,1.6vw,25px);}
-.level-card--2{height:clamp(440px,36vw,515px);margin-bottom:clamp(5px,.6vw,10px);}
-.level-card--3{height:clamp(465px,38vw,545px);border-color:#d9ff48;background:linear-gradient(145deg,rgba(46,54,23,.75),rgba(16,20,10,.98) 68%);box-shadow:0 0 8px #e2ff5f,0 0 30px rgba(208,255,48,.55),0 24px 64px rgba(0,0,0,.48);}
+.level-card--0{height:calc(clamp(390px,33vw,455px) + clamp(26px,2.4vw,34px));margin-bottom:clamp(16px,1.9vw,30px);}
+.level-card--1{height:calc(clamp(415px,34.5vw,485px) + clamp(26px,2.4vw,34px));margin-bottom:clamp(13px,1.6vw,25px);}
+.level-card--2{height:calc(clamp(440px,36vw,515px) + clamp(26px,2.4vw,34px));margin-bottom:clamp(5px,.6vw,10px);}
+.level-card--3{height:calc(clamp(465px,38vw,545px) + clamp(26px,2.4vw,34px));border-color:#d9ff48;background:linear-gradient(145deg,rgba(46,54,23,.75),rgba(16,20,10,.98) 68%);box-shadow:0 0 8px #e2ff5f,0 0 30px rgba(208,255,48,.55),0 24px 64px rgba(0,0,0,.48);}
 .level-card--3::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(115deg,transparent 10%,rgba(226,255,95,.08) 35%,transparent 56%);}
 .level-label{margin:0;color:var(--green);font-size:clamp(10px,.88vw,14px);font-weight:600;letter-spacing:.04em;text-transform:uppercase;}
 .level-number{display:flex;justify-content:space-between;align-items:center;margin:clamp(5px,.6vw,9px) 0 clamp(6px,.7vw,10px);}
@@ -1928,8 +1919,6 @@ h2.sec-title{
 
 /* ── НОВЫЕ БЛОКИ НА УЗКИХ ЭКРАНАХ ───────────────────────── */
 @media (max-width:900px){
-  .case-intro--video{display:flex;flex-direction:column;gap:clamp(20px,6vw,30px);align-items:stretch;}
-  .case-intro--video .case-video-card{align-self:center;width:min(100%,310px);justify-self:auto;border-radius:18px;}
   /* Все три карточки всегда целиком помещаются в ширину мобильного экрана. */
   .split{width:100%;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(6px,1.8vw,12px);overflow:hidden;padding:2px clamp(5px,1.6vw,8px) 10px;}
   .split .piece:first-child,.split .piece:nth-child(3){transform:none;}
@@ -2435,7 +2424,34 @@ h2.sec-title{
   stroke-dasharray:7 93;stroke-dashoffset:7;opacity:0;
 }
 .process.seen .route-line .route-pulse{
-  animation:routePulse 4.6s linear 2.2s infinite;
+  animation:routePulse var(--route-loop,4.6s) linear 2.2s infinite;
+}
+/* Импульс бежит по линии, а вместе с ним по очереди вспыхивают карточки:
+   каждая загорается ровно в тот момент, когда огонёк доходит до неё. */
+.route{--route-loop:4.6s;}
+.process.seen .steps7 li{
+  animation:stepGlow var(--route-loop) linear infinite;
+  animation-delay:calc(2.2s + var(--i) * var(--route-loop) / 6);
+}
+@keyframes stepGlow{
+  0%{border-color:rgba(241,233,220,.11);box-shadow:0 18px 40px rgba(0,0,0,.4);}
+  4%{border-color:rgba(168,220,40,.75);box-shadow:0 18px 40px rgba(0,0,0,.4),0 0 30px rgba(168,220,40,.28);}
+  14%{border-color:rgba(168,220,40,.45);box-shadow:0 18px 40px rgba(0,0,0,.4),0 0 18px rgba(168,220,40,.12);}
+  26%,100%{border-color:rgba(241,233,220,.11);box-shadow:0 18px 40px rgba(0,0,0,.4);}
+}
+/* номер шага загорается вместе с карточкой */
+.process.seen .steps7 li .s-num{
+  animation:stepNumGlow var(--route-loop) linear infinite;
+  animation-delay:calc(2.2s + var(--i) * var(--route-loop) / 6);
+}
+@keyframes stepNumGlow{
+  0%{text-shadow:none;}
+  4%{text-shadow:0 0 18px rgba(168,220,40,.85);}
+  16%,100%{text-shadow:none;}
+}
+@media (prefers-reduced-motion:reduce){
+  .process.seen .steps7 li,
+  .process.seen .steps7 li .s-num{animation:none;}
 }
 @keyframes routePulse{
   0%{stroke-dashoffset:7;opacity:0;}
@@ -2470,6 +2486,7 @@ h2.sec-title{
 }
 .steps7 li:hover{border-color:rgba(168,220,40,.45);box-shadow:0 18px 40px rgba(0,0,0,.4),0 0 26px rgba(168,220,40,.16);}
 .process.seen .steps7 li{opacity:1;translate:0 0;}
+/* появление и подсветка не спорят: анимация трогает только рамку и тень */
 .s-num{
   display:block;margin:0 0 clamp(8px,.9vw,12px);
   color:var(--green);font:400 clamp(20px,2.1vw,30px)/1 var(--serif);
@@ -2663,7 +2680,7 @@ h2.sec-title{
      светлая полоса фона страницы */
   box-shadow:0 50vh 0 50vh #090b08;
   margin:clamp(44px,5.5vw,90px) 0 0 calc(50% - 50vw);
-  padding:clamp(34px,4vw,64px) clamp(20px,2.5vw,38px) clamp(20px,2.2vw,32px);
+  padding:clamp(34px,4vw,64px) clamp(20px,2.5vw,38px) clamp(9px,.9vw,13px);
   overflow:hidden;color:var(--cream);
   background:
     radial-gradient(circle at 82% 12%,rgba(168,220,40,.08),transparent 34%),
