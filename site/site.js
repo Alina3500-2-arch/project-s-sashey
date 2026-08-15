@@ -430,17 +430,39 @@
       }
     };
 
+    // Лесенка карточек: ступенька между соседними уровнями должна быть
+    // одинаковой. Высоты в CSS этого не дают — содержимое карточек разной
+    // длины, и самая низкая карточка перерастает свою заданную высоту,
+    // из-за чего первая ступенька выходила вдвое меньше остальных. Поэтому
+    // считаем от самой высокой карточки в её естественном виде.
+    var levelLadder = function (reset) {
+      cards.forEach(function (card) { card.style.minHeight = reset ? '' : '0px'; });
+      if (reset) { return; }
+      var natural = 0;
+      cards.forEach(function (card) {
+        natural = Math.max(natural, card.getBoundingClientRect().height);
+      });
+      // шаг пропорционален карточке, чтобы лесенка не ломалась на узком ПК
+      var step = Math.round(natural * 0.064);
+      cards.forEach(function (card, i) {
+        card.style.minHeight = (natural + step * i) + 'px';
+      });
+    };
+
     var alignGuide = function () {
       var items = guide.querySelectorAll('li');
       var rows = firstCard.querySelectorAll('.level-details li');
       // на телефоне карточки листаются лентой — выравнивать нечего
       if (window.innerWidth <= 900 || rows.length !== items.length) {
         levelRows(true);
+        levelLadder(true);
         guide.style.marginTop = '';
         items.forEach(function (li) { li.style.height = ''; });
         return;
       }
       levelRows(false);
+      // ступеньку считаем после выравнивания строк: они меняют высоту карточек
+      levelLadder(false);
       items.forEach(function (li, i) { li.style.height = rows[i].getBoundingClientRect().height + 'px'; });
       guide.style.marginTop = '0px';
       var shift = rows[0].getBoundingClientRect().top - items[0].getBoundingClientRect().top;
@@ -460,6 +482,43 @@
       if (hint) hint.classList.add('is-hidden');
     }, { passive: true, once: true });
   }
+
+  // На телефоне слайды одного кейса были разной высоты (от 400 до 750px):
+  // при переключении вкладок блок прыгал, а обложка выглядела вдвое выше
+  // рабочих слайдов. Приводим слайды каждого слайдера к общей высоте —
+  // по самому высокому, уже после того как CSS ограничил картинки.
+  var evenCaseSlides = function () {
+    var shells = document.querySelectorAll('.cb-shell');
+    var mobile = window.innerWidth <= 900;
+    shells.forEach(function (shell) {
+      var frames = [].slice.call(shell.querySelectorAll('.cb-frame'));
+      var slides = [];
+      frames.forEach(function (frame) {
+        var slide = frame.querySelector('.case-slide');
+        if (slide) { slides.push({ frame: frame, slide: slide }); }
+      });
+      slides.forEach(function (s) { s.slide.style.minHeight = ''; });
+      if (!mobile || !slides.length) { return; }
+      // скрытые слайды не измерить — показываем их на один кадр невидимо
+      var tallest = 0;
+      slides.forEach(function (s) {
+        var hidden = !s.frame.classList.contains('is-on');
+        if (hidden) {
+          s.frame.style.cssText = 'display:block;position:absolute;visibility:hidden;left:0;right:0;';
+        }
+        tallest = Math.max(tallest, s.slide.getBoundingClientRect().height);
+        if (hidden) { s.frame.style.cssText = ''; }
+      });
+      if (tallest > 0) {
+        slides.forEach(function (s) { s.slide.style.minHeight = Math.ceil(tallest) + 'px'; });
+      }
+    });
+  };
+  evenCaseSlides();
+  window.addEventListener('resize', evenCaseSlides);
+  if (document.fonts && document.fonts.ready) { document.fonts.ready.then(evenCaseSlides); }
+  // картинки внутри слайдов догружаются и меняют высоту
+  window.addEventListener('load', evenCaseSlides);
 
   // Подсказка «Прокрутите вниз» у вопросов: гаснет после первой прокрутки
   // списка и не показывается вовсе, если прокручивать нечего.
