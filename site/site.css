@@ -2665,8 +2665,12 @@ h2.sec-title{
   position:absolute;z-index:0;top:calc(-1 * clamp(30px,4vw,70px));
   left:calc(50% - 50vw);width:100vw;height:calc(100% + clamp(60px,8vw,140px));
   pointer-events:none;
-  /* привязка к верху кадра: при обрезке по высоте срезался бы верх головы */
-  background:url("assets/faq-sasha-bg.jpg") left top/cover no-repeat;
+  /* contain, а не cover: файл 1448×1086, а блок шире 1900px — cover
+     растягивал снимок в 1.3 раза и он заметно мылил. С contain кадр
+     никогда не увеличивается больше исходного, только уменьшается,
+     то есть остаётся в своём качестве. Высота блока подобрана так,
+     чтобы её хватало этой картинке. */
+  background:url("assets/faq-sasha-bg.jpg") left top/contain no-repeat;
   /* снимок идёт в полную силу — фон на нём и так тёмный, притушивать
      фигуру нельзя. Маска только уводит кадр вправо, под вопросы, и вниз. */
   -webkit-mask-image:linear-gradient(to right,#000 0,#000 30%,rgba(0,0,0,.4) 54%,transparent 76%),
@@ -2680,7 +2684,13 @@ h2.sec-title{
 /* Заголовок начинается на уровне груди Александра, а не у головы: любой
    текст выше перекрывал лицо. Отступ считаем от высоты блока, чтобы точка
    держалась на разных ширинах. */
-.faq-head{padding-top:clamp(70px,9.5vw,146px);}
+/* Текст прижат к низу колонки, а не отодвинут магическим отступом сверху:
+   так он всегда начинается примерно на уровне груди и ниже, на любой
+   высоте блока, и заголовок не наезжает на лицо. */
+.faq-head{display:flex;flex-direction:column;justify-content:flex-end;padding-top:clamp(40px,5vw,80px);}
+/* на широком экране общий .sec-title разгонялся до 80px и один только
+   заголовок занимал почти 300px высоты */
+.faq-head .sec-title{font-size:clamp(28px,3.3vw,56px);}
 /* подпись вместо прежней плашки на карточке-портрете */
 .faq-who{
   display:flex;flex-direction:column;gap:3px;
@@ -2747,7 +2757,7 @@ h2.sec-title{
      свою длину (13 карточек — больше 1000px) и блок перестаёт помещаться
      в экран. При явной высоте обе колонки ровно по ней, а лишние вопросы
      уходят в прокрутку. */
-  .faq{align-items:stretch;grid-template-rows:clamp(560px,78vh,740px) auto;}
+  .faq{align-items:stretch;grid-template-rows:clamp(440px,62vh,590px) auto;}
   /* min-height:0 обязателен: без него грид-элемент не даёт себя сжать
      и прокрутка внутри списка не включается */
   .faq-list{max-height:none;height:100%;min-height:0;}
@@ -2900,6 +2910,20 @@ h2.sec-title{
   border-color:var(--green);color:var(--cream);
   background:rgba(168,220,40,.1);box-shadow:0 0 0 1px rgba(168,220,40,.35);
 }
+/* «Другое — впишу сам» занимает всю строку: вариантов нечётное число,
+   и в двух колонках он иначе висел бы половинкой */
+.quiz-opt--own{grid-column:1/-1;}
+/* поле для своего варианта раскрывается только при выборе «Другое» */
+.quiz-own-field{
+  width:100%;margin-top:clamp(7px,.8vw,11px);
+  padding:clamp(10px,1.05vw,14px) clamp(12px,1.2vw,16px);
+  border:1px solid rgba(168,220,40,.45);border-radius:12px;
+  background:rgba(255,255,255,.04);color:var(--cream);
+  font:inherit;font-size:clamp(11.5px,.92vw,14px);
+}
+.quiz-own-field::placeholder{color:rgba(241,233,220,.4);}
+.quiz-own-field:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 1px rgba(168,220,40,.35);}
+.quiz-own-field[hidden]{display:none;}
 .quiz-fields{display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,1.2vw,16px);}
 .quiz-error{margin:0;font-size:clamp(10.5px,.84vw,12.5px);color:#ffb4a2;}
 .quiz-nav{display:flex;flex-wrap:wrap;align-items:center;gap:clamp(9px,1.1vw,15px);}
@@ -2982,17 +3006,36 @@ h2.sec-title{
 }
 .foot-nav a:hover{border-color:var(--green);color:var(--green);background:rgba(168,220,40,.07);}
 
+/* Низ подвала был одной тесной строкой мелким серым текстом. Теперь это
+   сетка колонок: знак с именем, реквизиты, контакты и условия работы —
+   крупнее, светлее и с воздухом между блоками. */
 .foot-bottom{
-  display:flex;flex-wrap:wrap;align-items:center;gap:clamp(8px,1.4vw,22px);
-  max-width:1180px;margin:clamp(20px,2.4vw,38px) auto 0;
-  padding-top:clamp(13px,1.5vw,20px);border-top:1px solid rgba(241,233,220,.08);
-  font-size:clamp(10px,.8vw,12.5px);color:rgba(241,233,220,.44);
+  display:grid;grid-template-columns:auto repeat(3,minmax(0,1fr));
+  gap:clamp(18px,2.6vw,44px);align-items:start;
+  max-width:1180px;margin:clamp(26px,3.2vw,52px) auto 0;
+  padding-top:clamp(20px,2.4vw,32px);border-top:1px solid rgba(241,233,220,.1);
+  font-size:clamp(11.5px,.95vw,14px);line-height:1.5;color:rgba(241,233,220,.6);
 }
+.foot-col{display:flex;flex-direction:column;gap:clamp(5px,.6vw,8px);min-width:0;}
+.foot-col--brand{flex-direction:row;align-items:center;gap:clamp(10px,1.2vw,16px);}
+.foot-col-h{
+  margin-bottom:2px;font-size:clamp(9.5px,.78vw,11.5px);font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;color:rgba(241,233,220,.38);
+}
+.foot-col a{color:inherit;text-decoration:none;transition:color .25s var(--ease);}
+.foot-col a:hover{color:var(--green);}
 .foot-logo{flex:none;display:block;line-height:0;opacity:.9;transition:opacity .25s;}
 .foot-logo:hover{opacity:1;}
-.foot-logo .foot-mark{display:block;width:28px;height:auto;overflow:visible;}
-.foot-brand{color:rgba(241,233,220,.72);font-weight:600;letter-spacing:.04em;}
-.foot-copy{margin-left:auto;}
+.foot-logo .foot-mark{display:block;width:clamp(36px,3.4vw,50px);height:auto;overflow:visible;}
+.foot-brand{
+  font:400 clamp(13px,1.15vw,17px)/1.2 var(--serif);
+  color:rgba(241,233,220,.86);letter-spacing:.02em;
+}
+.foot-copy{
+  grid-column:1/-1;margin:clamp(6px,.9vw,14px) 0 0;
+  padding-top:clamp(12px,1.4vw,18px);border-top:1px solid rgba(241,233,220,.07);
+  font-size:clamp(10.5px,.82vw,12px);color:rgba(241,233,220,.38);
+}
 
 @media (max-width:900px){
   .faq{grid-template-columns:1fr;gap:clamp(14px,4vw,20px);padding-inline:clamp(18px,5vw,32px);margin-top:clamp(30px,8vw,48px);}
@@ -3022,8 +3065,8 @@ h2.sec-title{
   .foot-form{grid-template-columns:1fr;}
   .foot-submit{justify-self:stretch;text-align:center;}
   .foot-people{grid-template-columns:1fr;}
-  .foot-bottom{flex-direction:column;align-items:flex-start;gap:7px;}
-  .foot-copy{margin-left:0;}
+  .foot-bottom{grid-template-columns:1fr;gap:clamp(14px,4vw,22px);}
+  .foot-col--brand{grid-row:1;}
 }
 @media (prefers-reduced-motion:reduce){
   .faq-item{opacity:1;translate:none;transition:none;}

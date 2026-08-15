@@ -353,7 +353,14 @@
         if (tel.value.replace(/\D/g, '').length < 10) { return 'Оставьте телефон или WhatsApp, чтобы мы могли ответить.'; }
         return '';
       }
-      return step.querySelector('input:checked') ? '' : 'Выберите вариант, чтобы перейти дальше.';
+      var checked = step.querySelector('input:checked');
+      if (!checked) { return 'Выберите вариант, чтобы перейти дальше.'; }
+      // «Другое» засчитываем только вместе с вписанным текстом
+      var own = step.querySelector('.quiz-own-field');
+      if (own && checked.dataset.own && !own.value.trim()) {
+        return 'Напишите, чем занимается бизнес.';
+      }
+      return '';
     };
 
     var render = function () {
@@ -383,6 +390,15 @@
       showError('');
       var input = e.target;
       if (input.type !== 'radio' || at === steps.length - 1) { return; }
+      // «Другое» раскрывает поле для своего варианта — здесь автопереход
+      // помешал бы: человек не успел бы ничего вписать
+      var ownField = steps[at].querySelector('.quiz-own-field');
+      if (ownField) {
+        var isOwn = !!input.dataset.own;
+        ownField.hidden = !isOwn;
+        if (isOwn) { ownField.focus(); return; }
+        ownField.value = '';
+      }
       setTimeout(function () {
         if (!input.checked || at === steps.length - 1) { return; }
         at += 1;
