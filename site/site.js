@@ -294,6 +294,67 @@
     });
   }
 
+  // Квиз в подвале: четыре шага вместо длинной формы. Разметка целиком
+  // в HTML, здесь только переключение шагов, прогресс и проверка ответа.
+  var quiz = document.getElementById('quiz');
+  if (quiz) {
+    var steps = [].slice.call(quiz.querySelectorAll('.quiz-step'));
+    var bar = quiz.querySelector('.quiz-bar i');
+    var counter = quiz.querySelector('.quiz-count b');
+    var backBtn = quiz.querySelector('.quiz-back');
+    var nextBtn = quiz.querySelector('.quiz-next');
+    var sendBtn = quiz.querySelector('.quiz-send');
+    var errBox = quiz.querySelector('.quiz-error');
+    var at = 0;
+
+    var showError = function (text) {
+      errBox.textContent = text;
+      errBox.hidden = !text;
+    };
+
+    // Шаг пройден, если в нём отмечен хотя бы один вариант.
+    // На последнем шаге просим имя и телефон.
+    var stepFilled = function (step) {
+      if (step.querySelector('.quiz-fields')) {
+        var name = step.querySelector('input[name="Имя"]');
+        var tel = step.querySelector('input[name="Телефон"]');
+        if (!name.value.trim()) { return 'Напишите, как к вам обращаться.'; }
+        if (tel.value.replace(/\D/g, '').length < 10) { return 'Оставьте телефон или WhatsApp, чтобы мы могли ответить.'; }
+        return '';
+      }
+      return step.querySelector('input:checked') ? '' : 'Выберите вариант, чтобы перейти дальше.';
+    };
+
+    var render = function () {
+      steps.forEach(function (s, i) { s.classList.toggle('is-on', i === at); });
+      counter.textContent = at + 1;
+      bar.style.width = ((at + 1) / steps.length * 100) + '%';
+      backBtn.hidden = at === 0;
+      nextBtn.hidden = at === steps.length - 1;
+      sendBtn.hidden = at !== steps.length - 1;
+      showError('');
+    };
+
+    nextBtn.addEventListener('click', function () {
+      var problem = stepFilled(steps[at]);
+      if (problem) { showError(problem); return; }
+      at = Math.min(at + 1, steps.length - 1);
+      render();
+    });
+    backBtn.addEventListener('click', function () {
+      at = Math.max(at - 1, 0);
+      render();
+    });
+    // Ответ выбран — подсказка об ошибке больше не нужна.
+    quiz.addEventListener('change', function () { showError(''); });
+    quiz.addEventListener('submit', function (e) {
+      var problem = stepFilled(steps[steps.length - 1]);
+      if (problem) { e.preventDefault(); showError(problem); }
+    });
+
+    render();
+  }
+
   // Подсказка «Листайте дальше» у тарифов — гаснет после первого свайпа.
   var levelCards = document.querySelector('.level-cards');
   if (levelCards) {

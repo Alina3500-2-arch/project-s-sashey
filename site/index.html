@@ -1081,15 +1081,72 @@
         <p class="foot-sub">Ответим в течение рабочего дня. Без спама и звонков с продажей.</p>
 
         <!-- Пока без бэкенда: письмо уходит на почту. Подключим обработчик,
-             когда будет форма приёма заявок на сервере. -->
-        <form class="foot-form" action="mailto:hello@ashpartners.ru" method="post" enctype="text/plain">
-          <label class="ff"><span>Как вас зовут</span><input type="text" name="Имя" placeholder="Александр" required /></label>
-          <label class="ff"><span>Телефон или WhatsApp</span><input type="tel" name="Телефон" placeholder="+7 900 000-00-00" required /></label>
-          <label class="ff ff--wide"><span>Чем занимается бизнес</span><input type="text" name="Ниша" placeholder="Производство, услуги, B2B…" /></label>
-          <label class="ff ff--wide"><span>Что хотите разобрать</span><textarea name="Задача" rows="3" placeholder="Коротко о задаче или текущей ситуации"></textarea></label>
-          <button class="cta foot-submit" type="submit">Получить бесплатный разбор
-            <svg class="arr" width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 10L10 2M10 2H3.5M10 2V8.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-          </button>
+             когда будет форма приёма заявок на сервере.
+             Четыре шага вместо длинной формы: сначала выбор из вариантов,
+             контакты — только на последнем шаге. -->
+        <form class="foot-form quiz" id="quiz" action="mailto:hello@ashpartners.ru" method="post" enctype="text/plain">
+          <div class="quiz-top">
+            <div class="quiz-bar" aria-hidden="true"><i></i></div>
+            <p class="quiz-count">Шаг <b>1</b> из 4</p>
+          </div>
+
+          <fieldset class="quiz-step is-on" data-step="1">
+            <legend class="quiz-q">Чем занимается бизнес?</legend>
+            <div class="quiz-opts">
+              <label class="quiz-opt"><input type="radio" name="Сфера" value="Услуги для бизнеса (B2B)" /><span>Услуги для бизнеса (B2B)</span></label>
+              <label class="quiz-opt"><input type="radio" name="Сфера" value="Производство" /><span>Производство</span></label>
+              <label class="quiz-opt"><input type="radio" name="Сфера" value="Строительство и ремонт" /><span>Строительство и ремонт</span></label>
+              <label class="quiz-opt"><input type="radio" name="Сфера" value="Торговля и интернет-магазин" /><span>Торговля и интернет-магазин</span></label>
+              <label class="quiz-opt"><input type="radio" name="Сфера" value="Услуги для людей" /><span>Услуги для людей</span></label>
+              <label class="quiz-opt"><input type="radio" name="Сфера" value="Другое" /><span>Другое</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="quiz-step" data-step="2">
+            <legend class="quiz-q">Что уже работает у вас сейчас?</legend>
+            <p class="quiz-hint">Можно отметить несколько</p>
+            <div class="quiz-opts">
+              <label class="quiz-opt"><input type="checkbox" name="Есть" value="Сайт или посадочная страница" /><span>Сайт или посадочная страница</span></label>
+              <label class="quiz-opt"><input type="checkbox" name="Есть" value="Реклама в Яндекс Директе" /><span>Реклама в Яндекс Директе</span></label>
+              <label class="quiz-opt"><input type="checkbox" name="Есть" value="CRM" /><span>CRM</span></label>
+              <label class="quiz-opt"><input type="checkbox" name="Есть" value="Аналитика и коллтрекинг" /><span>Аналитика и коллтрекинг</span></label>
+              <label class="quiz-opt"><input type="checkbox" name="Есть" value="Отдел продаж или менеджер" /><span>Отдел продаж или менеджер</span></label>
+              <label class="quiz-opt"><input type="checkbox" name="Есть" value="Пока ничего из этого" /><span>Пока ничего из этого</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="quiz-step" data-step="3">
+            <legend class="quiz-q">Что беспокоит больше всего?</legend>
+            <div class="quiz-opts">
+              <label class="quiz-opt"><input type="radio" name="Задача" value="Заявок мало" /><span>Заявок мало</span></label>
+              <label class="quiz-opt"><input type="radio" name="Задача" value="Заявки есть, но слишком дорогие" /><span>Заявки есть, но слишком дорогие</span></label>
+              <label class="quiz-opt"><input type="radio" name="Задача" value="Заявки приходят, но не покупают" /><span>Заявки приходят, но не покупают</span></label>
+              <label class="quiz-opt"><input type="radio" name="Задача" value="Непонятно, куда уходит бюджет" /><span>Непонятно, куда уходит бюджет</span></label>
+              <label class="quiz-opt"><input type="radio" name="Задача" value="Заявки теряются, всё вручную" /><span>Заявки теряются, всё вручную</span></label>
+              <label class="quiz-opt"><input type="radio" name="Задача" value="Запускаем направление с нуля" /><span>Запускаем направление с нуля</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="quiz-step" data-step="4">
+            <legend class="quiz-q">Куда прислать разбор?</legend>
+            <div class="quiz-fields">
+              <label class="ff"><span>Как вас зовут</span><input type="text" name="Имя" placeholder="Александр" /></label>
+              <label class="ff"><span>Телефон или WhatsApp</span><input type="tel" name="Телефон" placeholder="+7 900 000-00-00" /></label>
+              <label class="ff ff--wide"><span>Что важно добавить</span><textarea name="Комментарий" rows="2" placeholder="Необязательно"></textarea></label>
+            </div>
+          </fieldset>
+
+          <p class="quiz-error" role="alert" hidden></p>
+
+          <div class="quiz-nav">
+            <button class="quiz-back" type="button" hidden>Назад</button>
+            <button class="cta quiz-next" type="button">Далее
+              <svg class="arr" width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 10L10 2M10 2H3.5M10 2V8.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </button>
+            <button class="cta foot-submit quiz-send" type="submit" hidden>Получить бесплатный разбор
+              <svg class="arr" width="14" height="14" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 10L10 2M10 2H3.5M10 2V8.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </button>
+          </div>
           <p class="foot-note">Нажимая кнопку, вы соглашаетесь с <a href="#faq">политикой обработки данных</a>.</p>
         </form>
       </div>
