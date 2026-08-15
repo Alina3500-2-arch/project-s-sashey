@@ -513,7 +513,7 @@ h2.sec-title{
 .sec-title .title-minor{font-size:.84em;}
 .sec-lead{
   margin:0 0 clamp(22px,3vw,40px);max-width:60ch;
-  font-size:clamp(14px,1.1vw,17px);line-height:1.62;color:rgba(241,233,220,.74);
+  font-size:clamp(13px,1.05vw,16px);line-height:1.6;color:rgba(241,233,220,.74);
 }
 
 /* появление по очереди */
@@ -734,7 +734,9 @@ h2.sec-title{
 .stairs-head .title-minor{font-size:.70em;white-space:nowrap;}
 .stairs-head .title-figure{display:inline-block;translate:0 -.2em;margin-right:.06em;}
 .stairs-head .title-minor{margin-top:.13em;}
-.stairs-lead{font-size:1.45cqw;line-height:1.5;margin:0;max-width:none;}
+/* описания блоков держим в одном кегле; в единицах контейнера этот текст
+   выходил мельче соседних */
+.stairs-lead{font-size:clamp(13px,1.05vw,16px);line-height:1.5;margin:0;max-width:none;}
 
 /* Ступени проявляются по очереди: сначала цифра, затем название,
    затем описание. Наблюдатель снимает класс при уходе с экрана,
@@ -957,12 +959,14 @@ h2.sec-title{
   .princ-body{position:absolute;left:48.03%;top:0;width:48%;padding:0;margin-top:0;}
   .princ-body .sec-eyebrow{
     position:absolute;top:11.14cqh;left:0;margin:0;
-    font-family:var(--serif);font-weight:400;
-    font-size:clamp(15px,1.9cqw,22px);letter-spacing:.22em;
+    /* надзаголовок как во всех остальных секциях */
+    font-size:clamp(10px,.86vw,12px);letter-spacing:.28em;
   }
   .princ-body h2{
     position:absolute;top:17cqh;left:0;margin:0;
-    font-size:5.55cqw;line-height:.9;
+    /* один размер с остальными заголовками секций (h2.sec-title):
+       в единицах контейнера он выходил заметно мельче соседних блоков */
+    font-size:clamp(30px,5.1vw,80px);line-height:.9;
   }
   /* nope/claim/cta раньше стояли каждый на своём фиксированном top:NNcqh
      независимо друг от друга — если список из 4 пунктов рендерился выше
@@ -1107,7 +1111,7 @@ h2.sec-title{
 .case-intro h2{margin:0 0 clamp(14px,1.7vw,22px);}
 .case-intro .case-green{color:var(--green);}
 .case-intro .case-minor{font-size:.72em;}
-.case-intro p{margin:0;max-width:680px;font-size:clamp(15px,1.2vw,18px);line-height:1.6;color:rgba(241,233,220,.76);}
+.case-intro p{margin:0;max-width:680px;font-size:clamp(13px,1.05vw,16px);line-height:1.6;color:rgba(241,233,220,.76);}
 .cb-frame{display:none;}
 .cb-frame.is-on{display:block;}
 .cb-frame img{display:block;width:100%;height:auto;border-radius:var(--radius) var(--radius) 0 0;}
@@ -1653,8 +1657,10 @@ h2.sec-title{
 .levels-copy{align-self:start;padding:0 0 clamp(24px,3vw,44px) 10px;}
 .levels-variant{margin:0 0 clamp(26px,3vw,42px);font-size:clamp(16px,1.45vw,22px);color:rgba(241,233,220,.82);}
 .levels-eyebrow{margin:0 0 clamp(22px,2.5vw,34px);font-size:clamp(11px,.95vw,15px);font-weight:600;line-height:1.45;letter-spacing:.12em;text-transform:uppercase;color:var(--green);}
-.levels-copy h2{margin:0;font:400 clamp(23px,2.3vw,33px)/1.08 var(--serif);letter-spacing:-.025em;text-transform:uppercase;}
-.levels-lead{margin:clamp(9px,1vw,14px) 0 0;font-size:clamp(10.5px,.86vw,13px);line-height:1.45;color:rgba(241,233,220,.8);}
+/* колонка вдвое уже соседних блоков, поэтому кегль ниже общего ряда —
+   но подтянут к нему настолько, насколько позволяет ширина */
+.levels-copy h2{margin:0;font:400 clamp(24px,2.9vw,42px)/1.06 var(--serif);letter-spacing:-.025em;text-transform:uppercase;}
+.levels-lead{margin:clamp(9px,1vw,14px) 0 0;font-size:clamp(12.5px,1vw,15px);line-height:1.5;color:rgba(241,233,220,.8);}
 /* четыре пункта под четыре строки карточек; точные высоты проставит скрипт */
 .levels-guide{
   margin:clamp(12px,1.4vw,20px) 0 0;padding:0;list-style:none;
@@ -2764,12 +2770,14 @@ h2.sec-title{
 }
 .foot-title{
   margin:clamp(10px,1.2vw,16px) 0 0;
-  font:400 clamp(25px,2.9vw,44px)/1.08 var(--serif);
+  /* один размер с заголовком отзывов — оба стоят в колонке, а не во всю
+     ширину, и должны читаться одинаково */
+  font:400 clamp(28px,3.9vw,58px)/1.06 var(--serif);
   letter-spacing:-.02em;text-transform:uppercase;
 }
 .foot-sub{
   margin:clamp(9px,1.1vw,15px) 0 0;max-width:40ch;
-  font-size:clamp(12.5px,1vw,15px);line-height:1.55;color:rgba(241,233,220,.68);
+  font-size:clamp(13px,1.05vw,16px);line-height:1.6;color:rgba(241,233,220,.68);
 }
 
 /* ── форма ── */
