@@ -2688,7 +2688,7 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
 .faq{
   position:relative;
   width:100%;max-width:1040px;margin:clamp(40px,5vw,86px) auto 0;
-  display:grid;grid-template-columns:minmax(0,.72fr) minmax(0,1fr);
+  display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1fr);
   gap:clamp(22px,2.4vw,44px);align-items:start;color:var(--cream);
 }
 /* Фон блока привязан к самой колонке (.faq центрирован, max-width:1040),
@@ -2699,11 +2699,13 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
 .faq-bg{
   /* ровно по левой колонке: снимок занимает её целиком и стоит по центру,
      текст идёт под ним — как на присланном макете */
-  position:absolute;z-index:0;top:0;left:0;width:46%;height:100%;
+  position:absolute;z-index:0;top:0;left:0;width:50%;height:100%;
   pointer-events:none;
   /* contain: снимок 1448×1086 не увеличиваем больше исходного размера,
      только вписываем в бокс — качество не мылится. */
-  background:url("assets/faq-sasha-bg.jpg") center top/cover no-repeat;
+  /* фигура стоит в левой трети кадра — привязка к левому краю, иначе при
+     center в узкий бокс попадала одна тёмная стена, а Александра не видно */
+  background:url("assets/faq-sasha-bg.jpg") 4% top/cover no-repeat;
   /* снимок идёт в полную силу — фон на нём и так тёмный, притушивать
      фигуру нельзя. Маска растворяет края, чтобы не было видимой рамки. */
   -webkit-mask-image:linear-gradient(to right,transparent 0,#000 10%,#000 84%,transparent 100%),
@@ -2720,7 +2722,9 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
 .faq-head{display:flex;flex-direction:column;justify-content:flex-end;padding-top:clamp(56px,7vw,110px);}
 /* на широком экране общий .sec-title разгонялся до 80px и один только
    заголовок занимал почти 300px высоты; чуть сжат ещё раз под текст */
-.faq-head .sec-title{font-size:clamp(26px,3vw,50px);}
+/* заголовок ровно в две строки («Отвечаем до того, / как спросят») —
+   при 50px первая строка не помещалась в колонку и ломалась на три */
+.faq-head .sec-title{font-size:clamp(26px,2.5vw,40px);}
 .faq-head .sec-title{margin:clamp(10px,1.2vw,16px) 0 0;}
 .faq-lead{
   margin:clamp(12px,1.5vw,20px) 0 0;max-width:34ch;
