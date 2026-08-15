@@ -89,12 +89,6 @@ a{color:inherit;text-decoration:none;}
   background-image:url("assets/hero-duo-final.jpg");
   background-size:cover;background-position:center center;
 }
-/* На широком экране кадр показывался серединой, и голова уходила прямо
-   под номер телефона и кнопку. Берём выше по кадру и чуть отпускаем
-   масштаб — фигуры опускаются, правый верхний угол освобождается. */
-@media (min-width:1001px){
-  .photo{background-size:112% auto;background-position:52% 12%;}
-}
 .photo-in{position:absolute;inset:0;opacity:0;transform:scale(1.07);}
 /* Фон начинает движение только вместе с текстом первого экрана. До снятия
    загрузочного состояния он прозрачен, поэтому фото не «вываливается» раньше
@@ -1198,7 +1192,7 @@ h2.sec-title{
 }
 /* Список работ уходит вправо: слева коронка занимает весь кадр, а справа
    под цифрой результата остаётся пустое поле. */
-.cover-brief-list{clear:both;list-style:none;margin:clamp(24px,4vw,64px) 0 0 auto;padding:0;width:min(38%,320px);}
+.cover-brief-list{clear:both;list-style:none;margin:clamp(90px,13vw,190px) 0 0 auto;padding:0;width:min(38%,320px);}
 .cover-brief-list li{
   padding:clamp(7px,.9vw,12px) 0;border-bottom:1px solid rgba(241,233,220,.14);
   font-size:clamp(12px,1.1vw,17px);color:rgba(241,233,220,.86);
@@ -1443,7 +1437,12 @@ h2.sec-title{
   .case-detail .case-next--corner{top:50%;}
   /* и сама колонка не доходит до правого края — кнопка встаёт в это поле,
      а не поверх строк */
-  .case-detail .case2-copy{padding-right:clamp(180px,16vw,215px);}
+  .case-detail .case2-copy{padding-right:clamp(180px,16vw,215px);padding-top:clamp(10px,1.4vw,20px);padding-bottom:clamp(10px,1.4vw,20px);justify-content:center;}
+  /* кегли чуть меньше: текст перестал упираться в нижний край кадра */
+  .case-detail .case-col-item{padding:clamp(9px,1.1vw,14px) 0;}
+  .case-detail .case-col-item b{font-size:clamp(15px,1.32vw,19px);}
+  .case-detail .case-col-item span{font-size:clamp(11px,.86vw,13px);line-height:1.4;}
+  .case-detail .case2-copy h3{font-size:clamp(26px,2.9vw,42px);}
   #cases .case-next--project,
   .case-detail .case-next--project{
     position:static;align-self:flex-start;margin-top:clamp(14px,1.7vw,22px);
@@ -1452,7 +1451,13 @@ h2.sec-title{
   }
   /* «Разобрать мой проект» на последнем слайде вставала вплотную к строке
      вкладок — приподнимаем и подрезаем верхний отступ. */
-  .case-detail .case-next--project{margin-top:clamp(12px,1.4vw,19px);translate:0 -6px;}
+  /* CTA ушла в левую половину кадра, под фотографию: справа она упиралась
+     в строку вкладок и наезжала на неё. */
+  .case-detail .case2-grid--result{position:relative;}
+  .case-detail .case-next--project{
+    position:absolute;left:clamp(20px,3vw,52px);bottom:clamp(18px,2.2vw,34px);
+    margin:0;translate:none;z-index:4;
+  }
   /* на слайде «Результат» контент почти упирался в низ кадра, из-за чего
      кнопка вставала вплотную к строке вкладок — поджимаем отступы */
   .case-detail .case2-grid--result .case2-copy{padding-top:clamp(6px,.9vw,12px);}
@@ -2309,6 +2314,7 @@ h2.sec-title{
    Отзыв — это фотография экрана, а не пересказ текстом: рамка лежит
    поверх снимка, низ телефона срезан и перекрыт плашкой с цифрами. */
 .trust-main{display:flex;flex-direction:column;align-items:center;}
+.trust-grid{align-items:stretch;}
 .rv-device{
   position:relative;width:min(100%,330px);
   /* видно чуть больше половины корпуса — остальное уходит под плашку */
@@ -2334,8 +2340,11 @@ h2.sec-title{
 
 /* ── плашка результата: лежит на срезе телефона ── */
 .trust-stats{
-  position:relative;z-index:4;width:min(100%,392px);margin:-64px 0 0;
-  padding:clamp(14px,1.5vw,20px) clamp(16px,1.8vw,24px) clamp(16px,1.7vw,22px);
+  /* плашка тянется до низа колонки, чтобы нижние края совпадали
+     с последней карточкой отзыва справа */
+  position:relative;z-index:4;width:min(100%,392px);margin:-64px 0 0;flex:1;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:clamp(18px,2vw,28px) clamp(16px,1.8vw,24px) clamp(20px,2.2vw,30px);
   border:1px solid rgba(168,220,40,.34);border-radius:18px;
   background:linear-gradient(160deg,rgba(18,20,15,.97),rgba(10,12,9,.97));
   box-shadow:0 22px 50px rgba(0,0,0,.5);
@@ -2351,8 +2360,8 @@ h2.sec-title{
 }
 .trust-stat-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(8px,1vw,16px);}
 .trust-stat+.trust-stat{padding-left:clamp(8px,1vw,16px);border-left:1px solid rgba(241,233,220,.16);}
-.trust-stat b{display:block;font:400 clamp(17px,1.7vw,25px)/1 var(--serif);color:var(--green);}
-.trust-stat span{display:block;margin-top:5px;font-size:clamp(9.5px,.8vw,12px);line-height:1.35;color:rgba(241,233,220,.6);}
+.trust-stat b{display:block;font:400 clamp(19px,2vw,30px)/1 var(--serif);color:var(--green);}
+.trust-stat span{display:block;margin-top:6px;font-size:clamp(10.5px,.88vw,13px);line-height:1.4;color:rgba(241,233,220,.62);}
 
 /* ── превью переписок справа ── */
 .rv-list{display:grid;gap:clamp(9px,1.1vw,15px);align-content:start;}
@@ -2638,6 +2647,9 @@ h2.sec-title{
 /* ═══ 08. ПОДВАЛ: ФОРМА, КОНТАКТЫ, РЕКВИЗИТЫ ═════════════ */
 .foot{
   position:relative;width:100vw;max-width:none;
+  /* всё, что ниже подвала, красим его же цветом: раньше там оставалась
+     светлая полоса фона страницы */
+  box-shadow:0 50vh 0 50vh #090b08;
   margin:clamp(44px,5.5vw,90px) 0 0 calc(50% - 50vw);
   padding:clamp(34px,4vw,64px) clamp(20px,2.5vw,38px) clamp(20px,2.2vw,32px);
   overflow:hidden;color:var(--cream);
@@ -2743,7 +2755,10 @@ h2.sec-title{
   border-top:1px solid rgba(241,233,220,.09);
   font-size:clamp(10.5px,.82vw,12.5px);line-height:1.5;color:rgba(241,233,220,.5);
 }
-.foot-nav{display:flex;flex-wrap:wrap;gap:clamp(8px,1vw,14px);}
+/* кнопки подвала одной строкой: в две они смотрелись обрывком */
+.foot-nav{display:flex;flex-wrap:nowrap;gap:clamp(6px,.8vw,12px);overflow-x:auto;scrollbar-width:none;}
+.foot-nav::-webkit-scrollbar{display:none;}
+.foot-nav a{white-space:nowrap;flex:none;}
 .foot-nav a{
   padding:clamp(7px,.8vw,10px) clamp(12px,1.2vw,17px);
   border:1px solid rgba(241,233,220,.14);border-radius:999px;
@@ -2756,7 +2771,7 @@ h2.sec-title{
 .foot-bottom{
   display:flex;flex-wrap:wrap;align-items:center;gap:clamp(8px,1.4vw,22px);
   max-width:1180px;margin:clamp(20px,2.4vw,38px) auto 0;
-  padding-top:clamp(13px,1.5vw,20px);border-top:1px solid rgba(241,233,220,.1);
+  padding-top:clamp(13px,1.5vw,20px);border-top:1px solid rgba(241,233,220,.08);
   font-size:clamp(10px,.8vw,12.5px);color:rgba(241,233,220,.44);
 }
 .foot-logo{flex:none;display:block;line-height:0;opacity:.9;transition:opacity .25s;}
