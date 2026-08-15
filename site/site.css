@@ -430,14 +430,19 @@ h1 .l3,h1 .l4{font-size:.84em;}
 .closer-brand svg.mark{width:clamp(34px,3.4cqw,52px);height:auto;flex:none;overflow:visible;}
 .closer-brand .brand-name{font-size:clamp(10px,1cqw,15px);color:var(--cream);}
 .closer.run .closer-brand{opacity:1;}
+/* Заголовок финала набран ровно как заголовок первого экрана: тот же
+   кегль, начертание, капс и разрядка. Первая строка полным размером,
+   остальные — .84em, как строки 3–4 у h1. */
 .closer h2{
-  position:absolute;left:50%;top:17.4cqh;translate:-50% 0;width:64%;
-  margin:0;font-family:var(--serif);font-weight:400;
-  font-size:6.35cqw;line-height:.99;letter-spacing:.005em;
+  position:absolute;left:50%;top:21cqh;translate:-50% 0;width:74%;
+  margin:0;font-family:var(--serif);font-weight:300;text-transform:uppercase;
+  font-size:clamp(30px,5.1vw,80px);line-height:.9;letter-spacing:.012em;
   color:var(--cream);
   opacity:0;
   transition:opacity 1s var(--ease) .15s;
 }
+.closer h2 .cl-major,.closer h2 .cl-minor{display:block;}
+.closer h2 .cl-minor{font-size:.84em;}
 .closer h2 br{display:block;}
 .closer.run h2{opacity:1;}
 .closer > p{
@@ -975,7 +980,9 @@ h2.sec-title{
      .princ-stack стоит на месте бывшего .nope, а всё внутри — обычным
      потоком: плашка и кнопка всегда идут ниже списка, сколько бы места он
      ни занял. */
-  .princ-stack{position:absolute;top:37.5cqh;left:0;width:100%;}
+  /* отметка опущена под выросший заголовок: при 80 px две строки в .9
+     заканчиваются ниже прежних 37.5cqh и наезжали на первый пункт */
+  .princ-stack{position:absolute;top:42.5cqh;left:0;width:100%;}
   .nope{position:static;width:83%;margin:0;}
   .nope li{
     padding:0 0 3.5cqh;gap:1.64cqw;
@@ -1657,9 +1664,14 @@ h2.sec-title{
 .levels-copy{align-self:start;padding:0 0 clamp(24px,3vw,44px) 10px;}
 .levels-variant{margin:0 0 clamp(26px,3vw,42px);font-size:clamp(16px,1.45vw,22px);color:rgba(241,233,220,.82);}
 .levels-eyebrow{margin:0 0 clamp(22px,2.5vw,34px);font-size:clamp(11px,.95vw,15px);font-weight:600;line-height:1.45;letter-spacing:.12em;text-transform:uppercase;color:var(--green);}
-/* колонка вдвое уже соседних блоков, поэтому кегль ниже общего ряда —
-   но подтянут к нему настолько, насколько позволяет ширина */
-.levels-copy h2{margin:0;font:400 clamp(24px,2.9vw,42px)/1.06 var(--serif);letter-spacing:-.025em;text-transform:uppercase;}
+/* Колонка здесь всего 230–290 px: «ВОЗМОЖНОСТИ» в общем кегле выезжало
+   за её край и наползало на первую карточку. Держим размер по ширине
+   колонки, а не по ширине экрана. */
+.levels-copy h2{
+  margin:0;font:400 clamp(22px,2.35vw,34px)/1.06 var(--serif);
+  letter-spacing:-.025em;text-transform:uppercase;
+  overflow-wrap:anywhere;hyphens:auto;
+}
 .levels-lead{margin:clamp(9px,1vw,14px) 0 0;font-size:clamp(12.5px,1vw,15px);line-height:1.5;color:rgba(241,233,220,.8);}
 /* четыре пункта под четыре строки карточек; точные высоты проставит скрипт */
 .levels-guide{
