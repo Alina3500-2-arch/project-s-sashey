@@ -1259,7 +1259,10 @@ h2.sec-title{
    в ряду flex); на десктопе для неё нет стилей вообще — без display:none
    она всплывает обычным текстом в начале потока, поверх коллажа */
 .case-site-arrow{display:none;}
-.case-traffic-copy .case-sub{color:#21231d;}.case-table-card{align-self:center;margin:auto 0;padding:clamp(20px,2.4vw,38px);border-radius:26px;background:#fff;box-shadow:0 16px 40px rgba(20,20,15,.1);}.case-table-head{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,2vw,28px);align-items:center;text-align:center;font-size:clamp(12px,1.3vw,20px);}.case-pill{padding:.35em .8em;border-radius:10px;background:#090a08;color:#fff;}.case-pill.green{background:#47aa16;}.case-arrow{display:none;}.case-tables{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,2vw,28px);margin-top:clamp(20px,2.8vw,36px);}.case-table{border:1px solid #d8d8d5;}.case-table div{display:grid;grid-template-columns:44px 1fr 1fr;border-bottom:1px solid #d8d8d5;padding:.5em;font-size:clamp(10px,1vw,15px);}.case-table div:last-child{border:0;}.case-table .hit{outline:2px solid #43a914;outline-offset:-2px;}.case-growth{display:grid;grid-template-columns:1fr;gap:7px;margin-top:clamp(18px,2.2vw,28px);font:400 clamp(16px,1.7vw,25px)/1.15 var(--serif);}.case-growth-labels,.case-growth-values{display:grid;grid-template-columns:1fr 1fr;gap:20px;}.case-growth-labels span{color:#6b6c66;font:600 clamp(10px,.85vw,12px)/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;}.case-growth-values b{padding-top:8px;border-top:1px solid #deded9;font:400 clamp(16px,1.7vw,25px)/1.15 var(--serif);white-space:nowrap;}.case-growth em{display:block;margin-top:.1em;color:#41a519;font:400 clamp(18px,2vw,30px)/1 var(--serif);}.case-growth strong{font-size:1.65em;font-weight:400;}
+.case-traffic-copy .case-sub{color:#21231d;}.case-table-card{align-self:center;margin:auto 0;padding:clamp(20px,2.4vw,38px);border-radius:26px;background:#fff;box-shadow:0 16px 40px rgba(20,20,15,.1);}.case-table-head{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,2vw,28px);align-items:center;text-align:center;font-size:clamp(12px,1.3vw,20px);}.case-pill{padding:.35em .8em;border-radius:10px;background:#090a08;color:#fff;}.case-pill.green{background:#47aa16;}.case-arrow{display:none;}.case-tables{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,2vw,28px);margin-top:clamp(20px,2.8vw,36px);}.case-table{border:1px solid #d8d8d5;}.case-table div{display:grid;grid-template-columns:26px 1fr auto;gap:.35em;align-items:center;
+  border-bottom:1px solid #d8d8d5;padding:.5em .55em;font-size:clamp(10px,.95vw,14px);}
+/* сумма в правой колонке не должна переноситься на две строки */
+.case-table div b{white-space:nowrap;font-variant-numeric:tabular-nums;}.case-table div:last-child{border:0;}.case-table .hit{outline:2px solid #43a914;outline-offset:-2px;}.case-growth{display:grid;grid-template-columns:1fr;gap:7px;margin-top:clamp(18px,2.2vw,28px);font:400 clamp(16px,1.7vw,25px)/1.15 var(--serif);}.case-growth-labels,.case-growth-values{display:grid;grid-template-columns:1fr 1fr;gap:20px;}.case-growth-labels span{color:#6b6c66;font:600 clamp(10px,.85vw,12px)/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;}.case-growth-values b{padding-top:8px;border-top:1px solid #deded9;font:400 clamp(16px,1.7vw,25px)/1.15 var(--serif);white-space:nowrap;}.case-growth em{display:block;margin-top:.1em;color:#41a519;font:400 clamp(18px,2vw,30px)/1 var(--serif);}.case-growth strong{font-size:1.65em;font-weight:400;}
 .case-system-grid{display:grid;grid-template-columns:37% 63%;height:100%;}.case-system-copy{display:flex;flex-direction:column;justify-content:center;}.case-system-copy h3{font-size:clamp(20px,2.3vw,32px);}.case-system-copy .case-sub{color:#e5dccf;}.case-system-list{margin:clamp(8px,1vw,14px) 0 0;padding:clamp(6px,.7vw,10px) 0 0;list-style:none;border-top:1px solid rgba(241,233,220,.28);}.case-system-list li{display:grid;grid-template-columns:2.5em minmax(0,1fr);column-gap:.45em;margin:.34em 0;font-size:clamp(10px,.92vw,14px);line-height:1.5;color:#cfc7bb;}.case-system-list b{color:var(--green);font-size:1.4em;}.case-system-copy .case-next{margin-top:6px;font-size:clamp(14px,1.3vw,19px);}.case-system-stack{position:relative;}
 /* Было 2 экрана каскадом внахлёст, стало 4 (Bitrix24, КП-калькулятор,
    Расчёт сроков, Обучение) — каскад на четыре плитки не масштабируется,
@@ -1643,7 +1646,7 @@ h2.sec-title{
 @media (prefers-reduced-motion:reduce){
   .levels-stage::before{animation:none;}
 }
-.levels-copy{align-self:stretch;padding:0 0 clamp(24px,3vw,44px) 10px;}
+.levels-copy{align-self:start;padding:0 0 clamp(24px,3vw,44px) 10px;}
 .levels-variant{margin:0 0 clamp(26px,3vw,42px);font-size:clamp(16px,1.45vw,22px);color:rgba(241,233,220,.82);}
 .levels-eyebrow{margin:0 0 clamp(22px,2.5vw,34px);font-size:clamp(11px,.95vw,15px);font-weight:600;line-height:1.45;letter-spacing:.12em;text-transform:uppercase;color:var(--green);}
 .levels-copy h2{margin:0;font:400 clamp(23px,2.3vw,33px)/1.08 var(--serif);letter-spacing:-.025em;text-transform:uppercase;}
@@ -1705,8 +1708,8 @@ h2.sec-title{
 
 /* пунктирная ссылка «Подробнее» и всплывающее описание тарифа */
 .level-more{
-  appearance:none;cursor:pointer;display:inline-block;
-  margin:clamp(7px,.8vw,11px) 0 clamp(9px,1vw,14px);padding:0 0 2px;border:0;background:none;
+  appearance:none;cursor:pointer;display:inline-block;align-self:flex-start;
+  margin:clamp(6px,.7vw,10px) 0 auto;padding:0 0 2px;border:0;background:none;
   color:rgba(241,233,220,.7);font:inherit;font-size:clamp(9.5px,.8vw,12px);
   border-bottom:1px dashed rgba(241,233,220,.45);
   transition:color .25s,border-color .25s;
@@ -2370,7 +2373,9 @@ h2.sec-title{
   display:block;margin-bottom:clamp(8px,1vw,13px);
   font-size:clamp(9.5px,.8vw,12px);letter-spacing:.22em;text-transform:uppercase;color:rgba(241,233,220,.5);
 }
-.trust-stat-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(8px,1vw,16px);}
+.trust-stat-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.4vw,22px);align-items:start;}
+.trust-stat{min-width:0;}
+.trust-stat b{overflow-wrap:anywhere;}
 .trust-stat+.trust-stat{padding-left:clamp(8px,1vw,16px);border-left:1px solid rgba(241,233,220,.16);}
 .trust-stat b{display:block;font:400 clamp(19px,2vw,30px)/1 var(--serif);color:var(--green);}
 .trust-stat span{display:block;margin-top:6px;font-size:clamp(10.5px,.88vw,13px);line-height:1.4;color:rgba(241,233,220,.62);}
@@ -2565,6 +2570,29 @@ h2.sec-title{
 .faq-lead{
   margin:clamp(12px,1.5vw,20px) 0 0;max-width:34ch;
   font-size:clamp(13px,1.05vw,16px);line-height:1.6;color:rgba(241,233,220,.72);
+}
+.faq-ask{
+  display:inline-flex;align-items:center;gap:11px;
+  margin-top:clamp(14px,1.8vw,24px);padding-bottom:5px;
+  border-bottom:1px solid rgba(168,220,40,.5);
+  color:var(--green);font-size:clamp(11px,.95vw,14px);font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;text-decoration:none;
+}
+/* Портрет открывает блок: стоит над заголовком, во всю ширину колонки,
+   цветной и без рамки — края растворяются в фоне страницы. */
+.faq-portrait{
+  position:relative;margin:0 0 clamp(18px,2.4vw,36px);
+  width:100%;aspect-ratio:4/5;pointer-events:none;overflow:hidden;
+}
+.faq-portrait img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center 8%;
+  -webkit-mask-image:linear-gradient(to bottom,#000 0,#000 52%,rgba(0,0,0,.55) 78%,transparent 99%),
+                     linear-gradient(to right,#000 0,#000 62%,rgba(0,0,0,.5) 86%,transparent 100%);
+  -webkit-mask-composite:source-in;
+          mask-image:linear-gradient(to bottom,#000 0,#000 52%,rgba(0,0,0,.55) 78%,transparent 99%),
+                     linear-gradient(to right,#000 0,#000 62%,rgba(0,0,0,.5) 86%,transparent 100%);
+          mask-composite:intersect;
 }
 .faq-ask{
   display:inline-flex;align-items:center;gap:11px;
@@ -2796,9 +2824,9 @@ h2.sec-title{
   font-size:clamp(10.5px,.82vw,12.5px);line-height:1.5;color:rgba(241,233,220,.5);
 }
 /* кнопки подвала одной строкой: в две они смотрелись обрывком */
-.foot-nav{display:flex;flex-wrap:nowrap;gap:clamp(6px,.8vw,12px);overflow-x:auto;scrollbar-width:none;}
+.foot-nav{display:flex;flex-wrap:wrap;gap:clamp(6px,.7vw,10px);}
 .foot-nav::-webkit-scrollbar{display:none;}
-.foot-nav a{white-space:nowrap;flex:none;}
+.foot-nav a{white-space:nowrap;flex:none;padding:clamp(6px,.7vw,9px) clamp(10px,1vw,14px);font-size:clamp(11px,.85vw,13px);}
 .foot-nav a{
   padding:clamp(7px,.8vw,10px) clamp(12px,1.2vw,17px);
   border:1px solid rgba(241,233,220,.14);border-radius:999px;
@@ -2825,7 +2853,7 @@ h2.sec-title{
   .faq-head{position:static;}
   /* на телефоне колонка вопросов идёт сразу под шапкой блока — портрет
      между ними только отодвигал бы сами вопросы вниз */
-  .faq-portrait{display:none;}
+  .faq-portrait{aspect-ratio:3/2;margin-bottom:clamp(14px,4vw,22px);}
   .faq-head .sec-title{font-size:clamp(26px,7.6vw,38px);}
   .faq-item summary{font-size:clamp(13.5px,3.9vw,16px);padding:13px 14px;}
   .faq-a{padding:0 14px 13px;}
