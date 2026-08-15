@@ -539,7 +539,7 @@ h2.sec-title{
 .sec-title .title-minor{font-size:.84em;}
 .sec-lead{
   margin:0 0 clamp(22px,3vw,40px);max-width:60ch;
-  font-size:clamp(13px,1.05vw,16px);line-height:1.6;color:rgba(241,233,220,.74);
+  font-size:clamp(14px,1.15vw,18px);line-height:1.6;color:rgba(241,233,220,.74);
 }
 
 /* появление по очереди */
@@ -722,7 +722,7 @@ h2.sec-title{
   font-size:clamp(17px,1.75vw,25px);line-height:1.24;
   text-transform:uppercase;letter-spacing:.03em;color:var(--green);
 }
-.control p{margin:0;font-size:clamp(13px,1.05vw,16px);line-height:1.6;color:rgba(241,233,220,.76);}
+.control p{margin:0;font-size:clamp(14px,1.15vw,18px);line-height:1.6;color:rgba(241,233,220,.76);}
 .control-message{opacity:0;transform:translateY(10px);transition:opacity .65s var(--ease) 2.05s,transform .75s var(--ease) 2.05s;}
 .control.run .control-message{opacity:1;transform:none;}
 .control-keyword{display:inline-block;transform-origin:left center;}
@@ -762,7 +762,7 @@ h2.sec-title{
 .stairs-head .title-minor{margin-top:.13em;}
 /* описания блоков держим в одном кегле; в единицах контейнера этот текст
    выходил мельче соседних */
-.stairs-lead{font-size:clamp(13px,1.05vw,16px);line-height:1.5;margin:0;max-width:none;}
+.stairs-lead{font-size:clamp(14px,1.15vw,18px);line-height:1.5;margin:0;max-width:none;}
 
 /* Ступени проявляются по очереди: сначала цифра, затем название,
    затем описание. Наблюдатель снимает класс при уходе с экрана,
@@ -1139,7 +1139,7 @@ h2.sec-title{
 .case-intro h2{margin:0 0 clamp(14px,1.7vw,22px);}
 .case-intro .case-green{color:var(--green);}
 .case-intro .case-minor{font-size:.72em;}
-.case-intro p{margin:0;max-width:680px;font-size:clamp(13px,1.05vw,16px);line-height:1.6;color:rgba(241,233,220,.76);}
+.case-intro p{margin:0;max-width:680px;font-size:clamp(14px,1.15vw,18px);line-height:1.6;color:rgba(241,233,220,.76);}
 .cb-frame{display:none;}
 .cb-frame.is-on{display:block;}
 .cb-frame img{display:block;width:100%;height:auto;border-radius:var(--radius) var(--radius) 0 0;}
@@ -1685,15 +1685,13 @@ h2.sec-title{
 .levels-copy{align-self:start;padding:0 0 clamp(24px,3vw,44px) 10px;}
 .levels-variant{margin:0 0 clamp(26px,3vw,42px);font-size:clamp(16px,1.45vw,22px);color:rgba(241,233,220,.82);}
 .levels-eyebrow{margin:0 0 clamp(22px,2.5vw,34px);font-size:clamp(11px,.95vw,15px);font-weight:600;line-height:1.45;letter-spacing:.12em;text-transform:uppercase;color:var(--green);}
-/* Колонка здесь всего 230–290 px: «ВОЗМОЖНОСТИ» в общем кегле выезжало
-   за её край и наползало на первую карточку. Держим размер по ширине
-   колонки, а не по ширине экрана. */
-.levels-copy h2{
-  margin:0;font:400 clamp(22px,2.35vw,34px)/1.06 var(--serif);
-  letter-spacing:-.025em;text-transform:uppercase;
-  overflow-wrap:anywhere;hyphens:auto;
-}
-.levels-lead{margin:clamp(9px,1vw,14px) 0 0;font-size:clamp(12.5px,1vw,15px);line-height:1.5;color:rgba(241,233,220,.8);}
+/* Заголовок теперь вне узкой колонки — общий h2.sec-title, тот же кегль,
+   что у «Маршрут без сюрпризов» и остальных секций. Здесь только отступ
+   до сетки карточек. */
+/* h2.levels-title, а не просто .levels-title: у базового h2.sec-title
+   специфичность выше (элемент+класс), простой класс проиграл бы margin */
+h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp(22px,2.6vw,38px);}
+.levels-lead{margin:clamp(9px,1vw,14px) 0 0;font-size:clamp(14px,1.15vw,18px);line-height:1.6;color:rgba(241,233,220,.8);}
 /* четыре пункта под четыре строки карточек; точные высоты проставит скрипт */
 .levels-guide{
   margin:clamp(12px,1.4vw,20px) 0 0;padding:0;list-style:none;
@@ -1806,7 +1804,7 @@ h2.sec-title{
 .lv-modal-card h3{margin:clamp(8px,1vw,14px) 0 0;font:400 clamp(21px,2.2vw,32px)/1.15 var(--serif);}
 .lv-modal-price{margin:clamp(6px,.8vw,10px) 0 0;color:var(--green);font:400 clamp(19px,1.9vw,28px)/1 var(--sans);letter-spacing:-.03em;}
 .lv-modal-body{margin-top:clamp(14px,1.6vw,22px);}
-.lv-modal-body p{margin:0 0 clamp(10px,1.2vw,16px);font-size:clamp(13px,1.05vw,16px);line-height:1.6;color:rgba(241,233,220,.82);}
+.lv-modal-body p{margin:0 0 clamp(10px,1.2vw,16px);font-size:clamp(14px,1.15vw,18px);line-height:1.6;color:rgba(241,233,220,.82);}
 .lv-modal-body ul{margin:0;padding:0;list-style:none;}
 .lv-modal-body li{
   position:relative;padding:0 0 clamp(9px,1vw,13px) clamp(20px,1.6vw,26px);
@@ -1832,7 +1830,7 @@ h2.sec-title{
   #audit.levels{padding-inline:0;}
   .levels-stage{display:block;}
   .levels-copy{padding:0 clamp(18px,5vw,32px) clamp(28px,7vw,44px);}
-  .levels-copy h2{font-size:clamp(26px,7.6vw,36px);}
+  h2.levels-title{padding:0 clamp(18px,5vw,32px);margin:0 auto clamp(16px,4vw,24px);font-size:clamp(26px,7.6vw,38px);}
   .levels-lead br{display:none;}
   .levels-guide{display:grid;grid-template-columns:1fr 1fr;gap:0 18px;}
   .levels-guide li{min-height:54px;font-size:clamp(12px,3.3vw,15px);}
@@ -2397,7 +2395,7 @@ h2.sec-title{
 .trust-accent{color:var(--green);}
 .trust-head p{
   margin:clamp(12px,1.5vw,20px) 0 0;max-width:38ch;
-  font-size:clamp(13px,1.05vw,16px);line-height:1.6;color:rgba(241,233,220,.72);
+  font-size:clamp(14px,1.15vw,18px);line-height:1.6;color:rgba(241,233,220,.72);
 }
 .trust-grid{
   display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.92fr);
@@ -2437,7 +2435,7 @@ h2.sec-title{
 .trust-stats{
   /* плашка тянется до низа колонки, чтобы нижние края совпадали
      с последней карточкой отзыва справа */
-  position:relative;z-index:4;width:min(100%,392px);margin:-64px 0 0;flex:1;
+  position:relative;z-index:4;width:min(100%,440px);margin:-64px 0 0;flex:1;
   display:flex;flex-direction:column;justify-content:center;
   padding:clamp(18px,2vw,28px) clamp(16px,1.8vw,24px) clamp(20px,2.2vw,30px);
   border:1px solid rgba(168,220,40,.34);border-radius:18px;
@@ -2460,13 +2458,13 @@ h2.sec-title{
 .trust-stat{min-width:0;}
 .trust-stat+.trust-stat{padding-left:clamp(6px,.7vw,10px);border-left:1px solid rgba(241,233,220,.16);}
 .trust-stat b{
-  display:block;font:400 clamp(15px,1.5vw,22px)/1.08 var(--serif);color:var(--green);
+  display:block;font:400 clamp(17px,1.75vw,26px)/1.08 var(--serif);color:var(--green);
   /* break-word, а не anywhere: слово рвётся только если иначе никак */
   overflow-wrap:break-word;text-wrap:balance;
 }
 /* подписи переносятся внутри своей колонки и никогда не залезают на соседнюю */
 .trust-stat span{
-  display:block;margin-top:5px;font-size:clamp(10px,.82vw,12px);line-height:1.35;
+  display:block;margin-top:5px;font-size:clamp(11px,.92vw,13.5px);line-height:1.35;
   color:rgba(241,233,220,.62);overflow-wrap:break-word;
 }
 
@@ -2484,14 +2482,14 @@ h2.sec-title{
 .rv-card:hover{border-color:rgba(168,220,40,.4);translate:0 -2px;}
 .rv-card.is-on{border-color:rgba(168,220,40,.66);box-shadow:0 0 0 1px rgba(168,220,40,.28),0 16px 34px rgba(0,0,0,.42);}
 /* «окошко» со снимком: видна только верхушка переписки */
-.rv-card-shot{display:block;width:clamp(56px,5vw,74px);aspect-ratio:3/4;overflow:hidden;
+.rv-card-shot{display:block;width:clamp(66px,6vw,88px);aspect-ratio:3/4;overflow:hidden;
   border-radius:10px;background:#ECE5DC;flex:none;}
 .rv-card-shot img{display:block;width:100%;height:100%;object-fit:cover;object-position:top center;}
-.rv-card-copy{display:flex;flex-direction:column;gap:2px;min-width:0;}
-.rv-card-copy b{font:400 clamp(14px,1.2vw,17px)/1.15 var(--serif);}
-.rv-card-copy i{font-style:normal;font-size:clamp(9.5px,.78vw,11.5px);letter-spacing:.14em;text-transform:uppercase;color:var(--green);}
+.rv-card-copy{display:flex;flex-direction:column;gap:3px;min-width:0;}
+.rv-card-copy b{font:400 clamp(16px,1.5vw,21px)/1.15 var(--serif);}
+.rv-card-copy i{font-style:normal;font-size:clamp(10.5px,.88vw,13px);letter-spacing:.14em;text-transform:uppercase;color:var(--green);}
 .rv-card-copy em{
-  font-style:normal;margin-top:4px;font-size:clamp(11px,.86vw,13px);line-height:1.45;
+  font-style:normal;margin-top:4px;font-size:clamp(12.5px,1vw,15px);line-height:1.45;
   color:rgba(241,233,220,.62);
   /* цитата не растягивает карточку: максимум две строки */
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
@@ -2501,9 +2499,21 @@ h2.sec-title{
   width:100%;max-width:1180px;margin:clamp(40px,5vw,86px) auto 0;
   color:var(--cream);
 }
+/* Блок лежит внутри .page (max-width:1180 с внутренним отступом), поэтому
+   простой max-width здесь не сработал бы — .page обрежет доступную ширину
+   раньше. На широких мониторах вырываемся из этого лимита до 1320px и
+   центрируемся уже по вьюпорту: шесть карточек иначе выходят слишком
+   узкими, а заголовки и подписи в них — мелкими. На вьюпортах уже 1320px
+   ничего не меняется, блок остаётся в общей колонке. */
+@media (min-width:1260px){
+  .process{
+    width:1320px;max-width:1320px;
+    margin-left:calc(50% - 660px);margin-right:calc(50% - 660px);
+  }
+}
 .process-lead{
   margin:clamp(10px,1.2vw,16px) 0 0;
-  font-size:clamp(13px,1.05vw,16px);line-height:1.55;color:rgba(241,233,220,.72);
+  font-size:clamp(14px,1.15vw,18px);line-height:1.55;color:rgba(241,233,220,.72);
 }
 /* Маршрут: шесть шагов в один ряд «лесенкой», за ними — сплошная кривая.
    Ломаные пунктирные перемычки между ячейками сетки заменены на неё. */
@@ -2598,7 +2608,7 @@ h2.sec-title{
   color:var(--green);font:400 clamp(20px,2.1vw,30px)/1 var(--serif);
   letter-spacing:.04em;
 }
-.steps7 b{display:block;font:400 clamp(15px,1.5vw,21px)/1.2 var(--serif);}
+.steps7 b{display:block;font:400 clamp(17px,1.7vw,24px)/1.2 var(--serif);}
 .route-cta{
   display:flex;flex-direction:column;align-items:center;gap:clamp(9px,1vw,14px);
   margin:clamp(28px,3.4vw,52px) 0 0;text-align:center;
@@ -2606,7 +2616,7 @@ h2.sec-title{
 .route-cta p{margin:0;font-size:clamp(12px,.95vw,15px);color:rgba(241,233,220,.6);}
 .steps7 p{
   margin:clamp(6px,.7vw,10px) 0 0;
-  font-size:clamp(10.5px,.85vw,13px);line-height:1.45;color:rgba(241,233,220,.62);
+  font-size:clamp(12.5px,1.05vw,15px);line-height:1.5;color:rgba(241,233,220,.62);
 }
 
 @media (max-width:900px){
@@ -2698,7 +2708,7 @@ h2.sec-title{
 .faq-head .sec-title{margin:clamp(10px,1.2vw,16px) 0 0;}
 .faq-lead{
   margin:clamp(12px,1.5vw,20px) 0 0;max-width:34ch;
-  font-size:clamp(13px,1.05vw,16px);line-height:1.6;color:rgba(241,233,220,.72);
+  font-size:clamp(14px,1.15vw,18px);line-height:1.6;color:rgba(241,233,220,.72);
 }
 .faq-ask{
   display:inline-flex;align-items:center;gap:11px;
@@ -2843,7 +2853,7 @@ h2.sec-title{
 }
 .foot-sub{
   margin:clamp(9px,1.1vw,15px) 0 0;max-width:40ch;
-  font-size:clamp(13px,1.05vw,16px);line-height:1.6;color:rgba(241,233,220,.68);
+  font-size:clamp(14px,1.15vw,18px);line-height:1.6;color:rgba(241,233,220,.68);
 }
 
 /* ── форма ── */
