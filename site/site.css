@@ -32,7 +32,10 @@
 /* text-size-adjust:100% обязателен: без него Safari на iPhone сам
    увеличивает кегль в отдельных широких абзацах (сильнее всего это было
    видно на блоке «Вместе»), и вёрстка перестаёт совпадать с макетом. */
-html{scroll-behavior:smooth;overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%;}
+html{scroll-behavior:smooth;overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%;
+  /* под футером виднелась полоса графита — страница светлее самого
+     футера. Красим корень в его цвет. */
+  background:#090b08;}
 body{
   margin:0;
   background:var(--graphite);
@@ -85,6 +88,12 @@ a{color:inherit;text-decoration:none;}
   position:absolute;inset:0;
   background-image:url("assets/hero-duo-final.jpg");
   background-size:cover;background-position:center center;
+}
+/* На широком экране кадр показывался серединой, и голова уходила прямо
+   под номер телефона и кнопку. Берём выше по кадру и чуть отпускаем
+   масштаб — фигуры опускаются, правый верхний угол освобождается. */
+@media (min-width:1001px){
+  .photo{background-size:112% auto;background-position:52% 12%;}
 }
 .photo-in{position:absolute;inset:0;opacity:0;transform:scale(1.07);}
 /* Фон начинает движение только вместе с текстом первого экрана. До снятия
@@ -718,7 +727,7 @@ h2.sec-title{
 .stairs-head .title-minor{font-size:.70em;white-space:nowrap;}
 .stairs-head .title-figure{display:inline-block;translate:0 -.2em;margin-right:.06em;}
 .stairs-head .title-minor{margin-top:.13em;}
-.stairs-lead{font-size:1.25cqw;line-height:1.45;margin:0;max-width:none;}
+.stairs-lead{font-size:1.45cqw;line-height:1.5;margin:0;max-width:none;}
 
 /* Ступени проявляются по очереди: сначала цифра, затем название,
    затем описание. Наблюдатель снимает класс при уходе с экрана,
@@ -959,7 +968,8 @@ h2.sec-title{
   .nope{position:static;width:83%;margin:0;}
   .nope li{
     padding:0 0 3.5cqh;gap:1.64cqw;
-    font-size:clamp(14px,1.15cqw,18px);line-height:1.6;
+    /* было мельче, чем описания в соседних блоках — выровняли */
+    font-size:clamp(15px,1.32cqw,20px);line-height:1.6;
   }
   .nope li:last-child{padding-bottom:0;}
   .nope i{width:.81cqw;height:.81cqw;margin-top:.35cqw;}
@@ -1186,7 +1196,9 @@ h2.sec-title{
   border:1px solid rgba(168,220,40,.55);border-radius:8px;
   font-size:clamp(9.5px,.82vw,12px);letter-spacing:.16em;text-transform:uppercase;color:var(--green);
 }
-.cover-brief-list{clear:both;list-style:none;margin:clamp(24px,4vw,64px) 0 0;padding:0;max-width:42%;}
+/* Список работ уходит вправо: слева коронка занимает весь кадр, а справа
+   под цифрой результата остаётся пустое поле. */
+.cover-brief-list{clear:both;list-style:none;margin:clamp(24px,4vw,64px) 0 0 auto;padding:0;width:min(38%,320px);}
 .cover-brief-list li{
   padding:clamp(7px,.9vw,12px) 0;border-bottom:1px solid rgba(241,233,220,.14);
   font-size:clamp(12px,1.1vw,17px);color:rgba(241,233,220,.86);
@@ -1669,26 +1681,13 @@ h2.sec-title{
 /* Подсказка про свайп нужна только на мобильном — на ПК карточки видно
    все сразу, никакого скролла нет. */
 .swipe-hint{display:none;}
-/* Строки тарифов совпадают с пунктами слева: и список, и детали карточек
-   прижаты к низу колонки, а высота строки у них общая. */
-.levels-stage{--lv-row:clamp(46px,4.6vw,62px);--lv-btn:clamp(58px,5.8vw,80px);}
-.level-card{display:flex;flex-direction:column;}
-.level-details{margin:auto 0 0;padding:0;list-style:none;border-top:1px dotted rgba(241,233,220,.16);}
-.level-details li{
-  display:flex;align-items:center;min-height:var(--lv-row);
-  padding:clamp(5px,.5vw,8px) 0;border-bottom:1px dotted rgba(241,233,220,.16);
-  font-size:clamp(9.5px,.8vw,12px);line-height:1.35;color:rgba(241,233,220,.82);
-}
-.levels-copy{display:flex;flex-direction:column;}
-.levels-guide{margin-top:auto;}
-.levels-guide li{min-height:var(--lv-row);}
-/* пустое место под кнопкой карточки, чтобы строки не разъезжались */
-.levels-guide::after{content:"";display:block;height:var(--lv-btn);}
+.level-details{margin:0;padding:0;list-style:none;border-top:1px dotted rgba(241,233,220,.16);}
+.level-details li{padding:clamp(6px,.62vw,9px) 0;border-bottom:1px dotted rgba(241,233,220,.16);font-size:clamp(9.5px,.8vw,12px);line-height:1.4;color:rgba(241,233,220,.82);}
 
 /* пунктирная ссылка «Подробнее» и всплывающее описание тарифа */
 .level-more{
-  appearance:none;cursor:pointer;align-self:flex-start;
-  margin:clamp(8px,.9vw,12px) 0 0;padding:0 0 2px;border:0;background:none;
+  appearance:none;cursor:pointer;display:inline-block;
+  margin:clamp(7px,.8vw,11px) 0 clamp(9px,1vw,14px);padding:0 0 2px;border:0;background:none;
   color:rgba(241,233,220,.7);font:inherit;font-size:clamp(9.5px,.8vw,12px);
   border-bottom:1px dashed rgba(241,233,220,.45);
   transition:color .25s,border-color .25s;
@@ -1725,8 +1724,6 @@ h2.sec-title{
 .lv-modal-body .level-note{margin-top:clamp(8px,1vw,14px);font-size:clamp(11.5px,.92vw,14px);color:rgba(241,233,220,.6);}
 .lv-modal-cta{margin-top:clamp(16px,1.8vw,24px);}
 @media (max-width:900px){
-  .levels-guide::after{display:none;}
-  .level-details li{min-height:0;}
 }
 .level-details .is-check::before{content:"✓";margin-right:9px;color:var(--green);font-size:1.2em;}
 .level-card > a{position:relative;z-index:2;display:grid;place-items:center;min-height:46px;margin-top:auto;padding:7px 6px;border:1.5px solid var(--green);border-radius:11px;color:var(--green);font-size:clamp(9.5px,.82vw,12.5px);font-weight:600;line-height:1.35;letter-spacing:.05em;text-align:center;text-decoration:none;text-transform:uppercase;transition:background .25s,color .25s,box-shadow .25s;}
@@ -2325,8 +2322,12 @@ h2.sec-title{
 /* вырез экрана в рамке: замеры сняты с самого PNG */
 .rv-screen{position:absolute;left:3.37%;top:1.71%;width:92.21%;height:96.99%;
   overflow:hidden;border-radius:26px;background:#ECE5DC;z-index:1;}
-.rv-shot{display:none;width:100%;height:100%;object-fit:cover;object-position:top center;}
-.rv-shot.is-on{display:block;}
+/* Скриншоты лежат стопкой и меняются перекрёстным затуханием —
+   раньше кадр менялся рывком. */
+.rv-shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;
+  opacity:0;visibility:hidden;translate:0 10px;
+  transition:opacity .5s var(--ease),translate .55s var(--ease),visibility .5s;}
+.rv-shot.is-on{opacity:1;visibility:visible;translate:0 0;}
 /* низ снимка гасим, чтобы срез корпуса не читался обрубленным */
 .rv-device::after{content:"";position:absolute;left:0;right:0;bottom:0;height:22%;z-index:3;
   pointer-events:none;background:linear-gradient(180deg,rgba(23,22,20,0),rgba(23,22,20,.86) 62%,var(--graphite));}
@@ -2371,9 +2372,13 @@ h2.sec-title{
   border-radius:10px;background:#ECE5DC;flex:none;}
 .rv-card-shot img{display:block;width:100%;height:100%;object-fit:cover;object-position:top center;}
 .rv-card-copy{display:flex;flex-direction:column;gap:2px;min-width:0;}
-.rv-card-copy b{font:400 clamp(14px,1.3vw,19px)/1.1 var(--serif);}
-.rv-card-copy i{font-style:normal;font-size:clamp(9.5px,.8vw,12px);letter-spacing:.14em;text-transform:uppercase;color:var(--green);}
-.rv-card-copy em{font-style:normal;margin-top:4px;font-size:clamp(11px,.9vw,13.5px);line-height:1.4;color:rgba(241,233,220,.62);}
+.rv-card-copy b{font:400 clamp(14px,1.2vw,17px)/1.15 var(--serif);}
+.rv-card-copy i{font-style:normal;font-size:clamp(9.5px,.78vw,11.5px);letter-spacing:.14em;text-transform:uppercase;color:var(--green);}
+.rv-card-copy em{
+  font-style:normal;margin-top:4px;font-size:clamp(11px,.86vw,13px);line-height:1.45;
+  color:rgba(241,233,220,.62);
+  /* цитата не растягивает карточку: максимум две строки */
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 
 /* ═══ 05f. КАК МЫ РАБОТАЕМ — 7 ШАГОВ ═════════════════════ */
 .process{
@@ -2511,6 +2516,35 @@ h2.sec-title{
 .faq-lead{
   margin:clamp(12px,1.5vw,20px) 0 0;max-width:34ch;
   font-size:clamp(13px,1.05vw,16px);line-height:1.6;color:rgba(241,233,220,.72);
+}
+.faq-ask{
+  display:inline-flex;align-items:center;gap:11px;
+  margin-top:clamp(14px,1.8vw,24px);padding-bottom:5px;
+  border-bottom:1px solid rgba(168,220,40,.5);
+  color:var(--green);font-size:clamp(11px,.95vw,14px);font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;text-decoration:none;
+}
+/* Портрет Александра — часть фона блока, а не карточка: без рамки,
+   без скруглений и без обесцвечивания. Снимок выходит за левый край
+   колонки и растворяется во все стороны, поэтому граница не читается. */
+.faq-portrait{
+  position:relative;margin:clamp(20px,2.4vw,36px) 0 0;
+  width:calc(100% + clamp(30px,6vw,120px));margin-left:calc(-1 * clamp(30px,6vw,120px));
+  aspect-ratio:5/6;pointer-events:none;
+}
+.faq-portrait img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center 14%;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 16%,#000 58%,transparent 97%),
+                     linear-gradient(to right,transparent 0,#000 22%,#000 68%,transparent 99%);
+  -webkit-mask-composite:source-in;
+          mask-image:linear-gradient(to bottom,transparent 0,#000 16%,#000 58%,transparent 97%),
+                     linear-gradient(to right,transparent 0,#000 22%,#000 68%,transparent 99%);
+          mask-composite:intersect;
+}
+.faq-portrait figcaption{
+  position:absolute;left:clamp(30px,6vw,120px);bottom:6%;z-index:2;
+  display:flex;flex-direction:column;gap:3px;
 }
 .faq-ask{
   display:inline-flex;align-items:center;gap:11px;
@@ -2727,7 +2761,7 @@ h2.sec-title{
 }
 .foot-logo{flex:none;display:block;line-height:0;opacity:.9;transition:opacity .25s;}
 .foot-logo:hover{opacity:1;}
-.foot-logo img{display:block;width:26px;height:26px;}
+.foot-logo .foot-mark{display:block;width:28px;height:auto;overflow:visible;}
 .foot-brand{color:rgba(241,233,220,.72);font-weight:600;letter-spacing:.04em;}
 .foot-copy{margin-left:auto;}
 
