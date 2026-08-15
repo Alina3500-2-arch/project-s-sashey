@@ -2282,11 +2282,11 @@ h2.sec-title{
   .case-table-card{margin:0;padding:18px;overflow:hidden;}.case-tables{gap:10px;}.case-table div{grid-template-columns:22px 1fr 1fr;font-size:10px;}.case-growth{font-size:clamp(19px,5.6vw,26px);}
   /* финальный экран на телефоне */
   /* container-type:size схлопнул бы блок без заданной высоты */
-  .closer{container-type:normal;aspect-ratio:auto;padding:clamp(40px,11vw,64px) clamp(18px,5vw,32px) clamp(30px,8vw,48px);}
-  .closer-brand{position:static;translate:0;justify-content:center;margin:0 auto clamp(18px,5vw,28px);}
+  .closer{container-type:normal;aspect-ratio:auto;padding:clamp(24px,6vw,40px) clamp(18px,5vw,32px) clamp(30px,8vw,48px);}
+  .closer-brand{position:static;translate:0;justify-content:center;margin:0 auto clamp(10px,3vw,16px);}
   .closer-brand svg.mark{width:clamp(38px,11vw,52px);}
   .closer-brand .brand-name{font-size:clamp(11px,3vw,14px);}
-  .closer h2{position:static;translate:0;width:auto;font-size:clamp(30px,9.4vw,54px);line-height:1.06;margin:0 0 clamp(14px,4vw,22px);}
+  .closer h2{position:static;translate:0;width:auto;font-size:clamp(30px,9.4vw,54px);line-height:1.06;margin:0 0 clamp(6px,1.8vw,10px);}
   .closer > p{position:static;translate:0;width:auto;font-size:clamp(13px,3.6vw,16px);margin:0 0 clamp(24px,7vw,38px);}
   .closer-cta{position:relative;top:auto;}
   /* на телефоне портрет уходит в фон, иначе спорит с текстом */
@@ -2900,18 +2900,26 @@ h2.sec-title{
 .foot-copy{margin-left:auto;}
 
 @media (max-width:900px){
-  .faq{grid-template-columns:1fr;gap:clamp(18px,5vw,26px);padding-inline:clamp(18px,5vw,32px);margin-top:clamp(30px,8vw,48px);}
-  .faq-head{position:static;}
+  .faq{grid-template-columns:1fr;gap:clamp(14px,4vw,20px);padding-inline:clamp(18px,5vw,32px);margin-top:clamp(30px,8vw,48px);}
+  .faq-head{position:static;
+    /* сдвигаем блок вниз, на уровень груди Александра на фоне, чтобы
+       заголовок не перекрывал лицо */
+    padding-top:clamp(110px,34vw,190px);}
   /* Экран узкий, кадр обрезается сильно — держим фигуру в видимой части:
      точка привязки уходит правее левого края, чтобы Александр не срезался,
-     и фон уводится в графит книзу, под колонку вопросов. */
+     и фон уводится в графит книзу, под колонку вопросов. Блок стал ниже —
+     фото не нужно так сильно гасить, оно и так короче держится в кадре. */
   .faq-bg{
-    background-position:26% top;opacity:.42;
-    -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 12%,rgba(0,0,0,.5) 46%,transparent 72%);
-            mask-image:linear-gradient(to bottom,transparent 0,#000 12%,rgba(0,0,0,.5) 46%,transparent 72%);
+    background-position:26% top;opacity:.72;
+    -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 8%,rgba(0,0,0,.55) 56%,transparent 88%);
+            mask-image:linear-gradient(to bottom,transparent 0,#000 8%,rgba(0,0,0,.55) 56%,transparent 88%);
   }
   .faq-head .sec-title{font-size:clamp(26px,7.6vw,38px);}
-  .faq-item summary{font-size:clamp(13.5px,3.9vw,16px);padding:13px 14px;}
+  /* список вопросов — не в две колонки, а с собственной прокруткой,
+     чтобы весь блок FAQ помещался примерно в один экран */
+  .faq-list{max-height:min(58vh,480px);overflow-y:auto;overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;padding-right:4px;margin-right:-4px;}
+  .faq-item summary{font-size:clamp(15.5px,4.6vw,18px);padding:14px 14px;}
   .faq-a{padding:0 14px 13px;}
   .foot{margin-top:clamp(30px,8vw,48px);padding-inline:clamp(18px,5vw,32px);}
   .foot-grid{grid-template-columns:1fr;gap:clamp(20px,6vw,30px);}
