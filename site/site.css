@@ -175,7 +175,9 @@ body.ready .photo-in{animation:photoIn 1800ms var(--ease) both;}
 @media (min-width:1001px){
   .topbar-right{
     flex-direction:row;align-items:center;
-    gap:clamp(150px,21vw,360px);
+    gap:clamp(20px,2.2vw,38px);
+    /* оба элемента левее фигуры на фото, а не поверх лица */
+    margin-right:clamp(120px,17vw,300px);
   }
 }
 .phone{
@@ -1196,11 +1198,20 @@ h2.sec-title{
 /* Список работ уходит вправо: слева коронка занимает весь кадр, а справа
    под цифрой результата остаётся пустое поле. */
 .cover-brief-list{clear:both;list-style:none;margin:clamp(90px,13vw,190px) 0 0 auto;padding:0;width:min(38%,320px);}
+/* Иконка плюс подпись, разделители с зелёным началом — как в нижних
+   кейсах, чтобы обложка не выбивалась из общего языка. */
 .cover-brief-list li{
-  padding:clamp(7px,.9vw,12px) 0;border-bottom:1px solid rgba(241,233,220,.14);
-  font-size:clamp(12px,1.1vw,17px);color:rgba(241,233,220,.86);
+  display:grid;grid-template-columns:clamp(22px,2vw,30px) 1fr;
+  gap:clamp(10px,1.1vw,16px);align-items:center;
+  padding:clamp(8px,1vw,13px) 0;
+  border-bottom:1px solid transparent;
+  border-image:linear-gradient(90deg,rgba(168,220,40,.85),rgba(241,233,220,.16) 55%,transparent) 1;
+  font-size:clamp(12px,1.1vw,17px);color:rgba(241,233,220,.9);
 }
-.cover-brief-list li:first-child{border-top:1px solid rgba(241,233,220,.14);}
+.cover-brief-list svg{
+  width:100%;height:auto;fill:none;stroke:var(--cream);
+  stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round;
+}
 @media (max-width:900px){
   .cover-brief{position:static;padding:0 0 clamp(10px,3vw,16px);}
   .cbs-fig b{font-size:clamp(20px,6.4vw,30px);}
@@ -2424,30 +2435,30 @@ h2.sec-title{
   stroke-dasharray:7 93;stroke-dashoffset:7;opacity:0;
 }
 .process.seen .route-line .route-pulse{
-  animation:routePulse var(--route-loop,4.6s) linear 2.2s infinite;
+  animation:routePulse var(--route-loop,9s) linear 2.2s infinite;
 }
-/* Импульс бежит по линии, а вместе с ним по очереди вспыхивают карточки:
-   каждая загорается ровно в тот момент, когда огонёк доходит до неё. */
-.route{--route-loop:4.6s;}
+/* Импульс бежит по линии, а вместе с ним по очереди разгораются карточки.
+   Свет нарастает и гаснет долго — вспышка «в лоб» рябила в глазах. */
+.route{--route-loop:9s;}
 .process.seen .steps7 li{
-  animation:stepGlow var(--route-loop) linear infinite;
+  animation:stepGlow var(--route-loop) cubic-bezier(.4,0,.3,1) infinite;
   animation-delay:calc(2.2s + var(--i) * var(--route-loop) / 6);
 }
 @keyframes stepGlow{
   0%{border-color:rgba(241,233,220,.11);box-shadow:0 18px 40px rgba(0,0,0,.4);}
-  4%{border-color:rgba(168,220,40,.75);box-shadow:0 18px 40px rgba(0,0,0,.4),0 0 30px rgba(168,220,40,.28);}
-  14%{border-color:rgba(168,220,40,.45);box-shadow:0 18px 40px rgba(0,0,0,.4),0 0 18px rgba(168,220,40,.12);}
-  26%,100%{border-color:rgba(241,233,220,.11);box-shadow:0 18px 40px rgba(0,0,0,.4);}
+  7%{border-color:rgba(168,220,40,.5);box-shadow:0 18px 40px rgba(0,0,0,.4),0 0 22px rgba(168,220,40,.16);}
+  13%{border-color:rgba(168,220,40,.62);box-shadow:0 18px 40px rgba(0,0,0,.4),0 0 26px rgba(168,220,40,.2);}
+  24%{border-color:rgba(168,220,40,.3);box-shadow:0 18px 40px rgba(0,0,0,.4),0 0 14px rgba(168,220,40,.08);}
+  36%,100%{border-color:rgba(241,233,220,.11);box-shadow:0 18px 40px rgba(0,0,0,.4);}
 }
-/* номер шага загорается вместе с карточкой */
 .process.seen .steps7 li .s-num{
-  animation:stepNumGlow var(--route-loop) linear infinite;
+  animation:stepNumGlow var(--route-loop) cubic-bezier(.4,0,.3,1) infinite;
   animation-delay:calc(2.2s + var(--i) * var(--route-loop) / 6);
 }
 @keyframes stepNumGlow{
   0%{text-shadow:none;}
-  4%{text-shadow:0 0 18px rgba(168,220,40,.85);}
-  16%,100%{text-shadow:none;}
+  10%{text-shadow:0 0 14px rgba(168,220,40,.55);}
+  30%,100%{text-shadow:none;}
 }
 @media (prefers-reduced-motion:reduce){
   .process.seen .steps7 li,
