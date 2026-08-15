@@ -988,8 +988,11 @@ h2.sec-title{
     font-size:clamp(17px,1.55cqw,23px);line-height:1.4;
   }
   .princ-cta{
+    /* кнопка считалась в единицах контейнера и выходила заметно мельче
+       остальных: возвращаем ей общий для сайта размер из .cta */
     display:inline-flex;position:static;margin-top:clamp(10px,2cqh,24px);
-    padding:1.25cqh 2.5cqw;font-size:clamp(12px,1.05vw,14px);letter-spacing:.18em;
+    padding:clamp(15px,1.55vw,23px) clamp(26px,3.4vw,56px);
+    font-size:clamp(12px,1.05vw,14px);letter-spacing:.18em;
     opacity:0;translate:0 14px;
     transition:opacity .8s var(--ease) 1.7s,translate .9s var(--ease) 1.7s;
   }
