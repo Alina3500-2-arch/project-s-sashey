@@ -2207,12 +2207,21 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
   .case-detail .case-project-title{display:none;}
   /* Кадр по высоте активного слайда: неактивные больше не растягивают
      его, иначе под короткой обложкой оставалась пустота в пол-экрана. */
-  #cases .cb-frame:not(.is-on){display:none;}
-  /* Высоту кадра НЕ фиксируем жёстко (слайды с overflow:hidden резали бы
-     контент), но задаём общий минимум — тогда все три кейса одинаковы
-     между собой, а не 681 у бурения против 657 у остальных. */
+  /* То же самое для кейсов Александра: раньше скрытые слайды оставались в
+     потоке (visibility:hidden) и растягивали кадр по самому длинному —
+     короткие слайды получали пустоту в треть экрана. */
+  #cases .cb-frame:not(.is-on),
+  .case-detail .cb-frame:not(.is-on){display:none;}
+  /* Каждый слайд ровно по своему содержимому: ни обрезки, ни пустот. */
   .case-detail .cb-shell{min-height:0;}
-  .case-detail .cb-frame .case-slide{height:auto;}
+  .cb-frame .case-slide{height:auto;}
+  /* align-content по умолчанию растягивает строки грида, и лишняя высота
+     уходила в дыру между фотографией и текстом — прижимаем к верху. */
+  .case2-grid,.case-analysis-grid,.case-traffic-grid,.case-pack-grid,.case-system-grid{align-content:start;}
+  /* На светлых слайдах на телефоне стояла тёмная фотография на кремовом
+     фоне — то же фото, что на ПК подменяется светлой версией. Подменяем
+     и здесь: content у <img> заменяет саму картинку. */
+  .case-detail .case-slide--light .case2-photo{content:var(--case-light-image,var(--case-detail-image));}
   /* Кейсы Александра на телефоне занимали по полтора экрана: жёсткая
      минимальная высота кадра плюс десктопные отступы внутри колонки.
      Здесь кадр по содержимому, а сам текст компактнее. */
@@ -2280,8 +2289,15 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
   /* На телефоне обложка Eco-Store — та же картинка, что на ПК, но из двух
      окон вместо трёх. Высоту не фиксируем, иначе картинка болталась бы
      в пустом кадре. */
-  #cases .case-cover-visual{height:auto;}
-  #cases .case-cover-visual img{height:auto;}
+  #cases .case-cover-visual{height:auto;justify-content:center;}
+  /* На телефоне обложка Eco-Store — макет из трёх телефонов на прозрачном
+     фоне. Растушёвка краёв ему не нужна (он и так без подложки), а высоту
+     ограничиваем, иначе портретный кадр занимает почти весь экран. */
+  #cases .case-cover-visual img{
+    width:auto;height:auto;max-height:min(58vh,520px);max-width:100%;
+    margin-inline:auto;filter:none;
+    -webkit-mask-image:none;mask-image:none;
+  }
   /* нижние вкладки на телефоне убраны — имя слайда и так есть в кикере
      каждого экрана, а строка вкладок только мешала свайпом-перетаскиванием. */
   .cb-tablist{display:none;}
@@ -2714,26 +2730,21 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
 .faq-bg{
   /* ровно по левой колонке: снимок занимает её целиком и стоит по центру,
      текст идёт под ним — как на присланном макете */
-  position:absolute;z-index:0;top:0;left:0;width:56%;height:100%;
+  position:absolute;z-index:0;top:0;left:0;width:60%;height:100%;
   pointer-events:none;
   /* Кадр приближен: по высоте снимок берётся с запасом (138% высоты блока),
      низ уходит за нижний край — фигура занимает колонку почти целиком, как
      на макете, а не стоит маленькой в углу. Привязка к левому краю: Александр
      стоит в левой трети исходника, при center в бокс попадала одна стена. */
-  background:url("assets/faq-sasha-bg.jpg") 7% top/auto 138% no-repeat;
-  /* Снимок растворяется со всех четырёх сторон, а не обрезается рамкой:
-     по краям кадра стена и так почти чёрная (rgb 9–20 против фона 23),
-     поэтому при плавном сходе на нет граница снимка не читается вовсе —
-     остаётся только фигура, будто вписанная прямо в страницу.
-     Зоны схода подобраны по фигуре: слева она начинается на ~7% ширины,
-     справа кончается на ~62%, голова — на ~11% высоты, поэтому маска
-     успевает выйти в полную непрозрачность до самого Александра. */
-  -webkit-mask-image:linear-gradient(to right,transparent 0,#000 6%,#000 80%,transparent 100%),
-                     linear-gradient(to bottom,transparent 0,#000 8%,#000 58%,transparent 100%);
-  -webkit-mask-composite:source-in;
-          mask-image:linear-gradient(to right,transparent 0,#000 6%,#000 80%,transparent 100%),
-                     linear-gradient(to bottom,transparent 0,#000 8%,#000 58%,transparent 100%);
-          mask-composite:intersect;
+  background:url("assets/faq-sasha-bg.jpg") 6% top/auto 138% no-repeat;
+  /* Снимок не карточка с краями, а фон блока: овальная маска гасит его
+     по кругу — углы и края уходят в ноль, в полной силе остаётся только
+     центр с фигурой. Прямых границ у кадра нет ни с одной стороны.
+     Овал построен по фигуре: она занимает 7–62% ширины и 8–100% высоты,
+     центр смещён влево-вверх, радиусы с запасом, чтобы Александр целиком
+     попадал в непрозрачную часть, а стена вокруг растворялась. */
+  -webkit-mask-image:radial-gradient(82% 78% at 33% 46%,#000 0,#000 46%,rgba(0,0,0,.72) 72%,transparent 100%);
+          mask-image:radial-gradient(82% 78% at 33% 46%,#000 0,#000 46%,rgba(0,0,0,.72) 72%,transparent 100%);
 }
 .faq-head,.faq-list{position:relative;z-index:1;}
 /* Заголовок начинается на уровне груди Александра, а не у головы: любой
@@ -2881,7 +2892,7 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
 .foot > *{position:relative;z-index:1;}
 .foot-grid{
   display:grid;grid-template-columns:minmax(0,1.06fr) minmax(0,.82fr);
-  gap:clamp(22px,3vw,56px);align-items:start;
+  gap:clamp(22px,3vw,56px);align-items:stretch;
   max-width:1180px;margin:0 auto;
 }
 .foot-title{
@@ -2993,7 +3004,13 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
 }
 
 /* ── правая колонка ── */
+/* Правая колонка кончалась почти на 200px выше квиза — низ футера выглядел
+   рваным. Колонка тянется на всю высоту ряда, а строка ссылок прижата к её
+   низу: контакты остаются наверху, нижний край совпадает с кнопкой квиза. */
 .foot-side{display:flex;flex-direction:column;gap:clamp(10px,1.2vw,16px);}
+@media (min-width:901px){
+  .foot-side .foot-nav{margin-top:auto;}
+}
 .foot-card{
   padding:clamp(14px,1.6vw,22px) clamp(15px,1.7vw,24px);
   border:1px solid rgba(241,233,220,.13);border-radius:18px;
@@ -3087,7 +3104,9 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
 }
 
 @media (max-width:900px){
-  .faq{grid-template-columns:1fr;gap:clamp(14px,4vw,20px);padding-inline:clamp(18px,5vw,32px);margin-top:clamp(30px,8vw,48px);}
+  /* отступ от предыдущего блока меньше: сверху и так идёт тёмная часть
+     кадра, вместе с прежним margin получалась дыра почти в экран */
+  .faq{grid-template-columns:1fr;gap:clamp(14px,4vw,20px);padding-inline:clamp(18px,5vw,32px);margin-top:clamp(8px,2.5vw,18px);}
   .faq-head{position:static;
     /* текст начинается ниже подбородка: голова целиком над заголовком */
     padding-top:clamp(180px,55vw,300px);}
@@ -3110,6 +3129,8 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
                        linear-gradient(to bottom,transparent 0,#000 6%,rgba(0,0,0,.55) 62%,transparent 97%);
             mask-image:linear-gradient(to right,transparent 0,#000 8%,#000 92%,transparent 100%),
                        linear-gradient(to bottom,transparent 0,#000 6%,rgba(0,0,0,.55) 62%,transparent 97%);
+    /* два слоя маски перемножаются (на ПК маска одна, овальная) */
+    -webkit-mask-composite:source-in;mask-composite:intersect;
   }
   .faq-head .sec-title{font-size:clamp(26px,7.6vw,38px);}
   /* список вопросов — одной колонкой с собственной прокруткой, чтобы весь

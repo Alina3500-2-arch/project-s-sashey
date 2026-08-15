@@ -489,10 +489,29 @@
       var shift = rows[0].getBoundingClientRect().top - items[0].getBoundingClientRect().top;
       levelsCopy.style.marginTop = shift + 'px';
     };
+    // Выравнивание считается по фактическим размерам, а они меняются уже
+    // после первого прохода: догружаются шрифты и картинки, страница может
+    // открыться в узком окне (или в предпросмотре ПК-версии внутри рамки) и
+    // получить настоящую ширину позже. Раньше пересчёт был только по resize,
+    // и в таких случаях прайс так и оставался разъехавшимся: строки карточек
+    // на разной высоте, левый столбик подписей — сам по себе.
+    var alignPending = false;
+    var scheduleAlign = function () {
+      if (alignPending) { return; }
+      alignPending = true;
+      requestAnimationFrame(function () { alignPending = false; alignGuide(); });
+    };
     alignGuide();
-    window.addEventListener('resize', alignGuide);
-    // шрифты подгружаются позже вёрстки и меняют высоту строк
-    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(alignGuide); }
+    window.addEventListener('resize', scheduleAlign);
+    window.addEventListener('load', scheduleAlign);
+    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(scheduleAlign); }
+    // размер блока меняется и без resize окна — следим за самим блоком
+    if (window.ResizeObserver) {
+      var levelsRO = new ResizeObserver(scheduleAlign);
+      levelsRO.observe(guide);
+      var cardsBox = document.querySelector('.level-cards');
+      if (cardsBox) { levelsRO.observe(cardsBox); }
+    }
   }
 
   // Подсказка «Листайте дальше» у тарифов — гаснет после первого свайпа.
@@ -504,38 +523,15 @@
     }, { passive: true, once: true });
   }
 
-  // На телефоне слайды одного кейса были разной высоты (от 400 до 750px):
-  // при переключении вкладок блок прыгал, а обложка выглядела вдвое выше
-  // рабочих слайдов. Приводим слайды каждого слайдера к общей высоте —
-  // по самому высокому, уже после того как CSS ограничил картинки.
+  // Раньше слайды кейса равнялись на телефоне по самому длинному, чтобы блок
+  // не прыгал при переключении вкладок. Но короткие слайды при этом росли в
+  // полтора-два раза: между фотографией и текстом зияла пустота, а сами кейсы
+  // занимали по полтора экрана. Теперь неактивные кадры убраны из потока
+  // (display:none в CSS), каждый слайд идёт ровно по своему содержимому —
+  // здесь остаётся только снять высоты, выставленные прежней версией.
   var evenCaseSlides = function () {
-    var shells = document.querySelectorAll('.cb-shell');
-    var mobile = window.innerWidth <= 900;
-    shells.forEach(function (shell) {
-      var frames = [].slice.call(shell.querySelectorAll('.cb-frame'));
-      var slides = [];
-      frames.forEach(function (frame) {
-        var slide = frame.querySelector('.case-slide');
-        if (slide) { slides.push({ frame: frame, slide: slide }); }
-      });
-      slides.forEach(function (s) { s.slide.style.minHeight = ''; });
-      if (!mobile || !slides.length) { return; }
-      // скрытые слайды не измерить — показываем их на один кадр невидимо
-      var tallest = 0;
-      slides.forEach(function (s) {
-        var hidden = !s.frame.classList.contains('is-on');
-        if (hidden) {
-          s.frame.style.cssText = 'display:block;position:absolute;visibility:hidden;left:0;right:0;';
-        }
-        // у слайда overflow:hidden — видимая высота равна высоте кадра, и
-        // содержимое, которое не влезло (нижние цифры на обложках), в замер
-        // не попадало. scrollHeight показывает реальную высоту содержимого.
-        tallest = Math.max(tallest, s.slide.getBoundingClientRect().height, s.slide.scrollHeight);
-        if (hidden) { s.frame.style.cssText = ''; }
-      });
-      if (tallest > 0) {
-        slides.forEach(function (s) { s.slide.style.minHeight = Math.ceil(tallest) + 'px'; });
-      }
+    document.querySelectorAll('.cb-shell .case-slide').forEach(function (slide) {
+      slide.style.minHeight = '';
     });
   };
   evenCaseSlides();
