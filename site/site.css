@@ -2593,11 +2593,37 @@ h2.sec-title{
 
 /* ═══ 06b. ОТВЕТЫ НА ВОПРОСЫ ═════════════════════════════ */
 .faq{
+  position:relative;
   width:100%;max-width:1180px;margin:clamp(40px,5vw,86px) auto 0;
   display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1fr);
   gap:clamp(22px,3vw,56px);align-items:start;color:var(--cream);
 }
+/* Фон блока: снимок во всю ширину экрана, фигура прижата к левому краю —
+   она приходится на поле слева от колонки текста. Поверх две пелены:
+   одна гасит кадр к правому краю, под вопросами, вторая — сверху и снизу,
+   чтобы у фотографии не было видимых границ. */
+.faq-bg{
+  position:absolute;z-index:0;top:calc(-1 * clamp(30px,4vw,70px));
+  left:calc(50% - 50vw);width:100vw;height:calc(100% + clamp(60px,8vw,140px));
+  pointer-events:none;
+  background:url("assets/faq-sasha-bg.jpg") left center/cover no-repeat;
+  opacity:.5;
+  -webkit-mask-image:linear-gradient(to right,#000 0,#000 26%,rgba(0,0,0,.35) 52%,transparent 74%),
+                     linear-gradient(to bottom,transparent 0,#000 18%,#000 62%,transparent 97%);
+  -webkit-mask-composite:source-in;
+          mask-image:linear-gradient(to right,#000 0,#000 26%,rgba(0,0,0,.35) 52%,transparent 74%),
+                     linear-gradient(to bottom,transparent 0,#000 18%,#000 62%,transparent 97%);
+          mask-composite:intersect;
+}
+.faq-head,.faq-list{position:relative;z-index:1;}
 .faq-head{position:sticky;top:clamp(20px,4vw,48px);}
+/* подпись вместо прежней плашки на карточке-портрете */
+.faq-who{
+  display:flex;flex-direction:column;gap:3px;
+  margin:clamp(20px,2.4vw,34px) 0 0;
+}
+.faq-who b{font:400 clamp(15px,1.35vw,20px)/1.2 var(--serif);color:var(--cream);}
+.faq-who span{font-size:clamp(10.5px,.85vw,13px);line-height:1.4;color:rgba(241,233,220,.55);max-width:24ch;}
 .faq-head .sec-title{margin:clamp(10px,1.2vw,16px) 0 0;}
 .faq-lead{
   margin:clamp(12px,1.5vw,20px) 0 0;max-width:34ch;
@@ -2610,89 +2636,6 @@ h2.sec-title{
   color:var(--green);font-size:clamp(11px,.95vw,14px);font-weight:600;
   letter-spacing:.1em;text-transform:uppercase;text-decoration:none;
 }
-/* Портрет открывает блок: стоит над заголовком, во всю ширину колонки,
-   цветной и без рамки — края растворяются в фоне страницы. */
-.faq-portrait{
-  position:relative;margin:0 0 clamp(18px,2.4vw,36px);
-  width:100%;aspect-ratio:4/5;pointer-events:none;overflow:hidden;
-}
-.faq-portrait img{
-  position:absolute;inset:0;width:100%;height:100%;
-  object-fit:cover;object-position:center 8%;
-  -webkit-mask-image:linear-gradient(to bottom,#000 0,#000 52%,rgba(0,0,0,.55) 78%,transparent 99%),
-                     linear-gradient(to right,#000 0,#000 62%,rgba(0,0,0,.5) 86%,transparent 100%);
-  -webkit-mask-composite:source-in;
-          mask-image:linear-gradient(to bottom,#000 0,#000 52%,rgba(0,0,0,.55) 78%,transparent 99%),
-                     linear-gradient(to right,#000 0,#000 62%,rgba(0,0,0,.5) 86%,transparent 100%);
-          mask-composite:intersect;
-}
-.faq-ask{
-  display:inline-flex;align-items:center;gap:11px;
-  margin-top:clamp(14px,1.8vw,24px);padding-bottom:5px;
-  border-bottom:1px solid rgba(168,220,40,.5);
-  color:var(--green);font-size:clamp(11px,.95vw,14px);font-weight:600;
-  letter-spacing:.1em;text-transform:uppercase;text-decoration:none;
-}
-/* Портрет Александра — часть фона блока, а не карточка: без рамки,
-   без скруглений и без обесцвечивания. Снимок выходит за левый край
-   колонки и растворяется во все стороны, поэтому граница не читается. */
-.faq-portrait{
-  position:relative;margin:clamp(20px,2.4vw,36px) 0 0;
-  width:calc(100% + clamp(30px,6vw,120px));margin-left:calc(-1 * clamp(30px,6vw,120px));
-  aspect-ratio:5/6;pointer-events:none;
-}
-.faq-portrait img{
-  position:absolute;inset:0;width:100%;height:100%;
-  object-fit:cover;object-position:center 14%;
-  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 16%,#000 58%,transparent 97%),
-                     linear-gradient(to right,transparent 0,#000 22%,#000 68%,transparent 99%);
-  -webkit-mask-composite:source-in;
-          mask-image:linear-gradient(to bottom,transparent 0,#000 16%,#000 58%,transparent 97%),
-                     linear-gradient(to right,transparent 0,#000 22%,#000 68%,transparent 99%);
-          mask-composite:intersect;
-}
-.faq-portrait figcaption{
-  position:absolute;left:clamp(30px,6vw,120px);bottom:6%;z-index:2;
-  display:flex;flex-direction:column;gap:3px;
-}
-.faq-ask{
-  display:inline-flex;align-items:center;gap:11px;
-  margin-top:clamp(14px,1.8vw,24px);padding-bottom:5px;
-  border-bottom:1px solid rgba(168,220,40,.5);
-  color:var(--green);font-size:clamp(11px,.95vw,14px);font-weight:600;
-  letter-spacing:.1em;text-transform:uppercase;text-decoration:none;
-}
-/* Портрет под колонкой вопросов. Снимок лежит на подложке из тех же
-   диагональных граней, что и фон на самой фотографии: получается не
-   «вставленная картинка», а продолжение кадра, которое книзу растворяется
-   в графите страницы. */
-.faq-portrait{
-  position:relative;margin:clamp(26px,3vw,44px) 0 0;
-  width:min(100%,360px);aspect-ratio:4/5;overflow:hidden;border-radius:20px;
-  background:
-    repeating-linear-gradient(126deg,rgba(255,255,255,.055) 0 1px,transparent 1px 92px),
-    repeating-linear-gradient(-126deg,rgba(255,255,255,.04) 0 1px,transparent 1px 128px),
-    linear-gradient(160deg,#1d2320,#121512 58%,#0d0f0c);
-  -webkit-mask-image:linear-gradient(to bottom,#000 46%,rgba(0,0,0,.6) 76%,transparent 99%);
-          mask-image:linear-gradient(to bottom,#000 46%,rgba(0,0,0,.6) 76%,transparent 99%);
-}
-.faq-portrait img{
-  position:absolute;left:0;bottom:0;width:100%;height:100%;
-  object-fit:cover;object-position:center 12%;
-  filter:grayscale(.3) contrast(1.05);
-  -webkit-mask-image:linear-gradient(to bottom,#000 40%,rgba(0,0,0,.5) 72%,transparent 96%),
-                     linear-gradient(to right,#000 62%,rgba(0,0,0,.45) 86%,transparent 100%);
-  -webkit-mask-composite:source-in;
-          mask-image:linear-gradient(to bottom,#000 40%,rgba(0,0,0,.5) 72%,transparent 96%),
-                     linear-gradient(to right,#000 62%,rgba(0,0,0,.45) 86%,transparent 100%);
-          mask-composite:intersect;
-}
-.faq-portrait figcaption{
-  position:absolute;left:clamp(14px,1.4vw,20px);bottom:clamp(14px,1.6vw,22px);z-index:2;
-  display:flex;flex-direction:column;gap:3px;
-}
-.faq-portrait figcaption b{font:400 clamp(15px,1.35vw,20px)/1 var(--serif);color:var(--cream);}
-.faq-portrait figcaption span{font-size:clamp(10.5px,.85vw,13px);color:rgba(241,233,220,.55);max-width:24ch;line-height:1.4;}
 .faq-ask .arr{font-size:1.4em;transition:translate .25s var(--ease);}
 .faq-ask:hover .arr{translate:6px 0;}
 
@@ -2938,9 +2881,14 @@ h2.sec-title{
 @media (max-width:900px){
   .faq{grid-template-columns:1fr;gap:clamp(18px,5vw,26px);padding-inline:clamp(18px,5vw,32px);margin-top:clamp(30px,8vw,48px);}
   .faq-head{position:static;}
-  /* на телефоне колонка вопросов идёт сразу под шапкой блока — портрет
-     между ними только отодвигал бы сами вопросы вниз */
-  .faq-portrait{aspect-ratio:3/2;margin-bottom:clamp(14px,4vw,22px);}
+  /* Экран узкий, кадр обрезается сильно — держим фигуру в видимой части:
+     точка привязки уходит правее левого края, чтобы Александр не срезался,
+     и фон уводится в графит книзу, под колонку вопросов. */
+  .faq-bg{
+    background-position:26% top;opacity:.42;
+    -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 12%,rgba(0,0,0,.5) 46%,transparent 72%);
+            mask-image:linear-gradient(to bottom,transparent 0,#000 12%,rgba(0,0,0,.5) 46%,transparent 72%);
+  }
   .faq-head .sec-title{font-size:clamp(26px,7.6vw,38px);}
   .faq-item summary{font-size:clamp(13.5px,3.9vw,16px);padding:13px 14px;}
   .faq-a{padding:0 14px 13px;}
