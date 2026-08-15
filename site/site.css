@@ -328,7 +328,9 @@ h1 .l3,h1 .l4{font-size:.84em;}
 /* ── БЛОКИ НИЖЕ ПЕРВОГО ЭКРАНА ───────────────────────────── */
 .page{
   max-width:1180px;margin:0 auto;
-  padding:clamp(28px,4vw,60px) var(--pad) clamp(30px,5vw,70px);
+  /* нижнего отступа нет: последний ребёнок .page — подвал во всю ширину,
+     а любой padding-bottom проявлялся светлой полосой фона body под ним */
+  padding:clamp(28px,4vw,60px) var(--pad) 0;
   display:flex;flex-direction:column;gap:var(--gap);
 }
 
@@ -1706,10 +1708,13 @@ h2.sec-title{
 .level-details{margin:0;padding:0;list-style:none;border-top:1px dotted rgba(241,233,220,.16);}
 .level-details li{padding:clamp(6px,.62vw,9px) 0;border-bottom:1px dotted rgba(241,233,220,.16);font-size:clamp(9.5px,.8vw,12px);line-height:1.4;color:rgba(241,233,220,.82);}
 
-/* пунктирная ссылка «Подробнее» и всплывающее описание тарифа */
+/* пунктирная ссылка «Подробнее» и всплывающее описание тарифа.
+   Живёт строкой внутри .level-details, сразу под описанием результата
+   и до строки оплаты; пунктир — ровно по ширине слова. */
+.level-more-row{padding-top:clamp(5px,.55vw,8px);padding-bottom:clamp(5px,.55vw,8px);}
 .level-more{
-  appearance:none;cursor:pointer;display:inline-block;align-self:flex-start;
-  margin:clamp(6px,.7vw,10px) 0 auto;padding:0 0 2px;border:0;background:none;
+  appearance:none;cursor:pointer;display:inline-block;width:fit-content;max-width:100%;
+  margin:0;padding:0 0 2px;border:0;background:none;
   color:rgba(241,233,220,.7);font:inherit;font-size:clamp(9.5px,.8vw,12px);
   border-bottom:1px dashed rgba(241,233,220,.45);
   transition:color .25s,border-color .25s;
@@ -2378,7 +2383,11 @@ h2.sec-title{
 .trust-stat b{overflow-wrap:anywhere;}
 .trust-stat+.trust-stat{padding-left:clamp(8px,1vw,16px);border-left:1px solid rgba(241,233,220,.16);}
 .trust-stat b{display:block;font:400 clamp(19px,2vw,30px)/1 var(--serif);color:var(--green);}
-.trust-stat span{display:block;margin-top:6px;font-size:clamp(10.5px,.88vw,13px);line-height:1.4;color:rgba(241,233,220,.62);}
+/* подписи переносятся внутри своей колонки и никогда не залезают на соседнюю */
+.trust-stat span{
+  display:block;margin-top:6px;font-size:clamp(10.5px,.88vw,13px);line-height:1.4;
+  color:rgba(241,233,220,.62);overflow-wrap:anywhere;hyphens:auto;
+}
 
 /* ── превью переписок справа ── */
 .rv-list{display:grid;gap:clamp(9px,1.1vw,15px);align-content:start;}
@@ -2824,14 +2833,16 @@ h2.sec-title{
   font-size:clamp(10.5px,.82vw,12.5px);line-height:1.5;color:rgba(241,233,220,.5);
 }
 /* кнопки подвала одной строкой: в две они смотрелись обрывком */
-.foot-nav{display:flex;flex-wrap:wrap;gap:clamp(6px,.7vw,10px);}
-.foot-nav::-webkit-scrollbar{display:none;}
-.foot-nav a{white-space:nowrap;flex:none;padding:clamp(6px,.7vw,9px) clamp(10px,1vw,14px);font-size:clamp(11px,.85vw,13px);}
+/* пять кнопок должны помещаться целиком: перенос разрешён, прокрутки нет,
+   а сами кнопки могут ужиматься по горизонтали — иначе последняя («Вопросы»)
+   упиралась в правый край колонки и выглядела обрезанной */
+.foot-nav{display:flex;flex-wrap:wrap;gap:clamp(5px,.6vw,9px);overflow:visible;}
 .foot-nav a{
-  padding:clamp(7px,.8vw,10px) clamp(12px,1.2vw,17px);
+  flex:0 1 auto;min-width:0;white-space:nowrap;
+  padding:clamp(6px,.7vw,9px) clamp(9px,.95vw,14px);
   border:1px solid rgba(241,233,220,.14);border-radius:999px;
   color:rgba(241,233,220,.76);text-decoration:none;
-  font-size:clamp(10.5px,.84vw,13px);
+  font-size:clamp(10.5px,.8vw,12.5px);
   transition:border-color .25s,color .25s,background .25s;
 }
 .foot-nav a:hover{border-color:var(--green);color:var(--green);background:rgba(168,220,40,.07);}
