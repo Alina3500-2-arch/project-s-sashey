@@ -2680,7 +2680,7 @@ h2.sec-title{
 /* Заголовок начинается на уровне груди Александра, а не у головы: любой
    текст выше перекрывал лицо. Отступ считаем от высоты блока, чтобы точка
    держалась на разных ширинах. */
-.faq-head{padding-top:clamp(96px,14vw,200px);}
+.faq-head{padding-top:clamp(70px,9.5vw,146px);}
 /* подпись вместо прежней плашки на карточке-портрете */
 .faq-who{
   display:flex;flex-direction:column;gap:3px;
@@ -2739,6 +2739,15 @@ h2.sec-title{
 .faq-hint.is-hidden{opacity:0;pointer-events:none;animation:none;}
 @keyframes faqHintFade{0%,100%{opacity:.5;}50%{opacity:.95;}}
 @keyframes faqHintSlide{0%,100%{translate:0 0;}50%{translate:0 5px;}}
+/* На ПК колонки равняются по низу: список вопросов тянется на всю высоту
+   левой колонки и прокручивается внутри себя. Раньше он кончался заметно
+   выше подписи «сооснователь проекта» — блок выглядел незавершённым. */
+@media (min-width:901px){
+  .faq{align-items:stretch;}
+  /* min-height:0 обязателен: без него грид-элемент не даёт себя сжать
+     и прокрутка внутри списка не включается */
+  .faq-list{max-height:none;height:100%;min-height:0;}
+}
 .faq-item{
   /* КРИТИЧНО: список — флекс-колонка с ограниченной высотой. Без flex:none
      карточки сжимаются до 20px, чтобы влезть, и текст вопроса срезается
