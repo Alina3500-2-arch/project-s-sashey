@@ -1630,18 +1630,6 @@ h2.sec-title{
   position:relative;z-index:1;max-width:1180px;margin:0 auto;
   display:grid;grid-template-columns:minmax(230px,290px) minmax(0,1fr);
   column-gap:clamp(18px,2vw,32px);row-gap:10px;align-items:end;
-
-  /* Высоты четырёх строк таблицы. Одни и те же значения работают и в левом
-     списке, и внутри карточек — только так подписи слева стоят ровно
-     напротив своих строк. Порядок: срок, наблюдение, результат (вместе
-     со ссылкой «Подробнее»), оплата. */
-  --lv-row-1:clamp(34px,3.3vw,44px);
-  --lv-row-2:clamp(34px,3.3vw,44px);
-  --lv-row-3:clamp(78px,7.6vw,100px);
-  --lv-row-4:clamp(38px,3.7vw,50px);
-  /* сколько занимает низ карточки под таблицей: кнопка заказа, отступ
-     над ней и нижний padding самой карточки */
-  --lv-foot:calc(clamp(46px,4.4vw,56px) + clamp(8px,.9vw,12px) + clamp(10px,1vw,15px));
 }
 .levels-stage::before,.levels-stage::after{
   content:"";position:absolute;z-index:-1;pointer-events:none;border:1px solid rgba(168,220,40,.17);border-radius:50%;
@@ -1660,20 +1648,19 @@ h2.sec-title{
 @media (prefers-reduced-motion:reduce){
   .levels-stage::before{animation:none;}
 }
-/* левая колонка прижата к низу и приподнята ровно на высоту «подвала»
-   карточки — тогда её последняя строка совпадает со строкой оплаты */
-.levels-copy{align-self:end;padding:0 0 var(--lv-foot) 10px;}
+/* Список подписей ставится напротив строк первой карточки скриптом —
+   отступ сверху и высоты пунктов задаёт он, здесь только базовый вид. */
+.levels-copy{align-self:start;padding:0 0 clamp(24px,3vw,44px) 10px;}
 .levels-variant{margin:0 0 clamp(26px,3vw,42px);font-size:clamp(16px,1.45vw,22px);color:rgba(241,233,220,.82);}
 .levels-eyebrow{margin:0 0 clamp(22px,2.5vw,34px);font-size:clamp(11px,.95vw,15px);font-weight:600;line-height:1.45;letter-spacing:.12em;text-transform:uppercase;color:var(--green);}
 .levels-copy h2{margin:0;font:400 clamp(23px,2.3vw,33px)/1.08 var(--serif);letter-spacing:-.025em;text-transform:uppercase;}
 .levels-lead{margin:clamp(9px,1vw,14px) 0 0;font-size:clamp(10.5px,.86vw,13px);line-height:1.45;color:rgba(241,233,220,.8);}
-/* четыре пункта под четыре строки карточек, высоты — общие переменные */
+/* четыре пункта под четыре строки карточек; точные высоты проставит скрипт */
 .levels-guide{
   margin:clamp(12px,1.4vw,20px) 0 0;padding:0;list-style:none;
-  display:grid;grid-template-rows:var(--lv-row-1) var(--lv-row-2) var(--lv-row-3) var(--lv-row-4);
   border-top:1px dotted rgba(241,233,220,.2);
 }
-.levels-guide li{display:grid;grid-template-columns:24px 1fr;gap:9px;align-items:center;min-height:0;border-bottom:1px dotted rgba(241,233,220,.2);font-size:clamp(10.5px,.86vw,13px);line-height:1.3;color:rgba(241,233,220,.82);}
+.levels-guide li{display:grid;grid-template-columns:24px 1fr;gap:9px;align-items:center;min-height:39px;border-bottom:1px dotted rgba(241,233,220,.2);font-size:clamp(10.5px,.86vw,13px);line-height:1.3;color:rgba(241,233,220,.82);}
 .levels-guide svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.45;stroke-linecap:round;stroke-linejoin:round;}
 
 /* Карточки равной ширины — разнокалиберные колонки читались как ошибка вёрстки.
@@ -1727,16 +1714,12 @@ h2.sec-title{
 /* Подсказка про свайп нужна только на мобильном — на ПК карточки видно
    все сразу, никакого скролла нет. */
 .swipe-hint{display:none;}
-/* Таблица прижата к низу карточки и разбита на те же четыре строки, что и
-   список слева, — строки совпадают по высоте во всех карточках. */
-.level-details{
-  margin:auto 0 0;padding:0;list-style:none;
-  display:grid;grid-template-rows:var(--lv-row-1) var(--lv-row-2) var(--lv-row-3) var(--lv-row-4);
-  border-top:1px dotted rgba(241,233,220,.16);
-}
+/* Строки таблицы — естественной высоты. Список слева подгоняется под них
+   скриптом (levels-guide в site.js): жёсткие высоты переполняли низкие
+   карточки и выдавливали кнопку заказа. */
+.level-details{margin:auto 0 0;padding:0;list-style:none;border-top:1px dotted rgba(241,233,220,.16);}
 .level-details li{
-  display:flex;flex-direction:column;justify-content:center;min-height:0;
-  padding:clamp(5px,.5vw,7px) 0;border-bottom:1px dotted rgba(241,233,220,.16);
+  padding:clamp(6px,.62vw,9px) 0;border-bottom:1px dotted rgba(241,233,220,.16);
   font-size:clamp(9.5px,.8vw,12px);line-height:1.4;color:rgba(241,233,220,.82);
 }
 
@@ -1784,9 +1767,7 @@ h2.sec-title{
 @media (max-width:900px){
 }
 .level-details .is-check::before{content:"✓";margin-right:9px;color:var(--green);font-size:1.2em;}
-/* высота кнопки жёсткая: она входит в --lv-foot, которым приподнят
-   левый список — «плавающая» высота сбивала бы выравнивание */
-.level-card > a{position:relative;z-index:2;display:grid;place-items:center;height:clamp(46px,4.4vw,56px);margin-top:clamp(8px,.9vw,12px);padding:7px 6px;border:1.5px solid var(--green);border-radius:11px;color:var(--green);font-size:clamp(9.5px,.82vw,12.5px);font-weight:600;line-height:1.35;letter-spacing:.05em;text-align:center;text-decoration:none;text-transform:uppercase;transition:background .25s,color .25s,box-shadow .25s;}
+.level-card > a{position:relative;z-index:2;display:grid;place-items:center;min-height:46px;margin-top:clamp(8px,.9vw,12px);padding:7px 6px;border:1.5px solid var(--green);border-radius:11px;color:var(--green);font-size:clamp(9.5px,.82vw,12.5px);font-weight:600;line-height:1.35;letter-spacing:.05em;text-align:center;text-decoration:none;text-transform:uppercase;transition:background .25s,color .25s,box-shadow .25s;}
 .level-card > a:hover{background:rgba(168,220,40,.1);box-shadow:0 0 22px rgba(168,220,40,.2);}
 .level-card > a.is-filled{border-color:#d5ff36;background:linear-gradient(135deg,#cefb22,#90c800);color:#0a0c07;box-shadow:inset 0 1px rgba(255,255,255,.45),0 0 22px rgba(168,220,40,.24);}
 
@@ -1828,12 +1809,8 @@ h2.sec-title{
      типографика компактнее — лента листается, а не тонет в прокрутке. */
   .level-card,.level-card--0,.level-card--1,.level-card--2,.level-card--3{flex:0 0 min(72vw,268px);height:auto;min-height:0;margin-bottom:0;transform:none;scroll-snap-align:center;}
   /* на телефоне карточки листаются лентой, а список слева стоит отдельно —
-     жёсткие строки не нужны, высота идёт по содержимому */
-  .levels-guide,.level-details{display:block;grid-template-rows:none;border-top:0;}
-  .level-details{margin-top:clamp(10px,3vw,16px);border-top:1px dotted rgba(241,233,220,.16);}
-  .level-details li{display:block;}
-  .levels-copy{align-self:auto;}
-  .level-card > a{height:auto;min-height:42px;}
+     выравнивание строк там не нужно, скрипт высоты не трогает */
+  .level-details{margin-top:clamp(10px,3vw,16px);}
   .level-card h3{font-size:clamp(16px,4.4vw,19px);min-height:0;}
   .level-label{font-size:10.5px;}.level-price{font-size:22px;}.level-details li{font-size:11.5px;padding:7px 0;}
   .level-number b{font-size:40px;}

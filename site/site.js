@@ -366,6 +366,34 @@
     render();
   }
 
+  // Подписи слева от прайса («Срок», «Наблюдение», «Результат», «Оплата»)
+  // должны стоять ровно напротив своих строк в карточках. Считать это в CSS
+  // не выходит: строки разной высоты, а жёсткие высоты переполняют низкие
+  // карточки и выдавливают кнопку заказа. Поэтому меряем готовую таблицу
+  // первой карточки и подгоняем список под неё.
+  var guide = document.querySelector('.levels-guide');
+  var firstCard = document.querySelector('.level-card--0');
+  if (guide && firstCard) {
+    var alignGuide = function () {
+      var items = guide.querySelectorAll('li');
+      var rows = firstCard.querySelectorAll('.level-details li');
+      // на телефоне карточки листаются лентой — выравнивать нечего
+      if (window.innerWidth <= 900 || rows.length !== items.length) {
+        guide.style.marginTop = '';
+        items.forEach(function (li) { li.style.height = ''; });
+        return;
+      }
+      items.forEach(function (li, i) { li.style.height = rows[i].getBoundingClientRect().height + 'px'; });
+      guide.style.marginTop = '0px';
+      var shift = rows[0].getBoundingClientRect().top - items[0].getBoundingClientRect().top;
+      guide.style.marginTop = shift + 'px';
+    };
+    alignGuide();
+    window.addEventListener('resize', alignGuide);
+    // шрифты подгружаются позже вёрстки и меняют высоту строк
+    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(alignGuide); }
+  }
+
   // Подсказка «Листайте дальше» у тарифов — гаснет после первого свайпа.
   var levelCards = document.querySelector('.level-cards');
   if (levelCards) {
