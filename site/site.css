@@ -169,6 +169,15 @@ body.ready .photo-in{animation:photoIn 1800ms var(--ease) both;}
   display:flex;flex-direction:column;align-items:center;
   gap:clamp(8px,.9vw,12px);
 }
+/* На ПК номер и кнопка расходятся по сторонам от головы на фотографии:
+   номер слева, кнопка прижата к правому краю. Раньше они стояли столбиком
+   в правом углу и ложились прямо на лицо. */
+@media (min-width:1001px){
+  .topbar-right{
+    flex-direction:row;align-items:center;
+    gap:clamp(150px,21vw,360px);
+  }
+}
 .phone{
   font-size:clamp(14px,1.15vw,17px);white-space:nowrap;letter-spacing:.02em;
   transition:color .3s var(--ease);
