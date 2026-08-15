@@ -391,25 +391,32 @@ h1 .l3,h1 .l4{font-size:.84em;}
 
 /* ═══ 07. ФИНАЛ ══════════════════════════════════════════ */
 /* Кадр макета: 1673×941. Всё в долях кадра, размеры — в cqw. */
-/* Высота блока обрезана снизу: под кнопкой оставалось около трети экрана
-   пустоты. Все смещения внутри заданы в cqh и пересчитаны в той же
-   пропорции (941/720), поэтому взаимные отступы шапки, заголовка, текста
-   и кнопки не изменились — ушёл только «хвост» под кнопкой. */
+/* Под кнопкой оставалось около трети экрана пустоты. Смещения внутри
+   заданы в cqh и пересчитаны так, чтобы взаимные отступы шапки,
+   заголовка, текста и кнопки остались прежними — ушёл только «хвост». */
 .closer{
   position:relative;container-type:size;
   width:100vw;margin-left:calc(50% - 50vw);margin-top:clamp(40px,5vw,86px);
-  aspect-ratio:1673/720;
+  aspect-ratio:1673/800;
   display:block;text-align:center;
   background:
     radial-gradient(90% 70% at 50% 42%,rgba(168,220,40,.05),transparent 70%),
-    /* низ мягко уходит в цвет подвала, чтобы стык не читался линией */
-    linear-gradient(to bottom,transparent 72%,#0a0c09 100%),
     #0B0B09;
   overflow:hidden;
 }
+/* Косой переход в подвал вместо прямой границы: клин цвета подвала идёт
+   от левого нижнего угла к правому верхнему, по диагонали — тонкая
+   зелёная кромка (drop-shadow повторяет форму клина, а не рамку блока). */
+.closer::after{
+  content:"";position:absolute;left:0;right:0;bottom:-1px;z-index:1;
+  height:clamp(64px,7.5vw,132px);pointer-events:none;
+  background:#0a0c09;
+  clip-path:polygon(0 100%,100% 0,100% 100%);
+  filter:drop-shadow(0 -1px 0 rgba(168,220,40,.45));
+}
 /* Подвал идёт сразу за финалом: его собственный отступ плюс gap у .page
    показывали полосу фона страницы — она и читалась как разрыв между
-   блоками и рвала градиентный переход. */
+   блоками и рвала переход. */
 .closer + .foot{margin-top:calc(-1 * var(--gap));}
 /* Портрет живёт слева и растворяется в фоне — центральная колонка
    макета (знак, заголовок, кнопка, контакты) остаётся нетронутой. */
@@ -433,7 +440,7 @@ h1 .l3,h1 .l4{font-size:.84em;}
 /* В финале стоит тот же логотип, что и в шапке: знак плюс имена.
    Раньше здесь был favicon-значок — читался как чужой элемент. */
 .closer-brand{
-  position:absolute;left:50%;top:6cqh;translate:-50% 0;
+  position:absolute;left:50%;top:5.4cqh;translate:-50% 0;
   display:flex;align-items:center;gap:clamp(8px,.9cqw,14px);
   opacity:0;transition:opacity .9s var(--ease);
 }
@@ -444,7 +451,7 @@ h1 .l3,h1 .l4{font-size:.84em;}
    кегль, начертание, капс и разрядка. Первая строка полным размером,
    остальные — .84em, как строки 3–4 у h1. */
 .closer h2{
-  position:absolute;left:50%;top:20.9cqh;translate:-50% 0;width:74%;
+  position:absolute;left:50%;top:18.8cqh;translate:-50% 0;width:74%;
   margin:0;font-family:var(--serif);font-weight:300;text-transform:uppercase;
   font-size:clamp(30px,5.1vw,80px);line-height:.9;letter-spacing:.012em;
   color:var(--cream);
@@ -458,7 +465,7 @@ h1 .l3,h1 .l4{font-size:.84em;}
 /* Заголовок стал ниже прежних 6.35cqw, и под ним оставался провал —
    текст и кнопка подтянуты вверх примерно вдвое. */
 .closer > p{
-  position:absolute;left:50%;top:58.8cqh;translate:-50% 0;width:52%;
+  position:absolute;left:50%;top:52.9cqh;translate:-50% 0;width:52%;
   margin:0;font-size:1.32cqw;line-height:1.62;color:rgba(241,233,220,.82);
   opacity:0;translate:-50% 14px;
   transition:opacity .9s var(--ease) .45s,translate 1s var(--ease) .45s;
@@ -466,7 +473,7 @@ h1 .l3,h1 .l4{font-size:.84em;}
 .closer.run > p{opacity:1;translate:-50% 0;}
 
 .closer-cta{
-  position:absolute;left:0;right:0;top:79.7cqh;
+  position:absolute;left:0;right:0;top:71.7cqh;
   display:flex;align-items:center;justify-content:center;
 }
 /* тонкая светящаяся линия проходит через всю ширину за кнопкой */
@@ -1769,11 +1776,13 @@ h2.sec-title{
      строки описания — «и процессамиПодробнее» */
   appearance:none;cursor:pointer;display:block;width:fit-content;max-width:100%;
   margin:clamp(5px,.55vw,8px) 0 0;padding:0 0 2px;border:0;background:none;
-  color:rgba(241,233,220,.7);font:inherit;font-size:clamp(9.5px,.8vw,12px);
-  border-bottom:1px dashed rgba(241,233,220,.45);
+  /* зелёная, как цифры стоимости: кнопка должна выделяться на фоне
+     серых строк, иначе её не замечают */
+  color:var(--green);font:inherit;font-size:clamp(9.5px,.8vw,12px);font-weight:600;
+  border-bottom:1px solid rgba(168,220,40,.55);
   transition:color .25s,border-color .25s;
 }
-.level-more:hover{color:var(--green);border-bottom-color:var(--green);}
+.level-more:hover{color:#d5ff36;border-bottom-color:#d5ff36;}
 .lv-modal{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:clamp(16px,4vw,40px);}
 .lv-modal[hidden]{display:none;}
 .lv-modal-back{position:absolute;inset:0;background:rgba(6,7,5,.78);backdrop-filter:blur(6px);}
@@ -2442,15 +2451,21 @@ h2.sec-title{
   display:block;margin-bottom:clamp(8px,1vw,13px);
   font-size:clamp(9.5px,.8vw,12px);letter-spacing:.22em;text-transform:uppercase;color:rgba(241,233,220,.5);
 }
-.trust-stat-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.4vw,22px);align-items:start;}
+/* Плашка узкая (392px), поэтому на три колонки остаётся ~100px: крупные
+   цифры рвались посреди слова — «по графи/ку», «раз в недел/ю». Колонки
+   шире за счёт меньшего зазора, кегль мельче, и перенос только по словам. */
+.trust-stat-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(8px,.9vw,13px);align-items:start;}
 .trust-stat{min-width:0;}
-.trust-stat b{overflow-wrap:anywhere;}
-.trust-stat+.trust-stat{padding-left:clamp(8px,1vw,16px);border-left:1px solid rgba(241,233,220,.16);}
-.trust-stat b{display:block;font:400 clamp(19px,2vw,30px)/1 var(--serif);color:var(--green);}
+.trust-stat+.trust-stat{padding-left:clamp(6px,.7vw,10px);border-left:1px solid rgba(241,233,220,.16);}
+.trust-stat b{
+  display:block;font:400 clamp(15px,1.5vw,22px)/1.08 var(--serif);color:var(--green);
+  /* break-word, а не anywhere: слово рвётся только если иначе никак */
+  overflow-wrap:break-word;text-wrap:balance;
+}
 /* подписи переносятся внутри своей колонки и никогда не залезают на соседнюю */
 .trust-stat span{
-  display:block;margin-top:6px;font-size:clamp(10.5px,.88vw,13px);line-height:1.4;
-  color:rgba(241,233,220,.62);overflow-wrap:anywhere;hyphens:auto;
+  display:block;margin-top:5px;font-size:clamp(10px,.82vw,12px);line-height:1.35;
+  color:rgba(241,233,220,.62);overflow-wrap:break-word;
 }
 
 /* ── превью переписок справа ── */
@@ -2665,7 +2680,7 @@ h2.sec-title{
 /* Заголовок начинается на уровне груди Александра, а не у головы: любой
    текст выше перекрывал лицо. Отступ считаем от высоты блока, чтобы точка
    держалась на разных ширинах. */
-.faq-head{padding-top:clamp(150px,23vw,330px);}
+.faq-head{padding-top:clamp(96px,14vw,200px);}
 /* подпись вместо прежней плашки на карточке-портрете */
 .faq-who{
   display:flex;flex-direction:column;gap:3px;
@@ -2725,6 +2740,10 @@ h2.sec-title{
 @keyframes faqHintFade{0%,100%{opacity:.5;}50%{opacity:.95;}}
 @keyframes faqHintSlide{0%,100%{translate:0 0;}50%{translate:0 5px;}}
 .faq-item{
+  /* КРИТИЧНО: список — флекс-колонка с ограниченной высотой. Без flex:none
+     карточки сжимаются до 20px, чтобы влезть, и текст вопроса срезается
+     overflow:hidden вместо того, чтобы уйти в прокрутку. */
+  flex:none;
   border:1px solid rgba(241,233,220,.14);border-radius:14px;
   background:linear-gradient(150deg,rgba(24,26,20,.86),rgba(12,13,10,.94));
   overflow:hidden;
