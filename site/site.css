@@ -2699,21 +2699,25 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
 .faq-bg{
   /* ровно по левой колонке: снимок занимает её целиком и стоит по центру,
      текст идёт под ним — как на присланном макете */
-  position:absolute;z-index:0;top:0;left:0;width:52%;height:100%;
+  position:absolute;z-index:0;top:0;left:0;width:56%;height:100%;
   pointer-events:none;
   /* Кадр приближен: по высоте снимок берётся с запасом (138% высоты блока),
      низ уходит за нижний край — фигура занимает колонку почти целиком, как
      на макете, а не стоит маленькой в углу. Привязка к левому краю: Александр
      стоит в левой трети исходника, при center в бокс попадала одна стена. */
-  background:url("assets/faq-sasha-bg.jpg") left top/auto 138% no-repeat;
-  /* снимок идёт в полную силу — фон на нём и так тёмный, притушивать
-     фигуру нельзя. Маска растворяет правый и нижний край, чтобы снимок
-     не читался отдельной карточкой с рамкой. */
-  -webkit-mask-image:linear-gradient(to right,#000 0,#000 76%,transparent 99%),
-                     linear-gradient(to bottom,#000 0,#000 64%,transparent 99%);
+  background:url("assets/faq-sasha-bg.jpg") 7% top/auto 138% no-repeat;
+  /* Снимок растворяется со всех четырёх сторон, а не обрезается рамкой:
+     по краям кадра стена и так почти чёрная (rgb 9–20 против фона 23),
+     поэтому при плавном сходе на нет граница снимка не читается вовсе —
+     остаётся только фигура, будто вписанная прямо в страницу.
+     Зоны схода подобраны по фигуре: слева она начинается на ~7% ширины,
+     справа кончается на ~62%, голова — на ~11% высоты, поэтому маска
+     успевает выйти в полную непрозрачность до самого Александра. */
+  -webkit-mask-image:linear-gradient(to right,transparent 0,#000 6%,#000 80%,transparent 100%),
+                     linear-gradient(to bottom,transparent 0,#000 8%,#000 58%,transparent 100%);
   -webkit-mask-composite:source-in;
-          mask-image:linear-gradient(to right,#000 0,#000 76%,transparent 99%),
-                     linear-gradient(to bottom,#000 0,#000 64%,transparent 99%);
+          mask-image:linear-gradient(to right,transparent 0,#000 6%,#000 80%,transparent 100%),
+                     linear-gradient(to bottom,transparent 0,#000 8%,#000 58%,transparent 100%);
           mask-composite:intersect;
 }
 .faq-head,.faq-list{position:relative;z-index:1;}
@@ -3083,8 +3087,12 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
     left:calc(50% - 50vw);top:0;width:100vw;height:100%;
     /* на мобильном кадр не приближаем — колонка одна и во всю ширину */
     background-size:cover;background-position:26% top;opacity:.72;
-    -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 8%,rgba(0,0,0,.55) 56%,transparent 88%);
-            mask-image:linear-gradient(to bottom,transparent 0,#000 8%,rgba(0,0,0,.55) 56%,transparent 88%);
+    /* так же, как на ПК: снимок сходит на нет со всех сторон, без резаных
+       верхнего и правого краёв */
+    -webkit-mask-image:linear-gradient(to right,transparent 0,#000 7%,#000 84%,transparent 100%),
+                       linear-gradient(to bottom,transparent 0,#000 12%,rgba(0,0,0,.55) 56%,transparent 92%);
+            mask-image:linear-gradient(to right,transparent 0,#000 7%,#000 84%,transparent 100%),
+                       linear-gradient(to bottom,transparent 0,#000 12%,rgba(0,0,0,.55) 56%,transparent 92%);
   }
   .faq-head .sec-title{font-size:clamp(26px,7.6vw,38px);}
   /* список вопросов — одной колонкой с собственной прокруткой, чтобы весь
