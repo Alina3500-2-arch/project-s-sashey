@@ -135,9 +135,40 @@
     var cbCount = cbTabs.length;
     var cbCurrent = 0;
 
+    // Кадры кейса лежат в скрытых панелях, а lazy-картинка в display:none
+    // никогда не «подъезжает» к экрану — поэтому загрузка стартовала только
+    // в момент переключения вкладки, и слайд открывался пустым. Снимаем
+    // lazy заранее: у соседних кадров сразу, у остальных — когда кейс
+    // показался на экране.
+    var warmUp = function (frame) {
+      if (!frame || frame.dataset.warm) { return; }
+      frame.dataset.warm = '1';
+      [].forEach.call(frame.querySelectorAll('img[loading="lazy"]'), function (img) {
+        img.setAttribute('loading', 'eager');
+      });
+    };
+    var warmAround = function (i) {
+      warmUp(cbFrames[i]);
+      warmUp(cbFrames[i + 1]);
+      warmUp(cbFrames[i - 1]);
+    };
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries, obs) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) { return; }
+          obs.disconnect();
+          [].forEach.call(cbFrames, warmUp);
+        });
+      }, { rootMargin: '300px' }).observe(cbShell);
+    } else {
+      [].forEach.call(cbFrames, warmUp);
+    }
+    warmAround(0);
+
     var goToTab = function (i) {
       i = Math.max(0, Math.min(cbCount - 1, i));
       cbCurrent = i;
+      warmAround(i);
       [].forEach.call(cbTabs, function (b) { b.classList.toggle('is-on', +b.dataset.tab === i); });
       [].forEach.call(cbFrames, function (f) { f.classList.toggle('is-on', +f.dataset.panel === i); });
       cbShell.classList.toggle('is-cover', i === 0);
