@@ -345,8 +345,19 @@
       at = Math.max(at - 1, 0);
       render();
     });
-    // Ответ выбран — подсказка об ошибке больше не нужна.
-    quiz.addEventListener('change', function () { showError(''); });
+    // Выбор одиночного варианта сам ведёт на следующий шаг — короткая
+    // пауза, чтобы человек увидел, что именно отметил. На мультивыборе
+    // и на контактах шаг не переключаем: там ответов может быть несколько.
+    quiz.addEventListener('change', function (e) {
+      showError('');
+      var input = e.target;
+      if (input.type !== 'radio' || at === steps.length - 1) { return; }
+      setTimeout(function () {
+        if (!input.checked || at === steps.length - 1) { return; }
+        at += 1;
+        render();
+      }, 260);
+    });
     quiz.addEventListener('submit', function (e) {
       var problem = stepFilled(steps[steps.length - 1]);
       if (problem) { e.preventDefault(); showError(problem); }
