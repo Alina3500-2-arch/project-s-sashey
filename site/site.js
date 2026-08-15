@@ -461,4 +461,23 @@
     }, { passive: true, once: true });
   }
 
+  // Подсказка «Прокрутите вниз» у вопросов: гаснет после первой прокрутки
+  // списка и не показывается вовсе, если прокручивать нечего.
+  var faqList = document.querySelector('.faq-list');
+  var faqHint = document.querySelector('.faq-hint');
+  if (faqList && faqHint) {
+    var syncFaqHint = function () {
+      var scrollable = faqList.scrollHeight - faqList.clientHeight > 8;
+      faqHint.classList.toggle('is-hidden', !scrollable);
+    };
+    syncFaqHint();
+    window.addEventListener('resize', syncFaqHint);
+    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(syncFaqHint); }
+    faqList.addEventListener('scroll', function () {
+      faqHint.classList.add('is-hidden');
+    }, { passive: true, once: true });
+    // раскрытый вопрос меняет высоту списка — подсказка может стать лишней
+    faqList.addEventListener('toggle', syncFaqHint, true);
+  }
+
 })();

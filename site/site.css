@@ -391,16 +391,25 @@ h1 .l3,h1 .l4{font-size:.84em;}
 
 /* ═══ 07. ФИНАЛ ══════════════════════════════════════════ */
 /* Кадр макета: 1673×941. Всё в долях кадра, размеры — в cqw. */
+/* Высота блока обрезана снизу: под кнопкой оставалось около трети экрана
+   пустоты. Все смещения внутри заданы в cqh и пересчитаны в той же
+   пропорции (941/720), поэтому взаимные отступы шапки, заголовка, текста
+   и кнопки не изменились — ушёл только «хвост» под кнопкой. */
 .closer{
   position:relative;container-type:size;
   width:100vw;margin-left:calc(50% - 50vw);margin-top:clamp(40px,5vw,86px);
-  aspect-ratio:1673/941;
+  aspect-ratio:1673/720;
   display:block;text-align:center;
   background:
     radial-gradient(90% 70% at 50% 42%,rgba(168,220,40,.05),transparent 70%),
+    /* низ мягко уходит в цвет подвала, чтобы стык не читался линией */
+    linear-gradient(to bottom,transparent 72%,#0a0c09 100%),
     #0B0B09;
   overflow:hidden;
 }
+/* Подвал идёт сразу за финалом: его собственный отступ показывал полосу
+   фона страницы — она и читалась как разрыв между блоками. */
+.closer + .foot{margin-top:0;}
 /* Портрет живёт слева и растворяется в фоне — центральная колонка
    макета (знак, заголовок, кнопка, контакты) остаётся нетронутой. */
 .closer-photo{
@@ -423,7 +432,7 @@ h1 .l3,h1 .l4{font-size:.84em;}
 /* В финале стоит тот же логотип, что и в шапке: знак плюс имена.
    Раньше здесь был favicon-значок — читался как чужой элемент. */
 .closer-brand{
-  position:absolute;left:50%;top:4.6cqh;translate:-50% 0;
+  position:absolute;left:50%;top:6cqh;translate:-50% 0;
   display:flex;align-items:center;gap:clamp(8px,.9cqw,14px);
   opacity:0;transition:opacity .9s var(--ease);
 }
@@ -434,7 +443,7 @@ h1 .l3,h1 .l4{font-size:.84em;}
    кегль, начертание, капс и разрядка. Первая строка полным размером,
    остальные — .84em, как строки 3–4 у h1. */
 .closer h2{
-  position:absolute;left:50%;top:16cqh;translate:-50% 0;width:74%;
+  position:absolute;left:50%;top:20.9cqh;translate:-50% 0;width:74%;
   margin:0;font-family:var(--serif);font-weight:300;text-transform:uppercase;
   font-size:clamp(30px,5.1vw,80px);line-height:.9;letter-spacing:.012em;
   color:var(--cream);
@@ -448,7 +457,7 @@ h1 .l3,h1 .l4{font-size:.84em;}
 /* Заголовок стал ниже прежних 6.35cqw, и под ним оставался провал —
    текст и кнопка подтянуты вверх примерно вдвое. */
 .closer > p{
-  position:absolute;left:50%;top:45cqh;translate:-50% 0;width:52%;
+  position:absolute;left:50%;top:58.8cqh;translate:-50% 0;width:52%;
   margin:0;font-size:1.32cqw;line-height:1.62;color:rgba(241,233,220,.82);
   opacity:0;translate:-50% 14px;
   transition:opacity .9s var(--ease) .45s,translate 1s var(--ease) .45s;
@@ -456,7 +465,7 @@ h1 .l3,h1 .l4{font-size:.84em;}
 .closer.run > p{opacity:1;translate:-50% 0;}
 
 .closer-cta{
-  position:absolute;left:0;right:0;top:61cqh;
+  position:absolute;left:0;right:0;top:79.7cqh;
   display:flex;align-items:center;justify-content:center;
 }
 /* тонкая светящаяся линия проходит через всю ширину за кнопкой */
@@ -1695,14 +1704,17 @@ h2.sec-title{
 }
 /* Как в макете: карточки строго вертикальные, без поворота. «Стопка»
    создаётся ступенькой — верх поднимается, низ опускается к 3-му уровню. */
-/* Лесенка задана отступом сверху, а не жёсткой высотой: низ у всех общий
-   (align-items:end), поэтому строки таблицы и кнопка заказа стоят на одном
-   уровне во всех четырёх карточках. С фиксированной высотой содержимое
-   низких карточек переполнялось и выдавливало кнопку. */
-.level-card--0{padding-top:clamp(12px,1.15vw,17px);}
-.level-card--1{padding-top:clamp(30px,3vw,44px);}
-.level-card--2{padding-top:clamp(48px,4.8vw,71px);}
-.level-card--3{padding-top:clamp(66px,6.6vw,98px);border-color:#d9ff48;background:linear-gradient(145deg,rgba(46,54,23,.75),rgba(16,20,10,.98) 68%);box-shadow:0 0 8px #e2ff5f,0 0 30px rgba(208,255,48,.55),0 24px 64px rgba(0,0,0,.48);}
+/* Лесенка — разной высотой карточки, а не отступом сверху: с padding-top
+   поднимался только кант карточки, а заголовок, номер и цена вставали
+   вровень и ступенька пропадала. Верх (уровень, номер, название, цена)
+   идёт ступенькой вверх, а строки таблицы и кнопка заказа стоят вровень:
+   низ общий (align-items:end), и .level-details прижат к нему margin:auto.
+   Именно min-height, а не height: с жёсткой высотой содержимое низких
+   карточек переполнялось и выдавливало кнопку. */
+.level-card--0{min-height:clamp(390px,33vw,455px);}
+.level-card--1{min-height:clamp(415px,34.5vw,485px);}
+.level-card--2{min-height:clamp(440px,36vw,515px);}
+.level-card--3{min-height:clamp(465px,38vw,545px);border-color:#d9ff48;background:linear-gradient(145deg,rgba(46,54,23,.75),rgba(16,20,10,.98) 68%);box-shadow:0 0 8px #e2ff5f,0 0 30px rgba(208,255,48,.55),0 24px 64px rgba(0,0,0,.48);}
 .level-card--3::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(115deg,transparent 10%,rgba(226,255,95,.08) 35%,transparent 56%);}
 .level-label{margin:0;color:var(--green);font-size:clamp(10px,.88vw,14px);font-weight:600;letter-spacing:.04em;text-transform:uppercase;}
 .level-number{display:flex;justify-content:space-between;align-items:center;margin:clamp(5px,.6vw,9px) 0 clamp(6px,.7vw,10px);}
@@ -1831,6 +1843,7 @@ h2.sec-title{
   /* На телефоне блок цен был почти на два экрана. Карточки уже и ниже,
      типографика компактнее — лента листается, а не тонет в прокрутке. */
   .level-card,.level-card--0,.level-card--1,.level-card--2,.level-card--3{flex:0 0 min(72vw,268px);height:auto;min-height:0;margin-bottom:0;padding-top:clamp(12px,3.4vw,17px);transform:none;scroll-snap-align:center;}
+  /* на телефоне карточки листаются по одной — лесенка не нужна */
   /* на телефоне карточки листаются лентой, а список слева стоит отдельно —
      выравнивание строк там не нужно, скрипт высоты не трогает */
   .level-details{margin-top:clamp(10px,3vw,16px);}
@@ -2609,11 +2622,14 @@ h2.sec-title{
 }
 
 /* ═══ 06b. ОТВЕТЫ НА ВОПРОСЫ ═════════════════════════════ */
+/* Блок уже прежнего и укладывается примерно в один экран: видно половину
+   вопросов, остальные — прокруткой внутри списка, а не длинной простынёй
+   на всю страницу. Фотографию Александра при этом не растягиваем. */
 .faq{
   position:relative;
-  width:100%;max-width:1180px;margin:clamp(40px,5vw,86px) auto 0;
-  display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1fr);
-  gap:clamp(22px,3vw,56px);align-items:start;color:var(--cream);
+  width:100%;max-width:1040px;margin:clamp(40px,5vw,86px) auto 0;
+  display:grid;grid-template-columns:minmax(0,.72fr) minmax(0,1fr);
+  gap:clamp(22px,2.4vw,44px);align-items:start;color:var(--cream);
 }
 /* Фон блока: снимок во всю ширину экрана, фигура прижата к левому краю —
    она приходится на поле слева от колонки текста. Поверх две пелены:
@@ -2635,9 +2651,10 @@ h2.sec-title{
           mask-composite:intersect;
 }
 .faq-head,.faq-list{position:relative;z-index:1;}
-/* текст начинается ниже головы на снимке, чтобы она не читалась
-   как срезанная заголовком */
-.faq-head{position:sticky;top:clamp(20px,4vw,48px);padding-top:clamp(24px,5vw,96px);}
+/* Заголовок начинается на уровне груди Александра, а не у головы: любой
+   текст выше перекрывал лицо. Отступ считаем от высоты блока, чтобы точка
+   держалась на разных ширинах. */
+.faq-head{padding-top:clamp(150px,23vw,330px);}
 /* подпись вместо прежней плашки на карточке-портрете */
 .faq-who{
   display:flex;flex-direction:column;gap:3px;
@@ -2660,7 +2677,41 @@ h2.sec-title{
 .faq-ask .arr{font-size:1.4em;transition:translate .25s var(--ease);}
 .faq-ask:hover .arr{translate:6px 0;}
 
-.faq-list{display:flex;flex-direction:column;gap:clamp(7px,.8vw,11px);}
+/* Видна примерно половина вопросов, остальные — прокруткой внутри списка:
+   так весь блок укладывается в один экран и фотография не растягивается. */
+.faq-list{
+  display:flex;flex-direction:column;gap:clamp(7px,.8vw,11px);
+  max-height:clamp(380px,54vh,560px);
+  overflow-y:auto;overscroll-behavior:contain;
+  /* полоса прокрутки тонкая и в цвет блока, чтобы не спорила с карточками */
+  scrollbar-width:thin;scrollbar-color:rgba(168,220,40,.45) transparent;
+  padding-right:10px;
+  /* нижний край списка мягко растворяется — видно, что там ещё вопросы */
+  -webkit-mask-image:linear-gradient(to bottom,#000 0,#000 88%,transparent 100%);
+          mask-image:linear-gradient(to bottom,#000 0,#000 88%,transparent 100%);
+}
+.faq-list::-webkit-scrollbar{width:5px;}
+.faq-list::-webkit-scrollbar-track{background:transparent;}
+.faq-list::-webkit-scrollbar-thumb{background:rgba(168,220,40,.45);border-radius:3px;}
+.faq-list::-webkit-scrollbar-thumb:hover{background:rgba(168,220,40,.7);}
+/* Подсказка про прокрутку — под списком, гаснет после первого скролла */
+.faq-hint{
+  grid-column:2;position:relative;z-index:1;
+  display:flex;align-items:center;justify-content:flex-end;gap:8px;
+  margin-top:clamp(8px,1vw,13px);
+  color:var(--green);font-size:clamp(10px,.82vw,12px);font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;
+  opacity:.75;transition:opacity .4s var(--ease);
+  animation:faqHintFade 2.6s ease-in-out infinite;
+}
+.faq-hint i{
+  width:9px;height:16px;background:linear-gradient(180deg,transparent,var(--green) 70%);
+  clip-path:polygon(20% 0,80% 0,80% 60%,100% 60%,50% 100%,0 60%,20% 60%);
+  animation:faqHintSlide 1.4s ease-in-out infinite;
+}
+.faq-hint.is-hidden{opacity:0;pointer-events:none;animation:none;}
+@keyframes faqHintFade{0%,100%{opacity:.5;}50%{opacity:.95;}}
+@keyframes faqHintSlide{0%,100%{translate:0 0;}50%{translate:0 5px;}}
 .faq-item{
   border:1px solid rgba(241,233,220,.14);border-radius:14px;
   background:linear-gradient(150deg,rgba(24,26,20,.86),rgba(12,13,10,.94));
@@ -2915,10 +2966,10 @@ h2.sec-title{
             mask-image:linear-gradient(to bottom,transparent 0,#000 8%,rgba(0,0,0,.55) 56%,transparent 88%);
   }
   .faq-head .sec-title{font-size:clamp(26px,7.6vw,38px);}
-  /* список вопросов — не в две колонки, а с собственной прокруткой,
-     чтобы весь блок FAQ помещался примерно в один экран */
-  .faq-list{max-height:min(58vh,480px);overflow-y:auto;overscroll-behavior:contain;
-    -webkit-overflow-scrolling:touch;padding-right:4px;margin-right:-4px;}
+  /* список вопросов — одной колонкой с собственной прокруткой, чтобы весь
+     блок FAQ помещался примерно в один экран */
+  .faq-list{max-height:min(52vh,440px);-webkit-overflow-scrolling:touch;padding-right:6px;}
+  .faq-hint{grid-column:1;justify-content:flex-start;font-size:10.5px;}
   .faq-item summary{font-size:clamp(15.5px,4.6vw,18px);padding:14px 14px;}
   .faq-a{padding:0 14px 13px;}
   .foot{margin-top:clamp(30px,8vw,48px);padding-inline:clamp(18px,5vw,32px);}
