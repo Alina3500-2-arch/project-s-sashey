@@ -2165,11 +2165,14 @@ h2.sec-title{
   .cb-shell{display:grid;}
   .cb-frame{display:block;grid-area:1/1;visibility:hidden;pointer-events:none;}
   .cb-frame.is-on{visibility:visible;pointer-events:auto;}
-  .case-slide{aspect-ratio:auto;height:100%;padding:clamp(20px,6vw,30px);border-radius:var(--radius);}
-  .case-slide h3{font-size:clamp(24px,7.5vw,36px);}
-  .case-slide .case-sub{margin-top:10px;font-size:14px;line-height:1.4;}
-  .case-analysis-grid,.case-traffic-grid,.case-pack-grid,.case-system-grid,.case2-grid{grid-template-columns:1fr;height:auto;gap:clamp(14px,4vw,22px);}
-  .case2-grid .case2-photo{aspect-ratio:16/10;height:auto;object-fit:cover;}
+  /* Слайды кейсов занимали почти по экрану и были разной высоты. Отступы
+     и типографика внутри плотнее — слайды стали ниже, а общую высоту им
+     выставляет evenCaseSlides() в site.js. */
+  .case-slide{aspect-ratio:auto;height:100%;padding:clamp(14px,4.2vw,22px);border-radius:var(--radius);}
+  .case-slide h3{font-size:clamp(21px,6.2vw,29px);}
+  .case-slide .case-sub{margin-top:8px;font-size:13px;line-height:1.35;}
+  .case-analysis-grid,.case-traffic-grid,.case-pack-grid,.case-system-grid,.case2-grid{grid-template-columns:1fr;height:auto;gap:clamp(10px,2.8vw,15px);}
+  .case2-grid .case2-photo{aspect-ratio:16/9;height:auto;object-fit:cover;}
   .case-cols{grid-template-columns:1fr 1fr;gap:clamp(14px,4vw,22px);}
   /* На телефоне колонки нет — плавающая кнопка справа не помещается,
      превращаем слайд во flex-колонку и вставляем кнопку обычным блоком
@@ -2201,16 +2204,16 @@ h2.sec-title{
      минимальная высота кадра плюс десктопные отступы внутри колонки.
      Здесь кадр по содержимому, а сам текст компактнее. */
   .case-detail .case2-copy{padding:0;}
-  .case-detail .case2-grid{gap:clamp(10px,3vw,16px);}
-  .case-detail .case2-copy h3{font-size:clamp(23px,6.4vw,30px);line-height:1.08;margin-bottom:clamp(10px,3vw,16px);}
-  .case-detail .case-cols{gap:clamp(10px,3vw,18px);}
-  .case-detail .case-col-item{padding:clamp(7px,2vw,10px) 0;}
-  .case-detail .case-col-item b{font-size:clamp(14px,4vw,17px);line-height:1.2;}
-  .case-detail .case-col-item span{font-size:clamp(11px,3vw,12.5px);line-height:1.35;}
-  .case-detail .case-num-grid{gap:clamp(10px,3vw,14px) clamp(12px,3.4vw,18px);margin-top:clamp(10px,3vw,14px);padding-top:clamp(10px,3vw,14px);}
-  .case-detail .case-num-grid b{font-size:clamp(15px,4.4vw,19px);}
-  .case-detail .case-num-grid span{font-size:clamp(11px,3vw,12.5px);line-height:1.35;}
-  .case-detail .case-sub{font-size:clamp(12px,3.4vw,14px);margin-top:clamp(7px,2vw,10px);}
+  .case-detail .case2-grid{gap:clamp(8px,2.2vw,12px);}
+  .case-detail .case2-copy h3{font-size:clamp(20px,5.4vw,26px);line-height:1.08;margin-bottom:clamp(7px,2vw,11px);}
+  .case-detail .case-cols{gap:clamp(8px,2.2vw,13px);}
+  .case-detail .case-col-item{padding:clamp(5px,1.4vw,7px) 0;}
+  .case-detail .case-col-item b{font-size:clamp(13px,3.6vw,15.5px);line-height:1.2;}
+  .case-detail .case-col-item span{font-size:clamp(10.5px,2.7vw,11.5px);line-height:1.3;}
+  .case-detail .case-num-grid{gap:clamp(7px,2vw,10px) clamp(10px,2.8vw,14px);margin-top:clamp(7px,2vw,10px);padding-top:clamp(7px,2vw,10px);}
+  .case-detail .case-num-grid b{font-size:clamp(14px,3.9vw,17px);}
+  .case-detail .case-num-grid span{font-size:clamp(10.5px,2.7vw,11.5px);line-height:1.3;}
+  .case-detail .case-sub{font-size:clamp(11.5px,3vw,13px);margin-top:clamp(5px,1.5vw,8px);}
   .case-detail .case-stat-grid{gap:clamp(9px,2.6vw,13px) clamp(14px,4vw,20px);}
   .case-detail .case-stat b{font-size:clamp(16px,4.6vw,20px);padding-bottom:5px;}
   .case-detail .case-stat span{font-size:clamp(10.5px,2.9vw,12px);}
