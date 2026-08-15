@@ -2444,7 +2444,7 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
 .trust-stats{
   position:relative;z-index:4;width:100%;margin:0;flex:none;
   display:flex;flex-direction:column;justify-content:center;
-  padding:clamp(18px,2vw,28px) clamp(16px,1.8vw,24px) clamp(20px,2.2vw,30px);
+  padding:clamp(20px,2.3vw,32px) clamp(20px,2.2vw,30px) clamp(22px,2.5vw,34px);
   border:1px solid rgba(168,220,40,.34);border-radius:18px;
   background:linear-gradient(160deg,rgba(18,20,15,.97),rgba(10,12,9,.97));
   box-shadow:0 22px 50px rgba(0,0,0,.5);
@@ -2463,8 +2463,8 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
 .trust-stat-set{display:none;}
 .trust-stat-set.is-on{display:block;}
 .trust-stats-label{
-  display:block;margin-bottom:clamp(8px,1vw,13px);
-  font-size:clamp(9.5px,.8vw,12px);letter-spacing:.22em;text-transform:uppercase;color:rgba(241,233,220,.5);
+  display:block;margin-bottom:clamp(12px,1.4vw,18px);
+  font-size:clamp(11px,.95vw,14px);letter-spacing:.22em;text-transform:uppercase;color:rgba(241,233,220,.6);
 }
 /* Плашка узкая (392px), поэтому на три колонки остаётся ~100px: крупные
    цифры рвались посреди слова — «по графи/ку», «раз в недел/ю». Колонки
@@ -2478,7 +2478,7 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
      без общей высоты подписи трёх колонок вставали на разных уровнях
      и ряд читался как съехавший. */
   min-height:calc(2 * 1.08em);
-  font:400 clamp(17px,1.75vw,26px)/1.08 var(--serif);color:var(--green);
+  font:400 clamp(21px,2.2vw,34px)/1.08 var(--serif);color:var(--green);
   /* break-word, а не anywhere: слово рвётся только если иначе никак */
   overflow-wrap:break-word;text-wrap:balance;
 }
@@ -2486,8 +2486,8 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
    ный лид» посреди слова. Плашка теперь достаточно широкая, чтобы длинное
    слово помещалось в колонку целиком. */
 .trust-stat span{
-  display:block;margin-top:5px;font-size:clamp(11px,.92vw,13.5px);line-height:1.35;
-  color:rgba(241,233,220,.62);overflow-wrap:normal;word-break:normal;hyphens:none;
+  display:block;margin-top:7px;font-size:clamp(12.5px,1.05vw,15.5px);line-height:1.4;
+  color:rgba(241,233,220,.66);overflow-wrap:normal;word-break:normal;hyphens:none;
 }
 
 /* ── превью переписок справа ── */
