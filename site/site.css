@@ -404,15 +404,13 @@ h1 .l3,h1 .l4{font-size:.84em;}
     #0B0B09;
   overflow:hidden;
 }
-/* Косой переход в подвал вместо прямой границы: клин цвета подвала идёт
-   от левого нижнего угла к правому верхнему, по диагонали — тонкая
-   зелёная кромка (drop-shadow повторяет форму клина, а не рамку блока). */
+/* Переход в подвал должен быть незаметным: косой клин с зелёной кромкой
+   читался как граница двух блоков. Вместо него — растяжка в цвет подвала
+   по всей ширине, без чётких краёв. */
 .closer::after{
   content:"";position:absolute;left:0;right:0;bottom:-1px;z-index:1;
-  height:clamp(64px,7.5vw,132px);pointer-events:none;
-  background:#0a0c09;
-  clip-path:polygon(0 100%,100% 0,100% 100%);
-  filter:drop-shadow(0 -1px 0 rgba(168,220,40,.45));
+  height:clamp(90px,11vw,190px);pointer-events:none;
+  background:linear-gradient(180deg,rgba(10,12,9,0) 0%,rgba(10,12,9,.72) 55%,#0a0c09 100%);
 }
 /* Подвал идёт сразу за финалом: его собственный отступ плюс gap у .page
    показывали полосу фона страницы — она и читалась как разрыв между
@@ -458,8 +456,11 @@ h1 .l3,h1 .l4{font-size:.84em;}
   opacity:0;
   transition:opacity 1s var(--ease) .15s;
 }
-.closer h2 .cl-major,.closer h2 .cl-minor{display:block;}
-.closer h2 .cl-minor{font-size:.84em;}
+/* один в один с h1 первого экрана: строка «Продажи» там 1.18em и зелёная,
+   строки 3–4 — .84em */
+.closer h2 .cl-l1,.closer h2 .cl-l2,.closer h2 .cl-l3{display:block;}
+.closer h2 .cl-l2{font-size:1.18em;color:var(--green);}
+.closer h2 .cl-l3{font-size:.84em;}
 .closer h2 br{display:block;}
 .closer.run h2{opacity:1;}
 /* Разрыв между заголовком и текстом сжат ещё раз. Заголовок использует
@@ -754,15 +755,17 @@ h2.sec-title{
   transition:opacity .9s var(--ease) .1s,transform 1s var(--ease) .1s;
 }
 .stairs-head{--l:8.09%;--t:2.40%;--w:60%;}
-.stairs-lead{--l:8.2%;--t:29.6%;--w:34%;transition-delay:.28s;}
+.stairs-lead{--l:8.2%;--t:29.6%;--w:42%;transition-delay:.28s;}
 .stairs.run .stairs-head,.stairs.run .stairs-lead{opacity:1;transform:none;}
 .stairs-head h2{font-size:clamp(30px,5.1vw,80px);line-height:.9;margin:0;}
 .stairs-head .title-minor{font-size:.70em;white-space:nowrap;}
 .stairs-head .title-figure{display:inline-block;translate:0 -.2em;margin-right:.06em;}
 .stairs-head .title-minor{margin-top:.13em;}
-/* описания блоков держим в одном кегле; в единицах контейнера этот текст
-   выходил мельче соседних */
-.stairs-lead{font-size:clamp(14px,1.15vw,18px);line-height:1.5;margin:0;max-width:none;}
+/* Кегль тот же, что у описаний в других блоках (макс. 18px), но считается
+   от контейнера, а не от вьюпорта: блок свёрстан абсолютными позициями в
+   долях кадра, и текст в vw переставал масштабироваться вместе с ними —
+   на средних ширинах разрастался на третью строку и наезжал на цифру. */
+.stairs-lead{font-size:clamp(13px,1.55cqw,18px);line-height:1.5;margin:0;max-width:none;}
 
 /* Ступени проявляются по очереди: сначала цифра, затем название,
    затем описание. Наблюдатель снимает класс при уходе с экрана,
@@ -2436,10 +2439,12 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
   /* плашка тянется до низа колонки, чтобы нижние края совпадали
      с последней карточкой отзыва справа */
   /* Плашка по высоте содержимого и прижата к низу колонки: с flex:1 она
-     растягивалась на весь остаток и цифры болтались в пустоте посреди
-     высокого блока. margin-top:auto сохраняет прежнее — низ совпадает
-     с последней карточкой отзыва справа. */
-  position:relative;z-index:4;width:min(100%,440px);margin:-64px 0 0;flex:none;
+     растягивалась на весь остаток и цифры болтались в пустоте. Ширина —
+     во всю колонку: на 440px длинные подписи («квалифицированный лид»)
+     не помещались в треть и рвались посреди слова. margin-top:auto ставит
+     её ровно вровень с низом списка отзывов справа — с фиксированным
+     отрицательным отступом она вылезала на два десятка пикселей ниже. */
+  position:relative;z-index:4;width:100%;margin:auto 0 0;flex:none;
   display:flex;flex-direction:column;justify-content:center;
   padding:clamp(18px,2vw,28px) clamp(16px,1.8vw,24px) clamp(20px,2.2vw,30px);
   border:1px solid rgba(168,220,40,.34);border-radius:18px;
@@ -2471,10 +2476,12 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
   /* break-word, а не anywhere: слово рвётся только если иначе никак */
   overflow-wrap:break-word;text-wrap:balance;
 }
-/* подписи переносятся внутри своей колонки и никогда не залезают на соседнюю */
+/* Подписи переносятся только по словам: break-word рвал «квалифицирован/
+   ный лид» посреди слова. Плашка теперь достаточно широкая, чтобы длинное
+   слово помещалось в колонку целиком. */
 .trust-stat span{
   display:block;margin-top:5px;font-size:clamp(11px,.92vw,13.5px);line-height:1.35;
-  color:rgba(241,233,220,.62);overflow-wrap:break-word;
+  color:rgba(241,233,220,.62);overflow-wrap:normal;word-break:normal;hyphens:none;
 }
 
 /* ── превью переписок справа ── */
@@ -2962,9 +2969,11 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
   border:1px solid rgba(241,233,220,.13);border-radius:18px;
   background:linear-gradient(150deg,rgba(24,26,20,.9),rgba(11,13,10,.96));
 }
+/* Правая колонка была заметно мельче левой — при том что места в ней
+   хватает: она заканчивается намного выше. Весь набор укрупнён. */
 .foot-card-label{
   display:block;margin-bottom:clamp(10px,1.2vw,15px);
-  font-size:clamp(9px,.72vw,11px);font-weight:600;
+  font-size:clamp(10px,.82vw,12.5px);font-weight:600;
   letter-spacing:.2em;text-transform:uppercase;color:var(--grey);
 }
 .foot-contact{
@@ -2976,30 +2985,30 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
 .foot-contact:first-of-type{border-top:0;}
 .foot-contact:hover{color:var(--green);}
 .foot-ico{
-  flex:none;display:grid;place-items:center;width:34px;height:34px;
+  flex:none;display:grid;place-items:center;width:40px;height:40px;
   border:1px solid rgba(168,220,40,.4);border-radius:50%;
   transition:background .25s,box-shadow .25s;
 }
 .foot-contact:hover .foot-ico{background:rgba(168,220,40,.1);box-shadow:0 0 18px rgba(168,220,40,.22);}
 .foot-ico svg{
-  width:16px;height:16px;fill:none;stroke:var(--green);
+  width:19px;height:19px;fill:none;stroke:var(--green);
   stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;
 }
-.foot-contact b{display:block;font:600 clamp(12.5px,1vw,15px)/1.25 var(--sans);}
+.foot-contact b{display:block;font:600 clamp(14px,1.15vw,17.5px)/1.25 var(--sans);}
 .foot-contact i{
   display:block;margin-top:2px;font-style:normal;
-  font-size:clamp(10px,.8vw,12px);color:rgba(241,233,220,.5);
+  font-size:clamp(11.5px,.95vw,14px);color:rgba(241,233,220,.5);
 }
 .foot-people{display:grid;grid-template-columns:1fr 1fr;gap:clamp(8px,1vw,14px);}
-.foot-person b{display:block;font:400 clamp(13px,1.1vw,17px)/1.2 var(--serif);}
+.foot-person b{display:block;font:400 clamp(15px,1.3vw,20px)/1.2 var(--serif);}
 .foot-person i{
   display:block;margin-top:3px;font-style:normal;
-  font-size:clamp(10px,.8vw,12px);color:var(--green);
+  font-size:clamp(11.5px,.95vw,14px);color:var(--green);
 }
 .foot-geo{
   margin:clamp(10px,1.2vw,15px) 0 0;padding-top:clamp(9px,1vw,13px);
   border-top:1px solid rgba(241,233,220,.09);
-  font-size:clamp(10.5px,.82vw,12.5px);line-height:1.5;color:rgba(241,233,220,.5);
+  font-size:clamp(11.5px,.95vw,14px);line-height:1.55;color:rgba(241,233,220,.5);
 }
 /* кнопки подвала одной строкой: в две они смотрелись обрывком */
 /* пять кнопок должны помещаться целиком: перенос разрешён, прокрутки нет,
