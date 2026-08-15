@@ -2708,7 +2708,7 @@ h2.sec-title{
 .faq-list{
   display:flex;flex-direction:column;gap:clamp(7px,.8vw,11px);
   /* видно примерно половину списка — остальное за прокруткой */
-  max-height:clamp(300px,44vh,470px);
+  max-height:clamp(340px,56vh,600px);
   overflow-y:auto;overscroll-behavior:contain;
   /* полоса прокрутки тонкая и в цвет блока, чтобы не спорила с карточками */
   scrollbar-width:thin;scrollbar-color:rgba(168,220,40,.45) transparent;
