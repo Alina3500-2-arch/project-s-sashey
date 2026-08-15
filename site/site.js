@@ -420,6 +420,10 @@
   // первой карточки и подгоняем список под неё.
   var guide = document.querySelector('.levels-guide');
   var firstCard = document.querySelector('.level-card--0');
+  // Сдвигаем не сам список, а всю левую колонку: иначе «Путь от бесплатного
+  // разбора…» оставался наверху, а список уезжал вниз — между ними зияла
+  // пустота во весь блок.
+  var levelsCopy = document.querySelector('.levels-copy');
   if (guide && firstCard) {
     var cards = document.querySelectorAll('.level-card');
 
@@ -472,7 +476,7 @@
       if (window.innerWidth <= 900 || rows.length !== items.length) {
         levelRows(true);
         levelLadder(true);
-        guide.style.marginTop = '';
+        if (levelsCopy) { levelsCopy.style.marginTop = ''; }
         items.forEach(function (li) { li.style.height = ''; });
         return;
       }
@@ -480,9 +484,10 @@
       // ступеньку считаем после выравнивания строк: они меняют высоту карточек
       levelLadder(false);
       items.forEach(function (li, i) { li.style.height = rows[i].getBoundingClientRect().height + 'px'; });
-      guide.style.marginTop = '0px';
+      if (!levelsCopy) { return; }
+      levelsCopy.style.marginTop = '0px';
       var shift = rows[0].getBoundingClientRect().top - items[0].getBoundingClientRect().top;
-      guide.style.marginTop = shift + 'px';
+      levelsCopy.style.marginTop = shift + 'px';
     };
     alignGuide();
     window.addEventListener('resize', alignGuide);
