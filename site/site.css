@@ -2435,16 +2435,14 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
   pointer-events:none;background:linear-gradient(180deg,rgba(23,22,20,0),rgba(23,22,20,.86) 62%,var(--graphite));}
 
 /* ── плашка результата: лежит на срезе телефона ── */
+/* Плашка по высоте содержимого, а не растянутая (с flex:1 цифры болтались
+   в пустоте). Ширина — во всю колонку: на 440px длинные подписи
+   («квалифицированный лид») не помещались в треть и рвались посреди слова.
+   Низ выравнивается по списку отзывов справа — см. правило ниже: телефон
+   с плашкой вместе выше колонки, свободного места нет, поэтому
+   margin-top:auto схлопывался в ноль и плашка свисала ниже списка. */
 .trust-stats{
-  /* плашка тянется до низа колонки, чтобы нижние края совпадали
-     с последней карточкой отзыва справа */
-  /* Плашка по высоте содержимого и прижата к низу колонки: с flex:1 она
-     растягивалась на весь остаток и цифры болтались в пустоте. Ширина —
-     во всю колонку: на 440px длинные подписи («квалифицированный лид»)
-     не помещались в треть и рвались посреди слова. margin-top:auto ставит
-     её ровно вровень с низом списка отзывов справа — с фиксированным
-     отрицательным отступом она вылезала на два десятка пикселей ниже. */
-  position:relative;z-index:4;width:100%;margin:auto 0 0;flex:none;
+  position:relative;z-index:4;width:100%;margin:0;flex:none;
   display:flex;flex-direction:column;justify-content:center;
   padding:clamp(18px,2vw,28px) clamp(16px,1.8vw,24px) clamp(20px,2.2vw,30px);
   border:1px solid rgba(168,220,40,.34);border-radius:18px;
@@ -2454,6 +2452,14 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
   transition:opacity .7s var(--ease) .25s,translate .7s var(--ease) .25s;
 }
 .trust.seen .trust-stats{opacity:1;translate:0 0;}
+/* На ПК плашка прижата к низу колонки абсолютом: только так её нижний
+   край гарантированно совпадает с низом списка отзывов справа, независимо
+   от высоты телефона над ней. Телефон при этом остаётся частично под ней —
+   как и было задумано. */
+@media (min-width:901px){
+  .trust-main{position:relative;}
+  .trust-stats{position:absolute;left:0;right:0;bottom:0;width:auto;}
+}
 .trust-stat-set{display:none;}
 .trust-stat-set.is-on{display:block;}
 .trust-stats-label{
