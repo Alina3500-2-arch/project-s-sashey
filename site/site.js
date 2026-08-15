@@ -405,15 +405,42 @@
   var guide = document.querySelector('.levels-guide');
   var firstCard = document.querySelector('.level-card--0');
   if (guide && firstCard) {
+    var cards = document.querySelectorAll('.level-card');
+
+    // Одинаковые строки разных карточек должны лежать на одном уровне:
+    // «5 рабочих дней» напротив «До 30 рабочих дней» и так далее. Текст в
+    // них разной длины, поэтому равняем по самой высокой строке в ряду.
+    var levelRows = function (reset) {
+      var byCard = [];
+      cards.forEach(function (card) {
+        var rows = [].slice.call(card.querySelectorAll('.level-details li'));
+        rows.forEach(function (li) { li.style.height = ''; });
+        byCard.push(rows);
+      });
+      if (reset || !byCard.length) { return; }
+      var count = byCard[0].length;
+      for (var i = 0; i < count; i++) {
+        var tallest = 0;
+        byCard.forEach(function (rows) {
+          if (rows[i]) { tallest = Math.max(tallest, rows[i].getBoundingClientRect().height); }
+        });
+        byCard.forEach(function (rows) {
+          if (rows[i]) { rows[i].style.height = tallest + 'px'; }
+        });
+      }
+    };
+
     var alignGuide = function () {
       var items = guide.querySelectorAll('li');
       var rows = firstCard.querySelectorAll('.level-details li');
       // на телефоне карточки листаются лентой — выравнивать нечего
       if (window.innerWidth <= 900 || rows.length !== items.length) {
+        levelRows(true);
         guide.style.marginTop = '';
         items.forEach(function (li) { li.style.height = ''; });
         return;
       }
+      levelRows(false);
       items.forEach(function (li, i) { li.style.height = rows[i].getBoundingClientRect().height + 'px'; });
       guide.style.marginTop = '0px';
       var shift = rows[0].getBoundingClientRect().top - items[0].getBoundingClientRect().top;

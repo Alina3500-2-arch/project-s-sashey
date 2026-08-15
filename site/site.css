@@ -434,7 +434,7 @@ h1 .l3,h1 .l4{font-size:.84em;}
    кегль, начертание, капс и разрядка. Первая строка полным размером,
    остальные — .84em, как строки 3–4 у h1. */
 .closer h2{
-  position:absolute;left:50%;top:21cqh;translate:-50% 0;width:74%;
+  position:absolute;left:50%;top:16cqh;translate:-50% 0;width:74%;
   margin:0;font-family:var(--serif);font-weight:300;text-transform:uppercase;
   font-size:clamp(30px,5.1vw,80px);line-height:.9;letter-spacing:.012em;
   color:var(--cream);
@@ -445,8 +445,10 @@ h1 .l3,h1 .l4{font-size:.84em;}
 .closer h2 .cl-minor{font-size:.84em;}
 .closer h2 br{display:block;}
 .closer.run h2{opacity:1;}
+/* Заголовок стал ниже прежних 6.35cqw, и под ним оставался провал —
+   текст и кнопка подтянуты вверх примерно вдвое. */
 .closer > p{
-  position:absolute;left:50%;top:56.5cqh;translate:-50% 0;width:52%;
+  position:absolute;left:50%;top:45cqh;translate:-50% 0;width:52%;
   margin:0;font-size:1.32cqw;line-height:1.62;color:rgba(241,233,220,.82);
   opacity:0;translate:-50% 14px;
   transition:opacity .9s var(--ease) .45s,translate 1s var(--ease) .45s;
@@ -454,7 +456,7 @@ h1 .l3,h1 .l4{font-size:.84em;}
 .closer.run > p{opacity:1;translate:-50% 0;}
 
 .closer-cta{
-  position:absolute;left:0;right:0;top:72.5cqh;
+  position:absolute;left:0;right:0;top:61cqh;
   display:flex;align-items:center;justify-content:center;
 }
 /* тонкая светящаяся линия проходит через всю ширину за кнопкой */
@@ -1693,13 +1695,14 @@ h2.sec-title{
 }
 /* Как в макете: карточки строго вертикальные, без поворота. «Стопка»
    создаётся ступенькой — верх поднимается, низ опускается к 3-му уровню. */
-/* Лесенка теперь только вверх: низ у всех карточек общий (align-items:end),
-   поэтому таблица и кнопка заказа стоят на одной высоте во всех четырёх —
-   без этого подписи слева невозможно поставить напротив своих строк. */
-.level-card--0{height:calc(clamp(390px,33vw,455px) + clamp(26px,2.4vw,34px));margin-bottom:0;}
-.level-card--1{height:calc(clamp(415px,34.5vw,485px) + clamp(26px,2.4vw,34px));margin-bottom:0;}
-.level-card--2{height:calc(clamp(440px,36vw,515px) + clamp(26px,2.4vw,34px));margin-bottom:0;}
-.level-card--3{height:calc(clamp(465px,38vw,545px) + clamp(26px,2.4vw,34px));margin-bottom:0;border-color:#d9ff48;background:linear-gradient(145deg,rgba(46,54,23,.75),rgba(16,20,10,.98) 68%);box-shadow:0 0 8px #e2ff5f,0 0 30px rgba(208,255,48,.55),0 24px 64px rgba(0,0,0,.48);}
+/* Лесенка задана отступом сверху, а не жёсткой высотой: низ у всех общий
+   (align-items:end), поэтому строки таблицы и кнопка заказа стоят на одном
+   уровне во всех четырёх карточках. С фиксированной высотой содержимое
+   низких карточек переполнялось и выдавливало кнопку. */
+.level-card--0{padding-top:clamp(12px,1.15vw,17px);}
+.level-card--1{padding-top:clamp(30px,3vw,44px);}
+.level-card--2{padding-top:clamp(48px,4.8vw,71px);}
+.level-card--3{padding-top:clamp(66px,6.6vw,98px);border-color:#d9ff48;background:linear-gradient(145deg,rgba(46,54,23,.75),rgba(16,20,10,.98) 68%);box-shadow:0 0 8px #e2ff5f,0 0 30px rgba(208,255,48,.55),0 24px 64px rgba(0,0,0,.48);}
 .level-card--3::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(115deg,transparent 10%,rgba(226,255,95,.08) 35%,transparent 56%);}
 .level-label{margin:0;color:var(--green);font-size:clamp(10px,.88vw,14px);font-weight:600;letter-spacing:.04em;text-transform:uppercase;}
 .level-number{display:flex;justify-content:space-between;align-items:center;margin:clamp(5px,.6vw,9px) 0 clamp(6px,.7vw,10px);}
@@ -1745,7 +1748,9 @@ h2.sec-title{
    Живёт в одной строке с описанием результата — это одна смысловая часть,
    разделителя между ними нет; пунктир — ровно по ширине слова. */
 .level-more{
-  appearance:none;cursor:pointer;display:inline-block;width:fit-content;max-width:100%;
+  /* именно block: как inline-block ссылка прилипала к концу последней
+     строки описания — «и процессамиПодробнее» */
+  appearance:none;cursor:pointer;display:block;width:fit-content;max-width:100%;
   margin:clamp(5px,.55vw,8px) 0 0;padding:0 0 2px;border:0;background:none;
   color:rgba(241,233,220,.7);font:inherit;font-size:clamp(9.5px,.8vw,12px);
   border-bottom:1px dashed rgba(241,233,220,.45);
@@ -1825,7 +1830,7 @@ h2.sec-title{
   .level-cards::-webkit-scrollbar{display:none;}
   /* На телефоне блок цен был почти на два экрана. Карточки уже и ниже,
      типографика компактнее — лента листается, а не тонет в прокрутке. */
-  .level-card,.level-card--0,.level-card--1,.level-card--2,.level-card--3{flex:0 0 min(72vw,268px);height:auto;min-height:0;margin-bottom:0;transform:none;scroll-snap-align:center;}
+  .level-card,.level-card--0,.level-card--1,.level-card--2,.level-card--3{flex:0 0 min(72vw,268px);height:auto;min-height:0;margin-bottom:0;padding-top:clamp(12px,3.4vw,17px);transform:none;scroll-snap-align:center;}
   /* на телефоне карточки листаются лентой, а список слева стоит отдельно —
      выравнивание строк там не нужно, скрипт высоты не трогает */
   .level-details{margin-top:clamp(10px,3vw,16px);}
@@ -2618,17 +2623,21 @@ h2.sec-title{
   position:absolute;z-index:0;top:calc(-1 * clamp(30px,4vw,70px));
   left:calc(50% - 50vw);width:100vw;height:calc(100% + clamp(60px,8vw,140px));
   pointer-events:none;
-  background:url("assets/faq-sasha-bg.jpg") left center/cover no-repeat;
-  opacity:.5;
-  -webkit-mask-image:linear-gradient(to right,#000 0,#000 26%,rgba(0,0,0,.35) 52%,transparent 74%),
-                     linear-gradient(to bottom,transparent 0,#000 18%,#000 62%,transparent 97%);
+  /* привязка к верху кадра: при обрезке по высоте срезался бы верх головы */
+  background:url("assets/faq-sasha-bg.jpg") left top/cover no-repeat;
+  /* снимок идёт в полную силу — фон на нём и так тёмный, притушивать
+     фигуру нельзя. Маска только уводит кадр вправо, под вопросы, и вниз. */
+  -webkit-mask-image:linear-gradient(to right,#000 0,#000 30%,rgba(0,0,0,.4) 54%,transparent 76%),
+                     linear-gradient(to bottom,#000 0,#000 64%,transparent 97%);
   -webkit-mask-composite:source-in;
-          mask-image:linear-gradient(to right,#000 0,#000 26%,rgba(0,0,0,.35) 52%,transparent 74%),
-                     linear-gradient(to bottom,transparent 0,#000 18%,#000 62%,transparent 97%);
+          mask-image:linear-gradient(to right,#000 0,#000 30%,rgba(0,0,0,.4) 54%,transparent 76%),
+                     linear-gradient(to bottom,#000 0,#000 64%,transparent 97%);
           mask-composite:intersect;
 }
 .faq-head,.faq-list{position:relative;z-index:1;}
-.faq-head{position:sticky;top:clamp(20px,4vw,48px);}
+/* текст начинается ниже головы на снимке, чтобы она не читалась
+   как срезанная заголовком */
+.faq-head{position:sticky;top:clamp(20px,4vw,48px);padding-top:clamp(24px,5vw,96px);}
 /* подпись вместо прежней плашки на карточке-портрете */
 .faq-who{
   display:flex;flex-direction:column;gap:3px;
