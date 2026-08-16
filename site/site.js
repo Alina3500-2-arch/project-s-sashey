@@ -770,4 +770,45 @@
     faqList.addEventListener('toggle', syncFaqHint, true);
   }
 
+  // Видеовиджет. Ключевое: у <video> нет src до первого клика — иначе
+  // браузер начинает тянуть файл вместе со страницей. Src ставим один
+  // раз при открытии, дальше видео уже в кеше и открывается мгновенно.
+  var vw = document.getElementById('video-widget');
+  var vwModal = document.getElementById('video-modal');
+  if (vw && vwModal) {
+    var vwVideo = vwModal.querySelector('.vw-video');
+    var vwSrc = 'assets/ash-video-widget-lite.mp4';
+    var vwOpen = function () {
+      if (!vwVideo.getAttribute('src')) { vwVideo.setAttribute('src', vwSrc); }
+      vwModal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      vwModal.querySelector('.vw-x').focus();
+      var p = vwVideo.play();
+      if (p && p.catch) { p.catch(function () {}); }
+    };
+    var vwClose = function () {
+      vwVideo.pause();
+      vwModal.hidden = true;
+      document.body.style.overflow = '';
+      vw.querySelector('.vw-bubble').focus();
+    };
+    vw.querySelector('.vw-bubble').addEventListener('click', vwOpen);
+    var vwDismissed = false;
+    vw.querySelector('.vw-hide').addEventListener('click', function () {
+      vwDismissed = true;
+      vw.hidden = true;
+    });
+    vwModal.addEventListener('click', function (e) {
+      if (e.target.closest('[data-vw-close]')) { vwClose(); }
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !vwModal.hidden) { vwClose(); }
+    });
+    // пока пользователь наверху страницы, кружок не мешает первому экрану
+    vw.hidden = true;
+    var vwToggle = function () { vw.hidden = vwDismissed || window.scrollY < 400; };
+    vwToggle();
+    window.addEventListener('scroll', vwToggle, { passive: true });
+  }
+
 })();

@@ -3232,3 +3232,42 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
 @media (max-width:560px){
   .quiz-ways{grid-template-columns:repeat(2,minmax(0,1fr));}
 }
+
+/* ═══ Видеовиджет: кружок в углу + окно с видео ═══════════════════
+   Обложка — обычная картинка (кадр 15.6 с), само видео грузится
+   только по клику: <video> без src, скрипт подставляет его при
+   открытии. Поэтому виджет ничего не стоит при загрузке страницы. */
+.vw{position:fixed;right:clamp(12px,2vw,26px);bottom:clamp(12px,2vw,26px);z-index:55;}
+.vw[hidden]{display:none;}
+.vw-bubble{
+  display:block;width:clamp(74px,8vw,104px);aspect-ratio:1;padding:0;
+  border:2px solid rgba(241,233,220,.22);border-radius:50%;overflow:hidden;
+  background:var(--card);cursor:pointer;position:relative;
+  box-shadow:0 14px 34px rgba(0,0,0,.42);
+  transition:transform .25s var(--ease),border-color .25s var(--ease);
+}
+.vw-bubble:hover{transform:translateY(-2px) scale(1.03);border-color:var(--green);}
+.vw-bubble img{width:100%;height:100%;object-fit:cover;object-position:50% 22%;display:block;}
+/* треугольник «плей» поверх кадра */
+.vw-play{
+  position:absolute;left:50%;bottom:9%;translate:-50% 0;
+  width:26px;height:26px;border-radius:50%;background:var(--green);
+  display:grid;place-items:center;
+}
+.vw-play::before{content:"";border:6px solid transparent;border-left:9px solid var(--graphite);margin-left:4px;}
+.vw-hide{
+  position:absolute;top:-4px;right:-4px;width:22px;height:22px;padding:0;
+  border:1px solid var(--line);border-radius:50%;background:var(--card);
+  color:var(--grey);font:400 14px/1 var(--sans);cursor:pointer;
+}
+.vw-hide:hover{color:var(--cream);border-color:var(--green);}
+.vw-card{position:relative;width:min(360px,86vw);}
+.vw-video{
+  display:block;width:100%;height:auto;aspect-ratio:9/16;
+  border-radius:var(--radius);background:#000;
+}
+.vw-x{position:absolute;top:-46px;right:0;}
+@media (prefers-reduced-motion:reduce){
+  .vw-bubble{transition:none;}
+  .vw-bubble:hover{transform:none;}
+}
