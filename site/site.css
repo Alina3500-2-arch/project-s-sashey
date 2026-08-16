@@ -2731,13 +2731,6 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
    на всю страницу. Фотографию Александра при этом не растягиваем. */
 .faq{
   position:relative;
-  /* Растушёвка стыка с предыдущим блоком: снимок начинается ВЫШЕ блока
-     на эту величину и на ней же плавно проявляется. Переход попадает на
-     пустой низ предыдущего блока, поэтому голову он не задевает. */
-  --faq-fade:clamp(70px,7vw,130px);
-  /* растушёвка самого верхнего края кадра — короче высоты стены над
-     головой, чтобы не задеть волосы */
-  --faq-edge:clamp(10px,1.3vw,24px);
   /* Полоса примыкает к соседним блокам встык: родитель .page — флекс
      с gap:var(--gap), зазор съедается отрицательным margin (обнулить
      сам gap нельзя, он держит расстояния между остальными блоками). */
@@ -2746,41 +2739,16 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
   display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1fr);
   gap:clamp(22px,2.4vw,44px);align-items:start;color:var(--cream);
 }
-/* Снимок Александра — фон полосы во всю ширину экрана.
-   ВАЖНО: background-size:100% auto, а не cover. Файл 1920×750, и cover
-   растягивал его по высоте блока — на 1440px кадр увеличивался на 22%,
-   отчего лицо становилось мыльным. При 100% ширины кадр показывается
-   один в один (на экранах уже 1920px — с уменьшением, оно резкости не
-   вредит), а высота полосы задана той же пропорцией: 750/1920 = 39.06%. */
+/* Снимок Александра — фон полосы во всю ширину экрана, без затемнений
+   и без градиентов: кадр как есть. background-size:100% auto (не
+   cover) — файл 1920×964 показывается по своей пропорции, а не
+   растягивается под высоту блока, поэтому не мылится. Высота полосы
+   задана той же пропорцией: 964/1920 = 50.21%. */
 .faq-bg{
   position:absolute;z-index:0;pointer-events:none;
   left:calc(50% - 50vw);width:100vw;
-  top:0;height:39.06vw;
-  background:url("assets/faq-sasha-2026-wide.jpg") 50% 0/100% auto no-repeat;
-  /* Сверху кадр проявляется на узкой полоске — ровно на пустой стене
-     над головой (в файле 1920×750 волосы начинаются с 42-го пикселя,
-     тут растушёвка вдвое короче), поэтому лицо не затемняется, а
-     верхнего канта нет. Снизу кадр уходит в фон страницы. */
-  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 var(--faq-edge),#000 62%,rgba(0,0,0,.5) 84%,transparent 100%);
-          mask-image:linear-gradient(to bottom,transparent 0,#000 var(--faq-edge),#000 62%,rgba(0,0,0,.5) 84%,transparent 100%);
-}
-/* Стык с предыдущим блоком. Верхний край кадра почти чёрный, а фон
-   страницы светлее — на границе получалась резкая линия. Гасить сам
-   снимок нельзя: растушёвка сверху задела бы голову. Поэтому наоборот:
-   полоса над блоком плавно уводит фон страницы в цвет верхнего края
-   снимка, и граница исчезает. Полоса лежит НАД предыдущим блоком, в
-   его пустом низу, поэтому ничего не перекрывает. */
-.faq::before{
-  content:"";position:absolute;z-index:0;pointer-events:none;
-  left:calc(50% - 50vw);width:100vw;
-  top:calc(-1 * var(--faq-fade));height:var(--faq-fade);
-  background:linear-gradient(to bottom,rgba(6,8,10,0) 0,rgba(6,8,10,.55) 55%,rgb(6,8,10) 100%);
-}
-/* пелена только в нижней части: снимок тёмный, но у стены есть блики,
-   и по ним белый текст читался хуже. Голову не трогаем. */
-.faq-bg::after{
-  content:"";position:absolute;inset:0;
-  background:linear-gradient(to bottom,rgba(9,11,8,0) 0,rgba(9,11,8,0) 52%,rgba(9,11,8,.55) 78%,rgba(9,11,8,.9) 100%);
+  top:0;height:50.21vw;
+  background:url("assets/faq-sasha-2026-wide.jpg.jpg") 50% 0/100% auto no-repeat;
 }
 /* финал идёт сразу за полосой со снимком, без воздуха между ними */
 .faq + .closer{margin-top:0;}
@@ -3153,16 +3121,12 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
     margin-block:calc(-1 * var(--gap));padding-top:clamp(210px,62vw,340px);}
   .faq-head{position:static;padding-top:0;}
   /* Тот же снимок, что и на ПК, но кадр узкий: показываем не всю
-     ширину 1920×750, а её середину с фигурой. Высота полосы задана
-     в vw, ширина кадра — 250% экрана, привязка по фигуре. Снимок не
-     растягиваем: пропорции держит background-size с одним значением. */
+     ширину 1920×964, а её середину с фигурой. Без затемнений и масок —
+     кадр как есть, пропорции держит background-size с одним значением. */
   .faq-bg{
     left:calc(50% - 50vw);top:0;width:100vw;height:clamp(230px,68vw,380px);
-    background-image:url("assets/faq-sasha-2026-wide.jpg");
-    background-size:250% auto;background-position:34% 0;opacity:1;
-    -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 var(--faq-edge),#000 58%,rgba(0,0,0,.5) 80%,transparent 100%);
-            mask-image:linear-gradient(to bottom,transparent 0,#000 var(--faq-edge),#000 58%,rgba(0,0,0,.5) 80%,transparent 100%);
-    -webkit-mask-composite:source-over;mask-composite:add;
+    background-image:url("assets/faq-sasha-2026-wide.jpg.jpg");
+    background-size:250% auto;background-position:34% 0;
   }
   .faq-head .sec-title{font-size:clamp(26px,7.6vw,38px);}
   /* список вопросов — одной колонкой с собственной прокруткой, чтобы весь
