@@ -2748,19 +2748,19 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
      колонки, иначе снова читается рамка */
   left:-7%;width:114%;
   pointer-events:none;
-  /* cover по высоте блока; привязка к правому краю — исходник шире бокса,
-     и обрезается пустая стена слева, а фигура встаёт под текстовой
-     колонкой, ровно там же, где стояла раньше */
-  background:url("assets/faq-sasha-wide.jpg") right center/cover no-repeat;
-  /* Гашение краёв: по горизонтали — от нуля слева, в полную силу к
-     фигуре, и плавно в ноль к правому краю; по вертикали — мягкие верх
-     и низ. Два слоя маски складываются (как в мобильной версии ниже). */
-  -webkit-mask-image:linear-gradient(to right,transparent 0,#000 12%,#000 62%,rgba(0,0,0,.45) 84%,transparent 100%),
-                     linear-gradient(to bottom,transparent 0,#000 9%,#000 76%,transparent 100%);
-          mask-image:linear-gradient(to right,transparent 0,#000 12%,#000 62%,rgba(0,0,0,.45) 84%,transparent 100%),
-                     linear-gradient(to bottom,transparent 0,#000 9%,#000 76%,transparent 100%);
-  -webkit-mask-composite:source-in;
-          mask-composite:intersect;
+  /* Кадр вписан по ширине БЕЗ обрезки (100% auto, а не cover): растушёвка
+     запечена в сам файл — по периметру кадр плавно уходит ровно в цвет
+     страницы #171614 (четверть ширины и пятая часть высоты — на переход).
+     Обрезка съела бы эти поля, и край снова стал бы виден.
+     Маска здесь поэтому не нужна: у картинки нет краёв как таковых. */
+  background:url("assets/faq-sasha-wide.jpg") center center/100% auto no-repeat;
+  /* Второй слой защиты от «прямоугольника». Растушёвки в файле мало:
+     ровный тёмный тон JPEG держит с точностью в один-два уровня, и на
+     большом плоском поле эта разница видна кантом. Маска доводит края до
+     нуля — у самой границы не рисуется ничего, стыку взяться неоткуда.
+     farthest-side: овал дотягивается до всех четырёх сторон бокса. */
+  -webkit-mask-image:radial-gradient(farthest-side ellipse at 50% 50%,#000 0,#000 52%,rgba(0,0,0,.86) 68%,rgba(0,0,0,.4) 84%,transparent 100%);
+          mask-image:radial-gradient(farthest-side ellipse at 50% 50%,#000 0,#000 52%,rgba(0,0,0,.86) 68%,rgba(0,0,0,.4) 84%,transparent 100%);
 }
 .faq-head,.faq-list{position:relative;z-index:1;}
 /* Заголовок начинается на уровне груди Александра, а не у головы: любой
