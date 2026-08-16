@@ -2928,6 +2928,11 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
   display:grid;grid-template-columns:1fr 1fr;
   gap:clamp(10px,1.2vw,16px);margin-top:clamp(16px,2vw,28px);
 }
+/* ОБЯЗАТЕЛЬНО: display:grid выше перебивает встроенное скрытие по [hidden].
+   Без этой строки после отправки заявки форма оставалась на экране —
+   с зависшей кнопкой «Отправляем…» — а сообщение «спасибо» появлялось
+   под ней. */
+.foot-form[hidden]{display:none;}
 .ff{display:flex;flex-direction:column;gap:6px;min-width:0;}
 .ff--wide{grid-column:1/-1;}
 .ff span{

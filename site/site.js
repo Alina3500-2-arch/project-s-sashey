@@ -573,11 +573,19 @@
         sendBtn.textContent = wasLabel;
       };
 
+      // Ограничение по времени: если CRM не отвечает, запрос нельзя
+      // оставлять висеть — иначе кнопка навсегда застревает на
+      // «Отправляем…». Через 15 секунд обрываем и показываем ошибку.
+      var stop = window.AbortController ? new AbortController() : null;
+      var timer = setTimeout(function () { if (stop) { stop.abort(); } }, 15000);
+
       fetch(CRM_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
+        signal: stop ? stop.signal : undefined
       }).then(function (r) {
+        clearTimeout(timer);
         return r.ok ? r.json() : Promise.reject(new Error('CRM не приняла заявку'));
       }).then(function () {
         // Успех: форма прячется, на её месте — сообщение. Если квиз открыт
@@ -592,6 +600,7 @@
           quizDone.hidden = false;
         }
       }).catch(function () {
+        clearTimeout(timer);
         restore();
         // CRM недоступна — форму не ломаем: показываем причину и оставляем
         // прежний путь, письмо на почту.
