@@ -3234,11 +3234,11 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
 }
 
 /* ═══ Видеовиджет: прямоугольник слева внизу ══════════════════════
-   Играет сам, без звука (иначе браузер вообще не даст автозапуск),
-   по клику открывается крупно и со звуком. Видео начинает грузиться
-   только после полной загрузки страницы, а всплывает виджет лишь
-   когда данных хватает на непрерывное воспроизведение — чтобы не
-   мигал чёрный прямоугольник. */
+   Играет сам, без звука (иначе браузер вообще не даст автозапуск).
+   Размер фиксированный и это максимум: полного экрана, «картинки
+   в картинке» и увеличения нет — исходник сжат, крупнее он выглядит
+   плохо. Стандартные controls убраны, вместо них две свои кнопки,
+   которые видны только при наведении (и пару секунд после тапа). */
 .vw{
   position:fixed;left:clamp(12px,2vw,26px);bottom:clamp(12px,2vw,26px);z-index:55;
   width:clamp(104px,10vw,132px);
@@ -3247,33 +3247,59 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
 }
 .vw[hidden]{display:none;}
 .vw.is-ready{opacity:1;transform:none;}
-.vw-bubble{
-  display:block;width:100%;padding:0;position:relative;overflow:hidden;
-  border:1px solid rgba(241,233,220,.22);border-radius:14px;
-  background:#000;cursor:pointer;box-shadow:0 14px 34px rgba(0,0,0,.45);
-  transition:transform .25s var(--ease),border-color .25s var(--ease);
+.vw-frame{
+  position:relative;overflow:hidden;border-radius:14px;background:#000;
+  border:1px solid rgba(241,233,220,.22);
+  box-shadow:0 14px 34px rgba(0,0,0,.45);
 }
-.vw-bubble:hover{transform:translateY(-2px);border-color:var(--green);}
-.vw-preview{display:block;width:100%;height:auto;aspect-ratio:9/16;object-fit:cover;}
-/* подпись «включить звук»: автозапуск возможен только без звука */
+.vw-preview{
+  display:block;width:100%;height:auto;aspect-ratio:9/16;object-fit:cover;
+  cursor:pointer;
+  /* перетаскивание кадра на рабочий стол и «сохранить видео» из меню */
+  -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;pointer-events:auto;
+}
+/* слой с кнопками: без мыши его нет */
+.vw-ui{
+  position:absolute;inset:0;display:grid;place-items:center;
+  background:linear-gradient(to top,rgba(6,7,5,.5),rgba(6,7,5,0) 45%);
+  opacity:0;transition:opacity .22s var(--ease);pointer-events:none;
+}
+.vw-frame:hover .vw-ui,
+.vw-frame:focus-within .vw-ui,
+.vw.is-touched .vw-ui{opacity:1;pointer-events:auto;}
+.vw-toggle{
+  width:38px;height:38px;padding:0;border:0;border-radius:50%;cursor:pointer;
+  background:var(--green);color:var(--graphite);
+  box-shadow:0 0 0 6px rgba(168,220,40,.18), 0 0 22px rgba(168,220,40,.55);
+  display:grid;place-items:center;
+  transition:transform .18s var(--ease),box-shadow .22s var(--ease);
+}
+.vw-toggle:hover{transform:scale(1.08);box-shadow:0 0 0 8px rgba(168,220,40,.24), 0 0 30px rgba(168,220,40,.75);}
+/* пауза — две полосы; на паузе кнопка превращается в треугольник «плей» */
+.vw-toggle::before{
+  content:"";width:12px;height:14px;
+  border-left:4px solid currentColor;border-right:4px solid currentColor;
+}
+.vw-toggle[aria-pressed="true"]::before{
+  width:0;height:0;border:7px solid transparent;
+  border-left:12px solid currentColor;margin-left:5px;
+}
 .vw-sound{
-  position:absolute;left:0;right:0;bottom:0;padding:14px 6px 6px;
-  background:linear-gradient(to top,rgba(6,7,5,.86),rgba(6,7,5,0));
-  color:var(--cream);font:600 9px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;
+  position:absolute;left:50%;bottom:8px;translate:-50% 0;
+  padding:4px 9px;border:1px solid rgba(241,233,220,.28);border-radius:999px;
+  background:rgba(6,7,5,.6);color:var(--cream);cursor:pointer;
+  font:600 8px/1.2 var(--sans);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;
 }
+.vw-sound::before{content:"Звук выкл";}
+.vw-sound[aria-pressed="true"]::before{content:"Звук вкл";}
+.vw-sound:hover{border-color:var(--green);color:var(--green);}
 .vw-hide{
   position:absolute;top:-8px;right:-8px;width:22px;height:22px;padding:0;
   border:1px solid var(--line);border-radius:50%;background:var(--card);
-  color:var(--grey);font:400 14px/1 var(--sans);cursor:pointer;
+  color:var(--grey);font:400 14px/1 var(--sans);cursor:pointer;z-index:2;
 }
 .vw-hide:hover{color:var(--cream);border-color:var(--green);}
-.vw-card{position:relative;width:min(360px,86vw);}
-.vw-video{
-  display:block;width:100%;height:auto;aspect-ratio:9/16;
-  border-radius:var(--radius);background:#000;
-}
-.vw-x{position:absolute;top:-46px;right:0;}
 @media (prefers-reduced-motion:reduce){
-  .vw,.vw-bubble{transition:none;}
-  .vw-bubble:hover{transform:none;}
+  .vw,.vw-toggle{transition:none;}
+  .vw-toggle:hover{transform:none;}
 }

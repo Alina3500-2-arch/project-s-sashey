@@ -770,85 +770,105 @@
     faqList.addEventListener('toggle', syncFaqHint, true);
   }
 
-  // Видеовиджет. Три правила, из-за которых он устроен именно так:
+  // Видеовиджет. Правила, из-за которых он устроен именно так:
   // 1) файл начинает грузиться только после window.load — чтобы не
   //    тормозить саму страницу;
   // 2) виджет всплывает не сразу, а когда видео уже готово играть
-  //    без остановок (readyState >= 3), иначе в углу мигает чёрный
-  //    прямоугольник;
-  // 3) автозапуск браузеры разрешают только без звука, поэтому в углу
-  //    видео идёт немым, а по клику открывается крупно и со звуком.
+  //    без остановок, иначе в углу мигает чёрный прямоугольник;
+  // 3) автозапуск браузеры разрешают только без звука — звук
+  //    включается кнопкой;
+  // 4) размер один и увеличить его нельзя: исходник сжат, крупнее
+  //    выглядит плохо. Поэтому нет ни полного экрана, ни «картинки
+  //    в картинке», ни меню с «сохранить видео».
   var vw = document.getElementById('video-widget');
-  var vwModal = document.getElementById('video-modal');
-  if (vw && vwModal) {
+  if (vw) {
     var vwSrc = 'assets/ash-video-widget-lite.mp4';
-    var vwPreview = vw.querySelector('.vw-preview');
-    var vwVideo = vwModal.querySelector('.vw-video');
+    var vwVideo = vw.querySelector('.vw-preview');
+    var vwFrame = vw.querySelector('.vw-frame');
+    var vwToggle = vw.querySelector('.vw-toggle');
+    var vwSound = vw.querySelector('.vw-sound');
     var vwDismissed = false;
 
+    var vwPlay = function () {
+      var p = vwVideo.play();
+      if (p && p.catch) { p.catch(function () {}); }
+    };
     var vwShow = function () {
       if (vwDismissed || !vw.hidden) { return; }
       // ни одного кадра ещё нет (или файл не открылся) — не всплываем,
       // иначе в углу появится чёрный прямоугольник
-      if (vwPreview.readyState < 2) { return; }
+      if (vwVideo.readyState < 2) { return; }
       vw.hidden = false;
-      // hidden снят — даём кадр на раскладку, потом плавно показываем
       requestAnimationFrame(function () { vw.classList.add('is-ready'); });
-      var p = vwPreview.play();
-      if (p && p.catch) { p.catch(function () {}); }
+      vwPlay();
     };
-    // готово к непрерывному показу — можно всплывать
-    vwPreview.addEventListener('canplaythrough', vwShow);
+    vwVideo.addEventListener('canplaythrough', vwShow);
     var vwStart = function () {
-      vwPreview.src = vwSrc;
-      vwPreview.load();
-      // подстраховка: если canplaythrough не пришёл (бывает в Safari),
-      // показываем по готовности данных или через 6 секунд
-      setTimeout(function () { if (vwPreview.readyState >= 3) { vwShow(); } }, 2500);
+      vwVideo.src = vwSrc;
+      vwVideo.load();
+      // подстраховка: canplaythrough приходит не во всех браузерах
+      setTimeout(vwShow, 2500);
       setTimeout(vwShow, 6000);
     };
     if (document.readyState === 'complete') { vwStart(); }
     else { window.addEventListener('load', vwStart); }
 
-    var vwOpen = function () {
-      if (!vwVideo.getAttribute('src')) { vwVideo.setAttribute('src', vwSrc); }
-      // продолжаем с того же места, что и в углу, но уже со звуком
-      try { vwVideo.currentTime = vwPreview.currentTime; } catch (err) {}
-      vwPreview.pause();
-      vwModal.hidden = false;
-      document.body.style.overflow = 'hidden';
-      vwModal.querySelector('.vw-x').focus();
-      vwVideo.muted = false;
-      var p = vwVideo.play();
-      if (p && p.catch) { p.catch(function () {}); }
+    // на телефоне «наведения» нет: первый тап показывает кнопки,
+    // через 3 секунды без действий они снова уходят
+    var vwTouchTimer = null;
+    var vwTouched = function () {
+      vw.classList.add('is-touched');
+      clearTimeout(vwTouchTimer);
+      vwTouchTimer = setTimeout(function () { vw.classList.remove('is-touched'); }, 3000);
     };
-    var vwClose = function () {
-      vwVideo.pause();
-      vwModal.hidden = true;
-      document.body.style.overflow = '';
-      var pp = vwPreview.play();
-      if (pp && pp.catch) { pp.catch(function () {}); }
-      vw.querySelector('.vw-bubble').focus();
+    vwFrame.addEventListener('pointerdown', function (e) {
+      if (e.pointerType !== 'mouse') { vwTouched(); }
+    });
+
+    // клик по кадру = пауза/продолжить, то же делает кнопка
+    var vwUserPaused = false;
+    var vwSwitch = function () {
+      if (vwVideo.paused) { vwPlay(); } else { vwVideo.pause(); }
+      vwUserPaused = !vwVideo.paused ? false : true;
+      vwTouched();
     };
-    vw.querySelector('.vw-bubble').addEventListener('click', vwOpen);
+    // слушаем всю рамку: поверх кадра лежит слой с кнопками, и клик
+    // «по видео» на самом деле приходит в него
+    vwFrame.addEventListener('click', function (e) {
+      if (e.target.closest('.vw-sound')) { return; }
+      vwSwitch();
+    });
+    var vwSyncBtn = function () {
+      vwToggle.setAttribute('aria-pressed', vwVideo.paused ? 'true' : 'false');
+      vwToggle.setAttribute('aria-label', vwVideo.paused ? 'Продолжить' : 'Пауза');
+    };
+    vwVideo.addEventListener('play', vwSyncBtn);
+    vwVideo.addEventListener('pause', vwSyncBtn);
+
+    vwSound.addEventListener('click', function () {
+      vwVideo.muted = !vwVideo.muted;
+      vwSound.setAttribute('aria-pressed', vwVideo.muted ? 'false' : 'true');
+      vwSound.setAttribute('aria-label', vwVideo.muted ? 'Включить звук' : 'Выключить звук');
+      if (vwVideo.paused) { vwPlay(); }
+      vwTouched();
+    });
+
     vw.querySelector('.vw-hide').addEventListener('click', function () {
       vwDismissed = true;
-      vwPreview.pause();
+      vwVideo.pause();
       vw.hidden = true;
     });
-    vwModal.addEventListener('click', function (e) {
-      if (e.target.closest('[data-vw-close]')) { vwClose(); }
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && !vwModal.hidden) { vwClose(); }
-    });
+
+    // меню правой кнопки на видео — это и есть «сохранить видео»
+    vwFrame.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+    vwVideo.addEventListener('dragstart', function (e) { e.preventDefault(); });
+    // двойной клик в некоторых браузерах разворачивает видео на весь экран
+    vwVideo.addEventListener('dblclick', function (e) { e.preventDefault(); });
+
     // за экраном видео не крутим — не тратим батарею и трафик
     document.addEventListener('visibilitychange', function () {
-      if (document.hidden) { vwPreview.pause(); }
-      else if (!vw.hidden && vwModal.hidden) {
-        var p = vwPreview.play();
-        if (p && p.catch) { p.catch(function () {}); }
-      }
+      if (document.hidden) { vwVideo.pause(); }
+      else if (!vw.hidden && !vwUserPaused) { vwPlay(); }
     });
   }
 

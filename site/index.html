@@ -1325,29 +1325,25 @@
     </div>
   </div>
 
-  <!-- Видеовиджет: кружок в углу экрана.
-       До клика не грузится ни байта видео — виден только кадр-обложка
-       (assets/ash-video-widget-poster.*, кадр 15.6 с). Файл видео
-       подставляется в <video> скриптом в момент открытия окна,
-       поэтому виджет не влияет на скорость загрузки страницы. -->
+  <!-- Видеовиджет: прямоугольник 9:16 слева внизу.
+       Играет сам и всегда одного размера: увеличения, полного экрана,
+       «картинки в картинке» и скачивания через меню — нет (controls
+       убраны, controlsList и disablepictureinpicture запрещают
+       остальное). По наведению и по тапу появляются кнопки паузы
+       и звука, без мыши они уходят. -->
   <div class="vw" id="video-widget" hidden>
-    <button class="vw-bubble" type="button" aria-label="Открыть видео со звуком">
+    <div class="vw-frame">
       <video class="vw-preview" muted loop playsinline preload="auto"
              poster="assets/ash-video-widget-poster.jpg"
+             disablepictureinpicture disableremoteplayback
+             controlslist="nodownload nofullscreen noplaybackrate noremoteplayback"
              width="360" height="640"></video>
-      <span class="vw-sound" aria-hidden="true">Включить звук</span>
-    </button>
-    <button class="vw-hide" type="button" aria-label="Скрыть видео">×</button>
-  </div>
-
-  <div class="lv-modal vw-modal" id="video-modal" hidden>
-    <div class="lv-modal-back" data-vw-close></div>
-    <div class="vw-card" role="dialog" aria-modal="true" aria-label="Видео о нас">
-      <button class="lv-modal-x vw-x" type="button" data-vw-close aria-label="Закрыть">×</button>
-      <video class="vw-video" playsinline controls preload="none"
-             poster="assets/ash-video-widget-poster.jpg"
-             width="360" height="640"></video>
+      <div class="vw-ui">
+        <button class="vw-toggle" type="button" aria-label="Пауза" aria-pressed="false"></button>
+        <button class="vw-sound" type="button" aria-label="Включить звук" aria-pressed="false"></button>
+      </div>
     </div>
+    <button class="vw-hide" type="button" aria-label="Скрыть видео">×</button>
   </div>
 
   <!-- Окно с квизом. Любая кнопка сайта открывает его здесь, а не уводит
