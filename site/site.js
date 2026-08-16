@@ -363,10 +363,41 @@
       return '';
     };
 
-    // Все кнопки сайта ведут в квиз (href="#quiz"). При переходе квиз
-    // начинается с первого шага — иначе человек, пришедший второй раз,
-    // попадал бы на середину чужого прохода. Заодно запоминаем, какая
-    // кнопка привела: это уходит в заявку полем «Откуда».
+    // Любая кнопка сайта (href="#quiz") открывает квиз ОКНОМ поверх
+    // страницы, а не уводит прокруткой в подвал. Форма на сайте одна:
+    // на время показа она переезжает в окно, при закрытии возвращается
+    // на своё место в подвале. Метка держит это место в разметке.
+    var quizModal = document.getElementById('quiz-modal');
+    var quizSlot = quizModal && quizModal.querySelector('.quiz-modal-slot');
+    var quizHome = document.createComment('место формы в подвале');
+    var quizDone = document.getElementById('quiz-done');
+
+    var openQuiz = function () {
+      if (!quizModal || !quizSlot || quiz.parentNode === quizSlot) { return; }
+      quiz.parentNode.insertBefore(quizHome, quiz);
+      quizSlot.appendChild(quiz);
+      quizModal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      quizModal.querySelector('.lv-modal-x').focus();
+    };
+    var closeQuiz = function () {
+      if (!quizModal || quizModal.hidden) { return; }
+      quizModal.hidden = true;
+      document.body.style.overflow = '';
+      if (quizHome.parentNode) { quizHome.parentNode.insertBefore(quiz, quizHome); }
+    };
+    if (quizModal) {
+      quizModal.addEventListener('click', function (e) {
+        if (e.target.closest('[data-close]')) { closeQuiz(); }
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { closeQuiz(); }
+      });
+    }
+
+    // При каждом заходе квиз начинается с первого шага — иначе человек,
+    // открывший окно второй раз, попадал бы на середину прежнего прохода.
+    // Заодно запоминаем, какая кнопка привела: это уходит в заявку.
     var fromField = quiz.querySelector('input[name="Откуда"]');
     var markSource = function (btn) {
       if (!fromField || !btn) { return; }
@@ -378,14 +409,20 @@
         var lv = card.querySelector('.level-kicker,h3');
         label = (lv ? (lv.innerText || lv.textContent).replace(/\s+/g, ' ').trim() + ' · ' : '') + label;
       }
-      fromField.value = label || 'Кнопка на сайте';
+      // хвостовые стрелки с кнопок («Получить разбор ↗») в заявке не нужны
+      fromField.value = label.replace(/[\s→↗↘➔»]+$/, '') || 'Кнопка на сайте';
     };
     document.addEventListener('click', function (e) {
       var btn = e.target.closest('a[href="#quiz"]');
       if (!btn) { return; }
+      e.preventDefault();
+      // кнопка «Заказать» живёт в окне тарифа — его закрываем
+      var lv = document.getElementById('lv-modal');
+      if (lv && !lv.hidden) { lv.hidden = true; }
       markSource(btn);
       at = 0;
       render();
+      openQuiz();
     });
 
     var render = function () {
@@ -430,9 +467,82 @@
         render();
       }, 260);
     });
+    // ── Отправка заявки в CRM ──────────────────────────────────────────
+    // POST на api.php?action=public-lead. Адрес абсолютный: страницу
+    // смотрят и с ashpartners.ru, и с превью на GitHub Pages.
+    var CRM_URL = 'https://ashpartners.ru/crm/api.php?action=public-lead';
+    var sending = false;
+
+    // Все ответы квиза — одним понятным текстом, как приходят в CRM.
+    var buildMessage = function (data) {
+      var lines = [];
+      var add = function (label, value) {
+        if (value && String(value).trim()) { lines.push(label + ': ' + value); }
+      };
+      add('Форма', data.get('Откуда') || 'Квиз на сайте');
+      add('Сфера', data.get('Своя сфера') || data.get('Сфера'));
+      add('Уже есть', data.getAll('Есть').join(', '));
+      add('Задача', data.get('Задача'));
+      return lines.join('\n');
+    };
+
+    var utm = function (name) {
+      return new URLSearchParams(location.search).get(name) || '';
+    };
+
     quiz.addEventListener('submit', function (e) {
       var problem = stepFilled(steps[steps.length - 1]);
-      if (problem) { e.preventDefault(); showError(problem); }
+      if (problem) { e.preventDefault(); showError(problem); return; }
+      e.preventDefault();
+      if (sending) { return; }           // заявка уходит ровно один раз
+      sending = true;
+      sendBtn.disabled = true;
+      var wasLabel = sendBtn.textContent;
+      sendBtn.textContent = 'Отправляем…';
+      showError('');
+
+      var data = new FormData(quiz);
+      var payload = {
+        name: (data.get('Имя') || '').trim(),
+        phone: (data.get('Телефон') || '').trim(),
+        niche: (data.get('Своя сфера') || data.get('Сфера') || '').trim(),
+        initial_message: buildMessage(data),
+        landing_url: location.href,
+        utm_source: utm('utm_source'),
+        utm_medium: utm('utm_medium'),
+        utm_campaign: utm('utm_campaign'),
+        utm_content: utm('utm_content'),
+        utm_term: utm('utm_term'),
+        website_url: data.get('website_url') || ''   // ловушка для ботов
+      };
+
+      var restore = function () {
+        sending = false;
+        sendBtn.disabled = false;
+        sendBtn.textContent = wasLabel;
+      };
+
+      fetch(CRM_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).then(function (r) {
+        return r.ok ? r.json() : Promise.reject(new Error('CRM не приняла заявку'));
+      }).then(function () {
+        // Успех: форма прячется, на её месте — сообщение. Если квиз открыт
+        // окном, сообщение показываем в окне.
+        quiz.hidden = true;
+        if (quizDone) {
+          if (quiz.parentNode) { quiz.parentNode.appendChild(quizDone); }
+          quizDone.hidden = false;
+        }
+      }).catch(function () {
+        restore();
+        // CRM недоступна — форму не ломаем: показываем причину и оставляем
+        // прежний путь, письмо на почту.
+        showError('Не получилось отправить заявку — попробуйте ещё раз или ' +
+                  'позвоните: +7 (920) 146-11-40.');
+      });
     });
 
     render();

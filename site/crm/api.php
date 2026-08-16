@@ -3,6 +3,18 @@ declare(strict_types=1);
 require __DIR__ . '/bootstrap.php';
 require __DIR__ . '/mail.php';
 header('Content-Type: application/json; charset=utf-8'); header('Cache-Control: no-store');
+// Заявку с сайта принимаем и с другого домена — превью ПК-версии живёт на
+// GitHub Pages, и без этих заголовков браузер туда запрос не пропустит.
+// Открыт РОВНО один публичный метод приёма заявки, без кук и авторизации;
+// на остальные действия CRM это не распространяется.
+if (($_GET['action'] ?? '') === 'public-lead') {
+  header('Access-Control-Allow-Origin: *');
+  header('Access-Control-Allow-Headers: Content-Type');
+  header('Access-Control-Allow-Methods: POST, OPTIONS');
+  header('Access-Control-Max-Age: 86400');
+  // предварительный запрос браузера: отвечаем и выходим, до базы не идём
+  if (($_SERVER['REQUEST_METHOD'] ?? '') === 'OPTIONS') { http_response_code(204); exit; }
+}
 try {
   $db=db(); $action=$_GET['action']??''; $input=json_body();
   if ($action==='public-lead') {

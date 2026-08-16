@@ -63,7 +63,7 @@
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Manrope:wght@400;500;600&display=swap" />
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Manrope:wght@400;500;600&display=swap" /></noscript>
 
-<link rel="stylesheet" href="site.css?v=20260816-8" />
+<link rel="stylesheet" href="site.css?v=20260816-9" />
 <!-- Yandex.Metrika counter -->
 <script>
   /* Счётчик грузится после полной загрузки страницы: tag.js не должен
@@ -1163,6 +1163,9 @@
                («Получить разбор», «Уровень 2 · Запустить систему» и т.д.).
                В заявке сразу видно, что именно человек смотрел. -->
           <input type="hidden" name="Откуда" value="Квиз в подвале" />
+          <!-- Ловушка для ботов: человек это поле не видит и не заполняет.
+               Уходит в CRM полем website_url. -->
+          <input class="quiz-trap" type="text" name="website_url" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
           <div class="quiz-nav">
             <button class="quiz-back" type="button" hidden>Назад</button>
@@ -1175,6 +1178,13 @@
           </div>
           <p class="foot-note">Нажимая кнопку, вы соглашаетесь с <a href="privacy.html" target="_blank" rel="noopener">политикой обработки персональных данных</a>.</p>
         </form>
+        <!-- Сообщение после успешной отправки: форма прячется, на её месте
+             появляется это. Живёт рядом с формой, а не внутри неё, чтобы
+             форму можно было переносить в окно и обратно. -->
+        <div class="quiz-done" id="quiz-done" hidden>
+          <p class="quiz-done-h">Заявка у команды</p>
+          <p class="quiz-done-t">Спасибо! Ответим в течение рабочего дня — без спама и звонков с продажей.</p>
+        </div>
       </div>
 
       <div class="foot-side">
@@ -1254,8 +1264,10 @@
 
 </div>
 
-<script src="site.js?v=20260816-8" defer></script>
-<script type="module" src="crm/public-lead.js"></script>
+<script src="site.js?v=20260816-9" defer></script>
+<!-- Отправка заявки в CRM живёт в site.js, вместе с самим квизом: иначе
+     на форме два обработчика submit и заявка уходит дважды. Файл
+     crm/public-lead.js остаётся в папке CRM, но со страницы не подключён. -->
 
 
 
@@ -1268,6 +1280,21 @@
       <p class="lv-modal-price"></p>
       <div class="lv-modal-body"></div>
       <a class="cta lv-modal-cta" href="#quiz">Заказать</a>
+    </div>
+  </div>
+
+  <!-- Окно с квизом. Любая кнопка сайта открывает его здесь, а не уводит
+       прокруткой в подвал. Сама форма одна на весь сайт: скрипт переносит
+       её сюда на время показа и возвращает на место в подвал при закрытии.
+       Так у формы один обработчик и одно состояние. -->
+  <div class="lv-modal quiz-modal" id="quiz-modal" hidden>
+    <div class="lv-modal-back" data-close></div>
+    <div class="lv-modal-card" role="dialog" aria-modal="true" aria-labelledby="quiz-modal-title">
+      <button class="lv-modal-x" type="button" data-close aria-label="Закрыть">×</button>
+      <p class="lv-modal-label">Бесплатный разбор</p>
+      <h3 id="quiz-modal-title">Разберём ваш проект и покажем, где деньги</h3>
+      <p class="quiz-modal-sub">Ответим в течение рабочего дня. Без спама и звонков с продажей.</p>
+      <div class="quiz-modal-slot"></div>
     </div>
   </div>
 </body>

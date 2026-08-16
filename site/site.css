@@ -3172,3 +3172,26 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
   .faq-item{opacity:1;translate:none;transition:none;}
   .faq-a{animation:none;}
 }
+
+/* ── Окно с квизом (открывается любой кнопкой сайта) ──────────────── */
+/* Каркас общий с окном тарифа (.lv-modal), отличается только шириной:
+   в квизе шесть вариантов ответа в две колонки, в 560px они жмутся. */
+.quiz-modal .lv-modal-card{width:min(100%,640px);}
+.quiz-modal-sub{
+  margin:clamp(8px,1vw,12px) 0 0;
+  font-size:clamp(13px,1.05vw,16px);line-height:1.55;color:rgba(241,233,220,.66);
+}
+.quiz-modal-slot{margin-top:clamp(16px,1.8vw,24px);}
+/* Внутри окна у формы нет своей подложки: карточка окна уже её даёт */
+.quiz-modal .foot-form{margin:0;padding:0;border:0;background:none;box-shadow:none;}
+
+/* Ловушка для ботов: поле есть в разметке, но человек его не видит */
+.quiz-trap{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;}
+
+/* Сообщение после успешной отправки — на месте формы */
+.quiz-done{
+  padding:clamp(18px,2vw,28px);border:1px solid rgba(168,220,40,.34);border-radius:16px;
+  background:linear-gradient(160deg,rgba(18,20,15,.97),rgba(10,12,9,.97));
+}
+.quiz-done-h{margin:0;color:var(--green);font:400 clamp(19px,1.9vw,26px)/1.2 var(--serif);}
+.quiz-done-t{margin:clamp(8px,1vw,12px) 0 0;font-size:clamp(13px,1.05vw,16px);line-height:1.6;color:rgba(241,233,220,.72);}
