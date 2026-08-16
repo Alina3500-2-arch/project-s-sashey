@@ -51,19 +51,21 @@
 <link rel="preload" as="image" href="assets/hero-duo-final.jpg" media="(min-width:1001px)" />
 <link rel="preload" as="image" href="assets/hero-duo-mobile-final.jpg" media="(max-width:1000px)" />
 
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<!-- Шрифты грузятся НЕблокирующе (media=print + onload). Обычный
-     rel="stylesheet" блокирует отрисовку: если fonts.googleapis.com
-     недоступен или медленный (в России это обычное дело), страница
-     висела пустой до таймаута ~15 сек. Теперь текст рисуется сразу
-     системным шрифтом и переключается на фирменный, когда тот доедет;
-     если не доедет — сайт просто остаётся читаемым. -->
-<link rel="stylesheet" media="print" onload="this.media='all';this.onload=null"
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Manrope:wght@400;500;600&display=swap" />
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Manrope:wght@400;500;600&display=swap" /></noscript>
+<!-- Шрифты лежат на своём хостинге, рядом с сайтом. Раньше они грузились
+     с fonts.googleapis.com: в России этот адрес часто недоступен, страница
+     ждала ответа и в итоге рисовалась запасным шрифтом — вместо Cormorant
+     Garamond подставлялась Georgia, и вся типографика ехала. Теперь запрос
+     идёт на тот же домен, что и сайт: быстро и всегда правильным шрифтом.
+     Файл fonts.css и сами woff2 собраны workflow .github/workflows/fonts.yml.
+     Заранее просим четыре кириллических начертания, которые нужны первому
+     экрану, — остальные подмножества браузер возьмёт сам, если понадобятся. -->
+<link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/cormorant-garamond-300-cyrillic.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/cormorant-garamond-400-cyrillic.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/manrope-400-cyrillic.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/manrope-600-cyrillic.woff2" />
+<link rel="stylesheet" href="fonts.css?v=20260816-12" />
 
-<link rel="stylesheet" href="site.css?v=20260816-11" />
+<link rel="stylesheet" href="site.css?v=20260816-12" />
 <!-- Yandex.Metrika counter -->
 <script>
   /* Счётчик грузится после полной загрузки страницы: tag.js не должен
@@ -1304,7 +1306,7 @@
 
 </div>
 
-<script src="site.js?v=20260816-11" defer></script>
+<script src="site.js?v=20260816-12" defer></script>
 <!-- Отправка заявки в CRM живёт в site.js, вместе с самим квизом: иначе
      на форме два обработчика submit и заявка уходит дважды. Файл
      crm/public-lead.js остаётся в папке CRM, но со страницы не подключён. -->
