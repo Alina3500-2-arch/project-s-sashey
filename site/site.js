@@ -770,19 +770,55 @@
     faqList.addEventListener('toggle', syncFaqHint, true);
   }
 
-  // Видеовиджет. Ключевое: у <video> нет src до первого клика — иначе
-  // браузер начинает тянуть файл вместе со страницей. Src ставим один
-  // раз при открытии, дальше видео уже в кеше и открывается мгновенно.
+  // Видеовиджет. Три правила, из-за которых он устроен именно так:
+  // 1) файл начинает грузиться только после window.load — чтобы не
+  //    тормозить саму страницу;
+  // 2) виджет всплывает не сразу, а когда видео уже готово играть
+  //    без остановок (readyState >= 3), иначе в углу мигает чёрный
+  //    прямоугольник;
+  // 3) автозапуск браузеры разрешают только без звука, поэтому в углу
+  //    видео идёт немым, а по клику открывается крупно и со звуком.
   var vw = document.getElementById('video-widget');
   var vwModal = document.getElementById('video-modal');
   if (vw && vwModal) {
-    var vwVideo = vwModal.querySelector('.vw-video');
     var vwSrc = 'assets/ash-video-widget-lite.mp4';
+    var vwPreview = vw.querySelector('.vw-preview');
+    var vwVideo = vwModal.querySelector('.vw-video');
+    var vwDismissed = false;
+
+    var vwShow = function () {
+      if (vwDismissed || !vw.hidden) { return; }
+      // ни одного кадра ещё нет (или файл не открылся) — не всплываем,
+      // иначе в углу появится чёрный прямоугольник
+      if (vwPreview.readyState < 2) { return; }
+      vw.hidden = false;
+      // hidden снят — даём кадр на раскладку, потом плавно показываем
+      requestAnimationFrame(function () { vw.classList.add('is-ready'); });
+      var p = vwPreview.play();
+      if (p && p.catch) { p.catch(function () {}); }
+    };
+    // готово к непрерывному показу — можно всплывать
+    vwPreview.addEventListener('canplaythrough', vwShow);
+    var vwStart = function () {
+      vwPreview.src = vwSrc;
+      vwPreview.load();
+      // подстраховка: если canplaythrough не пришёл (бывает в Safari),
+      // показываем по готовности данных или через 6 секунд
+      setTimeout(function () { if (vwPreview.readyState >= 3) { vwShow(); } }, 2500);
+      setTimeout(vwShow, 6000);
+    };
+    if (document.readyState === 'complete') { vwStart(); }
+    else { window.addEventListener('load', vwStart); }
+
     var vwOpen = function () {
       if (!vwVideo.getAttribute('src')) { vwVideo.setAttribute('src', vwSrc); }
+      // продолжаем с того же места, что и в углу, но уже со звуком
+      try { vwVideo.currentTime = vwPreview.currentTime; } catch (err) {}
+      vwPreview.pause();
       vwModal.hidden = false;
       document.body.style.overflow = 'hidden';
       vwModal.querySelector('.vw-x').focus();
+      vwVideo.muted = false;
       var p = vwVideo.play();
       if (p && p.catch) { p.catch(function () {}); }
     };
@@ -790,12 +826,14 @@
       vwVideo.pause();
       vwModal.hidden = true;
       document.body.style.overflow = '';
+      var pp = vwPreview.play();
+      if (pp && pp.catch) { pp.catch(function () {}); }
       vw.querySelector('.vw-bubble').focus();
     };
     vw.querySelector('.vw-bubble').addEventListener('click', vwOpen);
-    var vwDismissed = false;
     vw.querySelector('.vw-hide').addEventListener('click', function () {
       vwDismissed = true;
+      vwPreview.pause();
       vw.hidden = true;
     });
     vwModal.addEventListener('click', function (e) {
@@ -804,11 +842,14 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && !vwModal.hidden) { vwClose(); }
     });
-    // пока пользователь наверху страницы, кружок не мешает первому экрану
-    vw.hidden = true;
-    var vwToggle = function () { vw.hidden = vwDismissed || window.scrollY < 400; };
-    vwToggle();
-    window.addEventListener('scroll', vwToggle, { passive: true });
+    // за экраном видео не крутим — не тратим батарею и трафик
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) { vwPreview.pause(); }
+      else if (!vw.hidden && vwModal.hidden) {
+        var p = vwPreview.play();
+        if (p && p.catch) { p.catch(function () {}); }
+      }
+    });
   }
 
 })();

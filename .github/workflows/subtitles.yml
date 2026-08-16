@@ -1,0 +1,41 @@
+name: Субтитры для видеовиджета
+
+# Распознаёт речь в site/assets/ash-video-widget-lite.mp4 и кладёт рядом
+# ash-video-widget.ru.vtt — файл субтитров для <track> в виджете.
+# Делается на раннере GitHub, потому что из среды Claude модели
+# распознавания не скачиваются (huggingface и зеркала закрыты).
+# Текст после прогона стоит вычитать глазами: имена и термины
+# распознавание нередко пишет по-своему.
+
+on:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: 'Модель whisper: small — быстрее, medium — точнее'
+        default: 'small'
+
+permissions:
+  contents: write
+
+jobs:
+  subtitles:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - run: pip install -q -U openai-whisper
+
+      - name: Распознать речь
+        run: |
+          whisper site/assets/ash-video-widget-lite.mp4 \
+            --model "${{ inputs.model }}" --language ru --task transcribe \
+            --output_format vtt --output_dir site/assets
+          mv site/assets/ash-video-widget-lite.vtt site/assets/ash-video-widget.ru.vtt
+          head -30 site/assets/ash-video-widget.ru.vtt
+
+      - name: Закоммитить
+        run: |
+          git config user.name "Claude"; git config user.email "noreply@anthropic.com"
+          git add site/assets/ash-video-widget.ru.vtt
+          git commit -m "chore(видео): субтитры к ролику виджета (распознавание, нужна вычитка)" || echo "нечего коммитить"
+          git push

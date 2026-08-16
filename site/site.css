@@ -3233,30 +3233,36 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
   .quiz-ways{grid-template-columns:repeat(2,minmax(0,1fr));}
 }
 
-/* ═══ Видеовиджет: кружок в углу + окно с видео ═══════════════════
-   Обложка — обычная картинка (кадр 15.6 с), само видео грузится
-   только по клику: <video> без src, скрипт подставляет его при
-   открытии. Поэтому виджет ничего не стоит при загрузке страницы. */
-.vw{position:fixed;right:clamp(12px,2vw,26px);bottom:clamp(12px,2vw,26px);z-index:55;}
+/* ═══ Видеовиджет: прямоугольник слева внизу ══════════════════════
+   Играет сам, без звука (иначе браузер вообще не даст автозапуск),
+   по клику открывается крупно и со звуком. Видео начинает грузиться
+   только после полной загрузки страницы, а всплывает виджет лишь
+   когда данных хватает на непрерывное воспроизведение — чтобы не
+   мигал чёрный прямоугольник. */
+.vw{
+  position:fixed;left:clamp(12px,2vw,26px);bottom:clamp(12px,2vw,26px);z-index:55;
+  width:clamp(104px,10vw,132px);
+  opacity:0;transform:translateY(10px);
+  transition:opacity .45s var(--ease),transform .45s var(--ease);
+}
 .vw[hidden]{display:none;}
+.vw.is-ready{opacity:1;transform:none;}
 .vw-bubble{
-  display:block;width:clamp(74px,8vw,104px);aspect-ratio:1;padding:0;
-  border:2px solid rgba(241,233,220,.22);border-radius:50%;overflow:hidden;
-  background:var(--card);cursor:pointer;position:relative;
-  box-shadow:0 14px 34px rgba(0,0,0,.42);
+  display:block;width:100%;padding:0;position:relative;overflow:hidden;
+  border:1px solid rgba(241,233,220,.22);border-radius:14px;
+  background:#000;cursor:pointer;box-shadow:0 14px 34px rgba(0,0,0,.45);
   transition:transform .25s var(--ease),border-color .25s var(--ease);
 }
-.vw-bubble:hover{transform:translateY(-2px) scale(1.03);border-color:var(--green);}
-.vw-bubble img{width:100%;height:100%;object-fit:cover;object-position:50% 22%;display:block;}
-/* треугольник «плей» поверх кадра */
-.vw-play{
-  position:absolute;left:50%;bottom:9%;translate:-50% 0;
-  width:26px;height:26px;border-radius:50%;background:var(--green);
-  display:grid;place-items:center;
+.vw-bubble:hover{transform:translateY(-2px);border-color:var(--green);}
+.vw-preview{display:block;width:100%;height:auto;aspect-ratio:9/16;object-fit:cover;}
+/* подпись «включить звук»: автозапуск возможен только без звука */
+.vw-sound{
+  position:absolute;left:0;right:0;bottom:0;padding:14px 6px 6px;
+  background:linear-gradient(to top,rgba(6,7,5,.86),rgba(6,7,5,0));
+  color:var(--cream);font:600 9px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;
 }
-.vw-play::before{content:"";border:6px solid transparent;border-left:9px solid var(--graphite);margin-left:4px;}
 .vw-hide{
-  position:absolute;top:-4px;right:-4px;width:22px;height:22px;padding:0;
+  position:absolute;top:-8px;right:-8px;width:22px;height:22px;padding:0;
   border:1px solid var(--line);border-radius:50%;background:var(--card);
   color:var(--grey);font:400 14px/1 var(--sans);cursor:pointer;
 }
@@ -3268,6 +3274,6 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
 }
 .vw-x{position:absolute;top:-46px;right:0;}
 @media (prefers-reduced-motion:reduce){
-  .vw-bubble{transition:none;}
+  .vw,.vw-bubble{transition:none;}
   .vw-bubble:hover{transform:none;}
 }
