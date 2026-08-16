@@ -80,7 +80,9 @@
 
 <div class="bar" id="bar">
   <div class="row">
-    <span class="t">ПК · <b id="info">1280</b></span>
+    <!-- нажатие по этой надписи показывает цифры о состоянии кадра:
+         с ними можно понять, что не так, по одному скриншоту с телефона -->
+    <span class="t" id="infoWrap" role="button" tabindex="0">ПК · <b id="info">1280</b></span>
     <a class="home" id="homeLink" href="index.html">Моб.</a>
   </div>
   <div class="row">
@@ -143,7 +145,7 @@
     // pc.html со своим ?r=..., он тоже уходит внутрь — чтобы одной ссылкой
     // можно было пробить кэш и у обёртки, и у самого сайта.
     var r = (location.search.match(/[?&]r=([^&]+)/) || [])[1];
-    frame.src = page + '?w=' + W + '&v=pc4' + (r ? '&r=' + r : '');
+    frame.src = page + '?w=' + W + '&v=pc5' + (r ? '&r=' + r : '');
     // Полное событие load ждёт все картинки и шрифты — «монитор» до тех пор
     // висел бы в прежнем масштабе. Пересчитываем, как только появится тело.
     setTimeout(layout, 300);
@@ -270,7 +272,7 @@
   }
   window.addEventListener('scroll', function () {
     clearTimeout(settleTimer);
-    settleTimer = setTimeout(settle, 160);
+    settleTimer = setTimeout(function () { settle(); diag(); }, 160);
   }, { passive: true });
 
   frame.addEventListener('load', function () {
@@ -349,6 +351,35 @@
     frame.style.marginLeft = (-Math.round(panX * k)) + 'px';
     if (e.cancelable) e.preventDefault();
   }, { passive: false });
+
+  // Диагностика по нажатию на «ПК ·». Главное здесь — две высоты блока
+  // прайса: offsetHeight (раскладка) и getBoundingClientRect (с учётом
+  // трансформаций). На мониторе они совпадают; если в кадре разошлись —
+  // значит браузер отдаёт скриптам сайта искажённые размеры, и виноват
+  // не сайт, а измерение внутри масштабированного кадра.
+  var diagOn = false;
+  function diag() {
+    if (!diagOn) return;
+    var doc = frame.contentDocument;
+    if (!doc) return;
+    var lv = doc.querySelector('.levels');
+    var imgs = [].slice.call(doc.images);
+    var loaded = imgs.filter(function (i) { return i.complete && i.naturalWidth; }).length;
+    hint.innerHTML =
+      'режим <b>' + mode + '</b> · масштаб <b>' + Math.round(k * 100) + '%</b>' +
+      ' · страница <b>' + innerH + '</b> px<br>' +
+      'прайс: offset <b>' + (lv ? lv.offsetHeight : '—') + '</b> / rect <b>' +
+      (lv ? Math.round(lv.getBoundingClientRect().height) : '—') + '</b>' +
+      ' · картинки <b>' + loaded + '/' + imgs.length + '</b>' +
+      ' · блоки <b>' + doc.querySelectorAll('.reveal.seen').length + '/' +
+      doc.querySelectorAll('.reveal').length + '</b>';
+    hint.classList.remove('is-hidden');
+  }
+  document.getElementById('infoWrap').addEventListener('click', function () {
+    diagOn = !diagOn;
+    if (!diagOn) { location.reload(); return; }
+    diag();
+  });
 
   document.getElementById('widths').addEventListener('click', function (e) {
     var btn = e.target.closest('button');

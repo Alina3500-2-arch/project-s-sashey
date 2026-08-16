@@ -427,6 +427,22 @@
   if (guide && firstCard) {
     var cards = document.querySelectorAll('.level-card');
 
+    // ВАЖНО: высоты здесь меряются offsetHeight/offsetTop, а НЕ
+    // getBoundingClientRect(). Прямоугольник из getBoundingClientRect
+    // отдаётся с учётом трансформаций, и в предпросмотре ПК-версии
+    // (pc.html держит страницу в кадре с transform:scale) Safari на
+    // iPhone возвращал искажённые числа. Скрипт раздувал строки, за ними
+    // карточки — колонки прайса уходили вниз на несколько пустых экранов,
+    // и дальше блока было не пролистать. offsetHeight — целочисленная
+    // метрика раскладки, трансформации на неё не влияют ни в одном
+    // браузере, поэтому результат одинаков и на мониторе, и в кадре.
+    var boxH = function (el) { return el.offsetHeight; };
+    var boxTop = function (el) {
+      var y = 0;
+      while (el) { y += el.offsetTop; el = el.offsetParent; }
+      return y;
+    };
+
     // Одинаковые строки разных карточек должны лежать на одном уровне:
     // «5 рабочих дней» напротив «До 30 рабочих дней» и так далее. Текст в
     // них разной длины, поэтому равняем по самой высокой строке в ряду.
@@ -442,8 +458,12 @@
       for (var i = 0; i < count; i++) {
         var tallest = 0;
         byCard.forEach(function (rows) {
-          if (rows[i]) { tallest = Math.max(tallest, rows[i].getBoundingClientRect().height); }
+          if (rows[i]) { tallest = Math.max(tallest, boxH(rows[i])); }
         });
+        // Строка прайса — это одна-две строки текста. Если намерили больше,
+        // измерение врёт (так было в кадре предпросмотра на iPhone) —
+        // тогда лучше оставить высоты как есть, чем раздуть карточки.
+        if (!tallest || tallest > 240) { continue; }
         byCard.forEach(function (rows) {
           if (rows[i]) { rows[i].style.height = tallest + 'px'; }
         });
@@ -460,8 +480,15 @@
       if (reset) { return; }
       var natural = 0;
       cards.forEach(function (card) {
-        natural = Math.max(natural, card.getBoundingClientRect().height);
+        natural = Math.max(natural, boxH(card));
       });
+      // Карточка тарифа не может быть выше экрана монитора. Если намерили
+      // больше — измерение врёт; ставить такую «лесенку» нельзя, иначе
+      // прайс растянется на несколько пустых экранов.
+      if (!natural || natural > 900) {
+        cards.forEach(function (card) { card.style.minHeight = ''; });
+        return;
+      }
       // шаг пропорционален карточке, чтобы лесенка не ломалась на узком ПК
       var step = Math.round(natural * 0.064);
       cards.forEach(function (card, i) {
@@ -483,11 +510,16 @@
       levelRows(false);
       // ступеньку считаем после выравнивания строк: они меняют высоту карточек
       levelLadder(false);
-      items.forEach(function (li, i) { li.style.height = rows[i].getBoundingClientRect().height + 'px'; });
+      items.forEach(function (li, i) {
+        var h = boxH(rows[i]);
+        li.style.height = (h && h <= 240) ? h + 'px' : '';
+      });
       if (!levelsCopy) { return; }
       levelsCopy.style.marginTop = '0px';
-      var shift = rows[0].getBoundingClientRect().top - items[0].getBoundingClientRect().top;
-      levelsCopy.style.marginTop = shift + 'px';
+      var shift = boxTop(rows[0]) - boxTop(items[0]);
+      // Сдвиг левой колонки — десятки пикселей. Сотни означают, что мерить
+      // сейчас нечем (страница ещё собирается): лучше ничего не двигать.
+      levelsCopy.style.marginTop = Math.abs(shift) > 400 ? '' : shift + 'px';
     };
     // Выравнивание считается по фактическим размерам, а они меняются уже
     // после первого прохода: догружаются шрифты и картинки, страница может
