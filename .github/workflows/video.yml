@@ -1,0 +1,75 @@
+name: Prepare video widget
+
+# Готовит видео для виджета на сайте: скачивает исходник по ссылке,
+# ускоряет, сжимает под веб и кладёт в site/assets/video.
+# Из окружения Claude Google Drive недоступен, у раннера GitHub — доступен.
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 'Прямая ссылка на исходное видео'
+        required: true
+      speed:
+        description: 'Ускорение (1.2 = на 20% быстрее)'
+        default: '1.2'
+      max_side:
+        description: 'Максимальная сторона кадра, px'
+        default: '720'
+      crf:
+        description: 'Качество H.264: меньше — лучше и тяжелее'
+        default: '30'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+
+      - name: Скачать исходник
+        run: |
+          # Google Drive: прямая ссылка на скачивание по id из адреса файла
+          URL="${{ inputs.url }}"
+          ID=$(echo "$URL" | grep -oP '(?<=/d/)[^/]+' || true)
+          if [ -n "$ID" ]; then URL="https://drive.google.com/uc?export=download&id=$ID"; fi
+          curl -sSL -o src.bin "$URL"
+          ls -lh src.bin
+          file src.bin
+          # если вместо видео пришла страница «нет доступа» — падаем сразу
+          if file src.bin | grep -qi 'html\|text'; then
+            echo "::error::Скачался не файл, а страница. Проверьте, открыт ли доступ по ссылке."; exit 1; fi
+
+      - name: Что внутри
+        run: ffprobe -v error -show_entries stream=codec_type,codec_name,width,height,r_frame_rate,duration -show_entries format=duration,size -of default=noprint_wrappers=1 src.bin
+
+      - name: Сжать и ускорить
+        run: |
+          mkdir -p site/assets/video
+          S='${{ inputs.speed }}'; M='${{ inputs.max_side }}'; C='${{ inputs.crf }}'
+          # scale: длинная сторона не больше M, размеры чётные (нужно кодеку)
+          VF="setpts=PTS/${S},scale='if(gt(iw,ih),min(${M},iw),-2)':'if(gt(iw,ih),-2,min(${M},ih))',fps=30"
+          # звук ускоряем тем же коэффициентом
+          ffmpeg -y -i src.bin -vf "$VF" -af "atempo=${S}" \
+            -c:v libx264 -crf "$C" -preset slow -profile:v high -pix_fmt yuv420p \
+            -movflags +faststart -c:a aac -b:a 64k -ac 1 \
+            site/assets/video/widget.mp4
+          # запасной формат: обычно ещё легче, современные браузеры возьмут его
+          ffmpeg -y -i src.bin -vf "$VF" -af "atempo=${S}" \
+            -c:v libvpx-vp9 -crf 36 -b:v 0 -row-mt 1 -cpu-used 4 \
+            -c:a libopus -b:a 48k -ac 1 \
+            site/assets/video/widget.webm
+          # первый кадр как заставка, пока видео не доехало
+          ffmpeg -y -i site/assets/video/widget.mp4 -frames:v 1 -q:v 4 site/assets/video/widget-poster.jpg
+          echo "── результат:"; ls -l site/assets/video | awk '{printf "%8.2f МБ  %s\n", $5/1048576, $9}'
+          ffprobe -v error -show_entries format=duration -of csv=p=0 site/assets/video/widget.mp4
+
+      - name: Закоммитить
+        run: |
+          git config user.name "Claude"; git config user.email "noreply@anthropic.com"
+          git add site/assets/video
+          git commit -m "chore(video): видео для виджета, ускорено и сжато под веб" || echo "нечего коммитить"
+          git push
