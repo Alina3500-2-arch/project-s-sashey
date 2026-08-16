@@ -2731,37 +2731,35 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
    на всю страницу. Фотографию Александра при этом не растягиваем. */
 .faq{
   position:relative;
-  width:100%;max-width:1040px;margin:clamp(40px,5vw,86px) auto 0;
+  /* Полоса со снимком примыкает к соседним блокам встык. Родитель
+     .page — флекс с gap:var(--gap), поэтому зазор съедается
+     отрицательным margin ровно на ту же величину: обнулить сам gap
+     нельзя, он держит расстояния между остальными блоками. */
+  width:100%;max-width:1040px;margin:calc(-1 * var(--gap)) auto;
+  padding-top:clamp(150px,17vw,300px);padding-bottom:clamp(24px,3vw,48px);
   display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1fr);
   gap:clamp(22px,2.4vw,44px);align-items:start;color:var(--cream);
 }
-/* Снимок Александра — ФОН всего блока, а не картинка в левой колонке.
-   Раньше бокс занимал 60% ширины: у кадра был видимый вертикальный край
-   посреди блока, и он читался как вставленная фотография. Теперь кадр
-   идёт от левого края блока до правого, стена уходит за колонку вопросов,
-   а по всем четырём сторонам снимок сходит на нет — границ нет нигде.
-   Файл faq-sasha-wide.jpg — исходник целиком (1731x909), фон стены
-   подкрашен под графит сайта #171614. */
+/* Снимок Александра — фон всей полосы: от края до края экрана
+   (left:calc(50% - 50vw); width:100vw), без растягивания — cover
+   сохраняет пропорции 1920×750 и подрезает лишнее по высоте.
+   Снизу кадр уходит в цвет страницы, чтобы под ним не было ни канта,
+   ни пустой полосы перед следующим блоком. */
 .faq-bg{
-  position:absolute;z-index:0;top:0;height:100%;
-  /* с напуском за края блока: край кадра не должен совпадать с краем
-     колонки, иначе снова читается рамка */
-  left:-7%;width:114%;
-  pointer-events:none;
-  /* Кадр вписан по ширине БЕЗ обрезки (100% auto, а не cover): растушёвка
-     запечена в сам файл — по периметру кадр плавно уходит ровно в цвет
-     страницы #171614 (четверть ширины и пятая часть высоты — на переход).
-     Обрезка съела бы эти поля, и край снова стал бы виден.
-     Маска здесь поэтому не нужна: у картинки нет краёв как таковых. */
-  background:url("assets/faq-sasha-wide.jpg") center center/100% auto no-repeat;
-  /* Второй слой защиты от «прямоугольника». Растушёвки в файле мало:
-     ровный тёмный тон JPEG держит с точностью в один-два уровня, и на
-     большом плоском поле эта разница видна кантом. Маска доводит края до
-     нуля — у самой границы не рисуется ничего, стыку взяться неоткуда.
-     farthest-side: овал дотягивается до всех четырёх сторон бокса. */
-  -webkit-mask-image:radial-gradient(farthest-side ellipse at 50% 50%,#000 0,#000 52%,rgba(0,0,0,.86) 68%,rgba(0,0,0,.4) 84%,transparent 100%);
-          mask-image:radial-gradient(farthest-side ellipse at 50% 50%,#000 0,#000 52%,rgba(0,0,0,.86) 68%,rgba(0,0,0,.4) 84%,transparent 100%);
+  position:absolute;z-index:0;pointer-events:none;
+  left:calc(50% - 50vw);width:100vw;top:0;height:100%;
+  background:url("assets/faq-sasha-2026-wide.jpg") 50% 0/cover no-repeat;
+  -webkit-mask-image:linear-gradient(to bottom,#000 0,#000 42%,rgba(0,0,0,.55) 66%,transparent 92%);
+          mask-image:linear-gradient(to bottom,#000 0,#000 42%,rgba(0,0,0,.55) 66%,transparent 92%);
 }
+/* пелена под текстом: снимок тёмный, но у стены есть светлые блики,
+   и по ним белый текст читался хуже */
+.faq-bg::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(9,11,8,0) 0,rgba(9,11,8,.35) 45%,rgba(9,11,8,.82) 100%);
+}
+/* финал идёт сразу за полосой со снимком, без воздуха между ними */
+.faq + .closer{margin-top:0;}
 .faq-head,.faq-list{position:relative;z-index:1;}
 /* Заголовок начинается на уровне груди Александра, а не у головы: любой
    текст выше перекрывал лицо. Текст прижат к низу колонки — так он всегда
@@ -3127,35 +3125,20 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
 @media (max-width:900px){
   /* отступ от предыдущего блока меньше: сверху и так идёт тёмная часть
      кадра, вместе с прежним margin получалась дыра почти в экран */
-  .faq{grid-template-columns:1fr;gap:clamp(14px,4vw,20px);padding-inline:clamp(18px,5vw,32px);margin-top:clamp(8px,2.5vw,18px);}
-  .faq-head{position:static;
-    /* текст начинается ниже подбородка: голова целиком над заголовком */
-    padding-top:clamp(180px,55vw,300px);}
-  /* Экран узкий, кадр обрезается сильно — держим фигуру в видимой части:
-     точка привязки уходит правее левого края, чтобы Александр не срезался,
-     и фон уводится в графит книзу, под колонку вопросов. Блок стал ниже —
-     фото не нужно так сильно гасить, оно и так короче держится в кадре. */
+  .faq{grid-template-columns:1fr;gap:clamp(14px,4vw,20px);padding-inline:clamp(18px,5vw,32px);
+    margin-block:calc(-1 * var(--gap));padding-top:clamp(210px,62vw,340px);}
+  .faq-head{position:static;padding-top:0;}
+  /* Тот же снимок, что и на ПК, но кадр узкий: показываем не всю
+     ширину 1920×750, а её середину с фигурой. Высота полосы задана
+     в vw, ширина кадра — 250% экрана, привязка по фигуре. Снимок не
+     растягиваем: пропорции держит background-size с одним значением. */
   .faq-bg{
-    /* колонок больше нет — снимок обратно во всю ширину экрана,
-       портретной полосой над текстом, как и был до правки под ПК */
-    /* Кадр не растягиваем на всю высоту блока (иначе cover раздувал снимок
-       и Александр наполовину уезжал за левый край). Высота задана в vw, а
-       ширина кадра — 241% ширины экрана: при такой раскладке фигура ровно
-       по центру (по 59px стены слева и справа на экране 393px). */
-    /* На телефоне остаётся прежний кадр 4:3 (faq-sasha-2026.jpg): числа
-       ниже подобраны под него, а широкий снимок для ПК встал бы здесь
-       совсем иначе. Мобильную раскладку правка фона ПК не трогает. */
-    background-image:url("assets/faq-sasha-2026.jpg");
-    left:calc(50% - 50vw);top:0;width:100vw;height:181vw;
-    background-size:241% auto;background-position:1.2% 0;opacity:.72;
-    /* так же, как на ПК: снимок сходит на нет со всех сторон, без резаных
-       верхнего и правого краёв */
-    -webkit-mask-image:linear-gradient(to right,transparent 0,#000 8%,#000 92%,transparent 100%),
-                       linear-gradient(to bottom,transparent 0,#000 6%,rgba(0,0,0,.55) 62%,transparent 97%);
-            mask-image:linear-gradient(to right,transparent 0,#000 8%,#000 92%,transparent 100%),
-                       linear-gradient(to bottom,transparent 0,#000 6%,rgba(0,0,0,.55) 62%,transparent 97%);
-    /* два слоя маски перемножаются (на ПК маска одна, овальная) */
-    -webkit-mask-composite:source-in;mask-composite:intersect;
+    left:calc(50% - 50vw);top:0;width:100vw;height:clamp(230px,68vw,380px);
+    background-image:url("assets/faq-sasha-2026-wide.jpg");
+    background-size:250% auto;background-position:34% 0;opacity:1;
+    -webkit-mask-image:linear-gradient(to bottom,#000 0,#000 58%,rgba(0,0,0,.5) 80%,transparent 100%);
+            mask-image:linear-gradient(to bottom,#000 0,#000 58%,rgba(0,0,0,.5) 80%,transparent 100%);
+    -webkit-mask-composite:source-over;mask-composite:add;
   }
   .faq-head .sec-title{font-size:clamp(26px,7.6vw,38px);}
   /* список вопросов — одной колонкой с собственной прокруткой, чтобы весь
@@ -3264,18 +3247,12 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
   background:linear-gradient(to top,rgba(6,7,5,.5),rgba(6,7,5,0) 45%);
   opacity:0;transition:opacity .22s var(--ease);pointer-events:none;
 }
-/* Наведение — только там, где есть настоящая мышь. На тачскринах
-   браузеры «залипают» на :hover после тапа, и кнопка так и висела
-   посреди лица. Там показываем её на пару секунд после тапа
-   (класс is-touched). :focus-within тоже убран: после клика фокус
-   оставался на кнопке и слой не гас. */
-@media (hover:hover) and (pointer:fine){
-  .vw-frame:hover .vw-ui{opacity:1;pointer-events:auto;}
-}
+/* Показом кнопки управляет ТОЛЬКО класс is-touched из site.js.
+   CSS-наведения здесь больше нет намеренно: :hover в браузерах
+   залипает (после клика, после тапа на тачскрине, после того как
+   элемент уехал из-под курсора) — и кнопка оставалась висеть
+   посреди лица. В JS она гасится и по уходу курсора, и по таймеру. */
 .vw.is-touched .vw-ui{opacity:1;pointer-events:auto;}
-/* клавиатура: кнопка обязана быть видна, когда на ней фокус с Tab */
-.vw-toggle:focus-visible{opacity:1;}
-.vw-ui:has(.vw-toggle:focus-visible){opacity:1;pointer-events:auto;}
 .vw-toggle{
   width:46px;height:46px;padding:0;cursor:pointer;position:relative;
   border:1.5px solid rgba(168,220,40,.85);border-radius:50%;

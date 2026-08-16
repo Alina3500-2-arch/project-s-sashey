@@ -794,11 +794,16 @@
       var p = vwVideo.play();
       if (p && p.catch) { p.catch(function () {}); }
     };
+    var vwShown = false;
     var vwShow = function () {
-      if (vwDismissed || !vw.hidden) { return; }
+      // показываем один раз за жизнь страницы: перемотка в начало
+      // заново вызывает canplaythrough, и виджет выскакивал обратно
+      // сразу после того, как ушёл на перерыв
+      if (vwDismissed || vwShown || !vw.hidden) { return; }
       // ни одного кадра ещё нет (или файл не открылся) — не всплываем,
       // иначе в углу появится чёрный прямоугольник
       if (vwVideo.readyState < 2) { return; }
+      vwShown = true;
       vw.hidden = false;
       requestAnimationFrame(function () { vw.classList.add('is-ready'); });
       vwPlay();
@@ -815,37 +820,51 @@
     if (document.readyState === 'complete') { vwStart(); }
     else { window.addEventListener('load', vwStart); }
 
-    // на телефоне «наведения» нет: первый тап показывает кнопки,
-    // через 3 секунды без действий они снова уходят
-    var vwTouchTimer = null;
-    var vwTouched = function () {
-      vw.classList.add('is-touched');
-      clearTimeout(vwTouchTimer);
-      vwTouchTimer = setTimeout(function () { vw.classList.remove('is-touched'); }, 2000);
+    // Показ кнопки паузы. Всё вручную, без CSS :hover — он залипает:
+    // после клика мышью, после тапа на телефоне и после того, как
+    // виджет уехал из-под курсора, кнопка оставалась висеть на лице.
+    var vwUiTimer = null;
+    var vwUiHide = function () {
+      clearTimeout(vwUiTimer);
+      vw.classList.remove('is-touched');
     };
+    var vwUiShow = function (ms) {
+      vw.classList.add('is-touched');
+      clearTimeout(vwUiTimer);
+      if (ms) { vwUiTimer = setTimeout(vwUiHide, ms); }
+    };
+    // мышь: кнопка живёт ровно пока курсор на виджете
+    vwFrame.addEventListener('pointerenter', function (e) {
+      if (e.pointerType === 'mouse') { vwUiShow(0); }
+    });
+    vwFrame.addEventListener('pointerleave', function (e) {
+      if (e.pointerType === 'mouse') { vwUiHide(); }
+    });
+    // палец: показываем на 2 секунды после тапа
     vwFrame.addEventListener('pointerdown', function (e) {
-      if (e.pointerType !== 'mouse') { vwTouched(); }
+      if (e.pointerType !== 'mouse') { vwUiShow(2000); }
     });
-    // палец ушёл с экрана — прячем кнопку, не дожидаясь таймера,
-    // если человек просто скроллит дальше
+    // тап или клик мимо виджета, прокрутка — кнопка уходит сразу
     document.addEventListener('pointerdown', function (e) {
-      if (!vw.contains(e.target)) { vw.classList.remove('is-touched'); }
+      if (!vw.contains(e.target)) { vwUiHide(); }
     });
+    window.addEventListener('scroll', vwUiHide, { passive: true });
 
     // клик по кадру = пауза/продолжить, то же делает кнопка
     var vwUserPaused = false;
     var vwSwitch = function () {
       if (vwVideo.paused) { vwPlay(); } else { vwVideo.pause(); }
-      vwUserPaused = !vwVideo.paused ? false : true;
-      vwTouched();
+      vwUserPaused = vwVideo.paused;
     };
-    // слушаем всю рамку: поверх кадра лежит слой с кнопками, и клик
+    // слушаем всю рамку: поверх кадра лежит слой с кнопкой, и клик
     // «по видео» на самом деле приходит в него
     vwFrame.addEventListener('click', function (e) {
       if (e.target.closest('.vw-sound')) { return; }
       vwSwitch();
-      // без blur кнопка остаётся в фокусе и слой не гаснет
+      // без blur кнопка остаётся в фокусе
       if (document.activeElement === vwToggle) { vwToggle.blur(); }
+      // на телефоне после клика кнопка должна погаснуть сама
+      if (vw.classList.contains('is-touched')) { vwUiShow(2000); }
     });
     var vwSyncBtn = function () {
       vwToggle.setAttribute('aria-pressed', vwVideo.paused ? 'true' : 'false');
@@ -859,7 +878,6 @@
       vwSound.setAttribute('aria-pressed', vwVideo.muted ? 'false' : 'true');
       vwSound.setAttribute('aria-label', vwVideo.muted ? 'Включить звук' : 'Выключить звук');
       if (vwVideo.paused) { vwPlay(); }
-      vwTouched();
     });
 
     vw.querySelector('.vw-hide').addEventListener('click', function () {
@@ -873,6 +891,29 @@
     vwVideo.addEventListener('dragstart', function (e) { e.preventDefault(); });
     // двойной клик в некоторых браузерах разворачивает видео на весь экран
     vwVideo.addEventListener('dblclick', function (e) { e.preventDefault(); });
+
+    // Ролик крутится не бесконечно: проиграл до конца — виджет уезжает
+    // с экрана, ждёт паузу и возвращается с начала, если человек всё ещё
+    // на сайте. Каждый следующий заход ждёт дольше предыдущего, чтобы
+    // виджет не превратился в назойливую мигалку.
+    var vwRound = 0;
+    vwVideo.addEventListener('ended', function () {
+      vwRound += 1;
+      vw.classList.remove('is-ready');   // плавно уезжает
+      vwUiHide();
+      setTimeout(function () {
+        vw.hidden = true;
+        vwVideo.currentTime = 0;
+      }, 500);
+      var wait = Math.min(20000 + (vwRound - 1) * 20000, 90000);
+      setTimeout(function () {
+        if (vwDismissed || document.hidden) { return; }
+        vw.hidden = false;
+        requestAnimationFrame(function () { vw.classList.add('is-ready'); });
+        vwUserPaused = false;
+        vwPlay();
+      }, wait);
+    });
 
     // за экраном видео не крутим — не тратим батарею и трафик
     document.addEventListener('visibilitychange', function () {
