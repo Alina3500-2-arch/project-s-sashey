@@ -1,0 +1,39 @@
+name: Check live site
+
+# Диагностика: что реально отдаёт ashpartners.ru. Из окружения Claude до
+# домена не достучаться (шлюз не пропускает), а раннеру GitHub — можно.
+# Запускается только вручную, ничего не меняет.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Что отдаёт ashpartners.ru
+        run: |
+          set +e
+          for u in "https://ashpartners.ru/" "https://ashpartners.ru/index.html"; do
+            echo "──────── $u"
+            curl -sS -o page.html -D head.txt -A "deploy-check" "$u"
+            echo "-- заголовки:"; grep -iE "^(HTTP/|last-modified|content-length|etag|server|x-|cache)" head.txt
+            echo "-- размер: $(wc -c < page.html) байт"
+            echo "-- версия стилей/скрипта:"; grep -o 'site\.\(css\|js\)?v=[^"]*' page.html | sort -u
+            echo "-- признаки СВЕЖЕЙ версии:"
+            for m in 'faq-sasha-wide.jpg' 'quiz-modal' 'website_url' 'quiz-done' 'faq-sasha-2026.jpg'; do
+              printf '   %-22s %s\n' "$m" "$(grep -c "$m" page.html)"
+            done
+            echo "-- признаки СТАРОЙ версии:"
+            for m in 'Другое — впишу сам' 'faq-sasha-bg.jpg' 'crm/public-lead.js' 'mailto:hello@ashpartners.ru" method' ; do
+              printf '   %-30s %s\n' "$m" "$(grep -c "$m" page.html)"
+            done
+          done
+          echo "──────── мусорные файлы в корне"
+          for f in local-preview.err.log local-preview.out.log; do
+            printf '   %-26s HTTP %s\n' "$f" "$(curl -s -o /dev/null -w '%{http_code}' https://ashpartners.ru/$f)"
+          done
+          echo "──────── файл фона"
+          printf '   faq-sasha-wide.jpg  HTTP %s, размер %s\n' \
+            "$(curl -s -o /dev/null -w '%{http_code}' https://ashpartners.ru/assets/faq-sasha-wide.jpg)" \
+            "$(curl -s -o /dev/null -w '%{size_download}' https://ashpartners.ru/assets/faq-sasha-wide.jpg)"
