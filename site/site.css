@@ -3195,3 +3195,35 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
 }
 .quiz-done-h{margin:0;color:var(--green);font:400 clamp(19px,1.9vw,26px)/1.2 var(--serif);}
 .quiz-done-t{margin:clamp(8px,1vw,12px) 0 0;font-size:clamp(13px,1.05vw,16px);line-height:1.6;color:rgba(241,233,220,.72);}
+
+/* ── Способ связи в квизе: четыре кнопки с иконками ───────────────── */
+.quiz-ways-h{
+  margin:clamp(16px,1.8vw,24px) 0 clamp(8px,1vw,12px);
+  font-size:clamp(13px,1.05vw,16px);color:rgba(241,233,220,.72);
+}
+.quiz-ways{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(6px,.7vw,10px);}
+.quiz-way{cursor:pointer;}
+.quiz-way input{position:absolute;opacity:0;width:0;height:0;}
+.quiz-way-box{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  padding:clamp(10px,1.1vw,14px) 4px;
+  border:1px solid rgba(241,233,220,.18);border-radius:14px;
+  color:rgba(241,233,220,.78);text-align:center;
+  transition:border-color .2s,color .2s,background .2s;
+}
+.quiz-way-box svg{
+  width:22px;height:22px;flex:none;
+  fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;
+}
+.quiz-way-box b{font-size:clamp(10.5px,.88vw,13px);font-weight:600;letter-spacing:.02em;}
+.quiz-way:hover .quiz-way-box{border-color:rgba(168,220,40,.45);color:var(--cream);}
+/* выбранный вариант — так же, как отмеченный вариант ответа в квизе */
+.quiz-way input:checked + .quiz-way-box{
+  border-color:var(--green);color:var(--green);
+  background:rgba(168,220,40,.08);
+}
+.quiz-way input:focus-visible + .quiz-way-box{outline:2px solid var(--green);outline-offset:2px;}
+/* на узком экране — в два ряда, иначе подписи не помещаются */
+@media (max-width:560px){
+  .quiz-ways{grid-template-columns:repeat(2,minmax(0,1fr));}
+}

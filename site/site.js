@@ -343,6 +343,41 @@
       errBox.hidden = !text;
     };
 
+    // ── Маска телефона: только российский формат ────────────────────
+    // Буквы не вводятся вовсе, номер всегда собирается как
+    // +7 (900) 000-00-00. Ведущие 8 и 7 считаются кодом страны, чтобы
+    // человек мог вставить номер в любом привычном виде.
+    var telField = quiz.querySelector('input[name="Телефон"]');
+    var maskTel = function (raw) {
+      var d = String(raw).replace(/\D/g, '');
+      if (d[0] === '8' || d[0] === '7') { d = d.slice(1); }
+      d = d.slice(0, 10);
+      if (!d) { return ''; }
+      var out = '+7 (' + d.slice(0, 3);
+      if (d.length >= 4) { out += ') ' + d.slice(3, 6); }
+      if (d.length >= 7) { out += '-' + d.slice(6, 8); }
+      if (d.length >= 9) { out += '-' + d.slice(8, 10); }
+      return out;
+    };
+    if (telField) {
+      var applyMask = function () {
+        var atEnd = telField.selectionStart === telField.value.length;
+        telField.value = maskTel(telField.value);
+        // курсор в конец, только если он там и был: иначе правка середины
+        // номера превращалась в прыжок каретки
+        if (atEnd) { telField.selectionStart = telField.selectionEnd = telField.value.length; }
+      };
+      telField.addEventListener('input', applyMask);
+      telField.addEventListener('paste', function () { setTimeout(applyMask, 0); });
+      telField.addEventListener('focus', function () {
+        if (!telField.value) { telField.value = '+7 ('; }
+      });
+      telField.addEventListener('blur', function () {
+        // «+7 (» без цифр — это не номер, а остаток подсказки
+        if (telField.value.replace(/\D/g, '').length <= 1) { telField.value = ''; }
+      });
+    }
+
     // Шаг пройден, если в нём отмечен хотя бы один вариант.
     // На последнем шаге просим имя и телефон.
     var stepFilled = function (step) {
@@ -350,7 +385,13 @@
         var name = step.querySelector('input[name="Имя"]');
         var tel = step.querySelector('input[name="Телефон"]');
         if (!name.value.trim()) { return 'Напишите, как к вам обращаться.'; }
-        if (tel.value.replace(/\D/g, '').length < 10) { return 'Оставьте телефон или WhatsApp, чтобы мы могли ответить.'; }
+        // 10 цифр после +7 — полный российский номер
+        if (tel.value.replace(/\D/g, '').replace(/^7/, '').length < 10) {
+          return 'Оставьте телефон полностью — 10 цифр после +7.';
+        }
+        if (!step.querySelector('input[name="Связь"]:checked')) {
+          return 'Выберите, как с вами связаться.';
+        }
         return '';
       }
       var checked = step.querySelector('input:checked');
@@ -483,7 +524,17 @@
       add('Сфера', data.get('Своя сфера') || data.get('Сфера'));
       add('Уже есть', data.getAll('Есть').join(', '));
       add('Задача', data.get('Задача'));
+      add('Связаться', data.get('Связь'));
       return lines.join('\n');
+    };
+
+    // Как назвать выбранный способ связи в благодарности:
+    // «свяжутся с вами по телефону», «... в Telegram».
+    var wayText = {
+      'Позвонить': 'по телефону',
+      'MAX': 'в MAX',
+      'Telegram': 'в Telegram',
+      'WhatsApp': 'в WhatsApp'
     };
 
     var utm = function (name) {
@@ -533,6 +584,10 @@
         // окном, сообщение показываем в окне.
         quiz.hidden = true;
         if (quizDone) {
+          var wayBox = quizDone.querySelector('.quiz-done-way');
+          if (wayBox) {
+            wayBox.textContent = wayText[data.get('Связь')] || 'в течение рабочего дня';
+          }
           if (quiz.parentNode) { quiz.parentNode.appendChild(quizDone); }
           quizDone.hidden = false;
         }

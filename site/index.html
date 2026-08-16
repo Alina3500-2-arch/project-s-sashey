@@ -63,7 +63,7 @@
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Manrope:wght@400;500;600&display=swap" />
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Manrope:wght@400;500;600&display=swap" /></noscript>
 
-<link rel="stylesheet" href="site.css?v=20260816-9" />
+<link rel="stylesheet" href="site.css?v=20260816-10" />
 <!-- Yandex.Metrika counter -->
 <script>
   /* Счётчик грузится после полной загрузки страницы: tag.js не должен
@@ -1153,7 +1153,45 @@
             <legend class="quiz-q">Куда прислать разбор?</legend>
             <div class="quiz-fields">
               <label class="ff"><span>Как вас зовут</span><input type="text" name="Имя" placeholder="Александр" /></label>
-              <label class="ff"><span>Телефон или WhatsApp</span><input type="tel" name="Телефон" placeholder="+7 900 000-00-00" /></label>
+              <!-- inputmode=tel — на телефоне открывается цифровая клавиатура.
+                   Маску «+7 (900) 000-00-00» ставит скрипт: буквы не вводятся,
+                   номер всегда российского формата, 11 цифр. -->
+              <label class="ff"><span>Телефон или WhatsApp</span><input type="tel" name="Телефон" inputmode="tel" autocomplete="tel" placeholder="+7 (900) 000-00-00" /></label>
+            </div>
+
+            <!-- Способ связи: человек сам выбирает, куда ему удобнее.
+                 Выбранный вариант уходит в заявку и подставляется в текст
+                 благодарности, чтобы человек знал, где нас ждать. -->
+            <p class="quiz-ways-h">Как с вами связаться?</p>
+            <div class="quiz-ways">
+              <label class="quiz-way">
+                <input type="radio" name="Связь" value="Позвонить" />
+                <span class="quiz-way-box">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.5 9 3.9l1 3.4-1.9 1.5a12 12 0 0 0 5.9 5.9l1.5-1.9 3.4 1 .4 2.4a1.8 1.8 0 0 1-1.9 2A16.5 16.5 0 0 1 4.6 5.4a1.8 1.8 0 0 1 2-1.9Z"/></svg>
+                  <b>Позвонить</b>
+                </span>
+              </label>
+              <label class="quiz-way">
+                <input type="radio" name="Связь" value="MAX" />
+                <span class="quiz-way-box">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 11.4a8.4 8.4 0 1 1 4.2 7.3L3.4 20l1.3-4.3a8.3 8.3 0 0 1-1.1-4.3Z"/><text x="12" y="15" text-anchor="middle" font-size="8" font-weight="700" fill="currentColor" stroke="none">M</text></svg>
+                  <b>MAX</b>
+                </span>
+              </label>
+              <label class="quiz-way">
+                <input type="radio" name="Связь" value="Telegram" />
+                <span class="quiz-way-box">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 4.2 2.9 11.1c-.9.3-.9 1.6.1 1.9l4.4 1.3 1.7 5c.3.9 1.4 1 2 .4l2.4-2.4 4.4 3.2c.7.5 1.6.1 1.8-.7l3-14c.2-.9-.7-1.7-1.6-1.4Zm-3 3.3-7.7 6.9-.4 3.2"/></svg>
+                  <b>Telegram</b>
+                </span>
+              </label>
+              <label class="quiz-way">
+                <input type="radio" name="Связь" value="WhatsApp" />
+                <span class="quiz-way-box">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 11.4a8.4 8.4 0 1 1 4.2 7.3L3.4 20l1.3-4.3a8.3 8.3 0 0 1-1.1-4.3Z"/><path d="M9.1 8.2c.3-.1.6 0 .8.4l.7 1.4c.1.3.1.5-.1.8l-.5.6a6 6 0 0 0 2.9 2.9l.6-.5c.3-.2.5-.2.8-.1l1.4.7c.4.2.5.5.4.8-.2.7-.9 1.2-1.7 1.2-3 0-6.1-3-6.1-6.1 0-.8.5-1.5 1.2-1.7Z"/></svg>
+                  <b>WhatsApp</b>
+                </span>
+              </label>
             </div>
           </fieldset>
 
@@ -1182,8 +1220,10 @@
              появляется это. Живёт рядом с формой, а не внутри неё, чтобы
              форму можно было переносить в окно и обратно. -->
         <div class="quiz-done" id="quiz-done" hidden>
-          <p class="quiz-done-h">Заявка у команды</p>
-          <p class="quiz-done-t">Спасибо! Ответим в течение рабочего дня — без спама и звонков с продажей.</p>
+          <p class="quiz-done-h">Александр и Алина получили вашу заявку</p>
+          <!-- «в Telegram», «в MAX», «по телефону» — скрипт подставляет сюда
+               способ связи, который выбрал человек. -->
+          <p class="quiz-done-t">Они обязательно свяжутся с вами <b class="quiz-done-way">в течение рабочего дня</b>. Ожидайте.</p>
         </div>
       </div>
 
@@ -1264,7 +1304,7 @@
 
 </div>
 
-<script src="site.js?v=20260816-9" defer></script>
+<script src="site.js?v=20260816-10" defer></script>
 <!-- Отправка заявки в CRM живёт в site.js, вместе с самим квизом: иначе
      на форме два обработчика submit и заявка уходит дважды. Файл
      crm/public-lead.js остаётся в папке CRM, но со страницы не подключён. -->
