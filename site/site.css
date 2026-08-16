@@ -3264,9 +3264,18 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
   background:linear-gradient(to top,rgba(6,7,5,.5),rgba(6,7,5,0) 45%);
   opacity:0;transition:opacity .22s var(--ease);pointer-events:none;
 }
-.vw-frame:hover .vw-ui,
-.vw-frame:focus-within .vw-ui,
+/* Наведение — только там, где есть настоящая мышь. На тачскринах
+   браузеры «залипают» на :hover после тапа, и кнопка так и висела
+   посреди лица. Там показываем её на пару секунд после тапа
+   (класс is-touched). :focus-within тоже убран: после клика фокус
+   оставался на кнопке и слой не гас. */
+@media (hover:hover) and (pointer:fine){
+  .vw-frame:hover .vw-ui{opacity:1;pointer-events:auto;}
+}
 .vw.is-touched .vw-ui{opacity:1;pointer-events:auto;}
+/* клавиатура: кнопка обязана быть видна, когда на ней фокус с Tab */
+.vw-toggle:focus-visible{opacity:1;}
+.vw-ui:has(.vw-toggle:focus-visible){opacity:1;pointer-events:auto;}
 .vw-toggle{
   width:46px;height:46px;padding:0;cursor:pointer;position:relative;
   border:1.5px solid rgba(168,220,40,.85);border-radius:50%;

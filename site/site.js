@@ -821,10 +821,15 @@
     var vwTouched = function () {
       vw.classList.add('is-touched');
       clearTimeout(vwTouchTimer);
-      vwTouchTimer = setTimeout(function () { vw.classList.remove('is-touched'); }, 3000);
+      vwTouchTimer = setTimeout(function () { vw.classList.remove('is-touched'); }, 2000);
     };
     vwFrame.addEventListener('pointerdown', function (e) {
       if (e.pointerType !== 'mouse') { vwTouched(); }
+    });
+    // палец ушёл с экрана — прячем кнопку, не дожидаясь таймера,
+    // если человек просто скроллит дальше
+    document.addEventListener('pointerdown', function (e) {
+      if (!vw.contains(e.target)) { vw.classList.remove('is-touched'); }
     });
 
     // клик по кадру = пауза/продолжить, то же делает кнопка
@@ -839,6 +844,8 @@
     vwFrame.addEventListener('click', function (e) {
       if (e.target.closest('.vw-sound')) { return; }
       vwSwitch();
+      // без blur кнопка остаётся в фокусе и слой не гаснет
+      if (document.activeElement === vwToggle) { vwToggle.blur(); }
     });
     var vwSyncBtn = function () {
       vwToggle.setAttribute('aria-pressed', vwVideo.paused ? 'true' : 'false');
