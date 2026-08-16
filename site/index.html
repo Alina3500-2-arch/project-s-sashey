@@ -10,7 +10,14 @@
   var w = (location.search.match(/[?&]w=(\d{3,4})/) || [])[1];
   document.write('<meta name="viewport" content="' +
     (w ? 'width=' + w : 'width=device-width, initial-scale=1') + '">');
-  if (w) document.write('<style>html{overflow:hidden;}</style>');
+  // Раньше здесь стояло html{overflow:hidden} — предпросмотр листал кадр
+  // трансформацией body. Из-за этого внутри кадра не срабатывали ни
+  // IntersectionObserver (блоки оставались скрытыми — пустая прокрутка
+  // на прайсе), ни ленивая загрузка картинок (не грузились отзывы).
+  // Теперь pc.html листает кадр НАСТОЯЩЕЙ прокруткой, поэтому прокрутка
+  // должна быть разрешена — прячем только саму полосу прокрутки.
+  if (w) document.write('<style>html{scrollbar-width:none;}' +
+    'html::-webkit-scrollbar{width:0;height:0;}</style>');
 })();
 </script>
 <script>document.documentElement.classList.add('is-loading');</script>

@@ -110,12 +110,22 @@
   // 1) во вложенном кадре браузер берёт ширину не из кадра, а из устройства —
   //    из-за этого внутри включалась мобильная вёрстка. Параметр ?w= говорит
   //    сайту разложиться как на мониторе такой ширины;
-  // 2) листать содержимое кадра телефон не даёт. Поэтому не листаем его,
-  //    а сдвигаем страницу внутри трансформацией — кадр при этом остаётся
-  //    ровно 900 px высотой, то есть настоящим монитором, и анимации
-  //    срабатывают там же, где на компьютере.
+  // 2) листать содержимое кадра пальцем телефон не даёт. Поэтому прокрутку
+  //    ведёт внешняя страница, а кадру мы задаём ту же позицию программно —
+  //    настоящей прокруткой (scrollTo), а не сдвигом body.
+  //
+  //    Сдвиг body трансформацией (как было раньше) телефон не считает
+  //    прокруткой: внутри кадра не срабатывали IntersectionObserver и
+  //    ленивая загрузка. Отсюда обе жалобы — «не грузятся отзывы» и
+  //    «на прайсе бесконечно прокручиваешь пустоту»: блоки .reveal так и
+  //    оставались невидимыми, занимая при этом высоту.
+  //    v= сбрасывает кэш телефона на старую версию index.html.
   function build() {
-    frame.src = page + '?w=' + W;
+    frame.src = page + '?w=' + W + '&v=pc2';
+    // Полное событие load ждёт все картинки и шрифты — «монитор» до тех пор
+    // висел бы в прежнем масштабе. Пересчитываем, как только появится тело.
+    setTimeout(layout, 300);
+    setTimeout(layout, 1200);
   }
   build();
 
@@ -133,7 +143,10 @@
     root.style.setProperty('--bandW', Math.round(W * k) + 'px');
     root.style.setProperty('--bandH', Math.round(H * k) + 'px');
 
-    innerH = Math.max(doc.body.scrollHeight, doc.body.offsetHeight);
+    innerH = Math.max(
+      doc.body.scrollHeight, doc.body.offsetHeight,
+      doc.documentElement.scrollHeight, doc.documentElement.offsetHeight
+    );
     frame.style.width = W + 'px';
     frame.style.height = H + 'px';
     frame.style.transform = 'scale(' + k + ')';
@@ -148,15 +161,67 @@
   }
 
   // Прокрутка внешней страницы двигает страницу внутри кадра.
-  function sync() {
-    var doc = frame.contentDocument;
-    if (!doc || !doc.body) return;
-    var y = Math.max(0, Math.min(window.scrollY / k, innerH - H));
-    doc.body.style.transform = 'translateY(' + (-Math.round(y)) + 'px)';
+  // Сначала пробуем настоящую прокрутку кадра: только она запускает
+  // IntersectionObserver и подгрузку картинок внутри. Если страница внутри
+  // прокрутку запрещает (старый index.html из кэша), откатываемся на сдвиг
+  // трансформацией — хуже, но лучше, чем неподвижный кадр.
+  var canScroll = null;   // умеет ли страница внутри кадра прокручиваться
+
+  // Внутри сайта включена плавная прокрутка (scroll-behavior:smooth) — она
+  // нужна ссылкам меню, но здесь превратила бы каждое движение пальца в
+  // догоняющую анимацию. В кадре предпросмотра прокрутка мгновенная.
+  function prepare() {
+    var doc = frame.contentDocument, win = frame.contentWindow;
+    if (!doc || !doc.documentElement) return;
+    doc.documentElement.style.scrollBehavior = 'auto';
+    win.scrollTo(0, 1);
+    canScroll = Math.round(win.pageYOffset || doc.documentElement.scrollTop || 0) === 1;
+    win.scrollTo(0, 0);
   }
 
+  var syncQueued = false;
+  function apply() {
+    syncQueued = false;
+    var win = frame.contentWindow, doc = frame.contentDocument;
+    if (!win || !doc || !doc.body || canScroll === null) return;
+    var y = Math.round(Math.max(0, Math.min(window.scrollY / k, innerH - H)));
+    if (canScroll) win.scrollTo(0, y);
+    else doc.body.style.transform = 'translateY(' + (-y) + 'px)';
+  }
+  // Во время инерционной прокрутки на телефоне событий scroll много —
+  // считаем позицию не чаще кадра отрисовки.
+  function sync() {
+    if (syncQueued) return;
+    syncQueued = true;
+    requestAnimationFrame(apply);
+  }
+
+  // Страховка на случай, если внутри кадра телефон всё же придержит
+  // IntersectionObserver и ленивую загрузку: когда прокрутка остановилась,
+  // сами показываем блоки в кадре и снимаем lazy с их картинок.
+  var settleTimer = null;
+  function settle() {
+    var doc = frame.contentDocument;
+    if (!doc) return;
+    var near = H * 0.6;
+    [].forEach.call(doc.querySelectorAll('.reveal:not(.seen)'), function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.top < H + near && r.bottom > -near) el.classList.add('seen');
+    });
+    [].forEach.call(doc.querySelectorAll('img[loading="lazy"]'), function (img) {
+      var r = img.getBoundingClientRect();
+      if (r.top < H + near && r.bottom > -near) img.setAttribute('loading', 'eager');
+    });
+  }
+  window.addEventListener('scroll', function () {
+    clearTimeout(settleTimer);
+    settleTimer = setTimeout(settle, 160);
+  }, { passive: true });
+
   frame.addEventListener('load', function () {
+    prepare();
     layout();
+    setTimeout(settle, 700);
     setTimeout(layout, 500);
     setTimeout(layout, 1600);
   });
