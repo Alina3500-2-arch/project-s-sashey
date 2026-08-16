@@ -3333,6 +3333,21 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
 .vw-sound::before{content:"Включить звук";}
 .vw-sound[aria-pressed="true"]::before{content:"Выключить звук";}
 .vw-sound:hover{border-color:var(--green);color:var(--green);}
+/* Кнопка «Оставить заявку» внутри виджета — та же фирменная пилюля,
+   что и по всему сайту, только уменьшенная под ширину кадра. Появляется
+   на нужной секунде ролика и уезжает вместе с виджетом. */
+.vw-cta{
+  position:absolute;left:50%;bottom:8px;translate:-50% 0;z-index:3;
+  width:calc(100% - 14px);padding:9px 8px;gap:0;
+  font-size:8.5px;letter-spacing:.1em;line-height:1.2;text-align:center;
+  text-decoration:none;white-space:nowrap;
+  opacity:0;transform:translateY(14px) scale(.94);pointer-events:none;
+  transition:opacity .45s var(--ease),transform .45s var(--ease);
+}
+.vw.is-cta .vw-cta{opacity:1;transform:none;pointer-events:auto;}
+/* пока висит кнопка, подпись со звуком уезжает наверх — иначе они
+   налезают друг на друга в узком кадре */
+.vw.is-cta .vw-sound{bottom:auto;top:8px;}
 .vw-hide{
   position:absolute;top:-8px;right:-8px;width:22px;height:22px;padding:0;
   border:1px solid var(--line);border-radius:50%;background:var(--card);

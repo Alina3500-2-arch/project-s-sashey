@@ -794,7 +794,29 @@
       var p = vwVideo.play();
       if (p && p.catch) { p.catch(function () {}); }
     };
+    // Пробуем запустить СО ЗВУКОМ. Браузеры разрешают это только если
+    // человек уже что-то нажимал на сайте (или часто смотрит здесь
+    // видео) — тогда звук будет сразу. Если запуск отклонён, молча
+    // возвращаемся к немому показу, иначе ролик не пойдёт вовсе.
+    var vwPlayLoud = function () {
+      vwVideo.playbackRate = 1.2;
+      vwVideo.muted = false;
+      var p = vwVideo.play();
+      if (p && p.catch) {
+        p.catch(function () {
+          vwVideo.muted = true;
+          vwSyncSound();
+          vwPlay();
+        });
+      }
+      vwSyncSound();
+    };
     var vwShown = false;
+    var vwUserMuted = false;   // человек сам выключил звук — не включаем обратно
+    var vwSyncSound = function () {
+      vwSound.setAttribute('aria-pressed', vwVideo.muted ? 'false' : 'true');
+      vwSound.setAttribute('aria-label', vwVideo.muted ? 'Включить звук' : 'Выключить звук');
+    };
     var vwShow = function () {
       // показываем один раз за жизнь страницы: перемотка в начало
       // заново вызывает canplaythrough, и виджет выскакивал обратно
@@ -806,7 +828,7 @@
       vwShown = true;
       vw.hidden = false;
       requestAnimationFrame(function () { vw.classList.add('is-ready'); });
-      vwPlay();
+      vwPlayLoud();
     };
     vwVideo.addEventListener('canplaythrough', vwShow);
     var vwStart = function () {
@@ -859,7 +881,7 @@
     // слушаем всю рамку: поверх кадра лежит слой с кнопкой, и клик
     // «по видео» на самом деле приходит в него
     vwFrame.addEventListener('click', function (e) {
-      if (e.target.closest('.vw-sound')) { return; }
+      if (e.target.closest('.vw-sound') || e.target.closest('.vw-cta')) { return; }
       vwSwitch();
       // без blur кнопка остаётся в фокусе
       if (document.activeElement === vwToggle) { vwToggle.blur(); }
@@ -875,13 +897,28 @@
 
     vwSound.addEventListener('click', function () {
       vwVideo.muted = !vwVideo.muted;
-      vwSound.setAttribute('aria-pressed', vwVideo.muted ? 'false' : 'true');
-      vwSound.setAttribute('aria-label', vwVideo.muted ? 'Включить звук' : 'Выключить звук');
+      vwUserMuted = vwVideo.muted;
+      vwSyncSound();
       if (vwVideo.paused) { vwPlay(); }
     });
 
+    // Если автозапуск со звуком не дали, включаем звук при первом же
+    // касании страницы: касание — это и есть то разрешение, которого
+    // браузеру не хватало. Один раз и только если человек не выключил
+    // звук сам.
+    var vwUnlock = function () {
+      if (vwUserMuted || !vwVideo.muted) { return; }
+      vwVideo.muted = false;
+      vwSyncSound();
+      if (!vwVideo.paused) { return; }
+      if (!vwUserPaused && !vw.hidden) { vwPlay(); }
+    };
+    document.addEventListener('pointerdown', vwUnlock, { once: true });
+    document.addEventListener('keydown', vwUnlock, { once: true });
+
     vw.querySelector('.vw-hide').addEventListener('click', function () {
       vwDismissed = true;
+      vwCtaOff();
       vwVideo.pause();
       vw.hidden = true;
     });
@@ -892,6 +929,19 @@
     // двойной клик в некоторых браузерах разворачивает видео на весь экран
     vwVideo.addEventListener('dblclick', function (e) { e.preventDefault(); });
 
+    // Кнопка «Оставить заявку» появляется на нужной секунде ролика —
+    // там, где о заявке говорят вслух, — и уезжает вместе с виджетом.
+    // Секунда лежит в data-cta-at у самой кнопки: поменять тайминг
+    // можно прямо в разметке, без правки скрипта.
+    var vwCta = vw.querySelector('.vw-cta');
+    if (vwCta) {
+      var vwCtaAt = parseFloat(vwCta.getAttribute('data-cta-at')) || 0;
+      vwVideo.addEventListener('timeupdate', function () {
+        vw.classList.toggle('is-cta', vwVideo.currentTime >= vwCtaAt);
+      });
+    }
+    var vwCtaOff = function () { vw.classList.remove('is-cta'); };
+
     // Ролик крутится не бесконечно: проиграл до конца — виджет уезжает
     // с экрана, ждёт паузу и возвращается с начала, если человек всё ещё
     // на сайте. Каждый следующий заход ждёт дольше предыдущего, чтобы
@@ -899,6 +949,7 @@
     var vwRound = 0;
     vwVideo.addEventListener('ended', function () {
       vwRound += 1;
+      vwCtaOff();
       vw.classList.remove('is-ready');   // плавно уезжает
       vwUiHide();
       setTimeout(function () {
@@ -914,6 +965,16 @@
         vwPlay();
       }, wait);
     });
+
+    // Пока открыт квиз, ролик молчит: человек заполняет форму, голос
+    // из угла ему только мешает. Закрыл окно — виджет продолжает.
+    var vwQuizModal = document.getElementById('quiz-modal');
+    if (vwQuizModal && 'MutationObserver' in window) {
+      new MutationObserver(function () {
+        if (!vwQuizModal.hidden) { vwVideo.pause(); }
+        else if (!vw.hidden && !vwUserPaused) { vwPlay(); }
+      }).observe(vwQuizModal, { attributes: true, attributeFilter: ['hidden'] });
+    }
 
     // за экраном видео не крутим — не тратим батарею и трафик
     document.addEventListener('visibilitychange', function () {
