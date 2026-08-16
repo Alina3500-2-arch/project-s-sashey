@@ -363,6 +363,31 @@
       return '';
     };
 
+    // Все кнопки сайта ведут в квиз (href="#quiz"). При переходе квиз
+    // начинается с первого шага — иначе человек, пришедший второй раз,
+    // попадал бы на середину чужого прохода. Заодно запоминаем, какая
+    // кнопка привела: это уходит в заявку полем «Откуда».
+    var fromField = quiz.querySelector('input[name="Откуда"]');
+    var markSource = function (btn) {
+      if (!fromField || !btn) { return; }
+      var card = btn.closest('.level-card');
+      // innerText, а не textContent: внутри кнопок есть <br>, и без учёта
+      // переносов слова слипались — «Запуститьсистему».
+      var label = (btn.innerText || btn.textContent || '').replace(/\s+/g, ' ').trim();
+      if (card) {
+        var lv = card.querySelector('.level-kicker,h3');
+        label = (lv ? (lv.innerText || lv.textContent).replace(/\s+/g, ' ').trim() + ' · ' : '') + label;
+      }
+      fromField.value = label || 'Кнопка на сайте';
+    };
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('a[href="#quiz"]');
+      if (!btn) { return; }
+      markSource(btn);
+      at = 0;
+      render();
+    });
+
     var render = function () {
       steps.forEach(function (s, i) { s.classList.toggle('is-on', i === at); });
       counter.textContent = at + 1;
