@@ -10,14 +10,21 @@
   var w = (location.search.match(/[?&]w=(\d{3,4})/) || [])[1];
   document.write('<meta name="viewport" content="' +
     (w ? 'width=' + w : 'width=device-width, initial-scale=1') + '">');
-  // Раньше здесь стояло html{overflow:hidden} — предпросмотр листал кадр
-  // трансформацией body. Из-за этого внутри кадра не срабатывали ни
-  // IntersectionObserver (блоки оставались скрытыми — пустая прокрутка
-  // на прайсе), ни ленивая загрузка картинок (не грузились отзывы).
-  // Теперь pc.html листает кадр НАСТОЯЩЕЙ прокруткой, поэтому прокрутка
-  // должна быть разрешена — прячем только саму полосу прокрутки.
-  if (w) document.write('<style>html{scrollbar-width:none;}' +
-    'html::-webkit-scrollbar{width:0;height:0;}</style>');
+  // Предпросмотр ПК с телефона (pc.html) листает эту страницу за нас.
+  // Сам документ прокручиваться не должен: Safari на iPhone растягивает
+  // прокручиваемый iframe по высоте содержимого, и «монитор» перестаёт
+  // двигаться совсем. Поэтому корень остаётся overflow:hidden, а роль
+  // прокрутки берёт на себя body — это НАСТОЯЩАЯ прокрутка, поэтому
+  // внутри работают и IntersectionObserver (блоки .reveal показываются),
+  // и ленивая загрузка картинок. Сдвиг трансформацией, который стоял
+  // здесь раньше, ни того ни другого не запускал: не грузились отзывы,
+  // а прайс оставался невидимым — получалась прокрутка пустоты.
+  if (w) document.write('<style>' +
+    'html{overflow:hidden;height:100%;}' +
+    'body{height:100vh;overflow-y:auto;overflow-x:hidden;' +
+    '-webkit-overflow-scrolling:touch;scrollbar-width:none;}' +
+    'body::-webkit-scrollbar{width:0;height:0;}' +
+    '</style>');
 })();
 </script>
 <script>document.documentElement.classList.add('is-loading');</script>
@@ -56,7 +63,7 @@
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Manrope:wght@400;500;600&display=swap" />
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Manrope:wght@400;500;600&display=swap" /></noscript>
 
-<link rel="stylesheet" href="site.css?v=20260815-15" />
+<link rel="stylesheet" href="site.css?v=20260816-1" />
 <!-- Yandex.Metrika counter -->
 <script>
   /* Счётчик грузится после полной загрузки страницы: tag.js не должен
@@ -1239,7 +1246,7 @@
 
 </div>
 
-<script src="site.js?v=20260815-15" defer></script>
+<script src="site.js?v=20260816-1" defer></script>
 <script type="module" src="crm/public-lead.js"></script>
 
 

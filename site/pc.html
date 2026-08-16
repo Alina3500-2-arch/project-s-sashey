@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
 <title>ПК-версия — предпросмотр с телефона</title>
 <link rel="icon" href="assets/favicon.svg" />
 <style>
@@ -121,7 +122,11 @@
   //    оставались невидимыми, занимая при этом высоту.
   //    v= сбрасывает кэш телефона на старую версию index.html.
   function build() {
-    frame.src = page + '?w=' + W + '&v=pc2';
+    // v= сбрасывает кэш телефона на прежнюю версию страницы. Если открыли
+    // pc.html со своим ?r=..., он тоже уходит внутрь — чтобы одной ссылкой
+    // можно было пробить кэш и у обёртки, и у самого сайта.
+    var r = (location.search.match(/[?&]r=([^&]+)/) || [])[1];
+    frame.src = page + '?w=' + W + '&v=pc3' + (r ? '&r=' + r : '');
     // Полное событие load ждёт все картинки и шрифты — «монитор» до тех пор
     // висел бы в прежнем масштабе. Пересчитываем, как только появится тело.
     setTimeout(layout, 300);
@@ -165,27 +170,38 @@
   // IntersectionObserver и подгрузку картинок внутри. Если страница внутри
   // прокрутку запрещает (старый index.html из кэша), откатываемся на сдвиг
   // трансформацией — хуже, но лучше, чем неподвижный кадр.
-  var canScroll = null;   // умеет ли страница внутри кадра прокручиваться
+  // Чем двигаем страницу внутри кадра: 'body' — прокрутка body (основной
+  // путь), 'win' — прокрутка самого документа, 'transform' — аварийный
+  // сдвиг (если телефон отдал страницу из кэша, без стилей предпросмотра).
+  var mode = null;
 
   // Внутри сайта включена плавная прокрутка (scroll-behavior:smooth) — она
   // нужна ссылкам меню, но здесь превратила бы каждое движение пальца в
   // догоняющую анимацию. В кадре предпросмотра прокрутка мгновенная.
   function prepare() {
     var doc = frame.contentDocument, win = frame.contentWindow;
-    if (!doc || !doc.documentElement) return;
+    if (!doc || !doc.body) return;
     doc.documentElement.style.scrollBehavior = 'auto';
+    doc.body.style.scrollBehavior = 'auto';
+
+    doc.body.scrollTop = 1;
+    if (Math.round(doc.body.scrollTop) === 1) { mode = 'body'; doc.body.scrollTop = 0; return; }
+
     win.scrollTo(0, 1);
-    canScroll = Math.round(win.pageYOffset || doc.documentElement.scrollTop || 0) === 1;
-    win.scrollTo(0, 0);
+    if (Math.round(win.pageYOffset || doc.documentElement.scrollTop || 0) === 1) {
+      mode = 'win'; win.scrollTo(0, 0); return;
+    }
+    mode = 'transform';
   }
 
   var syncQueued = false;
   function apply() {
     syncQueued = false;
     var win = frame.contentWindow, doc = frame.contentDocument;
-    if (!win || !doc || !doc.body || canScroll === null) return;
+    if (!win || !doc || !doc.body || !mode) return;
     var y = Math.round(Math.max(0, Math.min(window.scrollY / k, innerH - H)));
-    if (canScroll) win.scrollTo(0, y);
+    if (mode === 'body') doc.body.scrollTop = y;
+    else if (mode === 'win') win.scrollTo(0, y);
     else doc.body.style.transform = 'translateY(' + (-y) + 'px)';
   }
   // Во время инерционной прокрутки на телефоне событий scroll много —
