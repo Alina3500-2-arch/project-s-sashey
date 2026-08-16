@@ -1,0 +1,76 @@
+name: Fetch fonts
+
+# Скачивает шрифты с Google и кладёт их в репозиторий, чтобы сайт брал их
+# со своего хостинга. Из окружения Claude Google недоступен, у раннера
+# GitHub — доступен. Запускается вручную, работает один раз при смене
+# состава шрифтов.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Скачать woff2 и собрать fonts.css
+        run: |
+          python3 - <<'PY'
+          import re, urllib.request, pathlib
+
+          CSS = ("https://fonts.googleapis.com/css2?"
+                 "family=Cormorant+Garamond:wght@300;400"
+                 "&family=Manrope:wght@400;500;600&display=swap")
+          # UA современного Chrome — иначе Google отдаёт устаревший формат ttf
+          UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                "(KHTML, like Gecko) Chrome/124.0 Safari/537.36")
+
+          def get(url, binary=False):
+              r = urllib.request.Request(url, headers={"User-Agent": UA})
+              with urllib.request.urlopen(r, timeout=60) as f:
+                  return f.read() if binary else f.read().decode()
+
+          css = get(CSS)
+          out_dir = pathlib.Path("site/assets/fonts"); out_dir.mkdir(parents=True, exist_ok=True)
+
+          # Блоки идут с комментарием подмножества: /* cyrillic */, /* latin */ и т.д.
+          # Берём только кириллицу и латиницу: греческий и вьетнамский на сайте не нужны.
+          KEEP = {"cyrillic", "cyrillic-ext", "latin", "latin-ext"}
+          blocks = re.findall(r"/\*\s*([\w-]+)\s*\*/\s*(@font-face\s*\{[^}]+\})", css)
+          kept, files = [], 0
+          for subset, block in blocks:
+              if subset not in KEEP:
+                  continue
+              m = re.search(r"url\((https://[^)]+\.woff2)\)", block)
+              if not m:
+                  continue
+              url = m.group(1)
+              fam = re.search(r"font-family:\s*'([^']+)'", block).group(1).replace(" ", "-").lower()
+              wght = re.search(r"font-weight:\s*(\d+)", block).group(1)
+              name = f"{fam}-{wght}-{subset}.woff2"
+              (out_dir / name).write_bytes(get(url, binary=True)); files += 1
+              kept.append(f"/* {subset} */\n" + block.replace(url, f"assets/fonts/{name}"))
+
+          header = ("/* Шрифты лежат на своём хостинге, а не на fonts.googleapis.com:\n"
+                    "   в России этот адрес часто недоступен — страница ждала ответа и\n"
+                    "   в итоге рисовалась запасным шрифтом. Файл собран автоматически,\n"
+                    "   workflow .github/workflows/fonts.yml. Правки сюда вносить не нужно. */\n")
+          pathlib.Path("site/fonts.css").write_text(header + "\n\n".join(kept) + "\n", encoding="utf-8")
+          print(f"скачано файлов: {files}")
+          for p in sorted(out_dir.iterdir()):
+              print(f"  {p.stat().st_size//1024:>4} КБ  {p.name}")
+          PY
+
+      - name: Закоммитить
+        run: |
+          git config user.name "Claude"; git config user.email "noreply@anthropic.com"
+          git add site/assets/fonts site/fonts.css
+          git commit -m "chore(fonts): скачать шрифты с Google в репозиторий
+
+          Собрано автоматически через .github/workflows/fonts.yml: kириллица и
+          латиница, формат woff2. Дальше сайт подключает их со своего хостинга." || echo "нечего коммитить"
+          git push
