@@ -63,7 +63,7 @@
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Manrope:wght@400;500;600&display=swap" />
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Manrope:wght@400;500;600&display=swap" /></noscript>
 
-<link rel="stylesheet" href="site.css?v=20260816-5" />
+<link rel="stylesheet" href="site.css?v=20260816-6" />
 <!-- Yandex.Metrika counter -->
 <script>
   /* Счётчик грузится после полной загрузки страницы: tag.js не должен
@@ -774,7 +774,10 @@
             <span class="trust-stats-label">Автоюрист · Москва</span>
             <div class="trust-stat-row">
               <div class="trust-stat"><b>3–6</b><span>клиентов в день</span></div>
-              <div class="trust-stat"><b>2 200 ₽</b><span>квалифицированный лид</span></div>
+              <div class="trust-stat"><b>2 200 ₽</b><!-- &shy; — точка переноса по слогу: слово шире колонки плашки (151 px
+                   против 148 px на 1920), и без неё браузер рвал его посреди букв,
+                   «квалифицированны/й». Виден дефис только в момент переноса. -->
+              <span>квалифициро&shy;ванный лид</span></div>
               <div class="trust-stat"><b>33%</b><span>контактов доходят до оплаты</span></div>
             </div>
           </div>
@@ -1246,7 +1249,7 @@
 
 </div>
 
-<script src="site.js?v=20260816-5" defer></script>
+<script src="site.js?v=20260816-6" defer></script>
 <script type="module" src="crm/public-lead.js"></script>
 
 
