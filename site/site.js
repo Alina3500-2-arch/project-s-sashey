@@ -790,6 +790,7 @@
     var vwDismissed = false;
 
     var vwPlay = function () {
+      vwVideo.playbackRate = 1.2;   // после паузы браузер сбрасывает скорость
       var p = vwVideo.play();
       if (p && p.catch) { p.catch(function () {}); }
     };
@@ -805,6 +806,7 @@
     vwVideo.addEventListener('canplaythrough', vwShow);
     var vwStart = function () {
       vwVideo.src = vwSrc;
+      vwVideo.playbackRate = 1.2;   // «плюс 0,2» к обычной скорости
       vwVideo.load();
       // подстраховка: canplaythrough приходит не во всех браузерах
       setTimeout(vwShow, 2500);

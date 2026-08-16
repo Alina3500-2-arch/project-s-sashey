@@ -3268,30 +3268,60 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
 .vw-frame:focus-within .vw-ui,
 .vw.is-touched .vw-ui{opacity:1;pointer-events:auto;}
 .vw-toggle{
-  width:38px;height:38px;padding:0;border:0;border-radius:50%;cursor:pointer;
-  background:var(--green);color:var(--graphite);
-  box-shadow:0 0 0 6px rgba(168,220,40,.18), 0 0 22px rgba(168,220,40,.55);
+  width:46px;height:46px;padding:0;cursor:pointer;position:relative;
+  border:1.5px solid rgba(168,220,40,.85);border-radius:50%;
+  /* стекло: сквозь кнопку виден кадр, поверх — зелёное свечение */
+  background:radial-gradient(circle at 50% 38%,rgba(168,220,40,.28),rgba(6,7,5,.42) 70%);
+  -webkit-backdrop-filter:blur(7px) saturate(1.15);backdrop-filter:blur(7px) saturate(1.15);
+  box-shadow:
+    0 0 0 5px rgba(168,220,40,.10),
+    0 0 26px rgba(168,220,40,.45),
+    inset 0 1px 0 rgba(255,255,255,.35);
   display:grid;place-items:center;
-  transition:transform .18s var(--ease),box-shadow .22s var(--ease);
+  transition:transform .2s var(--ease),box-shadow .25s var(--ease),border-color .25s var(--ease);
 }
-.vw-toggle:hover{transform:scale(1.08);box-shadow:0 0 0 8px rgba(168,220,40,.24), 0 0 30px rgba(168,220,40,.75);}
-/* пауза — две полосы; на паузе кнопка превращается в треугольник «плей» */
+.vw-toggle:hover{
+  transform:scale(1.07);border-color:var(--green);
+  box-shadow:
+    0 0 0 7px rgba(168,220,40,.16),
+    0 0 38px rgba(168,220,40,.75),
+    inset 0 1px 0 rgba(255,255,255,.45);
+}
+.vw-toggle:active{transform:scale(.96);}
+/* мягкий пульс вокруг кнопки — «живая», а не наклейка */
+.vw-toggle::after{
+  content:"";position:absolute;inset:-1.5px;border-radius:50%;
+  border:1.5px solid rgba(168,220,40,.55);
+  animation:vw-pulse 2.6s var(--ease) infinite;
+}
+@keyframes vw-pulse{
+  0%{transform:scale(1);opacity:.55;}
+  70%{transform:scale(1.45);opacity:0;}
+  100%{transform:scale(1.45);opacity:0;}
+}
+/* сам знак: две скруглённые полосы, на паузе — треугольник */
 .vw-toggle::before{
-  content:"";width:12px;height:14px;
-  border-left:4px solid currentColor;border-right:4px solid currentColor;
+  content:"";width:14px;height:16px;background:var(--green);
+  filter:drop-shadow(0 0 6px rgba(168,220,40,.9));
+  clip-path:polygon(0 0,32% 0,32% 100%,0 100%,0 0,68% 0,100% 0,100% 100%,68% 100%,68% 0);
+  border-radius:1px;
+  transition:clip-path .2s var(--ease);
 }
 .vw-toggle[aria-pressed="true"]::before{
-  width:0;height:0;border:7px solid transparent;
-  border-left:12px solid currentColor;margin-left:5px;
+  width:15px;height:17px;margin-left:3px;
+  clip-path:polygon(0 0,100% 50%,0 100%);
 }
+/* подпись со звуком видна всегда — по ней сразу понятно, что ролик немой */
 .vw-sound{
-  position:absolute;left:50%;bottom:8px;translate:-50% 0;
-  padding:4px 9px;border:1px solid rgba(241,233,220,.28);border-radius:999px;
-  background:rgba(6,7,5,.6);color:var(--cream);cursor:pointer;
+  position:absolute;left:50%;bottom:7px;translate:-50% 0;
+  padding:5px 10px;border:1px solid rgba(241,233,220,.3);border-radius:999px;
+  background:rgba(6,7,5,.62);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+  color:var(--cream);cursor:pointer;z-index:2;
   font:600 8px/1.2 var(--sans);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;
+  transition:color .2s var(--ease),border-color .2s var(--ease);
 }
-.vw-sound::before{content:"Звук выкл";}
-.vw-sound[aria-pressed="true"]::before{content:"Звук вкл";}
+.vw-sound::before{content:"Включить звук";}
+.vw-sound[aria-pressed="true"]::before{content:"Выключить звук";}
 .vw-sound:hover{border-color:var(--green);color:var(--green);}
 .vw-hide{
   position:absolute;top:-8px;right:-8px;width:22px;height:22px;padding:0;
