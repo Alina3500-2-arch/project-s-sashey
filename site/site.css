@@ -2731,6 +2731,8 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
    на всю страницу. Фотографию Александра при этом не растягиваем. */
 .faq{
   position:relative;
+  /* высота верхней растушёвки стыка (см. .faq::before ниже) */
+  --faq-fade:clamp(56px,5vw,96px);
   /* Полоса примыкает к соседним блокам встык: родитель .page — флекс
      с gap:var(--gap), зазор съедается отрицательным margin (обнулить
      сам gap нельзя, он держит расстояния между остальными блоками). */
@@ -2739,9 +2741,9 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
   display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1fr);
   gap:clamp(22px,2.4vw,44px);align-items:start;color:var(--cream);
 }
-/* Снимок Александра — фон полосы во всю ширину экрана, без затемнений
-   и без градиентов: кадр как есть. background-size:100% auto (не
-   cover) — файл 1920×964 показывается по своей пропорции, а не
+/* Снимок Александра — фон полосы во всю ширину экрана. Сам кадр НЕ
+   трогаем: ни масок, ни пелены поверх него. background-size:100% auto
+   (не cover) — файл 1920×964 показывается по своей пропорции, а не
    растягивается под высоту блока, поэтому не мылится. Высота полосы
    задана той же пропорцией: 964/1920 = 50.21%. */
 .faq-bg{
@@ -2749,6 +2751,31 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
   left:calc(50% - 50vw);width:100vw;
   top:0;height:50.21vw;
   background:url("assets/faq-sasha-2026-wide.jpg.jpg") 50% 0/100% auto no-repeat;
+}
+/* СТЫКИ. Снимок не затемняется — вместо этого подгоняется цвет фона
+   страницы вокруг него, поэтому границы просто не видно.
+   Замеры по самому файлу: верхняя строка кадра — rgb(10,10,11),
+   нижняя — rgb(0,1,2). Фон страницы — rgb(23,22,20), блок «Финал»
+   ниже — rgb(11,11,9).
+
+   Сверху: полоса над блоком уводит фон страницы в цвет ВЕРХНЕЙ строки
+   кадра, так что в точке стыка оба цвета совпадают. Полоса лежит на
+   пустом низу предыдущего блока и ничего не перекрывает. */
+.faq::before{
+  content:"";position:absolute;z-index:0;pointer-events:none;
+  left:calc(50% - 50vw);width:100vw;
+  top:calc(-1 * var(--faq-fade));height:var(--faq-fade);
+  background:linear-gradient(to bottom,rgba(10,10,11,0) 0,rgba(10,10,11,.6) 62%,rgb(10,10,11) 100%);
+}
+/* Снизу: под кадром оставалась светлая полоса фона страницы перед
+   «Финалом» — тот самый зазор. Закрываем её переходом от цвета НИЖНЕЙ
+   строки кадра к цвету следующего блока: ни границы кадра, ни границы
+   блока не видно. */
+.faq::after{
+  content:"";position:absolute;z-index:0;pointer-events:none;
+  left:calc(50% - 50vw);width:100vw;
+  top:50.21vw;bottom:0;
+  background:linear-gradient(to bottom,rgb(0,1,2) 0,rgb(6,6,6) 55%,rgb(11,11,9) 100%);
 }
 /* финал идёт сразу за полосой со снимком, без воздуха между ними */
 .faq + .closer{margin-top:0;}
@@ -3121,12 +3148,23 @@ h2.levels-title{position:relative;z-index:1;max-width:1180px;margin:0 auto clamp
     margin-block:calc(-1 * var(--gap));padding-top:clamp(210px,62vw,340px);}
   .faq-head{position:static;padding-top:0;}
   /* Тот же снимок, что и на ПК, но кадр узкий: показываем не всю
-     ширину 1920×964, а её середину с фигурой. Без затемнений и масок —
-     кадр как есть, пропорции держит background-size с одним значением. */
+     ширину 1920×964, а её середину с фигурой. Пропорции держит
+     background-size с одним значением. */
   .faq-bg{
     left:calc(50% - 50vw);top:0;width:100vw;height:clamp(230px,68vw,380px);
     background-image:url("assets/faq-sasha-2026-wide.jpg.jpg");
     background-size:250% auto;background-position:34% 0;
+    /* Низ кадра здесь приходится на середину снимка (пиджак, блики) —
+       одним цветом такой край не состыковать, поэтому последняя шестая
+       часть полосы растворяется в фоне страницы. Лица это не касается:
+       растворяется только низ, ниже пояса. */
+    -webkit-mask-image:linear-gradient(to bottom,#000 0,#000 84%,transparent 100%);
+            mask-image:linear-gradient(to bottom,#000 0,#000 84%,transparent 100%);
+  }
+  /* верх стыкуем так же, как на ПК, а низ уводим в цвет «Финала» */
+  .faq::after{
+    top:clamp(230px,68vw,380px);
+    background:linear-gradient(to bottom,rgba(23,22,20,0) 0,rgba(17,16,14,.85) 55%,rgb(11,11,9) 100%);
   }
   .faq-head .sec-title{font-size:clamp(26px,7.6vw,38px);}
   /* список вопросов — одной колонкой с собственной прокруткой, чтобы весь
