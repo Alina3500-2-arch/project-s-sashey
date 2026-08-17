@@ -812,7 +812,6 @@
       vwSyncSound();
     };
     var vwShown = false;
-    var vwUserMuted = false;   // человек сам выключил звук — не включаем обратно
     var vwSyncSound = function () {
       vwSound.setAttribute('aria-pressed', vwVideo.muted ? 'false' : 'true');
       vwSound.setAttribute('aria-label', vwVideo.muted ? 'Включить звук' : 'Выключить звук');
@@ -897,24 +896,15 @@
 
     vwSound.addEventListener('click', function () {
       vwVideo.muted = !vwVideo.muted;
-      vwUserMuted = vwVideo.muted;
       vwSyncSound();
       if (vwVideo.paused) { vwPlay(); }
     });
 
-    // Если автозапуск со звуком не дали, включаем звук при первом же
-    // касании страницы: касание — это и есть то разрешение, которого
-    // браузеру не хватало. Один раз и только если человек не выключил
-    // звук сам.
-    var vwUnlock = function () {
-      if (vwUserMuted || !vwVideo.muted) { return; }
-      vwVideo.muted = false;
-      vwSyncSound();
-      if (!vwVideo.paused) { return; }
-      if (!vwUserPaused && !vw.hidden) { vwPlay(); }
-    };
-    document.addEventListener('pointerdown', vwUnlock, { once: true });
-    document.addEventListener('keydown', vwUnlock, { once: true });
+    // Звук НЕ включается сам ни от чего, кроме кнопки выше. Раньше он
+    // включался при первом касании страницы (браузеру этого касания как
+    // раз хватает как разрешения) — но человек тыкал куда-то по своим
+    // делам и внезапно получал голос из угла. Оставлен один способ:
+    // нажать «Включить звук» на самом виджете.
 
     vw.querySelector('.vw-hide').addEventListener('click', function () {
       vwDismissed = true;
