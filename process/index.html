@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Методичка: конвейер проекта — Аполлонов и Шигапова</title>
+<style>
+:root{--i:#171912;--p:#f4f1e8;--c:#fffdf7;--l:#b9ff37;--m:#686b61;--b:#d9d6cb;--a:#577719}
+*{box-sizing:border-box}body{margin:0;background:var(--p);color:var(--i);font-family:Arial,sans-serif}
+.top{height:68px;padding:0 max(18px,calc((100% - 1040px)/2));display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b);position:sticky;top:0;background:#f4f1e8ee;backdrop-filter:blur(10px);z-index:5}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}.mark{width:38px;height:38px;border-radius:50%;background:var(--i);color:var(--l);display:grid;place-items:center}
+.project{font-size:11px;letter-spacing:.15em;font-weight:800}
+.wrap{max-width:1040px;margin:auto;padding:0 20px}
+.hero{padding:68px 0 34px}.tag{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:900}
+h1{font-size:clamp(46px,8vw,84px);line-height:.9;letter-spacing:-.06em;margin:24px 0}h1 i{font-family:Georgia,serif;color:var(--a);font-weight:400}
+.lead{max-width:700px;color:var(--m);font-size:17px;line-height:1.6}
+.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:34px 0 10px}
+.rule{background:var(--c);border:1px solid var(--b);border-radius:18px;padding:18px}
+.rule b{display:block;font-size:13px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.rule p{margin:0;color:var(--m);font-size:14px;line-height:1.5}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.who{background:var(--i);color:#fff;border-radius:20px;padding:22px}
+.who h3{margin:0 0 12px;font-size:19px}.who ul{margin:0;padding-left:18px;color:#c6c8bf;line-height:1.7;font-size:14px}
+.part{border-top:3px solid var(--i);margin-top:46px;padding-top:14px;display:flex;align-items:baseline;gap:12px}
+.part b{font-size:11px;letter-spacing:.16em;text-transform:uppercase}.part span{color:var(--m);font-size:13px}
+.step{display:grid;grid-template-columns:62px 1fr;padding:30px 0;border-top:1px solid var(--b);break-inside:avoid}
+.n{font:italic 19px Georgia;color:#797c72}
+.step h2{font-size:22px;line-height:1.3;margin:0}
+.owner{display:inline-block;margin-top:10px;font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;background:var(--l);border-radius:20px;padding:5px 12px}
+.owner.s{background:var(--i);color:var(--l)}.owner.two{background:#e3e0d5}
+.step p{color:#3a3d36;font-size:15px;line-height:1.6;margin:12px 0 0}
+.step ul{margin:10px 0 0;padding-left:19px;color:#3a3d36;font-size:15px;line-height:1.65}
+.out{margin-top:14px;background:var(--c);border:1px solid var(--b);border-left:4px solid var(--a);border-radius:0 12px 12px 0;padding:12px 15px;font-size:14px}
+.out b{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--a);display:block;margin-bottom:4px}
+.now{background:var(--i);color:#fff;border-radius:24px;padding:34px;margin:50px 0 20px}
+.now h2{font-size:29px;margin:0 0 6px}.now>p{color:#c6c8bf;margin:0 0 22px}
+.now .split{gap:22px}.now .col h4{margin:0 0 10px;font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--l)}
+.now .col ol{margin:0;padding-left:18px;line-height:1.7;font-size:15px;color:#eceee6}
+.print{display:block;margin:26px auto 60px;border:0;border-radius:12px;padding:15px 24px;font-weight:800;font-size:15px;background:var(--l);cursor:pointer}
+footer{text-align:center;color:var(--m);font-size:12px;padding:0 15px 35px}
+@media(max-width:780px){.rules{grid-template-columns:1fr}.split{grid-template-columns:1fr}.hero{padding:46px 0 26px}h1{font-size:46px}.step{grid-template-columns:1fr;padding:26px 0}.n{margin-bottom:8px}.step h2{font-size:19px}.now{padding:26px 20px}.brand span:last-child{display:none}}
+@media print{@page{size:A4;margin:14mm}body{background:#fff}.top,.print{display:none}.hero{padding:0 0 18px}h1{font-size:34px}.wrap{padding:0}.lead{font-size:12px}.rule p,.step p,.step ul,.who ul{font-size:11px}.step h2{font-size:14px}.n{font-size:12px}.who,.now{-webkit-print-color-adjust:exact;print-color-adjust:exact}.now .col ol{font-size:11px}}
+</style></head><body>
+<header class="top"><div class="brand"><span class="mark">АШ</span><span>Аполлонов и Шигапова</span></div><span class="project">МЕТОДИЧКА · ВЕРСИЯ 1</span></header>
+
+<div class="wrap">
+<section class="hero">
+<div class="tag">Внутренний регламент · 12 шагов</div>
+<h1>Конвейер<br><i>проекта</i></h1>
+<p class="lead">Одна структура на все проекты: от заявки до кейса. У каждого шага один хозяин и один документ на выходе. Пока предыдущий не отдал документ — следующий не начинает.</p>
+
+<div class="rules">
+<div class="rule"><b>Один хозяин</b><p>«Я думала, ты сделаешь» означает, что шаг не записан в эту таблицу. Записываем — и вопрос закрыт.</p></div>
+<div class="rule"><b>Документ, а не разговор</b><p>Итог шага — файл или страница, которую можно открыть через месяц. Устные договорённости не считаются.</p></div>
+<div class="rule"><b>50 на 50</b><p>Деньги делятся пополам, работа тоже. Чего нет в опыте — осваиваем, а не перекладываем на второго.</p></div>
+</div>
+
+<div class="split">
+<div class="who"><h3>Алина</h3><ul><li>продажа, деньги, договор</li><li>анкета клиенту, связь с клиентом</li><li>оффер и тексты сайта</li><li>дизайн и вёрстка</li><li>сдача сайта, отчёт, кейс</li></ul></div>
+<div class="who"><h3>Саша</h3><ul><li>анализ конкурентов и семантика</li><li>бриф на рекламу и тексты</li><li>Метрика, цели, UTM</li><li>кампании и запуск</li><li>приём заявок, CRM, 14 дней цифр</li></ul></div>
+</div>
+</section>
+
+<div class="part"><b>Часть 1</b><span>Вход: заявка и фактура</span></div>
+
+<div class="step"><div class="n">01</div><div><h2>Заявка принята</h2><span class="owner">Алина</span>
+<p>Заявка падает в CRM. Фиксируем: контакт, услуга, откуда пришёл, что именно спрашивает. Отвечаем в течение рабочего часа.</p>
+<div class="out"><b>На выходе</b>Строка в CRM с услугой и контактом</div></div></div>
+
+<div class="step"><div class="n">02</div><div><h2>Созвон и анкета клиенту</h2><span class="owner">Алина</span>
+<p>Короткий разговор — что за бизнес, что болит. Сразу после — отправляем анкету клиенту и список материалов с датой.</p>
+<ul><li>фото объектов и работ</li><li>прайс, сроки, гарантии</li><li>лицензии и допуски</li><li>реквизиты, логотип</li><li>доступ к домену, куда падают заявки</li></ul>
+<div class="out"><b>На выходе</b>Заполненная анкета клиента + материалы → передаём Саше</div></div></div>
+
+<div class="step"><div class="n">03</div><div><h2>Анализ конкурентов и семантика</h2><span class="owner s">Саша</span>
+<p>Главный шаг всего конвейера. Саша заполняет бриф на странице <b>/brief/</b>: спрос и география, топ-20 запросов с частотностью, минус-слова, цена клика и минимальный бюджет, 3–5 конкурентов по одной схеме, вывод «за счёт чего мы выигрываем», и отдельный раздел для текстов Алине.</p>
+<p>Срок — 3 рабочих дня. Итог сохраняется в PDF одной кнопкой.</p>
+<div class="out"><b>На выходе</b>Заполненный бриф в PDF → Алине. После него вопросов по рекламе быть не должно</div></div></div>
+
+<div class="part"><b>Часть 2</b><span>Сайт</span></div>
+
+<div class="step"><div class="n">04</div><div><h2>Оффер и тексты</h2><span class="owner">Алина</span>
+<p>Из брифа и анкеты собираем оффер: кому, что, за счёт чего лучше соседа. Раскладываем по блокам, до восьми. Первый экран пишем и утверждаем отдельно и первым — пока он не принят, остальное не пишем.</p>
+<div class="out"><b>На выходе</b>Тексты по блокам + отдельно утверждённый первый экран</div></div></div>
+
+<div class="step"><div class="n">05</div><div><h2>Сверка текста с объявлениями</h2><span class="owner s">Саша</span>
+<p>Саша смотрит одно: совпадает ли первый экран с тем, что пойдёт в объявления. Не совпадает — платим за отказы. Ответ короткий: «ок» или конкретные правки.</p>
+<div class="out"><b>На выходе</b>Согласование или список правок → Алине</div></div></div>
+
+<div class="step"><div class="n">06</div><div><h2>Дизайн и вёрстка</h2><span class="owner">Алина</span>
+<p>Собираем страницу целиком, не кусками. Перед показом клиенту проверяем: мобильная версия, нет горизонтальной прокрутки, форма реально доходит, скорость, опечатки, политика обработки данных.</p>
+<div class="out"><b>На выходе</b>Сайт на превью-ссылке</div></div></div>
+
+<div class="step"><div class="n">07</div><div><h2>Согласование с клиентом</h2><span class="owner">Алина</span>
+<p>Показываем готовую страницу. Правки собираем одним списком и отвечаем одним заходом — это первый круг. Второй круг финальный, после него сайт принят. Всего два круга, это записано в договорённости на старте.</p>
+<div class="out"><b>На выходе</b>Принятая версия сайта на боевом домене</div></div></div>
+
+<div class="part"><b>Часть 3</b><span>Реклама и заявки</span></div>
+
+<div class="step"><div class="n">08</div><div><h2>Метрика, цели, UTM</h2><span class="owner s">Саша</span>
+<p>Ставится до запуска рекламы, иначе первые дни идут вслепую. Счётчик, отдельные цели на форму, телефон и мессенджер, единая UTM-разметка. Проверка: сделать по одной тестовой конверсии каждого типа и увидеть их в Метрике. Аккаунты оформляем на клиента.</p>
+<div class="out"><b>На выходе</b>Счётчик работает, цели фиксируются, доступы выданы</div></div></div>
+
+<div class="step"><div class="n">09</div><div><h2>Кампании и запуск</h2><span class="owner s">Саша</span>
+<p>Поиск и РСЯ раздельно, минус-слова, объявления по смыслу совпадают с первым экраном, регионы и расписание как в брифе, дневной бюджет не ниже названного самим же. Модерация пройдена — включаем.</p>
+<p>В день запуска проверяем: клики идут, цели пишутся, заявки доходят.</p>
+<div class="out"><b>На выходе</b>Реклама работает, бюджет и ожидаемая цена клика записаны в таблицу</div></div></div>
+
+<div class="step"><div class="n">10</div><div><h2>Приём заявок и первый ответ</h2><span class="owner s">Саша</span>
+<p>Самое недооценённое место: сайт и реклама работают, а заявка теряется. Определяем одно главное место, куда падает заявка, простую воронку (новая → в работе → встреча → сделка/отказ), текст первого ответа, правило скорости и кто отвечает. CRM настраиваем, если она в пакете.</p>
+<p>Проверка: тестовая заявка проходит весь путь и доходит до нужного человека.</p>
+<div class="out"><b>На выходе</b>Схема на одну страницу + подтверждённая тестовая заявка</div></div></div>
+
+<div class="part"><b>Часть 4</b><span>Результат</span></div>
+
+<div class="step"><div class="n">11</div><div><h2>Наблюдение, 14 дней</h2><span class="owner two">Саша ведёт, Алина смотрит</span>
+<p>Одна таблица, обновляется раз в неделю: расход, клики, цена клика, заявки, цена заявки, дошли до разговора, продажи. Саша — ставки, минус-слова, площадки, одна плановая корректировка. Алина — что происходит с заявками после сайта. Клиенту — статус тремя строками раз в неделю.</p>
+<div class="out"><b>На выходе</b>Заполненная таблица цифр за 14 дней</div></div></div>
+
+<div class="step"><div class="n">12</div><div><h2>Отчёт и кейс</h2><span class="owner">Алина</span>
+<p>Созвон с клиентом и короткий отчёт: что сделали, что показали цифры, что чинить дальше, предложение по ведению. Отдельно согласуем право на кейс — до/после, цифры, скриншоты, отзыв.</p>
+<p>И последнее: правим эту методичку по итогам проекта — где буксовало и сколько времени съел каждый шаг. На этом строится цена следующих проектов.</p>
+<div class="out"><b>На выходе</b>Отчёт клиенту, решение по ведению, оформленный кейс</div></div></div>
+
+<section class="now">
+<h2>Diams — где мы сейчас</h2>
+<p>Созвон с клиентом прошёл, ждём материалы. Идём с шага 02 на 03.</p>
+<div class="split">
+<div class="col"><h4>Алина</h4><ol>
+<li>Отправить клиенту список материалов с датой.</li>
+<li>Письменно зафиксировать состав работ: 30 000 ₽ сайт + 10 000 ₽ реклама, два круга правок, 15 рабочих дней до запуска, ведение 10 000 ₽/мес отдельно.</li>
+<li>Как придут материалы — оффер и первый экран.</li>
+</ol></div>
+<div class="col"><h4>Саша</h4><ol>
+<li>Заполнить бриф на странице /brief/ — срок 3 дня.</li>
+<li>Дать три цифры: цена клика, минимальный дневной бюджет, поиск / РСЯ / оба.</li>
+<li>Написать, какие доступы просить у клиента: Директ, Метрика, домен.</li>
+</ol></div>
+</div>
+</section>
+
+<button class="print" type="button" onclick="window.print()">Сохранить методичку в PDF</button>
+</div>
+<footer>Аполлонов и Шигапова · Пересобираем продажи в малом бизнесе</footer>
+</body></html>
