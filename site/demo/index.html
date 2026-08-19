@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Пример продажи: салон красоты — Аполлонов и Шигапова</title>
+<style>
+@font-face{font-family:'Manrope';font-weight:400;font-display:swap;src:url(../assets/fonts/manrope-400-cyrillic.woff2) format('woff2'),url(../assets/fonts/manrope-400-latin.woff2) format('woff2')}
+@font-face{font-family:'Manrope';font-weight:500;font-display:swap;src:url(../assets/fonts/manrope-500-cyrillic.woff2) format('woff2')}
+@font-face{font-family:'Manrope';font-weight:600;font-display:swap;src:url(../assets/fonts/manrope-600-cyrillic.woff2) format('woff2')}
+@font-face{font-family:'Cormorant Garamond';font-weight:300;font-display:swap;src:url(../assets/fonts/cormorant-garamond-300-cyrillic.woff2) format('woff2')}
+@font-face{font-family:'Cormorant Garamond';font-weight:400;font-display:swap;src:url(../assets/fonts/cormorant-garamond-400-cyrillic.woff2) format('woff2')}
+:root{--i:#171912;--p:#f4f1e8;--c:#fffdf7;--l:#b9ff37;--m:#6d7067;--b:#ddd9ce;--a:#577719;
+--sans:'Manrope',system-ui,Arial,sans-serif;--serif:'Cormorant Garamond',Georgia,serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--p);color:var(--i);font-family:var(--sans);font-weight:400;-webkit-font-smoothing:antialiased}
+.top{height:70px;padding:0 max(18px,calc((100% - 1000px)/2));display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b);background:transparent}
+.brand{display:flex;align-items:center;gap:11px;font-weight:600;font-size:14px}
+.mark{width:38px;height:38px;border-radius:50%;background:var(--i);color:var(--l);display:grid;place-items:center;font-family:var(--serif);font-size:15px}
+.project{font-size:10px;letter-spacing:.2em;font-weight:600;color:var(--m)}
+.wrap{max-width:1000px;margin:auto;padding:0 20px}
+.hero{padding:76px 0 30px}
+.tag{font-size:10px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:var(--a)}
+h1{font-family:var(--serif);font-weight:300;font-size:clamp(52px,9vw,96px);line-height:.95;letter-spacing:-.02em;margin:22px 0}
+h1 i{color:var(--a)}
+.lead{max-width:660px;color:var(--m);font-size:17px;line-height:1.65;font-weight:400}
+.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:38px 0 12px}
+.rule{background:var(--c);border:1px solid var(--b);border-radius:20px;padding:20px}
+.rule b{display:block;font-family:var(--serif);font-weight:400;font-size:22px;margin-bottom:7px}
+.rule p{margin:0;color:var(--m);font-size:14px;line-height:1.55}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.who{background:var(--i);color:#fff;border-radius:22px;padding:26px}
+.who h3{margin:0 0 4px;font-family:var(--serif);font-weight:300;font-size:30px}
+.who .sub{color:var(--l);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;margin-bottom:14px}
+.who ul{margin:0;padding-left:17px;color:#c9cbc2;line-height:1.8;font-size:14px}
+.tabs{display:flex;gap:8px;margin:44px 0 0}
+.tabs button{flex:1;border:1px solid var(--b);background:var(--c);color:var(--m);border-radius:16px;padding:16px;font-family:var(--sans);font-size:15px;font-weight:500;cursor:pointer;text-align:left;line-height:1.35}
+.tabs button b{display:block;color:var(--i);font-family:var(--serif);font-weight:400;font-size:22px;margin-bottom:3px}
+.tabs button[aria-selected="true"]{background:var(--i);border-color:var(--i);color:#c9cbc2}
+.tabs button[aria-selected="true"] b{color:var(--l)}
+.pane[hidden]{display:none}
+@media(max-width:780px){.tabs{flex-direction:column}}
+@media print{.tabs{display:none}.pane[hidden]{display:block!important}}
+.part{border-top:2px solid var(--i);margin-top:52px;padding-top:13px;display:flex;align-items:baseline;gap:14px}
+.part b{font-size:10px;letter-spacing:.2em;text-transform:uppercase;font-weight:600}
+.part span{color:var(--m);font-size:13px}
+.step{display:grid;grid-template-columns:66px 1fr;padding:30px 0;border-top:1px solid var(--b);break-inside:avoid}
+.n{font-family:var(--serif);font-weight:300;font-size:30px;color:#a8aa9f;line-height:1}
+.step h2{font-family:var(--serif);font-weight:400;font-size:29px;line-height:1.15;margin:0;letter-spacing:-.01em}
+.owner{display:inline-block;margin-top:11px;font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;background:var(--l);border-radius:20px;padding:6px 13px}
+.owner.a{background:var(--i);color:var(--l)}.owner.two{background:#e6e3d8;color:#3a3d36}
+.step p{color:#3d4038;font-size:15px;line-height:1.7;margin:13px 0 0}
+.step ul{margin:11px 0 0;padding-left:19px;color:#3d4038;font-size:15px;line-height:1.7}
+.out{margin-top:15px;background:var(--c);border:1px solid var(--b);border-left:3px solid var(--a);border-radius:0 14px 14px 0;padding:13px 16px;font-size:14px;line-height:1.5}
+.out b{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--a);display:block;margin-bottom:4px;font-weight:600}
+ .sale{background:var(--c);border:1px solid var(--b);border-radius:22px;padding:26px;margin-top:12px}
+.sale h3{font-family:var(--serif);font-weight:400;font-size:26px;margin:0 0 4px}
+.sale .sub{color:var(--m);font-size:14px;margin:0 0 18px}
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:20px}
+.chain b{font-weight:500;font-size:13px;background:var(--p);border:1px solid var(--b);border-radius:999px;padding:9px 14px;white-space:nowrap}
+.chain i{color:var(--a);font-style:normal;font-weight:600}
+.norms{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.norm{background:var(--i);color:#fff;border-radius:16px;padding:18px 20px}
+.norm b{display:block;font-family:var(--serif);font-weight:300;font-size:34px;color:var(--l);line-height:1}
+.norm span{display:block;margin-top:7px;font-size:14px;color:#c9cbc2;line-height:1.5}
+.never{margin:18px 0 0;padding-left:18px;color:#3d4038;font-size:14px;line-height:1.7}
+@media(max-width:780px){.norms{grid-template-columns:1fr}}
+.mat{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}
+.mat a,.mat span{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:500;text-decoration:none;border:1px solid var(--b);background:var(--c);color:var(--i);border-radius:999px;padding:8px 14px}
+.mat a:hover{border-color:var(--i)}
+.mat a::before{content:"→";color:var(--a);font-weight:600}
+.mat span{color:var(--m);border-style:dashed}
+.mat span::before{content:"+";color:#b3a98a;font-weight:600}
+.now{background:var(--i);color:#fff;border-radius:26px;padding:38px;margin:56px 0 22px}
+.now h2{font-family:var(--serif);font-weight:300;font-size:38px;margin:0 0 6px}
+.now>p{color:#c9cbc2;margin:0 0 24px;font-size:15px}
+.now .col h4{margin:0 0 11px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--l);font-weight:600}
+.now .col ol{margin:0;padding-left:18px;line-height:1.75;font-size:15px;color:#edeee9}
+.print{display:block;margin:28px auto 64px;border:0;border-radius:14px;padding:16px 26px;font-weight:600;font-size:15px;background:var(--i);color:var(--l);cursor:pointer;font-family:var(--sans)}
+footer{text-align:center;color:var(--m);font-size:12px;padding:0 15px 40px}
+@media(max-width:780px){.rules{grid-template-columns:1fr}.split{grid-template-columns:1fr}.hero{padding:46px 0 22px}h1{font-size:52px}.step{grid-template-columns:1fr;padding:26px 0}.n{margin-bottom:6px}.step h2{font-size:24px} .mat{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}
+.mat a,.mat span{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:500;text-decoration:none;border:1px solid var(--b);background:var(--c);color:var(--i);border-radius:999px;padding:8px 14px}
+.mat a:hover{border-color:var(--i)}
+.mat a::before{content:"→";color:var(--a);font-weight:600}
+.mat span{color:var(--m);border-style:dashed}
+.mat span::before{content:"+";color:#b3a98a;font-weight:600}
+.now{padding:28px 22px}.brand span:last-child{display:none}}
+@media print{@page{size:A4;margin:14mm}body{background:#fff}.top,.print{display:none}.hero{padding:0 0 16px}h1{font-size:40px}.wrap{padding:0}.lead,.rule p,.step p,.step ul,.who ul,.now .col ol{font-size:11px}.step h2{font-size:16px}.n{font-size:18px}.rule b{font-size:15px}.who h3{font-size:20px}.who,.now,.owner{-webkit-print-color-adjust:exact;print-color-adjust:exact}.now h2{font-size:24px}.part{margin-top:22px}.step{padding:14px 0}}
+</style><style>
+.dlg{margin:14px 0 0;display:grid;gap:10px}
+.msg{max-width:82%;padding:13px 16px;border-radius:18px;font-size:15px;line-height:1.55}
+.msg.us{background:var(--i);color:#eceee6;border-bottom-left-radius:6px}
+.msg.cl{background:var(--c);border:1px solid var(--b);margin-left:auto;border-bottom-right-radius:6px}
+.msg b{color:var(--l);font-size:11px;letter-spacing:.14em;text-transform:uppercase;display:block;margin-bottom:5px}
+.msg.cl b{color:var(--m)}
+.doc{border:1px solid var(--b);background:var(--c);border-radius:20px;padding:26px;margin-top:16px}
+.doc h4{font-family:var(--serif);font-weight:400;font-size:25px;margin:0 0 4px}
+.doc .meta{color:var(--m);font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px}
+.doc h5{font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin:22px 0 8px;color:var(--a)}
+.doc p,.doc li{font-size:14.5px;line-height:1.65;color:#3d4038}
+.doc ul,.doc ol{padding-left:19px;margin:0}
+.note{background:#efece0;border-radius:14px;padding:14px 16px;font-size:13.5px;color:#4a4d44;line-height:1.6;margin-top:16px}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.vs>div{border:1px solid var(--b);background:var(--c);border-radius:18px;padding:20px}
+.vs h4{font-family:var(--serif);font-weight:400;font-size:23px;margin:0 0 10px}
+.vs ul{margin:0;padding-left:18px;font-size:14px;line-height:1.7;color:#3d4038}
+.vs .price{display:block;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--a);margin-bottom:6px}
+@media(max-width:780px){.vs{grid-template-columns:1fr}.msg{max-width:100%}}
+</style></head><body>
+<header class="top"><div class="brand"><span class="mark">АШ</span><span>Аполлонов и Шигапова</span></div><span class="project">ПРИМЕР · САЛОН КРАСОТЫ</span></header>
+<div class="wrap">
+<section class="hero">
+<div class="tag">Учебный прогон воронки</div>
+<h1>Как это выглядит<br><i>вживую</i></h1>
+<p class="lead">Один клиент проходит весь путь: заявка → переписка → созвон → анкета → бесплатный аудит → платный аудит → КП → договор. Пример вымышленный, цифры условные — он нужен, чтобы увидеть логику и тон, а не для показа клиентам.</p>
+<div class="note"><b>Клиент для примера.</b> Салон красоты в подмосковном городе, 15 лет на рынке, 8 мастеров, около 300 клиенток в месяц. Заявка с сайта: «Хотим больше клиентов, реклама не работает». Выбран мессенджер MAX.</div>
+</section>
+
+<div class="part"><b>Шаг 01</b><span>Переписка · 15 минут после заявки</span></div>
+<div class="step"><div class="n">01</div><div><h2>Первое касание</h2>
+<div class="dlg">
+<div class="msg us"><b>Саша</b>Марина, здравствуйте! Это Александр, студия «Аполлонов и Шигапова», занимаемся систематизацией продаж в малом бизнесе. Увидел вашу заявку. Чтобы понимать, чем можем быть полезны: чем занимаетесь и откуда сейчас идут клиенты?</div>
+<div class="msg cl"><b>Клиент</b>Здравствуйте. Салон красоты, маникюр, брови, ресницы. Клиенты в основном по сарафану и с Карт. Пробовали таргет — слили 30 тысяч, толку ноль.</div>
+<div class="msg us"><b>Саша</b>Понял. Сколько записей в месяц сейчас получается и сколько хотелось бы?</div>
+<div class="msg cl"><b>Клиент</b>Около 300 визитов, но это в основном постоянные. Новых мало, человек 20–30. Хотелось бы хотя бы вдвое больше новых.</div>
+<div class="msg us"><b>Саша</b>А сайт есть или только Карты и запись через приложение?</div>
+<div class="msg cl"><b>Клиент</b>Сайт есть, старый, там даже цены не обновлены. Запись через YCLIENTS.</div>
+<div class="msg us"><b>Саша</b>Ясно, картина понятная и рабочая. Предлагаю созвониться минут на двадцать — разберём подробнее и я скажу, что имеет смысл делать в первую очередь. Сегодня после 18 или завтра в 11?</div>
+<div class="msg cl"><b>Клиент</b>Давайте завтра в 11.</div>
+</div>
+<div class="out"><b>Что здесь важно</b>Три сообщения, вопросы по одному, цену не называем, закрываем на созвон двумя вариантами времени</div></div></div>
+
+<div class="part"><b>Шаг 02</b><span>Созвон-знакомство · 20 минут</span></div>
+<div class="step"><div class="n">02</div><div><h2>Разговор и закрытие на анкету</h2>
+<p>Саша идёт по скрипту: бизнес и чек, откуда клиенты, что пробовали, сколько заявок нужно, кто принимает решение, бюджет. Клиент рассказывает: средний чек 2 800 ₽, постоянных много, новых мало, зимой провал, таргет вели «знакомая девочка», Директ не пробовали, рекламный бюджет готовы держать 30–40 тысяч в месяц.</p>
+<p>В конце — не продажа, а следующий шаг:</p>
+<div class="dlg">
+<div class="msg us"><b>Саша</b>Марина, картина ясна. Смотрите: чтобы не гадать и не называть цифры с потолка, я пришлю анкету — минут на пятнадцать, вопросы по услугам, ценам, конкурентам, плюс попрошу доступы посмотреть, что в статистике. По ней мы сделаем бесплатный разбор и пришлём документ: что видим, где теряются деньги и что можно поправить своими силами прямо сейчас. Это бесплатно и ни к чему не обязывает. Заполните до четверга?</div>
+<div class="msg cl"><b>Клиент</b>Хорошо, присылайте.</div>
+</div>
+<div class="out"><b>Что здесь важно</b>Бесплатный аудит — это не подарок «на всякий случай», а причина заполнить анкету</div></div></div>
+
+<div class="part"><b>Шаг 03</b><span>Анкета · один раз</span></div>
+<div class="step"><div class="n">03</div><div><h2>Анкета и доступы</h2>
+<p>Клиент заполняет анкету один раз и больше его не мучаем. Кроме вопросов о бизнесе, в анкете просим доступы — без них разбор получается поверхностным:</p>
+<ul><li>Яндекс Метрика — гостевой доступ (или скриншот сводки за 3 месяца);</li><li>Яндекс Директ, если реклама уже была;</li><li>ссылки: сайт, карточка на Яндекс Картах, соцсети, профиль в системе записи;</li><li>прайс и три-пять конкурентов, на которых смотрит клиент.</li></ul>
+<div class="note">Доступ давать многие боятся. Формулировка, которая снимает вопрос: «Гостевой доступ только на просмотр, менять ничего не сможем. Без него разбор будет по внешним признакам, а с ним увидим реальные цифры».</div>
+<div class="out"><b>Результат</b>Анкета заполнена, доступы получены — можно делать бесплатный аудит</div></div></div>
+
+<div class="part"><b>Шаг 04</b><span>Бесплатный аудит · 2 суток</span></div>
+<div class="step"><div class="n">04</div><div><h2>Что делаем и кто</h2>
+<p><b>Саша</b> смотрит спрос и рекламу: есть ли запросы в этой нише и городе, что показывают конкуренты в поиске, что было в Директе, что видно в Метрике — трафик, отказы, с чего приходят.</p>
+<p><b>Алина</b> смотрит упаковку и путь клиента: сайт, первый экран, цены, мобильную версию, карточку на Картах, отзывы, как выглядит запись, за сколько можно записаться, что происходит после заявки.</p>
+<p>Документ оформляет Алина по цифрам Саши, объём — 2–3 страницы, не больше. Отправляется через двое суток после анкеты, PDF, с одним звонком следом.</p>
+<div class="doc">
+<h4>Разбор: салон «Пример»</h4>
+<div class="meta">Бесплатный аудит · 2 страницы · пример, цифры условные</div>
+
+<h5>1. Что мы поняли о бизнесе</h5>
+<p>Салон работает 15 лет, 8 мастеров, около 300 визитов в месяц, из них новых 20–30. Средний чек 2 800 ₽. Основной поток — сарафан и Яндекс Карты. Рекламу вели только в соцсетях, около 30 000 ₽ без измеримого результата. Цель — удвоить приток новых клиенток, бюджет до 40 000 ₽ в месяц.</p>
+
+<h5>2. Где теряются деньги — 5 точек</h5>
+<ol>
+<li><b>Сайт не отвечает на вопрос «сколько стоит».</b> Прайса нет, есть форма «оставьте заявку». Человек, выбирающий салон, уходит туда, где цена видна сразу.</li>
+<li><b>С телефона запись занимает 4 касания.</b> Кнопка записи внизу страницы, ведёт на общий экран системы, без выбора услуги. На мобильном это основная точка потери.</li>
+<li><b>Карточка на Картах не отработана.</b> 40% отзывов без ответа, часть услуг не заведена, фото трёхлетней давности. Для локального бизнеса Карты — второй по значимости канал после сарафана.</li>
+<li><b>Спрос в поиске есть, а нас в нём нет.</b> По запросам «маникюр [город]» и «наращивание ресниц [город]» — заметный объём показов в месяц, реклама конкурентов идёт, наших объявлений нет ни в поиске, ни в РСЯ.</li>
+<li><b>Заявки не считаются.</b> В Метрике нет целей: непонятно, сколько людей нажали «записаться» и сколько дошли. Любая реклама в таком виде будет тратой вслепую.</li>
+</ol>
+
+<h5>3. Что можно сделать своими силами прямо сейчас</h5>
+<ul>
+<li><b>Ответить на все отзывы на Картах за последний год.</b> Час работы, поднимает карточку в выдаче и снимает часть возражений будущих клиенток.</li>
+<li><b>Вынести цены на первый экран сайта.</b> Даже простой список «от» уберёт часть отказов сразу.</li>
+<li><b>Поставить кнопку записи в шапку и продублировать в конце каждого блока.</b> Ничего не стоит, а путь до записи сокращается вдвое.</li>
+</ul>
+
+<h5>4. Что требует более глубокого разбора</h5>
+<p>По внешним признакам видно, что теряется много, но неясно главное: сколько сейчас стоит одна новая клиентка и на каких услугах салон реально зарабатывает. Для этого нужно поднять данные за три месяца, послушать 10 обращений, посчитать путь от клика до визита и сравнить с конкурентами по цене и предложению. Это и есть содержание платного аудита.</p>
+
+<h5>5. Что предлагаем дальше</h5>
+<p>Стратегический аудит с планом на 90 дней — 20 000 ₽, 5 рабочих дней. Если в течение 14 дней после него вы заказываете внедрение, эти 20 000 ₽ засчитываются в стоимость работ.</p>
+</div>
+<div class="out"><b>Что здесь важно</b>Три бесплатных совета, которые реально работают. Не «намёки на пользу», а польза — иначе платный аудит не покупают</div></div></div>
+
+<div class="part"><b>Шаг 05</b><span>Звонок после аудита</span></div>
+<div class="step"><div class="n">05</div><div><h2>Переход к платному</h2>
+<div class="dlg">
+<div class="msg us"><b>Саша</b>Марина, разбор получили? Что скажете?</div>
+<div class="msg cl"><b>Клиент</b>Да, спасибо, полезно. Про Карты вообще не думали, отзывы уже начали отвечать. А по рекламе что — вы можете просто запустить Директ?</div>
+<div class="msg us"><b>Саша</b>Можем. Но честно: запускать сейчас — это тратить ваши 40 тысяч вслепую. У вас в Метрике нет целей, на сайте нет цен, и мы не знаем, сколько стоит новая клиентка. Через месяц вы спросите, сработало ли, а ответить будет нечем. Поэтому мы сначала делаем аудит с планом на 90 дней: смотрим данные за три месяца, слушаем обращения, считаем воронку и конкурентов. Это 20 тысяч и пять рабочих дней. Дальше вы получаете план — что чинить и в каком порядке, с бюджетом и цифрами. И если решаете делать с нами, эти 20 тысяч уходят в счёт работ.</div>
+<div class="msg cl"><b>Клиент</b>То есть по факту я ничего не теряю?</div>
+<div class="msg us"><b>Саша</b>Если идёте дальше — не теряете ничего. Если не идёте — остаётся план, по которому можно работать самим или с кем угодно.</div>
+</div>
+<div class="out"><b>Что здесь важно</b>Не «купите аудит», а «запускать рекламу сейчас — тратить деньги вслепую». Возражение снимается зачётом 20 000 ₽ в стоимость работ</div></div></div>
+
+<div class="part"><b>Разница</b><span>Чем бесплатный отличается от платного</span></div>
+<div class="step"><div class="n">06</div><div><h2>Два аудита рядом</h2>
+<div class="vs">
+<div><span class="price">Бесплатный · 0 ₽ · 2 суток</span><h4>Что видно снаружи</h4>
+<ul><li>анкета клиента и беглый просмотр доступов</li><li>сайт, Карты, отзывы, путь до записи</li><li>есть ли спрос в поиске и что делают конкуренты</li><li>3–5 точек потери, названных, но не посчитанных</li><li>3 совета, которые можно применить сегодня</li><li>2–3 страницы PDF</li></ul>
+<p style="font-size:13.5px;color:#6d7067;margin:12px 0 0">Задача — показать, что мы видим бизнес, а не продаём инструмент. И дать реальную пользу до денег.</p></div>
+<div><span class="price">Платный · 20 000 ₽ · 5 дней</span><h4>Что видно изнутри</h4>
+<ul><li>установочная встреча до 60 минут</li><li>данные за 3 месяца: Метрика, Директ, система записи</li><li>до 10 обращений — звонки и переписки</li><li>анализ до 5 конкурентов: оффер, цены, реклама</li><li>путь клиента от клика до визита, где отваливается</li><li>расчёт: сколько стоит клиент и сколько теряем</li><li>план на 90 дней с бюджетом и KPI</li><li>итоговый PDF и разбор созвоном</li></ul>
+<p style="font-size:13.5px;color:#6d7067;margin:12px 0 0">Задача — дать маршрут с цифрами. Засчитывается в стоимость внедрения, если заказали в течение 14 дней.</p></div>
+</div>
+<div class="note"><b>Формула на словах.</b> Бесплатный отвечает на вопрос «что у вас не так». Платный — «сколько это стоит и что делать по шагам». Первый строится на том, что видно снаружи, второй — на цифрах изнутри.</div>
+</div></div>
+
+<div class="part"><b>Шаг 07</b><span>После платного аудита</span></div>
+<div class="step"><div class="n">07</div><div><h2>КП и договор</h2>
+<p>На разборе аудита клиент уже знает, что чинить. КП по сути превращает план в состав работ и цену — и потому продаётся почти само.</p>
+<div class="dlg">
+<div class="msg us"><b>Саша</b>Марина, по плану первое — предложение и посадочная страница с ценами, второе — Директ с целями, третье — порядок обработки записей. Прислал предложение, там три варианта: только страница с рекламой, полный запуск и запуск с ведением. Посмотрите, завтра наберу и обсудим, какой ближе.</div>
+<div class="msg cl"><b>Клиент</b>Хорошо.</div>
+<div class="msg us"><b>Саша</b><i>на следующий день</i> Какие мысли по вариантам?</div>
+<div class="msg cl"><b>Клиент</b>Склоняемся ко второму, но смущает срок — три недели долго.</div>
+<div class="msg us"><b>Саша</b>Понимаю. Из трёх недель две — это сайт и тексты, там два круга правок, быстрее не выйдет качественно. Но рекламу можем запустить раньше, на текущую страницу с ценами — тогда первые записи пойдут уже на второй неделе. Так и сделаем?</div>
+</div>
+<div class="out"><b>Итог</b>Договор, аванс 50%, и дальше — блок 2 регламента</div></div></div>
+
+<div class="note" style="margin-top:34px"><b>Что из этого забрать в регламент.</b> Бесплатный аудит встаёт между анкетой и КП и становится обязательным шагом. Анкета дополняется просьбой о доступах. КП готовится не после анкеты, а после платного аудита — либо сразу после бесплатного, если клиент отказался от платного и хочет внедрение.</div>
+
+<button class="print" type="button" onclick="window.print()">Сохранить пример в PDF</button>
+</div>
+<footer>Аполлонов и Шигапова · Учебный пример, клиент и цифры вымышленные</footer>
+</body></html>
