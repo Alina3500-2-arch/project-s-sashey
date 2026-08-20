@@ -28,31 +28,84 @@ document.addEventListener('DOMContentLoaded', function () {
     '<div class="modal__box">' +
       '<div class="modal__bar">' +
         '<span class="modal__title">Онлайн-запись</span>' +
+        '<a class="modal__new" href="' + BOOKING_URL + '" target="_blank" rel="noopener">В новой вкладке</a>' +
         '<button class="modal__close" type="button">Закрыть</button>' +
       '</div>' +
       '<div class="modal__body">' +
+        '<div class="modal__loading" role="status">' +
+          '<span class="modal__spin" aria-hidden="true"></span>' +
+          '<p class="modal__loading-text">Загружаем расписание…</p>' +
+        '</div>' +
         '<iframe title="Онлайн-запись Perfect Ton" allow="payment"></iframe>' +
-        '<p class="modal__fallback">Окно не загрузилось? ' +
-          '<a href="' + BOOKING_URL + '" target="_blank" rel="noopener">Открыть запись в новой вкладке</a></p>' +
       '</div>' +
+      '<p class="modal__hint">Не открылось? ' +
+        '<a href="' + BOOKING_URL + '" target="_blank" rel="noopener">Открыть запись в новой вкладке</a></p>' +
     '</div>';
   document.body.appendChild(modal);
 
   var frame = modal.querySelector('iframe');
   var closeBtn = modal.querySelector('.modal__close');
+  var loading = modal.querySelector('.modal__loading');
+  var loadingText = modal.querySelector('.modal__loading-text');
   var lastFocus = null;
+  var warmed = false;
+  var timer = null;
+
+  // Прогрев: YCLIENTS — тяжёлое приложение, на холодную стартует несколько
+  // секунд. Начинаем грузить его заранее — при наведении на кнопку записи,
+  // а если наведения не было, в простое после загрузки страницы. К моменту
+  // клика окно обычно уже готово и открывается сразу.
+  // Отличить «виджет загрузился» от «встраивание запрещено» изнутри страницы
+  // нельзя: в обоих случаях iframe сообщает «load», а contentDocument равен
+  // null. Поэтому не гадаем, а через несколько секунд после открытия всегда
+  // показываем неперекрывающую подсказку с выходом в новую вкладку.
+  function hintAfterDelay() {
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(function () {
+      modal.classList.add('show-hint');
+    }, 6000);
+  }
+
+  function warmUp() {
+    if (warmed) return;
+    warmed = true;
+    frame.addEventListener('load', function () {
+      loading.classList.add('is-done');
+    });
+    frame.setAttribute('src', BOOKING_URL);
+  }
+
+  ['pointerenter', 'touchstart', 'focusin'].forEach(function (evt) {
+    document.addEventListener(evt, function (e) {
+      if (e.target.closest && e.target.closest('a[href*="yclients.com"]')) warmUp();
+    }, { passive: true, capture: true });
+  });
+
+  if (window.requestIdleCallback) {
+    requestIdleCallback(warmUp, { timeout: 2500 });
+  } else {
+    setTimeout(warmUp, 1200);
+  }
 
   function openModal(url) {
     lastFocus = document.activeElement;
-    if (frame.getAttribute('src') !== url) frame.setAttribute('src', url);
+    warmUp();
+    if (url && url !== BOOKING_URL && frame.getAttribute('src') !== url) {
+      loading.classList.remove('is-done');
+      frame.setAttribute('src', url);
+    }
     modal.classList.add('is-open');
     document.body.classList.add('is-locked');
     closeBtn.focus();
+
+    hintAfterDelay();
   }
 
   function closeModal() {
     modal.classList.remove('is-open');
+    modal.classList.remove('show-hint');
     document.body.classList.remove('is-locked');
+    if (timer) { clearTimeout(timer); timer = null; }
     if (lastFocus && lastFocus.focus) lastFocus.focus();
   }
 

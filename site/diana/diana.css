@@ -237,12 +237,37 @@ p{margin:0 0 16px;color:rgba(255,255,255,.82);max-width:64ch}
 .modal__close:hover{background:var(--beige);color:var(--choco);border-color:var(--beige)}
 .modal__body{flex:1;min-height:0;display:flex;flex-direction:column;background:var(--white)}
 .modal__body iframe{flex:1;min-height:0;width:100%;border:0}
-.modal__fallback{
-  flex:none;margin:0;padding:9px 16px;
+.modal__new{
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--beige);
+  border-bottom:1px solid var(--beige-dim);padding-bottom:2px;transition:.25s;
+}
+.modal__new:hover{color:var(--white);border-bottom-color:var(--white)}
+
+/* Пока YCLIENTS поднимается — заглушка вместо белого пятна. */
+.modal__loading{
+  position:absolute;inset:0;z-index:2;background:var(--white);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+  text-align:center;padding:24px;transition:opacity .25s;
+}
+.modal__loading.is-done{opacity:0;pointer-events:none}
+.modal__loading-text{margin:0;font-size:14px;color:#6b5f5c;letter-spacing:.02em}
+.modal__spin{
+  width:30px;height:30px;border:2px solid rgba(49,35,34,.18);
+  border-top-color:var(--choco);border-radius:50%;
+}
+@media (prefers-reduced-motion:no-preference){
+  .modal__spin{animation:modalSpin .9s linear infinite}
+  @keyframes modalSpin{to{transform:rotate(360deg)}}
+}
+/* Подсказка снизу: не перекрывает виджет, появляется через несколько секунд. */
+.modal__hint{
+  flex:none;margin:0;max-width:none;padding:9px 16px;
   background:#f6f3f0;border-top:1px solid rgba(0,0,0,.1);
   font-size:12px;color:#6b5f5b;text-align:center;
+  display:none;
 }
-.modal__fallback a{text-decoration:underline}
+.modal.show-hint .modal__hint{display:block}
+.modal__hint a{text-decoration:underline}
 body.is-locked{overflow:hidden}
 @media (prefers-reduced-motion:no-preference){
   .modal.is-open .modal__box{animation:modalIn .22s ease-out}
@@ -312,3 +337,12 @@ a.rev__name{
 a.rev__name:hover{color:var(--beige);border-bottom-color:var(--beige-dim)}
 .rev-summary__link{margin-left:auto;align-self:center}
 @media (max-width:640px){.rev-summary__link{margin-left:0}}
+
+/* На узких экранах в шапке окна записи важнее выход, а не заголовок. */
+@media (max-width:520px){
+  .modal__bar{gap:10px;padding:12px}
+  .modal__title{display:none}
+  .modal__new{font-size:10px;letter-spacing:.12em}
+  .modal__close{margin-left:auto;padding:8px 12px;font-size:10px}
+  .modal__box{height:min(88vh,760px)}
+}
