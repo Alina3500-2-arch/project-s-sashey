@@ -1,0 +1,457 @@
+<meta charset="utf-8">
+<title>ПЕРФЕКТ ТОН</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600;700&display=swap">
+<style>
+:root{
+  --ground:#F4F0ED; --surface:#FCFAF9; --surface-2:#EBE4E0;
+  --ink:#1F1A1B; --body:#6B615F; --hair:#D9D0CB;
+  --accent:#8C5A64; --accent-soft:#B98D93; --accent-wash:#EFE3E3; --on-accent:#FFFFFF;
+  --shadow:0 1px 2px rgba(31,26,27,.05),0 12px 32px -18px rgba(31,26,27,.35);
+  --display:"Instrument Serif",Georgia,"Times New Roman",serif;
+  --sans:"Manrope",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --wrap:1140px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#161213; --surface:#1E1819; --surface-2:#282021;
+    --ink:#F0E9E7; --body:#A79C99; --hair:#382E30;
+    --accent:#CB9AA1; --accent-soft:#8C5A64; --accent-wash:#2A2022; --on-accent:#1A1314;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 14px 36px -20px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#161213; --surface:#1E1819; --surface-2:#282021;
+  --ink:#F0E9E7; --body:#A79C99; --hair:#382E30;
+  --accent:#CB9AA1; --accent-soft:#8C5A64; --accent-wash:#2A2022; --on-accent:#1A1314;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 14px 36px -20px rgba(0,0,0,.9);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);font-weight:400;
+  font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img{max-width:100%}
+a{color:inherit}
+h1,h2,h3{margin:0;text-wrap:balance;font-weight:400}
+p{margin:0}
+
+/* --- служебная обвязка макета --- */
+.note{background:var(--ink);color:var(--ground);padding:22px 0}
+.note .wrap{display:flex;gap:18px;align-items:baseline;flex-wrap:wrap}
+.note b{font-weight:600}
+.note p{font-size:14px;line-height:1.5;color:color-mix(in srgb,var(--ground) 78%,transparent);max-width:62ch}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
+.screen{padding:84px 0;border-top:1px solid var(--hair)}
+.screen:first-of-type{border-top:0}
+.eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);
+  font-weight:600;display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.eyebrow::after{content:"";height:1px;flex:1;background:var(--hair);max-width:120px}
+h2.head{font-family:var(--display);font-size:clamp(30px,4.2vw,46px);line-height:1.08;letter-spacing:-.01em;max-width:18ch}
+.sub{color:var(--body);margin-top:16px;max-width:60ch}
+
+/* placeholders */
+.ph{border:1px dashed var(--accent-soft);border-radius:2px;background:
+  repeating-linear-gradient(135deg,transparent 0 9px,color-mix(in srgb,var(--accent) 9%,transparent) 9px 10px);
+  display:grid;place-items:center;text-align:center;padding:20px;color:var(--accent);
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;min-height:180px}
+.q{color:var(--accent);font-weight:600;border-bottom:1px dashed var(--accent-soft)}
+
+/* header */
+header{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--ground) 88%,transparent);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--hair)}
+header .wrap{display:flex;align-items:center;gap:20px;height:70px}
+header .logo{font-size:clamp(17px,4.6vw,23px)}
+header .btn{white-space:nowrap;padding:11px 14px}
+.logo{font-family:var(--display);font-size:23px;letter-spacing:.02em;white-space:nowrap}
+.logo small{display:block;font-family:var(--sans);font-size:9px;letter-spacing:.28em;
+  text-transform:uppercase;color:var(--body);margin-top:-4px}
+nav{display:flex;gap:22px;margin-left:auto;font-size:14px;color:var(--body)}
+nav a{text-decoration:none}
+nav a:hover{color:var(--accent)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--accent);
+  color:#fff;border:0;border-radius:2px;padding:14px 26px;font:600 14px/1 var(--sans);
+  letter-spacing:.02em;text-decoration:none;cursor:pointer;transition:background .2s}
+.btn{color:var(--on-accent)}
+.btn:hover{background:var(--ink);color:var(--ground)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--hair)}
+.btn.ghost:hover{border-color:var(--accent);color:var(--accent);background:transparent}
+.btn.small{padding:11px 18px;font-size:13px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@media(max-width:900px){nav{display:none}}
+
+/* hero */
+.hero{padding:0;border:0}
+.hero-inner{display:grid;grid-template-columns:1.05fr .95fr;gap:0;align-items:stretch;min-height:600px}
+.hero-inner>*{min-width:0}
+.hero-copy{padding:96px 56px 96px max(24px,calc((100vw - var(--wrap))/2 + 24px));
+  display:flex;flex-direction:column;justify-content:center;gap:26px}
+.hero h1{font-family:var(--display);font-size:clamp(38px,6vw,74px);line-height:1.02;letter-spacing:-.02em;overflow-wrap:break-word}
+.hero h1 i{color:var(--accent)}
+.hero p.lead{color:var(--body);font-size:19px;max-width:44ch}
+.facts{display:flex;flex-wrap:wrap;gap:18px 34px;padding-top:26px;border-top:1px solid var(--hair);
+  font-size:14px;color:var(--body);font-variant-numeric:tabular-nums}
+.facts b{display:block;font-family:var(--display);font-size:30px;color:var(--ink);line-height:1.1}
+.hero-photo{min-height:420px;border-left:1px solid var(--hair)}
+@media(max-width:900px){.hero-inner{grid-template-columns:1fr}
+  .hero-copy{padding:60px 24px 48px}.hero-photo{min-height:300px;border-left:0;border-top:1px solid var(--hair)}}
+
+/* cards */
+.grid{display:grid;gap:24px;margin-top:44px}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g2{grid-template-columns:repeat(2,1fr)}
+@media(max-width:1000px){.g4{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.g4,.g3,.g2{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--hair);border-radius:2px;overflow:hidden;
+  display:flex;flex-direction:column;box-shadow:var(--shadow)}
+.card .ph{border:0;border-bottom:1px solid var(--hair);border-radius:0;min-height:150px}
+.card-body{padding:22px;display:flex;flex-direction:column;gap:10px;flex:1}
+.card h3{font-family:var(--display);font-size:24px}
+.card p{font-size:15px;color:var(--body);flex:1}
+.card a.more{font-size:13px;font-weight:600;color:var(--accent);text-decoration:none;letter-spacing:.02em}
+.card a.more:hover{text-decoration:underline}
+
+/* about */
+.about{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+@media(max-width:900px){.about{grid-template-columns:1fr;gap:32px}}
+.about p+p{margin-top:16px}
+.about .body{color:var(--body)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--hair);border:1px solid var(--hair);margin-top:32px}
+.stats div{background:var(--surface);padding:24px}
+.stats b{display:block;font-family:var(--display);font-size:38px;line-height:1;font-variant-numeric:tabular-nums}
+.stats span{font-size:13px;color:var(--body)}
+
+/* price */
+.price-table{margin-top:36px;border:1px solid var(--hair);background:var(--surface);overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:15px;min-width:520px}
+th,td{text-align:left;padding:15px 22px;border-bottom:1px solid var(--hair)}
+th{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--body);font-weight:600}
+td:last-child,th:last-child{text-align:right;font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:0}
+td.group{font-family:var(--display);font-size:20px;background:var(--surface-2)}
+
+/* contacts */
+.contacts{display:grid;grid-template-columns:.9fr 1.1fr;gap:40px;margin-top:40px}
+@media(max-width:900px){.contacts{grid-template-columns:1fr}}
+.dl{display:grid;gap:20px}
+.dl dt{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:5px}
+.dl dd{margin:0;color:var(--body)}
+.dl dd strong{color:var(--ink);font-weight:500}
+
+/* sterility */
+.sterile{background:var(--accent-wash);border:1px solid var(--hair)}
+.sterile .num{font-family:var(--display);font-size:26px;color:var(--accent);line-height:1}
+
+/* reviews */
+.quote{background:var(--surface);border:1px solid var(--hair);padding:26px;display:flex;
+  flex-direction:column;gap:14px;box-shadow:var(--shadow)}
+.quote p{font-family:var(--display);font-size:20px;line-height:1.35}
+.quote footer{font-size:13px;color:var(--body);display:flex;justify-content:space-between;gap:12px}
+.rating{display:flex;align-items:baseline;gap:14px;margin-top:8px}
+.rating b{font-family:var(--display);font-size:56px;line-height:1}
+.rating span{color:var(--body);font-size:14px}
+
+/* form */
+.form-wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+@media(max-width:900px){.form-wrap{grid-template-columns:1fr;gap:28px}}
+form.feedback{display:grid;gap:14px}
+label.f{display:grid;gap:7px;font-size:13px;color:var(--body)}
+input,textarea{font:400 16px/1.5 var(--sans);color:var(--ink);background:var(--surface);
+  border:1px solid var(--hair);border-radius:2px;padding:13px 15px;width:100%}
+input:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:0;border-color:transparent}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--body)}
+.consent input{width:auto;margin-top:3px}
+
+/* footer */
+footer.site{background:var(--ink);color:var(--ground);padding:60px 0 40px;margin-top:0}
+footer.site a{color:inherit}
+.foot{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:36px}
+@media(max-width:800px){.foot{grid-template-columns:1fr;gap:26px}}
+footer.site .logo small{color:color-mix(in srgb,var(--ground) 60%,transparent)}
+.foot p,.foot li{font-size:14px;color:color-mix(in srgb,var(--ground) 72%,transparent)}
+.foot ul{list-style:none;padding:0;margin:0;display:grid;gap:9px}
+.foot h4{font-size:11px;letter-spacing:.16em;text-transform:uppercase;margin:0 0 14px;font-weight:600;
+  color:color-mix(in srgb,var(--ground) 55%,transparent)}
+.legal{margin-top:40px;padding-top:20px;border-top:1px solid color-mix(in srgb,var(--ground) 18%,transparent);
+  font-size:12px;color:color-mix(in srgb,var(--ground) 55%,transparent);display:flex;gap:20px;flex-wrap:wrap}
+
+/* mobile sticky cta */
+.mobile-cta{position:fixed;left:0;right:0;bottom:0;z-index:30;padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+  background:color-mix(in srgb,var(--ground) 92%,transparent);border-top:1px solid var(--hair);display:none}
+.mobile-cta .btn{width:100%}
+@media(max-width:900px){.mobile-cta{display:block}body{padding-bottom:80px}}
+</style>
+
+<div class="note"><div class="wrap">
+  <b>Макет для согласования</b>
+  <p>Структура и тексты сайта ПЕРФЕКТ ТОН, вариант «Оптимум» — 15 экранов. Штриховкой отмечены фотографии, <span class="q">розовым</span> — то, чего нет в брифе и что нужно от вас. Шрифты и цвета — рабочие, поменяем на фирменные, когда пришлёте.</p>
+</div></div>
+
+<header>
+  <div class="wrap">
+    <div class="logo">ПЕРФЕКТ ТОН<small>Раменское</small></div>
+    <nav>
+      <a href="#services">Услуги</a><a href="#masters">Мастера</a><a href="#price">Цены</a>
+      <a href="#sterile">Стерильность</a><a href="#contacts">Контакты</a>
+    </nav>
+    <a class="btn small" href="#booking">Записаться онлайн</a>
+  </div>
+</header>
+
+<!-- 1 -->
+<section class="hero screen" id="top">
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <div class="eyebrow">Экран 1 · Главный</div>
+      <h1>Салон красоты в Раменском, куда возвращаются <i>15 лет</i></h1>
+      <p class="lead">Ногти, брови, ресницы, солярий. Восемь мастеров, около 300 клиенток в месяц, запись онлайн за минуту.</p>
+      <div><a class="btn" href="#booking">Записаться онлайн</a></div>
+      <div class="facts">
+        <div><b>15</b>лет работы</div>
+        <div><b>8</b>мастеров</div>
+        <div><b>5,0</b>на Яндекс Картах</div>
+        <div><b>9–21</b>ежедневно</div>
+      </div>
+    </div>
+    <div class="hero-photo ph">Фото или видео салона<br>горизонтальный кадр</div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="screen" id="services"><div class="wrap">
+  <div class="eyebrow">Экран 2 · Направления</div>
+  <h2 class="head">Четыре направления в одном салоне</h2>
+  <p class="sub">Можно закрыть все процедуры за один визит и не ездить по городу.</p>
+  <div class="grid g4">
+    <article class="card"><div class="ph">Фото работы</div><div class="card-body">
+      <h3>Ногтевой сервис</h3><p>Маникюр, педикюр, подология. Наше главное направление: сюда идёт большая часть записей.</p>
+      <a class="more" href="#booking">Записаться →</a></div></article>
+    <article class="card"><div class="ph">Фото работы</div><div class="card-body">
+      <h3>Брови</h3><p>Коррекция, окрашивание, ламинирование. Форма под черты лица, а не по шаблону.</p>
+      <a class="more" href="#booking">Записаться →</a></div></article>
+    <article class="card"><div class="ph">Фото работы</div><div class="card-body">
+      <h3>Ресницы</h3><p>Наращивание, ламинирование, окрашивание. От естественного эффекта до объёма.</p>
+      <a class="more" href="#booking">Записаться →</a></div></article>
+    <article class="card"><div class="ph">Фото солярия</div><div class="card-body">
+      <h3>Солярий</h3><p>Ровный тон круглый год. Сеанс подбираем по типу кожи.</p>
+      <a class="more" href="#booking">Записаться →</a></div></article>
+  </div>
+</div></section>
+
+<!-- 3 -->
+<section class="screen"><div class="wrap">
+  <div class="eyebrow">Экран 3 · О салоне</div>
+  <div class="about">
+    <div>
+      <h2 class="head">Пятнадцать лет на одном месте</h2>
+      <div class="stats">
+        <div><b>15</b><span>лет работы</span></div>
+        <div><b>8</b><span>мастеров в команде</span></div>
+        <div><b>~300</b><span>клиенток в месяц</span></div>
+        <div><b>5,0</b><span>рейтинг, 131 отзыв</span></div>
+      </div>
+    </div>
+    <div class="body">
+      <p>ПЕРФЕКТ ТОН работает в Раменском с <span class="q">[год открытия]</span>. За это время сложилась команда из восьми мастеров и постоянная клиентура — около 300 визитов в месяц.</p>
+      <p>К нам приходят семьями: мамы с детьми, мужья, старшее поколение. Это и есть главная проверка салона — когда за вами приводят близких.</p>
+      <p>Мы работаем в люкс-сегменте: это про уровень сервиса, стерильность и материалы, а не только про интерьер. Каждый мастер ведёт своё направление и не берётся за то, что не умеет.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- 4 -->
+<section class="screen" id="masters"><div class="wrap">
+  <div class="eyebrow">Экран 4 · Мастера</div>
+  <h2 class="head">Восемь мастеров, каждый — в своём направлении</h2>
+  <p class="sub">Можно записаться к тому, кто уже вас знает, или выбрать мастера по направлению — свободное время видно сразу.</p>
+  <div class="grid g4">
+    <article class="card"><div class="ph">Фото мастера</div><div class="card-body">
+      <h3 class="q">Имя</h3><p><span class="q">Направление · в профессии N лет</span><br>Одна строка о том, чем занимается предметно.</p>
+      <a class="more" href="#booking">Записаться →</a></div></article>
+    <article class="card"><div class="ph">Фото мастера</div><div class="card-body">
+      <h3 class="q">Имя</h3><p><span class="q">Направление · в профессии N лет</span><br>Одна строка о том, чем занимается предметно.</p>
+      <a class="more" href="#booking">Записаться →</a></div></article>
+    <article class="card"><div class="ph">Фото мастера</div><div class="card-body">
+      <h3 class="q">Имя</h3><p><span class="q">Направление · в профессии N лет</span><br>Одна строка о том, чем занимается предметно.</p>
+      <a class="more" href="#booking">Записаться →</a></div></article>
+    <article class="card"><div class="ph">+ ещё пять карточек</div><div class="card-body">
+      <h3>Всего восемь</h3><p>Нужны имена, направления, стаж и фото — тогда экран собирается за час.</p></div></article>
+  </div>
+</div></section>
+
+<!-- 5 -->
+<section class="screen" id="price"><div class="wrap">
+  <div class="eyebrow">Экран 5 · Цены</div>
+  <h2 class="head">Цены</h2>
+  <p class="sub">Актуальные цены и свободное время — в системе записи. Итоговая стоимость зависит от длины ногтей, дизайна и состояния кожи; мастер называет её до начала работы, а не после.</p>
+  <div class="price-table"><table>
+    <thead><tr><th>Услуга</th><th>Стоимость</th></tr></thead>
+    <tbody>
+      <tr><td class="group" colspan="2">Ногтевой сервис</td></tr>
+      <tr><td>Маникюр с покрытием</td><td class="q">— ₽</td></tr>
+      <tr><td>Педикюр</td><td class="q">— ₽</td></tr>
+      <tr><td>Подология</td><td class="q">— ₽</td></tr>
+      <tr><td class="group" colspan="2">Брови</td></tr>
+      <tr><td>Коррекция и окрашивание</td><td class="q">— ₽</td></tr>
+      <tr><td>Ламинирование</td><td class="q">— ₽</td></tr>
+      <tr><td class="group" colspan="2">Ресницы</td></tr>
+      <tr><td>Ламинирование и окрашивание</td><td class="q">— ₽</td></tr>
+      <tr><td>Наращивание, по объёмам</td><td class="q">— ₽</td></tr>
+      <tr><td class="group" colspan="2">Солярий</td></tr>
+      <tr><td>Разовый сеанс</td><td class="q">— ₽</td></tr>
+    </tbody>
+  </table></div>
+  <p class="sub" style="margin-top:20px">Позиции и цены — от вас (или снимем из YCLIENTS и покажем на сверку). Отдельно решим: точные цены или «от». Для рекламы лучше точные — они снимают больше половины звонков «а сколько стоит».</p>
+  <div style="margin-top:24px"><a class="btn" href="#booking">Посмотреть все цены и записаться</a></div>
+</div></section>
+
+<!-- 6 -->
+<section class="screen" id="contacts"><div class="wrap">
+  <div class="eyebrow">Экран 6 · Контакты</div>
+  <h2 class="head">Как нас найти</h2>
+  <div class="contacts">
+    <dl class="dl">
+      <div><dt>Адрес</dt><dd><strong>Московская область, г. Раменское, ул. Дергаевская, 36/6, 1 этаж</strong></dd></div>
+      <div><dt>Ориентиры</dt><dd>Пересечение Северного и Донинского шоссе, за мойкой H2O. Отдельно стоящее трёхэтажное здание напротив стоматологии, белая вывеска «ПЕРФЕКТ ТОН».</dd></div>
+      <div><dt>Парковка</dt><dd>Большая бесплатная городская парковка у здания.</dd></div>
+      <div><dt>Доступность</dt><dd>Есть пандус — удобно с коляской и на кресле.</dd></div>
+      <div><dt>Режим работы</dt><dd><strong>Ежедневно с 9:00 до 21:00</strong></dd></div>
+      <div><dt>Связь</dt><dd class="q">Телефон · WhatsApp · Telegram</dd></div>
+      <div><a class="btn ghost" href="https://yandex.ru/navi/org/perfect_ton/64270712446" target="_blank" rel="noopener">Открыть в Яндекс Картах</a></div>
+    </dl>
+    <div class="ph" style="min-height:340px">Карта Яндекса с меткой салона</div>
+  </div>
+</div></section>
+
+<!-- 7 -->
+<section class="screen" id="booking"><div class="wrap">
+  <div class="eyebrow">Экран 7 · Запись</div>
+  <h2 class="head">Запись онлайн</h2>
+  <p class="sub">Выберите услугу, мастера и время — подтверждение придёт сразу. Звонить и ждать ответа не нужно, но если удобнее голосом — <span class="q">телефон</span>.</p>
+  <div class="ph" style="min-height:420px;margin-top:32px">Виджет YCLIENTS<br>выбор мастера, услуги и времени прямо на странице</div>
+  <p class="sub" style="margin-top:18px">Если нужного времени нет, напишите нам: часто освобождаются окна после переносов.</p>
+</div></section>
+
+<!-- 8 -->
+<section class="screen"><div class="wrap">
+  <div class="eyebrow">Экран 8 · Атмосфера</div>
+  <div class="about">
+    <div>
+      <h2 class="head">Салон, из которого не хочется уходить</h2>
+      <p class="sub">Мы держим тишину и порядок: без очередей в проходе, без чужих разговоров над ухом, без запаха, который потом весь день в волосах. Кофе, своё кресло, ваше время — ровно то, за которым к нам ездят из других районов.</p>
+      <p class="sub" style="margin-top:18px;font-size:14px">Текст поправим под то, что реально видно на кадрах: обещать в тексте то, чего нет на фото, — худшее, что можно сделать в люксе.</p>
+    </div>
+    <div class="ph" style="min-height:300px">Фото и видео интерьера</div>
+  </div>
+</div></section>
+
+<!-- 9 -->
+<section class="screen"><div class="wrap">
+  <div class="eyebrow">Экран 9 · Работы</div>
+  <h2 class="head">Работы наших мастеров</h2>
+  <p class="sub">Фотографии без обработки — так это выглядит вживую.</p>
+  <div class="grid g4">
+    <div class="ph">Ногти</div><div class="ph">Брови</div><div class="ph">Ресницы</div><div class="ph">Ногти</div>
+    <div class="ph">Ресницы</div><div class="ph">Ногти</div><div class="ph">Брови</div><div class="ph">Ногти</div>
+  </div>
+  <div style="margin-top:28px"><a class="btn" href="#booking">Записаться на такую же</a></div>
+</div></section>
+
+<!-- 10 -->
+<section class="screen" id="sterile"><div class="wrap">
+  <div class="eyebrow">Экран 10 · Главный аргумент</div>
+  <h2 class="head">Стерильность, материалы, срок носки</h2>
+  <p class="sub">Три вопроса, которые нам задают чаще всего. Отвечаем на них здесь, чтобы вы не спрашивали на пороге.</p>
+  <div class="grid g3">
+    <div class="card sterile"><div class="card-body">
+      <div class="num">01</div><h3>Инструмент</h3>
+      <p class="q">Цикл обработки: дезинфекция, мойка, сухожар или автоклав, индивидуальный крафт-пакет, который вскрывают при вас. Нужно назвать оборудование и режим.</p></div></div>
+    <div class="card sterile"><div class="card-body">
+      <div class="num">02</div><h3>Материалы</h3>
+      <p class="q">Марки, с которыми работаете, сертификаты, гипоаллергенность — и подходит ли беременным и подросткам.</p></div></div>
+    <div class="card sterile"><div class="card-body">
+      <div class="num">03</div><h3>Срок носки</h3>
+      <p class="q">Сколько носится покрытие и ламинирование и что вы делаете, если результат не выстоял заявленный срок.</p></div></div>
+  </div>
+  <p class="sub" style="margin-top:24px">Единственный экран, который нельзя написать за вас: выдуманная деталь про стерилизацию — прямой риск для салона. Нужны 5–10 предложений от вас или от старшего мастера, дальше причешем. У салонов, которых вы назвали сильными, такого блока на сайте нет.</p>
+</div></section>
+
+<!-- 11 -->
+<section class="screen"><div class="wrap">
+  <div class="eyebrow">Экран 11 · Отзывы</div>
+  <h2 class="head">5,0 на Яндекс Картах</h2>
+  <div class="rating"><b>5,0</b><span>131 отзыв, ни один не написан нами.<br>Открывается прямо в карточке организации — можно проверить.</span></div>
+  <div class="grid g3">
+    <div class="quote"><p class="q">Отзыв дословно с Яндекс Карт</p><footer><span>Имя</span><span>дата</span></footer></div>
+    <div class="quote"><p class="q">Отзыв дословно с Яндекс Карт</p><footer><span>Имя</span><span>дата</span></footer></div>
+    <div class="quote"><p class="q">Отзыв дословно с Яндекс Карт</p><footer><span>Имя</span><span>дата</span></footer></div>
+  </div>
+  <div style="margin-top:28px"><a class="btn ghost" href="https://yandex.ru/navi/org/perfect_ton/64270712446" target="_blank" rel="noopener">Читать все отзывы на Яндекс Картах</a></div>
+</div></section>
+
+<!-- 12 + 13 -->
+<section class="screen"><div class="wrap">
+  <div class="eyebrow">Экраны 12 и 13 · Акции и сертификаты</div>
+  <div class="grid g2" style="margin-top:0">
+    <div>
+      <h2 class="head" style="font-size:32px">Действующие предложения</h2>
+      <p class="sub">Обновляем по мере запуска — актуальные условия всегда здесь.</p>
+      <div class="card" style="margin-top:22px"><div class="card-body">
+        <h3 class="q">Название акции</h3>
+        <p><span class="q">Условие · действует до даты</span><br>Если акций пока нет — блок скрываем: пустой раздел хуже, чем его отсутствие.</p>
+        <a class="more" href="#booking">Записаться →</a></div></div>
+    </div>
+    <div>
+      <h2 class="head" style="font-size:32px">Подарочный сертификат</h2>
+      <p class="sub">Удобный подарок, когда не угадать с размером и вкусом: человек сам выберет услугу, мастера и время. Действует на любое направление — ногти, брови, ресницы, солярий.</p>
+      <div class="card" style="margin-top:22px"><div class="card-body">
+        <h3>Номиналы</h3>
+        <p><span class="q">— ₽ · — ₽ · — ₽ · на любую сумму</span><br>Как купить и срок действия — <span class="q">от вас</span>.</p>
+        <div><a class="btn small" href="#feedback">Заказать сертификат</a></div></div></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 14 -->
+<section class="screen" id="feedback"><div class="wrap">
+  <div class="eyebrow">Экран 14 · Обратная связь</div>
+  <div class="form-wrap">
+    <div>
+      <h2 class="head">Остались вопросы?</h2>
+      <p class="sub">Напишите — ответим в рабочее время, с 9:00 до 21:00. Если вопрос срочный, быстрее позвонить: <span class="q">телефон</span>.</p>
+      <p class="sub" style="margin-top:16px;font-size:14px">После отправки — страница «спасибо»: на неё ставится цель в Метрике, по ней видно, сколько заявок приносит реклама.</p>
+    </div>
+    <form class="feedback" onsubmit="event.preventDefault();this.querySelector('.done').hidden=false">
+      <label class="f">Как к вам обращаться<input type="text" name="name" autocomplete="name"></label>
+      <label class="f">Телефон или мессенджер<input type="tel" name="phone" autocomplete="tel"></label>
+      <label class="f">Вопрос<textarea rows="4" name="q"></textarea></label>
+      <label class="consent"><input type="checkbox"><span>Согласен(-на) на обработку персональных данных</span></label>
+      <button class="btn" type="submit">Отправить</button>
+      <p class="done" hidden style="color:var(--accent);font-size:14px">Спасибо, получили. Свяжемся в рабочее время. Пока ждёте — можно посмотреть свободное время и записаться самостоятельно.</p>
+    </form>
+  </div>
+</div></section>
+
+<!-- 15 -->
+<footer class="site"><div class="wrap">
+  <div class="foot">
+    <div>
+      <div class="logo">ПЕРФЕКТ ТОН<small>салон красоты · Раменское</small></div>
+      <p style="margin-top:16px">ул. Дергаевская, 36/6, 1 этаж<br>Ежедневно с 9:00 до 21:00</p>
+    </div>
+    <div><h4>Связь</h4><ul>
+      <li class="q">Телефон</li><li class="q">WhatsApp</li><li class="q">Telegram</li>
+      <li><a href="#booking">Записаться онлайн</a></li></ul></div>
+    <div><h4>Разделы</h4><ul>
+      <li><a href="#services">Услуги</a></li><li><a href="#masters">Мастера</a></li>
+      <li><a href="#price">Цены</a></li><li><a href="#sterile">Стерильность</a></li>
+      <li><a href="#contacts">Контакты</a></li></ul></div>
+  </div>
+  <div class="legal">
+    <span class="q">ИП / ООО, ИНН, ОГРН</span>
+    <a href="#">Политика обработки персональных данных</a>
+    <span>Экран 15 · подвал</span>
+  </div>
+</div></footer>
+
+<div class="mobile-cta"><a class="btn" href="#booking">Записаться онлайн</a></div>
