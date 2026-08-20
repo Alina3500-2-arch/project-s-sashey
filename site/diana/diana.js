@@ -183,9 +183,10 @@ document.addEventListener('DOMContentLoaded', function () {
       ava.setAttribute('data-initials', name.trim().charAt(0).toUpperCase() || '?');
       who.appendChild(ava);
 
-      // Имя ведёт на первоисточник — видно, что отзыв не выдуман.
+      // Имя ведёт на блок отзывов салона на Картах — первоисточник,
+      // а не на профиль автора: клиенту нужно увидеть именно отзывы.
       var link = el('a', 'rev__name', name);
-      link.href = it.url || (data.org_url || FALLBACK_URL);
+      link.href = data.org_url || FALLBACK_URL;
       link.target = '_blank';
       link.rel = 'noopener';
       link.title = 'Открыть отзыв на Яндекс Картах';
