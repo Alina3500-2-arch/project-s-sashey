@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Платный аудит: как он проходит — Аполлонов и Шигапова</title>
+<style>
+@font-face{font-family:'Manrope';font-weight:400;font-display:swap;src:url(../site/assets/fonts/manrope-400-cyrillic.woff2) format('woff2'),url(../site/assets/fonts/manrope-400-latin.woff2) format('woff2')}
+@font-face{font-family:'Manrope';font-weight:500;font-display:swap;src:url(../site/assets/fonts/manrope-500-cyrillic.woff2) format('woff2')}
+@font-face{font-family:'Manrope';font-weight:600;font-display:swap;src:url(../site/assets/fonts/manrope-600-cyrillic.woff2) format('woff2')}
+@font-face{font-family:'Cormorant Garamond';font-weight:300;font-display:swap;src:url(../site/assets/fonts/cormorant-garamond-300-cyrillic.woff2) format('woff2')}
+@font-face{font-family:'Cormorant Garamond';font-weight:400;font-display:swap;src:url(../site/assets/fonts/cormorant-garamond-400-cyrillic.woff2) format('woff2')}
+:root{--i:#171912;--p:#f4f1e8;--c:#fffdf7;--l:#b9ff37;--m:#6d7067;--b:#ddd9ce;--a:#577719;
+--sans:'Manrope',system-ui,Arial,sans-serif;--serif:'Cormorant Garamond',Georgia,serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--p);color:var(--i);font-family:var(--sans);font-weight:400;-webkit-font-smoothing:antialiased}
+.top{height:70px;padding:0 max(18px,calc((100% - 1000px)/2));display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b);background:transparent}
+.brand{display:flex;align-items:center;gap:11px;font-weight:600;font-size:14px}
+.mark{width:38px;height:38px;border-radius:50%;background:var(--i);color:var(--l);display:grid;place-items:center;font-family:var(--serif);font-size:15px}
+.project{font-size:10px;letter-spacing:.2em;font-weight:600;color:var(--m)}
+.wrap{max-width:1000px;margin:auto;padding:0 20px}
+.hero{padding:76px 0 30px}
+.tag{font-size:10px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:var(--a)}
+h1{font-family:var(--serif);font-weight:300;font-size:clamp(52px,9vw,96px);line-height:.95;letter-spacing:-.02em;margin:22px 0}
+h1 i{color:var(--a)}
+.lead{max-width:660px;color:var(--m);font-size:17px;line-height:1.65;font-weight:400}
+.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:38px 0 12px}
+.rule{background:var(--c);border:1px solid var(--b);border-radius:20px;padding:20px}
+.rule b{display:block;font-family:var(--serif);font-weight:400;font-size:22px;margin-bottom:7px}
+.rule p{margin:0;color:var(--m);font-size:14px;line-height:1.55}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.who{background:var(--i);color:#fff;border-radius:22px;padding:26px}
+.who h3{margin:0 0 4px;font-family:var(--serif);font-weight:300;font-size:30px}
+.who .sub{color:var(--l);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;margin-bottom:14px}
+.who ul{margin:0;padding-left:17px;color:#c9cbc2;line-height:1.8;font-size:14px}
+.tabs{display:flex;gap:8px;margin:44px 0 0}
+.tabs button{flex:1;border:1px solid var(--b);background:var(--c);color:var(--m);border-radius:16px;padding:16px;font-family:var(--sans);font-size:15px;font-weight:500;cursor:pointer;text-align:left;line-height:1.35}
+.tabs button b{display:block;color:var(--i);font-family:var(--serif);font-weight:400;font-size:22px;margin-bottom:3px}
+.tabs button[aria-selected="true"]{background:var(--i);border-color:var(--i);color:#c9cbc2}
+.tabs button[aria-selected="true"] b{color:var(--l)}
+.pane[hidden]{display:none}
+@media(max-width:780px){.tabs{flex-direction:column}}
+@media print{.tabs{display:none}.pane[hidden]{display:block!important}}
+.part{border-top:2px solid var(--i);margin-top:52px;padding-top:13px;display:flex;align-items:baseline;gap:14px}
+.part b{font-size:10px;letter-spacing:.2em;text-transform:uppercase;font-weight:600}
+.part span{color:var(--m);font-size:13px}
+.step{display:grid;grid-template-columns:66px 1fr;padding:30px 0;border-top:1px solid var(--b);break-inside:avoid}
+.n{font-family:var(--serif);font-weight:300;font-size:30px;color:#a8aa9f;line-height:1}
+.step h2{font-family:var(--serif);font-weight:400;font-size:29px;line-height:1.15;margin:0;letter-spacing:-.01em}
+.owner{display:inline-block;margin-top:11px;font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;background:var(--l);border-radius:20px;padding:6px 13px}
+.owner.a{background:var(--i);color:var(--l)}.owner.two{background:#e6e3d8;color:#3a3d36}
+.step p{color:#3d4038;font-size:15px;line-height:1.7;margin:13px 0 0}
+.step ul{margin:11px 0 0;padding-left:19px;color:#3d4038;font-size:15px;line-height:1.7}
+.out{margin-top:15px;background:var(--c);border:1px solid var(--b);border-left:3px solid var(--a);border-radius:0 14px 14px 0;padding:13px 16px;font-size:14px;line-height:1.5}
+.out b{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--a);display:block;margin-bottom:4px;font-weight:600}
+ .sale{background:var(--c);border:1px solid var(--b);border-radius:22px;padding:26px;margin-top:12px}
+.sale h3{font-family:var(--serif);font-weight:400;font-size:26px;margin:0 0 4px}
+.sale .sub{color:var(--m);font-size:14px;margin:0 0 18px}
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:20px}
+.chain b{font-weight:500;font-size:13px;background:var(--p);border:1px solid var(--b);border-radius:999px;padding:9px 14px;white-space:nowrap}
+.chain i{color:var(--a);font-style:normal;font-weight:600}
+.norms{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.norm{background:var(--i);color:#fff;border-radius:16px;padding:18px 20px}
+.norm b{display:block;font-family:var(--serif);font-weight:300;font-size:34px;color:var(--l);line-height:1}
+.norm span{display:block;margin-top:7px;font-size:14px;color:#c9cbc2;line-height:1.5}
+.never{margin:18px 0 0;padding-left:18px;color:#3d4038;font-size:14px;line-height:1.7}
+@media(max-width:780px){.norms{grid-template-columns:1fr}}
+.mat{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}
+.mat a,.mat span{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:500;text-decoration:none;border:1px solid var(--b);background:var(--c);color:var(--i);border-radius:999px;padding:8px 14px}
+.mat a:hover{border-color:var(--i)}
+.mat a::before{content:"→";color:var(--a);font-weight:600}
+.mat span{color:var(--m);border-style:dashed}
+.mat span::before{content:"+";color:#b3a98a;font-weight:600}
+.now{background:var(--i);color:#fff;border-radius:26px;padding:38px;margin:56px 0 22px}
+.now h2{font-family:var(--serif);font-weight:300;font-size:38px;margin:0 0 6px}
+.now>p{color:#c9cbc2;margin:0 0 24px;font-size:15px}
+.now .col h4{margin:0 0 11px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--l);font-weight:600}
+.now .col ol{margin:0;padding-left:18px;line-height:1.75;font-size:15px;color:#edeee9}
+.print{display:block;margin:28px auto 64px;border:0;border-radius:14px;padding:16px 26px;font-weight:600;font-size:15px;background:var(--i);color:var(--l);cursor:pointer;font-family:var(--sans)}
+footer{text-align:center;color:var(--m);font-size:12px;padding:0 15px 40px}
+@media(max-width:780px){.rules{grid-template-columns:1fr}.split{grid-template-columns:1fr}.hero{padding:46px 0 22px}h1{font-size:52px}.step{grid-template-columns:1fr;padding:26px 0}.n{margin-bottom:6px}.step h2{font-size:24px} .mat{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}
+.mat a,.mat span{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:500;text-decoration:none;border:1px solid var(--b);background:var(--c);color:var(--i);border-radius:999px;padding:8px 14px}
+.mat a:hover{border-color:var(--i)}
+.mat a::before{content:"→";color:var(--a);font-weight:600}
+.mat span{color:var(--m);border-style:dashed}
+.mat span::before{content:"+";color:#b3a98a;font-weight:600}
+.now{padding:28px 22px}.brand span:last-child{display:none}}
+@media print{@page{size:A4;margin:14mm}body{background:#fff}.top,.print{display:none}.hero{padding:0 0 16px}h1{font-size:40px}.wrap{padding:0}.lead,.rule p,.step p,.step ul,.who ul,.now .col ol{font-size:11px}.step h2{font-size:16px}.n{font-size:18px}.rule b{font-size:15px}.who h3{font-size:20px}.who,.now,.owner{-webkit-print-color-adjust:exact;print-color-adjust:exact}.now h2{font-size:24px}.part{margin-top:22px}.step{padding:14px 0}}
+</style><style>
+.dlg{margin:14px 0 0;display:grid;gap:10px}
+.msg{max-width:82%;padding:13px 16px;border-radius:18px;font-size:15px;line-height:1.55}
+.msg.us{background:var(--i);color:#eceee6;border-bottom-left-radius:6px}
+.msg.cl{background:var(--c);border:1px solid var(--b);margin-left:auto;border-bottom-right-radius:6px}
+.msg b{color:var(--l);font-size:11px;letter-spacing:.14em;text-transform:uppercase;display:block;margin-bottom:5px}
+.msg.cl b{color:var(--m)}
+.doc{border:1px solid var(--b);background:var(--c);border-radius:20px;padding:26px;margin-top:16px}
+.doc h4{font-family:var(--serif);font-weight:400;font-size:25px;margin:0 0 4px}
+.doc .meta{color:var(--m);font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px}
+.doc h5{font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin:22px 0 8px;color:var(--a)}
+.doc p,.doc li{font-size:14.5px;line-height:1.65;color:#3d4038}
+.doc ul,.doc ol{padding-left:19px;margin:0}
+.note{background:#efece0;border-radius:14px;padding:14px 16px;font-size:13.5px;color:#4a4d44;line-height:1.6;margin-top:16px}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.vs>div{border:1px solid var(--b);background:var(--c);border-radius:18px;padding:20px}
+.vs h4{font-family:var(--serif);font-weight:400;font-size:23px;margin:0 0 10px}
+.vs ul{margin:0;padding-left:18px;font-size:14px;line-height:1.7;color:#3d4038}
+.vs .price{display:block;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--a);margin-bottom:6px}
+@media(max-width:780px){.vs{grid-template-columns:1fr}.msg{max-width:100%}}
+.days{display:grid;gap:10px;margin-top:16px}
+.day{display:grid;grid-template-columns:96px 1fr;gap:16px;background:var(--c);border:1px solid var(--b);border-radius:16px;padding:16px 18px}
+.day b{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--a)}
+.day p{margin:0;font-size:14.5px;line-height:1.6;color:#3d4038}
+.day ul{margin:6px 0 0;padding-left:18px;font-size:14.5px;line-height:1.65;color:#3d4038}
+@media(max-width:780px){.day{grid-template-columns:1fr;gap:6px}}
+</style></head><body>
+<header class="top"><div class="brand"><span class="mark">АШ</span><span>Аполлонов и Шигапова</span></div><span class="project">ПЛАТНЫЙ АУДИТ · 20 000 ₽</span></header>
+<div class="wrap">
+<section class="hero">
+<div class="tag">Уровень 1 · 5 рабочих дней</div>
+<h1>Стратегический аудит<br>и план на <i>90 дней</i></h1>
+<p class="lead">Разбираем, где бизнес теряет деньги, и отдаём маршрут: что чинить, в каком порядке, за какие деньги. Всё дистанционно — ни одной встречи вживую не нужно.</p>
+<div class="norms" style="margin-top:34px">
+<div class="norm"><b>20 000 ₽</b><span>Оплата 100% до начала. Засчитывается в стоимость внедрения, если его заказали в течение 14 дней после аудита.</span></div>
+<div class="norm"><b>5 дней</b><span>Пять рабочих дней от оплаты до готового PDF и разбора созвоном. Срок считается с момента, когда получены доступы.</span></div>
+</div>
+</section>
+
+<div class="part"><b>Вопрос 1</b><span>Что такое установочная встреча</span></div>
+<div class="step"><div class="n">01</div><div><h2>Установочная встреча — это созвон на час</h2>
+<p>Никакой поездки. Обычный видеозвонок или телефон, до 60 минут, в начале работы. Название официальное, суть простая: один раз подробно разговариваем с собственником, чтобы дальше не дёргать его по мелочам пять дней подряд.</p>
+<p><b>Кто ведёт:</b> Саша задаёт вопросы, Алина слушает и записывает. Разговор пишем — с предупреждением, чтобы потом не переспрашивать.</p>
+<p><b>О чём спрашиваем:</b></p>
+<ul>
+<li>на чём реально зарабатываете — какие услуги дают основную выручку, а не какие есть в прайсе;</li>
+<li>кто ваш клиент, откуда приходит, что для него важно при выборе;</li>
+<li>что происходит с обращением: кто принимает, как быстро, что говорит, что дальше;</li>
+<li>что уже пробовали в рекламе, сколько потратили, что получили;</li>
+<li>какие цифры знаете наизусть, а какие никогда не считали;</li>
+<li>что должно измениться через три месяца, чтобы вы сказали «получилось»;</li>
+<li>какие ограничения: сезон, мощности, сколько клиентов вообще потянете.</li>
+</ul>
+<div class="note"><b>Зачем это нам.</b> Половина выводов аудита рождается именно здесь: собственник обычно сам называет свои узкие места, просто раньше их никто не собирал в один список.</div>
+<div class="out"><b>Результат</b>Запись разговора и заполненная карточка бизнеса</div></div></div>
+
+<div class="part"><b>Вопрос 2</b><span>Как смотреть общение с клиентами дистанционно</span></div>
+<div class="step"><div class="n">02</div><div><h2>Пять способов, от лучшего к запасному</h2>
+<p>Задача — понять, что происходит с обращением после того, как человек написал или позвонил. Ехать никуда не нужно, всё видно удалённо. Берём столько источников, сколько получится, но минимум два.</p>
+<ol>
+<li><b>Записи звонков из телефонии.</b> Если стоит Манго, Телфин, Билайн, МТС или UIS — в кабинете есть архив записей. Просим гостевой доступ или выгрузку 10 разговоров за последний месяц: 5 успешных и 5 «не дошли».</li>
+<li><b>Переписки в мессенджерах.</b> Просим экспорт диалогов или просто скриншоты 10 последних обращений — от первого сообщения до результата. Здесь особенно видно скорость ответа.</li>
+<li><b>CRM клиента.</b> Гостевой доступ на просмотр: сколько заявок, сколько потеряно, на каком этапе стоят, какие комментарии оставляют менеджеры.</li>
+<li><b>Тайный клиент — делаем сами.</b> Самый честный способ и не требует ничего от клиента. Пишем и звоним как обычный покупатель: в рабочее время, вечером и в выходной. Замеряем: за сколько ответили, что спросили, предложили ли следующий шаг, перезвонили ли, если не взяли трубку. По согласованию с собственником — он знает, что проверка будет, но не знает когда.</li>
+<li><b>Совсем нет данных.</b> Просим на неделю включить запись разговоров и не менять ничего в работе. Аудит в этом случае стартует на неделю позже — и это честнее, чем писать выводы из воздуха.</li>
+</ol>
+<div class="note"><b>Что именно считаем по этим 10 обращениям.</b> Скорость первого ответа. Сколько обращений остались без ответа вообще. Задали ли клиенту хоть один вопрос. Назвали ли цену. Предложили ли следующий шаг — запись, замер, встречу. Перезвонили ли повторно. Это пять цифр, из которых обычно и складывается главный вывод аудита.</div>
+<div class="out"><b>Результат</b>Таблица по 10 обращениям и посчитанная скорость ответа</div></div></div>
+
+<div class="part"><b>Вопрос 3</b><span>Какие доступы нужны</span></div>
+<div class="step"><div class="n">03</div><div><h2>Список, который просим одним сообщением</h2>
+<ul>
+<li>Яндекс Метрика — гостевой доступ на просмотр;</li>
+<li>Яндекс Директ — гостевой доступ, если реклама была или есть;</li>
+<li>CRM или таблица заявок — просмотр;</li>
+<li>телефония — архив записей или выгрузка 10 звонков;</li>
+<li>10 переписок с клиентами — экспорт или скриншоты;</li>
+<li>ссылки: сайт, Яндекс Карты, соцсети, система записи;</li>
+<li>прайс и 3–5 конкурентов, на которых смотрит клиент;</li>
+<li>данные по выручке за 3 месяца — хотя бы «сколько всего» и «средний чек».</li>
+</ul>
+<div class="note"><b>Формулировка, снимающая страх.</b> «Все доступы — гостевые, только на просмотр: изменить или удалить мы ничего не сможем технически. Без них аудит получится по внешним признакам, а с ними — по вашим реальным цифрам. Пять дней считаются с момента, когда доступы у нас».</div>
+<div class="out"><b>Результат</b>Доступы получены — отсюда стартуют 5 рабочих дней</div></div></div>
+
+<div class="part"><b>Вопрос 4</b><span>Что происходит по дням</span></div>
+<div class="step"><div class="n">04</div><div><h2>Пять рабочих дней</h2>
+<div class="days">
+<div class="day"><b>День 1</b><div><p><b>Установочный созвон и сбор.</b></p><ul><li>час разговора с собственником, запись;</li><li>получаем доступы, проверяем, что всё открывается;</li><li>заводим папку проекта и таблицу аудита.</li></ul></div></div>
+<div class="day"><b>День 2</b><div><p><b>Цифры и трафик — Саша.</b></p><ul><li>Метрика за 3 месяца: посещаемость, источники, отказы, мобильные;</li><li>Директ: что откручивалось, по каким запросам, какая цена клика и заявки;</li><li>спрос: сколько людей ищут эти услуги в этом городе;</li><li>что показывают конкуренты в поиске и РСЯ.</li></ul></div></div>
+<div class="day"><b>День 3</b><div><p><b>Упаковка и путь клиента — Алина.</b></p><ul><li>сайт: первый экран, цены, доверие, мобильная версия, скорость;</li><li>карточка на Яндекс Картах, отзывы и ответы на них;</li><li>путь от клика до обращения: сколько шагов, где отваливается;</li><li>конкуренты: оффер, цены, что обещают, чем мы можем быть сильнее.</li></ul></div></div>
+<div class="day"><b>День 4</b><div><p><b>Обработка обращений — вместе.</b></p><ul><li>10 звонков и переписок по таблице из вопроса 2;</li><li>тайный клиент: пишем и звоним сами, замеряем время ответа;</li><li>считаем воронку: показы → клики → обращения → разговоры → продажи;</li><li>считаем потери в деньгах: сколько стоит одна потерянная заявка.</li></ul></div></div>
+<div class="day"><b>День 5</b><div><p><b>План и документ — Алина, цифры Саши.</b></p><ul><li>собираем выводы в план на 90 дней с приоритетами;</li><li>считаем бюджет и целевые показатели;</li><li>оформляем PDF;</li><li>отправляем и назначаем разбор созвоном на следующий день.</li></ul></div></div>
+</div>
+<div class="out"><b>Результат</b>Готовый PDF и назначенный разбор</div></div></div>
+
+<div class="part"><b>Вопрос 5</b><span>Что клиент получает на руки</span></div>
+<div class="step"><div class="n">05</div><div><h2>Структура итогового документа</h2>
+<div class="doc">
+<h4>Стратегический аудит и план на 90 дней</h4>
+<div class="meta">10–15 страниц · PDF · разбор созвоном</div>
+<h5>1. Вводные</h5><p>Что за бизнес, на чём зарабатывает, какая цель на 3 месяца, какие ограничения. Одна страница, написанная так, чтобы собственник узнал свой бизнес.</p>
+<h5>2. Что показали цифры</h5><p>Трафик, реклама, конверсия сайта, обращения. Каждый вывод — с числом и источником: «Метрика, июнь–август», «10 обращений, выборка».</p>
+<h5>3. Воронка сегодня</h5><p>Показы → клики → обращения → разговоры → продажи. С цифрами на каждом переходе и пометкой, где данных нет и почему.</p>
+<h5>4. Где теряются деньги</h5><p>5–8 точек, отсортированных по стоимости потери, а не по удобству починки. По каждой: что происходит, сколько это стоит в месяц, что с этим делать.</p>
+<h5>5. Обработка обращений</h5><p>Отдельный раздел: скорость ответа, сколько без ответа, что говорят, чего не делают. Здесь же — расшифровки пары показательных диалогов.</p>
+<h5>6. Конкуренты</h5><p>3–5 компаний: оффер, цены, реклама, сильные и слабые места. Вывод — за счёт чего выигрываем мы.</p>
+<h5>7. Целевая воронка</h5><p>Как должно быть через 90 дней, с числами: столько обращений, по такой цене, с такой конверсией.</p>
+<h5>8. План на 90 дней</h5><p>Разбит на три месяца, в каждом — что делаем, кто делает (клиент сам, мы, подрядчик), какой результат ждём. Приоритет по деньгам: сначала то, что дешевле починить и дороже стоит.</p>
+<h5>9. Бюджет и показатели</h5><p>Сколько нужно на рекламу и работы, какие KPI считаем успехом, как их проверять.</p>
+<h5>10. Что делаем в первую неделю</h5><p>Три-пять конкретных действий, которые можно начать сразу после разбора.</p>
+</div>
+<div class="out"><b>Результат</b>PDF 10–15 страниц и часовой разбор созвоном</div></div></div>
+
+<div class="part"><b>Границы</b><span>Что в аудит не входит</span></div>
+<div class="step"><div class="n">06</div><div><h2>Проговариваем до оплаты</h2>
+<ul><li>не делаем сайт, не настраиваем рекламу, не внедряем CRM — это внедрение, отдельные деньги;</li><li>не выполняем план руками — план можно отдать любому подрядчику;</li><li>не гарантируем финансовый результат: аудит показывает, где теряется, а не приносит выручку сам по себе;</li><li>не работаем менеджером и не звоним клиентам вместо сотрудников;</li><li>сроки сдвигаются, если доступы не выданы или нет данных по обращениям.</li></ul>
+<div class="note"><b>Как это звучит клиенту.</b> «Аудит — это маршрут, а не ремонт. Вы получаете понимание, что чинить и в каком порядке. Дальше можете чинить сами, с нами или с кем угодно — план ваш».</div>
+</div></div>
+
+<button class="print" type="button" onclick="window.print()">Сохранить в PDF</button>
+</div>
+<footer>Аполлонов и Шигапова · Внутренний документ по уровню 1</footer>
+</body></html>

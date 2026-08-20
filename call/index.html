@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Скрипт первого звонка — Аполлонов и Шигапова</title>
+<style>
+@font-face{font-family:'Manrope';font-weight:400;font-display:swap;src:url(../site/assets/fonts/manrope-400-cyrillic.woff2) format('woff2'),url(../site/assets/fonts/manrope-400-latin.woff2) format('woff2')}
+@font-face{font-family:'Manrope';font-weight:500;font-display:swap;src:url(../site/assets/fonts/manrope-500-cyrillic.woff2) format('woff2')}
+@font-face{font-family:'Manrope';font-weight:600;font-display:swap;src:url(../site/assets/fonts/manrope-600-cyrillic.woff2) format('woff2')}
+@font-face{font-family:'Cormorant Garamond';font-weight:300;font-display:swap;src:url(../site/assets/fonts/cormorant-garamond-300-cyrillic.woff2) format('woff2')}
+@font-face{font-family:'Cormorant Garamond';font-weight:400;font-display:swap;src:url(../site/assets/fonts/cormorant-garamond-400-cyrillic.woff2) format('woff2')}
+:root{--i:#171912;--p:#f4f1e8;--c:#fffdf7;--l:#b9ff37;--m:#6d7067;--b:#ddd9ce;--a:#577719;
+--sans:'Manrope',system-ui,Arial,sans-serif;--serif:'Cormorant Garamond',Georgia,serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--p);color:var(--i);font-family:var(--sans);font-weight:400;-webkit-font-smoothing:antialiased}
+.top{height:70px;padding:0 max(18px,calc((100% - 1000px)/2));display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--b);background:transparent}
+.brand{display:flex;align-items:center;gap:11px;font-weight:600;font-size:14px}
+.mark{width:38px;height:38px;border-radius:50%;background:var(--i);color:var(--l);display:grid;place-items:center;font-family:var(--serif);font-size:15px}
+.project{font-size:10px;letter-spacing:.2em;font-weight:600;color:var(--m)}
+.wrap{max-width:1000px;margin:auto;padding:0 20px}
+.hero{padding:76px 0 30px}
+.tag{font-size:10px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:var(--a)}
+h1{font-family:var(--serif);font-weight:300;font-size:clamp(52px,9vw,96px);line-height:.95;letter-spacing:-.02em;margin:22px 0}
+h1 i{color:var(--a)}
+.lead{max-width:660px;color:var(--m);font-size:17px;line-height:1.65;font-weight:400}
+.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:38px 0 12px}
+.rule{background:var(--c);border:1px solid var(--b);border-radius:20px;padding:20px}
+.rule b{display:block;font-family:var(--serif);font-weight:400;font-size:22px;margin-bottom:7px}
+.rule p{margin:0;color:var(--m);font-size:14px;line-height:1.55}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.who{background:var(--i);color:#fff;border-radius:22px;padding:26px}
+.who h3{margin:0 0 4px;font-family:var(--serif);font-weight:300;font-size:30px}
+.who .sub{color:var(--l);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;margin-bottom:14px}
+.who ul{margin:0;padding-left:17px;color:#c9cbc2;line-height:1.8;font-size:14px}
+.part{border-top:2px solid var(--i);margin-top:52px;padding-top:13px;display:flex;align-items:baseline;gap:14px}
+.part b{font-size:10px;letter-spacing:.2em;text-transform:uppercase;font-weight:600}
+.part span{color:var(--m);font-size:13px}
+.step{display:grid;grid-template-columns:66px 1fr;padding:30px 0;border-top:1px solid var(--b);break-inside:avoid}
+.n{font-family:var(--serif);font-weight:300;font-size:30px;color:#a8aa9f;line-height:1}
+.step h2{font-family:var(--serif);font-weight:400;font-size:29px;line-height:1.15;margin:0;letter-spacing:-.01em}
+.owner{display:inline-block;margin-top:11px;font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;background:var(--l);border-radius:20px;padding:6px 13px}
+.owner.a{background:var(--i);color:var(--l)}.owner.two{background:#e6e3d8;color:#3a3d36}
+.step p{color:#3d4038;font-size:15px;line-height:1.7;margin:13px 0 0}
+.step ul{margin:11px 0 0;padding-left:19px;color:#3d4038;font-size:15px;line-height:1.7}
+.out{margin-top:15px;background:var(--c);border:1px solid var(--b);border-left:3px solid var(--a);border-radius:0 14px 14px 0;padding:13px 16px;font-size:14px;line-height:1.5}
+.out b{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--a);display:block;margin-bottom:4px;font-weight:600}
+ .mat{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}
+.mat a,.mat span{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:500;text-decoration:none;border:1px solid var(--b);background:var(--c);color:var(--i);border-radius:999px;padding:8px 14px}
+.mat a:hover{border-color:var(--i)}
+.mat a::before{content:"→";color:var(--a);font-weight:600}
+.mat span{color:var(--m);border-style:dashed}
+.mat span::before{content:"+";color:#b3a98a;font-weight:600}
+.now{background:var(--i);color:#fff;border-radius:26px;padding:38px;margin:56px 0 22px}
+.now h2{font-family:var(--serif);font-weight:300;font-size:38px;margin:0 0 6px}
+.now>p{color:#c9cbc2;margin:0 0 24px;font-size:15px}
+.now .col h4{margin:0 0 11px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--l);font-weight:600}
+.now .col ol{margin:0;padding-left:18px;line-height:1.75;font-size:15px;color:#edeee9}
+.print{display:block;margin:28px auto 64px;border:0;border-radius:14px;padding:16px 26px;font-weight:600;font-size:15px;background:var(--i);color:var(--l);cursor:pointer;font-family:var(--sans)}
+footer{text-align:center;color:var(--m);font-size:12px;padding:0 15px 40px}
+@media(max-width:780px){.rules{grid-template-columns:1fr}.split{grid-template-columns:1fr}.hero{padding:46px 0 22px}h1{font-size:52px}.step{grid-template-columns:1fr;padding:26px 0}.n{margin-bottom:6px}.step h2{font-size:24px} .mat{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px}
+.mat a,.mat span{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:500;text-decoration:none;border:1px solid var(--b);background:var(--c);color:var(--i);border-radius:999px;padding:8px 14px}
+.mat a:hover{border-color:var(--i)}
+.mat a::before{content:"→";color:var(--a);font-weight:600}
+.mat span{color:var(--m);border-style:dashed}
+.mat span::before{content:"+";color:#b3a98a;font-weight:600}
+.now{padding:28px 22px}.brand span:last-child{display:none}}
+@media print{@page{size:A4;margin:14mm}body{background:#fff}.top,.print{display:none}.hero{padding:0 0 16px}h1{font-size:40px}.wrap{padding:0}.lead,.rule p,.step p,.step ul,.who ul,.now .col ol{font-size:11px}.step h2{font-size:16px}.n{font-size:18px}.rule b{font-size:15px}.who h3{font-size:20px}.who,.now,.owner{-webkit-print-color-adjust:exact;print-color-adjust:exact}.now h2{font-size:24px}.part{margin-top:22px}.step{padding:14px 0}}
+</style></head><body>
+<header class="top"><div class="brand"><span class="mark">АШ</span><span>Аполлонов и Шигапова</span></div><span class="project">ШАГИ 02–03 · ЧЕРНОВИК</span></header>
+<div class="wrap">
+<section class="hero">
+<div class="tag">Переписка и первый звонок</div>
+<h1>Первый контакт<br>с <i>клиентом</i></h1>
+<p class="lead">Сначала короткая переписка — три сообщения, чтобы назначить разговор. Потом созвон-знакомство на 15–20 минут. Задача — понять запрос и договориться о следующем шаге, а не продать в этом разговоре. Цену на первом звонке не называем: она считается после анкеты.</p>
+<div class="rules">
+<div class="rule"><b>Слушать больше</b><p>Хорошая пропорция — клиент говорит две трети времени. Вопрос задали, дослушали до конца, записали дословно.</p></div>
+<div class="rule"><b>Записывать сразу</b><p>Цифры, сроки, названия конкурентов — в карточку CRM во время разговора, а не по памяти после.</p></div>
+<div class="rule"><b>Закрыть на шаг</b><p>Разговор считается удачным, если в конце есть договорённость: клиенту ушла анкета и назначен следующий контакт.</p></div>
+</div>
+</section>
+
+<div class="part"><b>Переписка</b><span>MAX, WhatsApp, Telegram · три сообщения</span></div>
+
+<div class="step"><div class="n">01</div><div><h2>Как отвечаем на заявку</h2>
+<p>Норматив — 15 минут в рабочее время. Если заявка пришла ночью, отвечаем утром первым делом. Представляемся всегда одинаково, формулировку меняем в одном месте и сразу везде.</p>
+<p><b>Сообщение 1.</b> «Иван, здравствуйте! Это Александр, студия «Аполлонов и Шигапова», занимаемся систематизацией продаж в малом бизнесе. Увидел вашу заявку по [услуга]. Чтобы понимать, чем можем быть полезны: чем занимаетесь и откуда сейчас идут клиенты?»</p>
+<p><b>Сообщение 2.</b> Один-два вопроса по его ответу, по одному за раз: «А Директ вели сами или подрядчик?», «Сколько заявок в месяц сейчас и сколько хотелось бы?», «Сайт есть или пока только Авито?»</p>
+<p><b>Сообщение 3.</b> «Понял. Предлагаю созвониться минут на двадцать — разберём подробнее, и я скажу, что имеет смысл делать в первую очередь. Сегодня после 18 или завтра в 11?»</p>
+<div class="out"><b>Цель переписки</b>Не продать, а назначить разговор</div></div></div>
+
+<div class="step"><div class="n">02</div><div><h2>Если спрашивают цену в переписке</h2>
+<p>«Вилка такая: разбор с планом — 20 000, запуск с нуля — от 80 000. Точную цифру скажу после разговора, когда пойму объём: называть заранее — вводить вас в заблуждение. Двадцать минут голосом, и всё станет понятно. Когда удобно?»</p></div></div>
+
+<div class="step"><div class="n">03</div><div><h2>Если молчит</h2>
+<p><b>На следующий день:</b> «Иван, добрый день. Напомню про себя — вы оставляли заявку по [услуга]. Ещё актуально?»</p>
+<p><b>Через три дня:</b> «Иван, если сейчас не до этого — просто скажите, я не буду писать. Если актуально, найдём двадцать минут на разговор.»</p>
+<p>Дальше не пишем. Задача в CRM на возврат к нему через месяц.</p></div></div>
+
+<div class="step"><div class="n">04</div><div><h2>Если в заявке выбран звонок</h2>
+<p>Звоним сразу, не переписываемся. Не взял трубку — сообщение: «Иван, здравствуйте! Это Александр, студия «Аполлонов и Шигапова». Звонил по вашей заявке. Наберу через час, или напишите, когда удобно.» Второй звонок — в тот же день.</p></div></div>
+
+<div class="part"><b>Часть 1</b><span>Начало</span></div>
+<div class="step"><div class="n">05</div><div><h2>Приветствие</h2>
+<p>«Здравствуйте, [Имя]. Это Александр, студия «Аполлонов и Шигапова» — вы оставляли заявку на сайте. Удобно сейчас говорить минут пятнадцать?»</p>
+<p>Если неудобно: «Хорошо, когда лучше перезвонить — сегодня после шести или завтра утром?» Всегда предлагать два варианта, а не открытый вопрос.</p>
+<div class="out"><b>Дальше</b>Коротко сказать, зачем звоним</div></div></div>
+
+<div class="step"><div class="n">06</div><div><h2>Рамка разговора</h2>
+<p>«Мы занимаемся тем, что собираем продажи в одну систему: предложение, сайт, реклама, обработка заявок. Сейчас предлагаю просто разобраться, что у вас происходит, и я скажу, чем мы можем быть полезны. Задам несколько вопросов, хорошо?»</p>
+<div class="out"><b>Дальше</b>Вопросы по бизнесу</div></div></div>
+
+<div class="part"><b>Часть 2</b><span>Вопросы</span></div>
+<div class="step"><div class="n">07</div><div><h2>Бизнес и продукт</h2>
+<ul><li>Расскажите коротко, чем занимаетесь и на чём зарабатываете больше всего?</li><li>Сколько лет на рынке, сколько человек в команде?</li><li>Где работаете географически?</li><li>Средний чек примерно какой?</li></ul>
+<div class="out"><b>Записать</b>Основной продукт, чек, география</div></div></div>
+
+<div class="step"><div class="n">08</div><div><h2>Что сейчас с заявками</h2>
+<ul><li>Откуда сейчас приходят клиенты?</li><li>Сколько заявок в месяц получается и сколько хотелось бы?</li><li>Что уже пробовали — сайт, Директ, Авито, соцсети? Что дало результат, что нет?</li><li>Сколько тратили на рекламу и что получали?</li><li>Кто принимает заявку и как быстро отвечает?</li></ul>
+<div class="out"><b>Записать</b>Каналы, цифры, что уже пробовали</div></div></div>
+
+<div class="step"><div class="n">09</div><div><h2>Задача и ожидания</h2>
+<ul><li>Что хотите изменить в первую очередь?</li><li>К какому сроку это нужно и с чем связан срок?</li><li>Есть ли уже сайт, домен, Метрика, CRM — что из этого работает?</li><li>Кто, кроме вас, участвует в решении?</li><li>На какой бюджет ориентируетесь — по работе и отдельно по рекламе?</li></ul>
+<div class="out"><b>Записать</b>Задача, срок, бюджет, кто решает</div></div></div>
+
+<div class="part"><b>Часть 3</b><span>Ответ и договорённость</span></div>
+<div class="step"><div class="n">10</div><div><h2>Что говорим о себе</h2>
+<p>«Мы работаем вдвоём: я веду рекламу и цифры, десять лет в Директе. Партнёр — Алина, на ней предложение, сайт и упаковка, она три года внутри бизнеса на продажах. Поэтому мы не делаем кусок работы и не уходим, а отвечаем за всю цепочку: предложение → сайт → реклама → обработка заявок.»</p>
+<p>Дальше — одна фраза под запрос клиента, из того, что он только что рассказал. Не пересказывать все услуги.</p>
+<div class="out"><b>Дальше</b>Перейти к анкете</div></div></div>
+
+<div class="step"><div class="n">11</div><div><h2>Закрытие на анкету</h2>
+<p>«Чтобы не гадать и не называть цифры с потолка, пришлю анкету — вопросы по бизнесу, ценам и конкурентам, минут на пятнадцать. Как заполните, мы разберём и подготовим предложение с точной стоимостью, а потом созвонимся и пройдём его по пунктам. Договорились? На какую почту прислать?»</p>
+<p>Сразу назначаем дату: «Заполните до четверга — в пятницу пришлю предложение и созвонимся». Без даты анкета не возвращается.</p>
+<div class="out"><b>Результат звонка</b>Анкета отправлена, дата следующего созвона в календаре</div></div></div>
+
+<div class="part"><b>Часть 4</b><span>Если спрашивают</span></div>
+<div class="step"><div class="n">12</div><div><h2>«Сколько стоит?»</h2>
+<p>«Вилка такая: аудит с планом — 20 000, запуск с нуля — от 80 000, ведение — от 45 000 в месяц. Точную цифру назову после анкеты, когда будет понятен объём. Обманывать цифрой заранее не хочу.»</p>
+<p><b>Про Diams и другие первые проекты:</b> цену обсуждаем отдельно, но клиенту всегда называем полную стоимость и отдельно — условие, по которому она снижена. Иначе следующий клиент придёт на ту же цифру.</p></div></div>
+
+<div class="step"><div class="n">13</div><div><h2>«А гарантии есть?»</h2>
+<p>«Гарантий по количеству заявок не даём — их даёт только тот, кто потом не отвечает за результат. Что гарантируем: прозрачные цифры, наблюдение после запуска и то, что доводим систему до работающего состояния, а не сдаём кусок.»</p></div></div>
+
+<div class="step"><div class="n">14</div><div><h2>«Мне только сайт»</h2>
+<p>«Сделать можем. Но сначала посмотрим, где теряются деньги: часто дело не в сайте, и новый сайт ничего не меняет. Если после разбора окажется, что нужен именно сайт — сделаем его.»</p></div></div>
+
+<div class="step"><div class="n">15</div><div><h2>«Я подумаю»</h2>
+<p>«Конечно. Анкету всё равно пришлю — она бесплатная и полезна сама по себе: часть вопросов там такие, что на них полезно ответить себе. Наберу в пятницу, узнаю решение.»</p></div></div>
+
+<div class="part"><b>После звонка</b><span>Сразу, не откладывая</span></div>
+<div class="step"><div class="n">16</div><div><h2>Что делаем сразу</h2>
+<ul><li>Заполнить карточку клиента в CRM — по записям во время разговора.</li><li>Отправить анкету и список материалов с датой.</li><li>Поставить задачу на следующий контакт.</li><li>Скинуть Алине короткое резюме: бизнес, запрос, бюджет, срок.</li></ul>
+<div class="out"><b>Результат</b>Карточка заполнена, анкета ушла, дата следующего созвона назначена</div></div></div>
+
+<button class="print" type="button" onclick="window.print()">Сохранить скрипт в PDF</button>
+</div>
+<footer>Аполлонов и Шигапова · Черновая версия, дополняем после первых звонков</footer>
+</body></html>

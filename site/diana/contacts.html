@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Контакты — PÉRFECT TON by Diana Fedorova</title>
+  <meta name="description" content="Контакты и запись в студию PÉRFECT TON by Diana Fedorova." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="diana.css" />
+</head>
+<body>
+
+  <header class="hdr">
+    <div class="hdr__in">
+      <a class="logo" href="index.html">PÉRFECT TON<small>by Diana Fedorova</small></a>
+      <button class="burger" type="button" aria-expanded="false" aria-label="Меню">Меню</button>
+      <nav class="nav">
+      <a href="index.html">Главная</a>
+      <a href="about.html">О студии</a>
+      <a href="services.html">Услуги</a>
+      <a href="podology.html">Подология</a>
+      <a href="price.html">Прайс</a>
+      <a href="portfolio.html">Работы</a>
+      <a href="reviews.html">Отзывы</a>
+      <a href="contacts.html" aria-current="page">Контакты</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap hero__in">
+      <p class="eyebrow">Контакты</p>
+      <h1>Запись в студию</h1>
+      <p class="lead">Напишите в мессенджер или оставьте заявку — подтвердим время и напомним о визите.</p>
+      
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="grid grid--2">
+        <div>
+          <p class="eyebrow">Заявка</p>
+          <h2>Оставить запрос</h2>
+          <form class="form" data-proto>
+            <div class="field">
+              <label for="n">Имя</label>
+              <input id="n" name="name" type="text" placeholder="Как к вам обращаться" />
+            </div>
+            <div class="field">
+              <label for="t">Телефон или Telegram</label>
+              <input id="t" name="contact" type="text" placeholder="+7 ... или @username" />
+            </div>
+            <div class="field">
+              <label for="s">Услуга</label>
+              <select id="s" name="service"><option>Маникюр</option><option>Педикюр</option><option>Подология — консультация</option><option>Подология — процедура</option><option>Уход</option><option>Не знаю, нужен совет</option></select>
+            </div>
+            <div class="field">
+              <label for="c">Комментарий</label>
+              <textarea id="c" name="comment" rows="4" placeholder="Удобные дни и время, что беспокоит"></textarea>
+            </div>
+            <button class="btn btn--solid" type="submit">Отправить</button>
+            <p class="form__note">Прототип: форма пока не отправляет данные.</p>
+          </form>
+        </div>
+        <div>
+          <p class="eyebrow">Связь</p>
+          <h2>Быстрее — в мессенджер</h2>
+          <ul class="muted" style="list-style:none;padding:0;margin:0 0 28px;display:grid;gap:12px;font-size:16px">
+            <li>Телефон: <a href="tel:+70000000000">+7 (000) 000-00-00</a> — плейсхолдер</li>
+            <li>Telegram: <a href="#">@—</a></li>
+            <li>WhatsApp: <a href="#">ссылка</a></li>
+            <li>Instagram: <a href="#">профиль</a></li>
+          </ul>
+          <p class="eyebrow">Адрес</p>
+          <p class="muted">Город, улица, дом, этаж, домофон — уточняется у Дианы.<br />
+          Ежедневно, по предварительной записи.</p>
+          <div class="ph ph--wide"><span>Карта / схема проезда</span></div>
+        </div>
+      </div>
+      <div class="note"><strong>Нужно от Дианы:</strong> телефон, ссылки на мессенджеры и соцсети,
+      точный адрес, часы работы, ссылка на онлайн-запись — и куда должны приходить заявки с формы
+      (Telegram-бот, почта, CRM).</div>
+    </div>
+  </section>
+
+
+  <footer class="ftr">
+    <div class="wrap">
+      <div class="ftr__grid">
+        <div>
+          <div class="logo">PÉRFECT TON<small>by Diana Fedorova</small></div>
+          <p class="muted" style="margin-top:18px;font-size:14px">
+            Студия маникюра, педикюра и подологической практики.
+          </p>
+        </div>
+        <div>
+          <p class="eyebrow">Разделы</p>
+          <ul class="ftr__nav">
+        <li><a href="index.html">Главная</a></li>
+        <li><a href="about.html">О студии</a></li>
+        <li><a href="services.html">Услуги</a></li>
+        <li><a href="podology.html">Подология</a></li>
+        <li><a href="price.html">Прайс</a></li>
+        <li><a href="portfolio.html">Работы</a></li>
+        <li><a href="reviews.html">Отзывы</a></li>
+        <li><a href="contacts.html">Контакты</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="eyebrow">Контакты</p>
+          <ul>
+            <li><a href="tel:+70000000000">+7 (000) 000-00-00</a> <span class="muted">— плейсхолдер</span></li>
+            <li><a href="#">Telegram</a></li>
+            <li><a href="#">WhatsApp</a></li>
+            <li><a href="#">Instagram</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="eyebrow">Адрес и часы</p>
+          <ul>
+            <li class="muted">Город, улица, дом — уточняется</li>
+            <li class="muted">Ежедневно, по записи</li>
+          </ul>
+          <a class="btn" href="contacts.html" style="margin-top:20px">Записаться</a>
+        </div>
+      </div>
+      <div class="ftr__bottom">
+        <span>© PÉRFECT TON</span>
+        <span>Прототип сайта · 2026</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="diana.js"></script>
+</body>
+</html>
