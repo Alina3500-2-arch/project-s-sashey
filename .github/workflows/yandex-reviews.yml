@@ -34,7 +34,7 @@ jobs:
       - name: Забрать отзывы
         id: fetch
         continue-on-error: true
-        run: python3 scripts/fetch_yandex_reviews.py
+        run: python3 scripts/fetch_yandex_reviews.py --debug
 
       - name: Закоммитить, если что-то изменилось
         if: steps.fetch.outcome == 'success'
