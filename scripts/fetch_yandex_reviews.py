@@ -168,7 +168,11 @@ def download_avatars(items, out_dir):
         it["avatar"] = None
         if not src:
             continue
-        name = hashlib.sha1(src.encode()).hexdigest()[:16] + ".jpg"
+        # Имя файла — по автору и тексту отзыва, а НЕ по ссылке: адреса
+        # картинок у Яндекса меняются от запроса к запросу, и привязка к ним
+        # заставляла перекачивать все аватарки каждый прогон.
+        ident = (it.get("author", "") + "|" + (it.get("text") or "")[:60]).encode()
+        name = hashlib.sha1(ident).hexdigest()[:16] + ".jpg"
         path = os.path.join(out_dir, name)
         kept.add(name)
         if not os.path.exists(path):
