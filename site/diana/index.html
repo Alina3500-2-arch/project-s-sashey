@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Главная — PÉRFECT TON</title>
-  <meta name="description" content="Салон красоты Perfect Ton в Раменском: ногтевой сервис, ресницы, брови, солярий." />
+  <title>PÉRFECT TON — салон красоты в Раменском</title>
+  <meta name="description" content="Салон красоты Perfect Ton в Раменском: маникюр, педикюр, подология, брови, ресницы и солярий. 15 лет опыта, 8 мастеров." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Jost:wght@200;300;400&display=swap" rel="stylesheet" />
   <link rel="preload" as="image" href="assets/hero-bg.jpg" />
   <link rel="stylesheet" href="diana.css" />
 </head>
@@ -15,214 +15,202 @@
 
   <header class="hdr hdr--over">
     <div class="hdr__in">
-      <a class="mark" href="index.html" aria-label="PERFECT TON by Diana Fedorova">
+      <a class="mark" href="index.html" aria-label="PÉRFECT TON by Diana Fedorova">
         <span>PT</span><span>DF.</span>
       </a>
       <button class="burger" type="button" aria-expanded="false" aria-label="Меню">Меню</button>
-      <nav class="nav">
+      <nav class="nav" aria-label="Основное меню">
+        <button class="nav__close" type="button" aria-label="Закрыть меню">Закрыть</button>
         <a href="about.html">О салоне</a>
         <a href="services.html">Услуги</a>
         <a href="masters.html">Мастера</a>
-        <a href="gallery.html">Галерея</a>
         <a href="reviews.html">Отзывы</a>
         <a href="contacts.html">Контакты</a>
+        <a class="btn btn--ghost nav__cta" href="https://n99533.yclients.com/company/112132/personal/select-master?o=" target="_blank" rel="noopener">Записаться</a>
       </nav>
       <a class="btn btn--ghost hdr__cta" href="https://n99533.yclients.com/company/112132/personal/select-master?o=" target="_blank" rel="noopener">Записаться</a>
     </div>
   </header>
 
+  <!-- ================= 1. ГЛАВНЫЙ ЭКРАН ================= -->
   <section class="hero">
-    <div class="hero__bg" role="img" aria-label="Интерьер салона Perfect Ton"></div>
+    <div class="hero__bg" role="img" aria-label="Интерьер салона PÉRFECT TON"></div>
     <div class="hero__in">
       <p class="hero__eyebrow">Салон красоты в Раменском</p>
       <h1 class="hero__title"><span>P&Eacute;RFECT</span><span>TON</span></h1>
-      <div class="hero__rule" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="14" height="14"><path d="M12 1l2.2 8.8L23 12l-8.8 2.2L12 23l-2.2-8.8L1 12l8.8-2.2z" fill="currentColor"/></svg>
+      <div class="rule--gold" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="13" height="13"><path d="M12 1l2.2 8.8L23 12l-8.8 2.2L12 23l-2.2-8.8L1 12l8.8-2.2z" fill="currentColor"/></svg>
       </div>
-      <p class="hero__lead">Место, где создаётся<br />ваша лучшая красота</p>
+      <p class="hero__lead">Место, где создаётся<br />ваша идеальная красота</p>
       <p class="hero__sub">Ногтевой сервис, ресницы, брови и солярий в одном месте. <br />15 лет опыта, команда мастеров, атмосфера люкс-сегмента.</p>
       <a class="btn btn--ghost hero__cta" href="https://n99533.yclients.com/company/112132/personal/select-master?o=" target="_blank" rel="noopener">Записаться</a>
     </div>
-    <ul class="hero__usp">
+    <ul class="usp">
       <li>
-        <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1"/><path d="M16 23c0-5 3-8 7-8.5-.5 4.5-3 7.5-7 8.5zM16 23c0-5-3-8-7-8.5.5 4.5 3 7.5 7 8.5zM16 23v-4" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <b>Эксперты</b><span>профессионалы</span>
+        <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14.4" fill="none" stroke="currentColor" stroke-width=".9"/><path d="M16 22.6c0-4.6 2.8-7.4 6.5-7.9-.5 4.2-2.8 7-6.5 7.9zM16 22.6c0-4.6-2.8-7.4-6.5-7.9.5 4.2 2.8 7 6.5 7.9zM16 22.6v-3.4" fill="none" stroke="currentColor" stroke-width=".9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <b>Эксперты</b><span>своего дела</span>
       </li>
       <li>
-        <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1"/><path d="M11 12h10l3 4-8 8-8-8z" fill="none" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/><path d="M8 16h16M13 12l3 12M19 12l-3 12" fill="none" stroke="currentColor" stroke-width=".8"/></svg>
-        <b>Премиум</b><span>материалы</span>
+        <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14.4" fill="none" stroke="currentColor" stroke-width=".9"/><path d="M11.4 12h9.2l2.6 3.6L16 23l-7.2-7.4z" fill="none" stroke="currentColor" stroke-width=".9" stroke-linejoin="round"/><path d="M8.8 15.6h14.4M13.2 12 16 23M18.8 12 16 23" fill="none" stroke="currentColor" stroke-width=".7"/></svg>
+        <b>Премиальные</b><span>материалы</span>
       </li>
       <li>
-        <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1"/><path d="M16 23c-4-2.6-6-5-6-7.4A3 3 0 0116 14a3 3 0 016 1.6c0 2.4-2 4.8-6 7.4z" fill="none" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/><path d="M9 24c2-1 4.5-1.5 7-1.5s5 .5 7 1.5" fill="none" stroke="currentColor" stroke-width=".8" stroke-linecap="round"/></svg>
-        <b>Безупречный</b><span>сервис</span>
+        <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14.4" fill="none" stroke="currentColor" stroke-width=".9"/><path d="M16 8.6l5.6 2.3v4.4c0 3.4-2.3 6.4-5.6 7.4-3.3-1-5.6-4-5.6-7.4v-4.4z" fill="none" stroke="currentColor" stroke-width=".9" stroke-linejoin="round"/><path d="M13.4 15.9l1.9 1.9 3.5-3.6" fill="none" stroke="currentColor" stroke-width=".9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <b>Стерильность</b><span>и гигиена</span>
       </li>
       <li>
-        <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1"/><path d="M9 21l-1.5-8 5 3.5L16 10l3.5 6.5 5-3.5L23 21z" fill="none" stroke="currentColor" stroke-width="1" stroke-linejoin="round"/><path d="M9 23h14" stroke="currentColor" stroke-width=".8" stroke-linecap="round"/></svg>
-        <b>Атмосфера</b><span>комфорта</span>
+        <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14.4" fill="none" stroke="currentColor" stroke-width=".9"/><path d="M16 22.6c-4-2.6-6-5-6-7.4a3 3 0 016-1.4 3 3 0 016 1.4c0 2.4-2 4.8-6 7.4z" fill="none" stroke="currentColor" stroke-width=".9" stroke-linejoin="round"/></svg>
+        <b>Уютная</b><span>атмосфера</span>
+      </li>
+      <li>
+        <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14.4" fill="none" stroke="currentColor" stroke-width=".9"/><path d="M9.6 21.4l-1.4-7.8 4.6 3.2L16 10l3.2 6.8 4.6-3.2-1.4 7.8z" fill="none" stroke="currentColor" stroke-width=".9" stroke-linejoin="round"/><path d="M9.6 23.4h12.8" stroke="currentColor" stroke-width=".7" stroke-linecap="round"/></svg>
+        <b>Индивидуальный</b><span>подход</span>
       </li>
     </ul>
   </section>
 
-  <section class="section">
-    <div class="wrap">
-      <div class="grid grid--4">
-        <article class="card" style="text-align:center">
-          <h3 style="font-size:clamp(26px,4vw,40px);letter-spacing:.04em">15</h3>
-          <p class="muted" style="margin:0">лет на рынке</p>
-        </article>
-        <article class="card" style="text-align:center">
-          <h3 style="font-size:clamp(26px,4vw,40px);letter-spacing:.04em">8</h3>
-          <p class="muted" style="margin:0">мастеров в команде</p>
-        </article>
-        <article class="card" style="text-align:center">
-          <h3 style="font-size:clamp(26px,4vw,40px);letter-spacing:.04em">~300</h3>
-          <p class="muted" style="margin:0">клиенток в месяц</p>
-        </article>
-        <article class="card" style="text-align:center">
-          <h3 style="font-size:clamp(26px,4vw,40px);letter-spacing:.04em">5,0</h3>
-          <p class="muted" style="margin:0">рейтинг на Яндекс Картах</p>
-        </article></div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="wrap">
-      <div class="section__head">
-        <p class="eyebrow">Направления</p>
-        <h2>Что мы делаем</h2>
-      </div>
-      <div class="grid grid--4">
-        <article class="card">
-          <span class="card__num">01</span>
-          <h3>Ногтевой сервис</h3>
-          <p>Маникюр, педикюр, подология — то, что приносит нам больше всего заявок.</p>
-        </article>
-        <article class="card">
-          <span class="card__num">02</span>
-          <h3>Ресницы</h3>
-          <p>Ламинирование, окрашивание, наращивание.</p>
-        </article>
-        <article class="card">
-          <span class="card__num">03</span>
-          <h3>Брови</h3>
-          <p>Окрашивание, коррекция, ламинирование.</p>
-        </article>
-        <article class="card">
-          <span class="card__num">04</span>
-          <h3>Солярий</h3>
-          <p>Для тех, кому нужен ровный загар в любой сезон.</p>
-        </article></div>
-      <div class="btns"><a class="btn" href="services.html">Смотреть все услуги</a></div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="wrap">
-      <div class="grid grid--2" style="align-items:center">
-        <div>
-          <p class="eyebrow">О салоне</p>
-          <h2>15 лет в Раменском</h2>
-          <p class="lead">Команда из 8 мастеров и атмосфера люкс-сегмента — полный
-          цикл услуг для лица и тела в одном месте.</p>
-          <div class="btns"><a class="btn" href="about.html">Подробнее о салоне</a></div>
-        </div>
-        <div class="ph ph--square"><span>Фото салона</span></div>
+  <!-- ================= 2. О САЛОНЕ ================= -->
+  <section class="sec sec--about" id="about">
+    <div class="wrap sec__cols">
+      <figure class="shot">
+        <img src="assets/about-video.jpg" alt="Зал салона PÉRFECT TON в Раменском" loading="lazy" />
+        <figcaption>Салон в Раменском</figcaption>
+      </figure>
+      <div class="sec__text">
+        <p class="eyebrow">О салоне</p>
+        <h2 class="h-serif">Красота в деталях.<br />Совершенство во всём</h2>
+        <p>PÉRFECT TON — это пространство, где каждая деталь продумана для вашего
+          комфорта и результата. Мы создаём безупречный образ с заботой о здоровье,
+          используя только проверенные материалы и современные техники.</p>
+        <div class="btns"><a class="btn btn--ghost" href="about.html">Узнать больше</a></div>
+        <ul class="figs">
+          <li><b>15+</b><span>лет опыта</span></li>
+          <li><b>8</b><span>мастеров</span></li>
+          <li><b>300+</b><span>клиенток в месяц</span></li>
+          <li><b>5,0</b><span>рейтинг на Картах</span></li>
+        </ul>
       </div>
     </div>
   </section>
 
-  <section class="section">
+  <!-- ================= 3. УСЛУГИ ================= -->
+  <section class="sec sec--light sec--services" id="services">
     <div class="wrap">
-      <div class="section__head">
-        <p class="eyebrow">Перед записью обычно спрашивают</p>
-        <h2>Отвечаем сразу</h2>
+      <div class="sec__head">
+        <p class="eyebrow">Услуги</p>
+        <h2 class="h-serif">Для вашей красоты</h2>
+        <div class="rule" aria-hidden="true"></div>
       </div>
-      <div class="grid grid--3">
-        <article class="card"><h3 style="font-size:17px">Стерильность инструментов</h3><p>Подробный ответ — в разделе «Услуги».</p></article>
-        <article class="card"><h3 style="font-size:17px">Безопасность материалов</h3><p>Подробный ответ — в разделе «Услуги».</p></article>
-        <article class="card"><h3 style="font-size:17px">Срок носки покрытия</h3><p>Подробный ответ — в разделе «Услуги».</p></article></div>
+      <div class="svc">
+        <article class="svc__card">
+          <img src="assets/svc-manicure.jpg" alt="Маникюр и дизайн" loading="lazy" />
+          <div class="svc__body"><h3>Маникюр<br />и дизайн</h3><p>покрытие, укрепление, дизайн</p></div>
+        </article>
+        <article class="svc__card">
+          <img src="assets/svc-pedicure.jpg" alt="Педикюр" loading="lazy" />
+          <div class="svc__body"><h3>Педикюр</h3><p>аппаратный и комбинированный</p></div>
+        </article>
+        <article class="svc__card">
+          <img src="assets/svc-podology.jpg" alt="Подология" loading="lazy" />
+          <div class="svc__body"><h3>Подология</h3><p>вросший ноготь, трещины, стопы</p></div>
+        </article>
+        <article class="svc__card">
+          <img src="assets/svc-brows.jpg" alt="Брови и ресницы" loading="lazy" />
+          <div class="svc__body"><h3>Брови<br />и ресницы</h3><p>ламинирование, окрашивание</p></div>
+        </article>
+        <article class="svc__card">
+          <img src="assets/svc-solarium.jpg" alt="Солярий" loading="lazy" />
+          <div class="svc__body"><h3>Солярий</h3><p>ровный загар в любой сезон</p></div>
+        </article>
+      </div>
+      <div class="btns btns--center"><a class="btn btn--dark" href="services.html">Смотреть все услуги</a></div>
     </div>
   </section>
 
-  <section class="section">
+  <!-- ================= 4. МАСТЕРА ================= -->
+  <section class="sec sec--masters" id="masters">
     <div class="wrap">
-      <div class="section__head">
-        <p class="eyebrow">Работы наших мастеров</p>
-        <h2>Галерея</h2>
+      <div class="sec__head">
+        <p class="eyebrow">Наши мастера</p>
+        <h2 class="h-serif">Профессионалы своего дела</h2>
+        <div class="rule--gold" aria-hidden="true"></div>
       </div>
-      <div class="grid grid--4"><div class="ph "><span>Работа 1</span></div><div class="ph "><span>Работа 2</span></div><div class="ph "><span>Работа 3</span></div><div class="ph "><span>Работа 4</span></div></div>
-      <div class="btns"><a class="btn" href="gallery.html">Смотреть все работы</a></div>
+      <ul class="team">
+        <li><span class="team__ava" aria-hidden="true">PT</span><b>Маникюр</b><span>покрытие / дизайн</span></li>
+        <li><span class="team__ava" aria-hidden="true">PT</span><b>Педикюр</b><span>аппаратный</span></li>
+        <li><span class="team__ava" aria-hidden="true">PT</span><b>Подология</b><span>здоровье стоп</span></li>
+        <li><span class="team__ava" aria-hidden="true">PT</span><b>Ресницы</b><span>ламинирование</span></li>
+        <li><span class="team__ava" aria-hidden="true">PT</span><b>Брови</b><span>архитектура</span></li>
+      </ul>
+      <div class="btns btns--center"><a class="btn btn--ghost" href="masters.html">Познакомиться со всеми</a></div>
     </div>
   </section>
 
-  <section class="section">
+  <!-- ================= 5. ОТЗЫВЫ ================= -->
+  <section class="sec sec--light sec--reviews" id="reviews">
     <div class="wrap">
-      <p class="eyebrow">Отзывы с Яндекс Карт</p>
+      <div class="sec__head">
+        <p class="eyebrow">Нам доверяют</p>
+        <h2 class="h-serif">Отзывы клиентов</h2>
+        <div class="rule" aria-hidden="true"></div>
+      </div>
       <div data-reviews data-limit="3" data-summary="off"></div>
-      <div class="btns"><a class="btn" href="reviews.html">Читать отзывы</a></div>
+      <div class="btns btns--center"><a class="btn btn--dark" href="reviews.html">Читать все отзывы</a></div>
     </div>
   </section>
 
-  <section class="section">
+  <!-- ================= 6. ПРИЗЫВ ================= -->
+  <section class="sec sec--cta">
     <div class="wrap">
-      <div class="grid grid--2" style="align-items:center">
-        <div>
-          <p class="eyebrow">Запись</p>
-          <h2>Выберите мастера и время</h2>
-          <p>Окно записи откроется прямо здесь — свободные слоты видно сразу.</p>
-          <div class="btns">
-            <a class="btn btn--solid" href="https://n99533.yclients.com/company/112132/personal/select-master?o=" target="_blank" rel="noopener">Записаться онлайн</a>
-            <a class="btn" href="contacts.html">Контакты</a>
-          </div>
+      <div class="cta">
+        <div class="cta__text">
+          <h2 class="h-serif">Готовы к преображению?</h2>
+          <p>Запишитесь на процедуру прямо сейчас<br />и почувствуйте идеальный результат.</p>
+          <a class="btn btn--ghost" href="https://n99533.yclients.com/company/112132/personal/select-master?o=" target="_blank" rel="noopener">Записаться</a>
         </div>
-        <div class="ph ph--wide"><span>Фото салона</span></div>
       </div>
-      <div class="note"><strong>Прототип.</strong> Тексты, фото и часть цифр — черновик по брифу. Финальные формулировки и медиа подставляются после согласования с Дианой.</div>
     </div>
   </section>
 
-
-  <footer class="ftr">
+  <!-- ================= ФУТЕР ================= -->
+  <footer class="ftr ftr--photo">
     <div class="wrap">
       <div class="ftr__grid">
         <div>
-          <div class="logo">PÉRFECT TON<small>Раменское · 15 лет</small></div>
-          <p class="muted" style="margin-top:18px;font-size:14px">
-            Ногтевой сервис, ресницы, брови и солярий в одном салоне.
-          </p>
-        </div>
-        <div>
-          <p class="eyebrow">Разделы</p>
+          <div class="mark mark--ftr"><span>PT</span><span>DF.</span></div>
+          <p class="ftr__about">PÉRFECT TON — красота для тех,<br />кто ценит себя и выбирает лучшее.</p>
           <ul class="ftr__nav">
-        <li><a href="index.html">Главная</a></li>
-        <li><a href="about.html">О салоне</a></li>
-        <li><a href="services.html">Услуги</a></li>
-        <li><a href="masters.html">Мастера</a></li>
-        <li><a href="gallery.html">Галерея</a></li>
-        <li><a href="reviews.html">Отзывы</a></li>
-        <li><a href="promo.html">Акции</a></li>
-        <li><a href="contacts.html">Контакты</a></li>
+            <li><a href="about.html">О салоне</a></li>
+            <li><a href="services.html">Услуги</a></li>
+            <li><a href="masters.html">Мастера</a></li>
+            <li><a href="gallery.html">Галерея</a></li>
+            <li><a href="reviews.html">Отзывы</a></li>
+            <li><a href="promo.html">Акции</a></li>
+            <li><a href="contacts.html">Контакты</a></li>
           </ul>
         </div>
         <div>
           <p class="eyebrow">Контакты</p>
-          <ul>
+          <ul class="ftr__list">
+            <li>г. Раменское, ул. Дергаевская, 36/6, 1 этаж</li>
             <li><a href="tel:+79999829725">+7 (999) 982-97-25</a></li>
-            <li><a href="https://n99533.yclients.com/company/112132/personal/select-master?o=" target="_blank" rel="noopener">Записаться в YCLIENTS</a></li>
+            <li>ежедневно, 9:00 — 21:00</li>
+            <li><a href="https://n99533.yclients.com/company/112132/personal/select-master?o=" target="_blank" rel="noopener">Онлайн-запись</a></li>
           </ul>
         </div>
         <div>
-          <p class="eyebrow">Адрес и часы</p>
-          <ul>
-            <li class="muted">г. Раменское, ул. Дергаевская, 36/6, 1 этаж</li>
-            <li class="muted">Ежедневно, 9:00–21:00</li>
-          </ul>
-          <a class="btn" href="https://n99533.yclients.com/company/112132/personal/select-master?o=" target="_blank" rel="noopener" style="margin-top:20px">Записаться онлайн</a>
+          <p class="eyebrow">Мы на карте</p>
+          <a class="ftr__map" href="https://yandex.ru/maps/?text=Раменское%2C%20Дергаевская%2C%2036%2F6" target="_blank" rel="noopener">
+            <span>Дергаевская, 36/6<br /><small>открыть в Яндекс Картах</small></span>
+          </a>
         </div>
       </div>
       <div class="ftr__bottom">
-        <span>© PÉRFECT TON</span>
-        <span>Прототип сайта · 2026</span>
+        <span>© PÉRFECT TON, 2026</span>
+        <a class="credit" href="https://ashpartners.ru" target="_blank" rel="noopener">
+          <img class="credit__mark" src="assets/ash-mark.svg" alt="" width="26" height="26" />
+          <span class="credit__text"><b>ASH partners</b><i>студия премиум-упаковки и перезапуска бизнеса</i></span>
+        </a>
       </div>
     </div>
   </footer>

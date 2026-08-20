@@ -3,9 +3,20 @@ document.addEventListener('DOMContentLoaded', function () {
   var burger = document.querySelector('.burger');
   var nav = document.querySelector('.nav');
   if (burger && nav) {
-    burger.addEventListener('click', function () {
-      var open = nav.classList.toggle('is-open');
+    // Меню на телефоне открывается поверх страницы (лайтбокс), а не выпадает.
+    var setMenu = function (open) {
+      nav.classList.toggle('is-open', open);
+      document.body.classList.toggle('nav-open', open);
       burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    };
+    burger.addEventListener('click', function () {
+      setMenu(!nav.classList.contains('is-open'));
+    });
+    nav.addEventListener('click', function (e) {
+      if (e.target === nav || e.target.closest('a, .nav__close')) setMenu(false);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && nav.classList.contains('is-open')) setMenu(false);
     });
   }
 
