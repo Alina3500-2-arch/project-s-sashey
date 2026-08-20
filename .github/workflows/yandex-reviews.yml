@@ -1,0 +1,57 @@
+name: Обновление отзывов с Яндекс Карт
+
+# Раз в сутки забираем отзывы в site/diana/data/reviews.json.
+# Если Яндекс показал капчу или сменил вёрстку — шаг падает мягко,
+# прошлые данные остаются на месте, сайт не ломается.
+
+on:
+  schedule:
+    - cron: '0 4 * * *'      # 07:00 по Москве
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: yandex-reviews
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Установить зависимости
+        run: |
+          pip install --quiet playwright beautifulsoup4
+          python -m playwright install --with-deps chromium
+
+      - name: Забрать отзывы
+        id: fetch
+        continue-on-error: true
+        run: python3 scripts/fetch_yandex_reviews.py
+
+      - name: Закоммитить, если что-то изменилось
+        if: steps.fetch.outcome == 'success'
+        run: |
+          if git diff --quiet -- site/diana/data/reviews.json; then
+            echo "Отзывы не менялись — коммит не нужен."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add site/diana/data/reviews.json
+          git commit -m "diana: обновление отзывов с Яндекс Карт"
+          git push
+
+      - name: Сообщить, если автообновление не прошло
+        if: steps.fetch.outcome != 'success'
+        run: |
+          echo "::warning::Не удалось обновить отзывы (капча или изменившаяся вёрстка)."
+          echo "На сайте остались прошлые отзывы. Обновить вручную:"
+          echo "  python3 scripts/fetch_yandex_reviews.py --html сохранённая-страница.html"

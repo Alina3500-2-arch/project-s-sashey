@@ -248,3 +248,45 @@ body.is-locked{overflow:hidden}
   .modal.is-open .modal__box{animation:modalIn .22s ease-out}
   @keyframes modalIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 }
+
+/* ---------- отзывы: свои данные, свой дизайн (без iframe) ---------- */
+.rev-summary{
+  display:flex;flex-wrap:wrap;align-items:center;gap:clamp(18px,4vw,44px);
+  border:1px solid var(--line);padding:clamp(20px,3vw,32px);margin-bottom:clamp(24px,4vw,40px);
+}
+.rev-summary__score{
+  font-size:clamp(38px,6vw,62px);font-weight:200;line-height:1;letter-spacing:.04em;
+}
+.rev-summary__stars{color:var(--beige);letter-spacing:.24em;font-size:15px;margin-top:10px}
+.rev-summary__meta{font-size:13px;color:var(--beige);letter-spacing:.06em}
+.rev-summary__meta b{display:block;color:var(--white);font-weight:300;font-size:15px;letter-spacing:normal;margin-bottom:4px}
+
+.rev-grid{
+  display:grid;gap:clamp(14px,2vw,22px);
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+}
+.rev{
+  border:1px solid var(--line);padding:clamp(20px,2.6vw,28px);
+  display:flex;flex-direction:column;gap:12px;
+  background:linear-gradient(170deg,rgba(255,255,255,.03),transparent);
+}
+.rev__stars{color:var(--beige);letter-spacing:.22em;font-size:13px}
+.rev__text{margin:0;font-size:15px;line-height:1.62;color:rgba(255,255,255,.85)}
+.rev__foot{
+  margin-top:auto;padding-top:14px;border-top:1px solid var(--line);
+  display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:baseline;
+}
+.rev__name{font-size:14px;letter-spacing:.04em}
+.rev__date{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--beige-dim)}
+.rev__more{
+  align-self:flex-start;background:none;border:0;padding:0;cursor:pointer;
+  font:inherit;font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--beige);border-bottom:1px solid var(--beige-dim);
+}
+.rev__more:hover{color:var(--white)}
+
+.rev-note{
+  margin-top:clamp(20px,3vw,32px);font-size:12px;letter-spacing:.06em;color:var(--beige-dim);
+}
+.rev-empty{border:1px dashed var(--beige-dim);padding:clamp(22px,3vw,32px);color:var(--beige)}
+.rev-empty p{color:inherit}
