@@ -630,10 +630,10 @@ a.rev__name:hover{color:var(--beige);border-bottom-color:var(--beige-dim)}
   display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;
   font-size:12px;letter-spacing:.14em;color:rgba(246,239,230,.55);
 }
-.credit{display:inline-flex;align-items:center;gap:8px;opacity:.55;transition:.25s}
-.credit__mark{width:14px;height:14px;flex:none}
-.credit__text{font-size:9.5px;letter-spacing:.1em;color:rgba(246,239,230,.7);line-height:1.3}
-.credit:hover{opacity:.9}
+.credit{display:inline-flex;align-items:center;gap:5px;opacity:.4;transition:.25s}
+.credit__mark{width:8px;height:8px;flex:none}
+.credit__text{font-size:7px;letter-spacing:.05em;color:rgba(246,239,230,.7);line-height:1.3}
+.credit:hover{opacity:.85}
 
 /* =================== АДАПТИВ =================== */
 @media(max-width:1024px){
