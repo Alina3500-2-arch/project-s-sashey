@@ -179,6 +179,23 @@ def fetch_browser(url):
             seen = count
             page.mouse.wheel(0, 4000)
             page.wait_for_timeout(900)
+        # Длинные отзывы Яндекс прячет под «Ещё» — раскрываем, иначе текст
+        # приедет обрезанным на ~300 символах.
+        for _ in range(3):
+            opened = page.evaluate("""() => {
+              const words = ['ещё', 'еще', 'читать целиком', 'развернуть'];
+              let n = 0;
+              document.querySelectorAll('a, span, div, button').forEach(el => {
+                if (el.children.length) return;
+                const t = (el.textContent || '').trim().toLowerCase();
+                if (words.includes(t)) { el.click(); n++; }
+              });
+              return n;
+            }""")
+            if not opened:
+                break
+            page.wait_for_timeout(700)
+
         html = page.content()
         browser.close()
     return html
