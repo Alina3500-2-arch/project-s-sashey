@@ -138,6 +138,10 @@ document.addEventListener('DOMContentLoaded', function () {
       meta.appendChild(el('b', null, 'Рейтинг на Яндекс Картах'));
       if (data.count) meta.appendChild(document.createTextNode(data.count + ' отзывов'));
       sum.appendChild(meta);
+      var look = el('a', 'btn rev-summary__link', 'Смотреть на Яндекс Картах');
+      look.href = data.org_url || FALLBACK_URL;
+      look.target = '_blank'; look.rel = 'noopener';
+      sum.appendChild(look);
       host.appendChild(sum);
     }
 
@@ -163,7 +167,31 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
       var foot = el('div', 'rev__foot');
-      foot.appendChild(el('span', 'rev__name', it.author || 'Гость'));
+
+      var who = el('div', 'rev__who');
+      var name = String(it.author || 'Гость');
+      var ava = el('span', 'rev__ava');
+      if (it.avatar) {
+        var img = document.createElement('img');
+        img.src = it.avatar;
+        img.alt = '';
+        img.loading = 'lazy';
+        // Если картинка не загрузилась — остаются инициалы под ней.
+        img.addEventListener('error', function () { img.remove(); });
+        ava.appendChild(img);
+      }
+      ava.setAttribute('data-initials', name.trim().charAt(0).toUpperCase() || '?');
+      who.appendChild(ava);
+
+      // Имя ведёт на первоисточник — видно, что отзыв не выдуман.
+      var link = el('a', 'rev__name', name);
+      link.href = it.url || (data.org_url || FALLBACK_URL);
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.title = 'Открыть отзыв на Яндекс Картах';
+      who.appendChild(link);
+      foot.appendChild(who);
+
       if (it.date) foot.appendChild(el('span', 'rev__date', it.date));
       card.appendChild(foot);
       grid.appendChild(card);

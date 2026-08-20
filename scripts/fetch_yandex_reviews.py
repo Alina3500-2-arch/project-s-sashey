@@ -87,6 +87,8 @@ def parse_reviews(html):
                 "date": date_el.get_text(strip=True) if date_el else "",
                 "rating": len(card.select(star_sel)) or None,
                 "text": text,
+                "avatar_src": find_avatar(card),
+                "url": find_review_url(card),
             })
         if len(items) > len(best):
             best = items
@@ -106,6 +108,72 @@ def parse_reviews(html):
                 rating = float(m.group(0).replace(",", "."))
 
     return best, rating, count
+
+
+def find_avatar(card):
+    """Ищет ссылку на аватар автора: обычный img, ленивый data-src или фон."""
+    for img in card.select("img"):
+        src = img.get("src") or img.get("data-src") or ""
+        if "avatars." in src or "/get-yapic/" in src:
+            return src if src.startswith("http") else "https:" + src
+    for el in card.select("[style*=background-image]"):
+        m = re.search(r"url\((['\"]?)(.*?)\1\)", el.get("style", ""))
+        if m and ("avatars." in m.group(2) or "/get-yapic/" in m.group(2)):
+            url = m.group(2)
+            return url if url.startswith("http") else "https:" + url
+    return None
+
+
+def find_review_url(card):
+    """Ссылка на сам отзыв или профиль автора на Картах, если она есть."""
+    for a in card.select("a[href]"):
+        href = a.get("href", "")
+        if "/maps/" in href or "/user/" in href or "reviews" in href:
+            if href.startswith("http"):
+                return href
+            if href.startswith("/"):
+                return "https://yandex.ru" + href
+    return None
+
+
+def download_avatars(items, out_dir):
+    """Скачивает аватарки к себе: сайт не должен зависеть от доступности Яндекса."""
+    import hashlib
+    import urllib.request
+
+    os.makedirs(out_dir, exist_ok=True)
+    kept, saved = set(), 0
+    for it in items:
+        src = it.pop("avatar_src", None)
+        it["avatar"] = None
+        if not src:
+            continue
+        name = hashlib.sha1(src.encode()).hexdigest()[:16] + ".jpg"
+        path = os.path.join(out_dir, name)
+        kept.add(name)
+        if not os.path.exists(path):
+            try:
+                req = urllib.request.Request(src, headers={"User-Agent": UA})
+                with urllib.request.urlopen(req, timeout=20) as resp:
+                    data = resp.read()
+                if len(data) < 200:                # пустышка вместо картинки
+                    raise ValueError("слишком маленький файл")
+                with open(path, "wb") as f:
+                    f.write(data)
+                saved += 1
+            except Exception as exc:               # noqa: BLE001
+                print("аватар не скачался (%s)" % exc, file=sys.stderr)
+                kept.discard(name)
+                continue
+        it["avatar"] = "data/avatars/" + name
+
+    for old in os.listdir(out_dir):                # чистим то, что больше не нужно
+        if old.endswith(".jpg") and old not in kept:
+            os.remove(os.path.join(out_dir, old))
+
+    with_avatar = len([i for i in items if i.get("avatar")])
+    print("аватарок: %d из %d (скачано новых: %d)" % (with_avatar, len(items), saved),
+          file=sys.stderr)
 
 
 def diagnose(html):
@@ -228,13 +296,15 @@ def main():
         items, rating, count = parse_reviews(html)
         print("%s: распознано отзывов — %d" % (name, len(items)), file=sys.stderr)
         if items:
+            items = items[: args.limit]
+            download_avatars(items, os.path.join(os.path.dirname(os.path.normpath(OUT)), "avatars"))
             payload = {
                 "source": "Яндекс Карты",
                 "org_url": ORG_URL,
                 "updated": date.today().strftime("%d.%m.%Y"),
                 "rating": rating,
                 "count": count,
-                "items": items[: args.limit],
+                "items": items,
             }
             path = os.path.normpath(OUT)
             with open(path, "w", encoding="utf-8") as f:
