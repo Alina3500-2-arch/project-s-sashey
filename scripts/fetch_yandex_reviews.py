@@ -110,6 +110,26 @@ def parse_reviews(html):
     return best, rating, count
 
 
+MONTHS = {"января": 1, "февраля": 2, "марта": 3, "апреля": 4, "мая": 5, "июня": 6,
+          "июля": 7, "августа": 8, "сентября": 9, "октября": 10, "ноября": 11,
+          "декабря": 12}
+
+
+def date_key(text):
+    """«13 августа 2025» / «16 июня» → (2025, 8, 13). Без года — текущий год.
+
+    Нужно, чтобы свежие отзывы шли первыми: Яндекс отдаёт их в своём
+    порядке, не по дате. Что не разобралось — уходит в конец списка.
+    """
+    if not text:
+        return (0, 0, 0)
+    m = re.search(r"(\d{1,2})\s+([а-яё]+)(?:\s+(\d{4}))?", text.lower())
+    if not m or m.group(2) not in MONTHS:
+        return (0, 0, 0)
+    year = int(m.group(3)) if m.group(3) else date.today().year
+    return (year, MONTHS[m.group(2)], int(m.group(1)))
+
+
 def find_avatar(card):
     """Ищет ссылку на аватар автора: обычный img, ленивый data-src или фон."""
     for img in card.select("img"):
@@ -296,6 +316,8 @@ def main():
         items, rating, count = parse_reviews(html)
         print("%s: распознано отзывов — %d" % (name, len(items)), file=sys.stderr)
         if items:
+            # Свежие сверху: порядок Яндекса не хронологический.
+            items.sort(key=lambda i: date_key(i.get("date")), reverse=True)
             items = items[: args.limit]
             download_avatars(items, os.path.join(os.path.dirname(os.path.normpath(OUT)), "avatars"))
             payload = {
