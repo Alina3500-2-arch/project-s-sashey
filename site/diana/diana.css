@@ -186,3 +186,65 @@ p{margin:0 0 16px;color:rgba(255,255,255,.82);max-width:64ch}
   display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;
   font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--beige-dim);
 }
+
+/* ---------- встроенные виджеты Яндекса ----------
+   Виджеты отдаются самим Яндексом в светлой теме и их оформление
+   изменить нельзя. Поэтому обрамляем их в светлую «карточку» —
+   чтобы белый блок выглядел намеренным элементом, а не дырой в вёрстке. */
+.widget{
+  border:1px solid var(--line);
+  background:var(--white);
+  padding:10px;
+  overflow:hidden;
+}
+.widget iframe{
+  display:block;width:100%;border:0;
+  background:var(--white);
+}
+.widget--map iframe{height:clamp(320px,46vw,460px)}
+.widget--reviews iframe{height:clamp(560px,80vh,760px)}
+.widget__cap{
+  display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:baseline;
+  margin-bottom:14px;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--beige);
+}
+
+/* ---------- модальное окно записи (YCLIENTS) ---------- */
+.modal{
+  position:fixed;inset:0;z-index:100;
+  display:none;align-items:center;justify-content:center;
+  padding:clamp(12px,3vw,40px);
+  background:rgba(20,13,12,.82);
+  backdrop-filter:blur(6px);
+}
+.modal.is-open{display:flex}
+.modal__box{
+  position:relative;width:min(880px,100%);height:min(760px,92vh);
+  background:var(--white);border:1px solid var(--beige-dim);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.modal__bar{
+  flex:none;display:flex;align-items:center;gap:14px;
+  padding:14px 16px;background:var(--choco);border-bottom:1px solid var(--line);
+}
+.modal__title{
+  font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--beige);
+}
+.modal__close{
+  margin-left:auto;background:none;border:1px solid var(--line);color:var(--white);
+  font:inherit;font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  padding:8px 14px;cursor:pointer;transition:.25s;
+}
+.modal__close:hover{background:var(--beige);color:var(--choco);border-color:var(--beige)}
+.modal__body{flex:1;min-height:0;display:flex;flex-direction:column;background:var(--white)}
+.modal__body iframe{flex:1;min-height:0;width:100%;border:0}
+.modal__fallback{
+  flex:none;margin:0;padding:9px 16px;
+  background:#f6f3f0;border-top:1px solid rgba(0,0,0,.1);
+  font-size:12px;color:#6b5f5b;text-align:center;
+}
+.modal__fallback a{text-decoration:underline}
+body.is-locked{overflow:hidden}
+@media (prefers-reduced-motion:no-preference){
+  .modal.is-open .modal__box{animation:modalIn .22s ease-out}
+  @keyframes modalIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+}
