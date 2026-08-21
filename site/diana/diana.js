@@ -86,6 +86,48 @@ document.addEventListener('DOMContentLoaded', function () {
     }, { passive: true });
   }());
 
+  // --- Счётчик цифр о салоне ---------------------------------------------
+  (function () {
+    var figs = document.querySelectorAll('[data-count]');
+    if (!figs.length || !('IntersectionObserver' in window)) return;
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function run(el) {
+      var end = parseFloat(el.getAttribute('data-count')) || 0;
+      var dec = parseInt(el.getAttribute('data-decimals'), 10) || 0;
+      var suffix = el.getAttribute('data-suffix') || '';
+      var flash = el.getAttribute('data-flash');
+      var dur = 1600 + Math.min(end, 300) * 2;      // крупные числа считаются дольше
+      var t0 = null;
+
+      function fmt(v) {
+        return v.toFixed(dec).replace('.', ',') + suffix;
+      }
+      if (reduce) { el.textContent = fmt(end); return; }
+
+      el.textContent = fmt(0);
+      function frame(t) {
+        if (t0 === null) t0 = t;
+        var p = Math.min((t - t0) / dur, 1);
+        var eased = 1 - Math.pow(1 - p, 3);          // замедление к финалу
+        el.textContent = fmt(end * eased);
+        if (p < 1) return requestAnimationFrame(frame);
+        el.textContent = fmt(end);
+        if (flash) el.classList.add('is-flash');
+      }
+      requestAnimationFrame(frame);
+    }
+
+    var io3 = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        run(e.target);
+        io3.unobserve(e.target);
+      });
+    }, { threshold: .6 });
+    Array.prototype.forEach.call(figs, function (el) { io3.observe(el); });
+  }());
+
   var here = location.pathname.split('/').pop() || 'index.html';
   document.querySelectorAll('.nav a, .ftr__nav a').forEach(function (a) {
     if (a.getAttribute('href') === here) a.setAttribute('aria-current', 'page');

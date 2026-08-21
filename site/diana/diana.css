@@ -809,3 +809,66 @@ a.rev__name:hover{color:var(--beige);border-bottom-color:var(--beige-dim)}
 
 /* центровка текста первого экрана (у абзацев был лимит ширины) */
 .hero__eyebrow,.hero__lead,.hero__sub{max-width:none;margin-left:auto;margin-right:auto}
+
+
+/* =================== ПРАВКИ: КОНТРАСТ И РИТМ =================== */
+/* волна под отзывами — ближе к кнопке */
+.sec--reviews{padding-bottom:clamp(34px,4vw,56px)}
+.sec--cta{padding-top:clamp(74px,9vw,120px)}
+.sec--services{padding-bottom:clamp(48px,6vw,84px)}
+
+/* карточки услуг — тёмные, читаемые на светлом фоне */
+.svc__card{
+  background:linear-gradient(180deg,rgba(38,26,22,.97),rgba(26,18,15,.97));
+  border:1px solid rgba(216,184,119,.32);
+  box-shadow:0 18px 42px rgba(74,50,32,.22);
+}
+.svc__card:hover{box-shadow:0 26px 56px rgba(74,50,32,.32);border-color:var(--gold-soft)}
+.svc__body{padding:20px 20px 22px;gap:0}
+.svc__body h3{
+  color:#f6efe6;font-size:clamp(18px,1.6vw,23px);letter-spacing:.1em;
+  font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;
+}
+.svc__body p{color:rgba(246,239,230,.7);font-size:13px;letter-spacing:.05em;margin:10px 0 16px}
+.svc__foot{
+  margin-top:auto;padding-top:16px;border-top:1px solid rgba(216,184,119,.24);
+  display:flex;flex-direction:column;gap:14px;align-items:flex-start;
+}
+.svc__price{
+  border:0;padding:0;margin:0;
+  font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;
+  font-size:clamp(19px,1.7vw,24px);letter-spacing:.06em;text-transform:none;
+  color:var(--gold-soft);
+}
+.btn--mini{
+  padding:12px 22px;font-size:10.5px;letter-spacing:.24em;
+  border-color:rgba(216,184,119,.55);color:#f6efe6;width:100%;text-align:center;
+}
+.btn--mini:hover{background:var(--gold-soft);border-color:var(--gold-soft);color:#241a19}
+
+/* отзывы — крупнее текст */
+.sec--reviews .rev__text{font-size:15.5px;line-height:1.72}
+.sec--reviews .rev__name{font-size:13px}
+
+/* карта в подвале — крупнее и со старой картинкой */
+.ftr__map{
+  min-height:210px;background-image:url('assets/map-bg.jpg');background-position:center;
+  font-size:14px;letter-spacing:.16em;
+}
+.ftr__map small{font-size:11px;margin-top:10px}
+
+/* мастера — мягкое затемнение поверх фона, чтобы не было полос */
+.sec--masters::after{
+  content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(75% 60% at 50% 45%,rgba(60,40,26,.28),transparent 70%),
+    linear-gradient(180deg,rgba(18,12,9,.72),rgba(18,12,9,.42) 45%,rgba(18,12,9,.78));
+}
+
+/* вспышка у рейтинга по завершении счётчика */
+@keyframes figFlash{
+  0%{text-shadow:none}
+  35%{text-shadow:0 0 26px rgba(216,184,119,.85),0 0 60px rgba(216,184,119,.45)}
+  100%{text-shadow:0 0 14px rgba(216,184,119,.25)}
+}
+.figs b.is-flash{animation:figFlash 1.5s ease-out forwards}
