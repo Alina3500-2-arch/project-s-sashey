@@ -20,6 +20,72 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // --- Появление блоков при прокрутке -----------------------------------
+  // Классы навешиваем скриптом: без JS страница остаётся видимой целиком.
+  (function () {
+    if (!('IntersectionObserver' in window)) return;
+    var groups = [
+      ['.sec__head .eyebrow', 'anim', 0],
+      ['.sec__head .h-serif', 'anim', .12],
+      ['.sec__head .rule, .sec__head .rule--gold', 'anim anim--rule', .24],
+      ['.shot', 'anim anim--left', 0],
+      ['.sec__text > *', 'anim anim--right', .08],
+      ['.svc__card', 'anim anim--zoom', .09],
+      ['.team li', 'anim', .1],
+      ['.sec--reviews [data-reviews]', 'anim', 0],
+      ['.cta__text > *', 'anim', .12],
+      ['.ftr__grid > *', 'anim', .1],
+      ['.btns', 'anim', .1]
+    ];
+    var items = [];
+    groups.forEach(function (g) {
+      var list = document.querySelectorAll(g[0]);
+      Array.prototype.forEach.call(list, function (el, i) {
+        if (el.closest('.hero')) return;              // первый экран анимирован в CSS
+        el.className += (el.className ? ' ' : '') + g[1];
+        el.style.setProperty('--d', (g[2] * i).toFixed(2) + 's');
+        items.push(el);
+      });
+    });
+    var io2 = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-in');
+        io2.unobserve(e.target);
+      });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: .08 });
+    items.forEach(function (el) { io2.observe(el); });
+
+    // Отзывы подгружаются позже — подхватываем их карточки, когда появятся.
+    var host = document.querySelector('.sec--reviews [data-reviews]');
+    if (host && 'MutationObserver' in window) {
+      new MutationObserver(function () {
+        Array.prototype.forEach.call(host.querySelectorAll('.rev'), function (el, i) {
+          if (el.classList.contains('anim')) return;
+          el.classList.add('anim');
+          el.style.setProperty('--d', (i * .12).toFixed(2) + 's');
+          io2.observe(el);
+        });
+      }).observe(host, { childList: true, subtree: true });
+    }
+  }());
+
+  // --- Лёгкий параллакс фона первого экрана -------------------------------
+  (function () {
+    var bg = document.querySelector('.hero__bg');
+    if (!bg || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var ticking = false;
+    addEventListener('scroll', function () {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        var y = Math.min(scrollY, innerHeight);
+        bg.style.transform = 'translate3d(0,' + (y * .18).toFixed(1) + 'px,0) scale(1.06)';
+        ticking = false;
+      });
+    }, { passive: true });
+  }());
+
   var here = location.pathname.split('/').pop() || 'index.html';
   document.querySelectorAll('.nav a, .ftr__nav a').forEach(function (a) {
     if (a.getAttribute('href') === here) a.setAttribute('aria-current', 'page');
