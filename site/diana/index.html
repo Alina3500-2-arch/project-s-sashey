@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Jost:wght@200;300;400&display=swap" rel="stylesheet" />
   <link rel="preload" as="image" href="assets/hero-bg.jpg" />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="diana.css" />
+  <link rel="stylesheet" href="diana.css?v=8" />
 </head>
 <body class="is-home">
 
@@ -45,6 +45,11 @@
       <p class="hero__lead">Место, где создаётся<br />ваша лучшая красота</p>
       <p class="hero__sub">Ногтевой сервис, ресницы, брови и солярий в одном месте. <br />15 лет опыта, команда мастеров, атмосфера люкс-сегмента.</p>
       <a class="btn btn--ghost hero__cta" href="https://n99533.yclients.com/company/112132/personal/select-master?o=" target="_blank" rel="noopener">Записаться</a>
+      <a class="ymark" href="https://yandex.ru/maps/org/perfect_ton/64270712446/reviews/" target="_blank" rel="noopener" data-ymark>
+        <span class="ymark__stars" aria-hidden="true">★★★★★</span>
+        <span class="ymark__val" data-ymark-rating>5,0</span>
+        <span class="ymark__txt">на Яндекс&nbsp;Картах<i data-ymark-count>132 отзыва</i></span>
+      </a>
     </div>
     <ul class="usp">
       <li>
@@ -70,9 +75,13 @@
   <!-- ================= 2. О САЛОНЕ ================= -->
   <section class="sec sec--about" id="about">
     <div class="wrap sec__cols">
-      <figure class="shot">
-        <img src="assets/about-video.jpg" alt="Зал салона PÉRFECT TON в Раменском" loading="lazy" />
-        <figcaption>Салон в Раменском</figcaption>
+      <figure class="shot shot--video">
+        <video class="shot__video" playsinline preload="metadata"
+               poster="assets/about-poster.jpg" src="assets/about-video.mp4"></video>
+        <button class="shot__play" type="button" aria-label="Смотреть видео о салоне">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6.5l9 5.5-9 5.5z" fill="currentColor"/></svg>
+        </button>
+        <figcaption class="shot__time">0:13</figcaption>
       </figure>
       <div class="sec__text">
         <p class="eyebrow">О салоне</p>
@@ -289,6 +298,6 @@
     </div>
   </footer>
 
-  <script src="diana.js"></script>
+  <script src="diana.js?v=8"></script>
 </body>
 </html>

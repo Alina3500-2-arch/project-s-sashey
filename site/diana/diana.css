@@ -872,3 +872,70 @@ a.rev__name:hover{color:var(--beige);border-bottom-color:var(--beige-dim)}
   100%{text-shadow:0 0 14px rgba(216,184,119,.25)}
 }
 .figs b.is-flash{animation:figFlash 1.5s ease-out forwards}
+
+
+/* =================== РЕЙТИНГ ЯНДЕКС КАРТ НА ПЕРВОМ ЭКРАНЕ =================== */
+.ymark{
+  margin:clamp(18px,2.4vw,26px) auto 0;
+  display:flex;width:fit-content;align-items:center;gap:12px;
+  padding:10px 20px;border:1px solid rgba(216,184,119,.32);border-radius:999px;
+  background:rgba(20,13,10,.42);backdrop-filter:blur(6px);
+  transition:.28s;animation:heroIn .95s cubic-bezier(.2,.7,.25,1) 1.3s both;
+}
+.ymark:hover{border-color:var(--gold-soft);background:rgba(20,13,10,.62);transform:translateY(-2px)}
+.ymark__stars{color:#d8b877;font-size:12px;letter-spacing:.16em;line-height:1}
+.ymark__val{
+  font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;
+  font-size:20px;line-height:1;color:#f6efe6;
+}
+.ymark__txt{
+  display:flex;flex-direction:column;gap:2px;text-align:left;
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(246,239,230,.78);
+}
+.ymark__txt i{font-style:normal;font-size:9.5px;letter-spacing:.16em;color:var(--gold-soft)}
+
+/* кнопка внутри мобильного меню: вернуть полную рамку */
+@media(max-width:900px){
+  .hdr .nav .nav__cta{
+    padding:15px 34px;border:1px solid rgba(216,184,119,.75);
+  }
+}
+@media(max-width:520px){
+  .ymark{gap:9px;padding:9px 16px}
+  .ymark__val{font-size:18px}
+}
+
+
+/* =================== ВИДЕО О САЛОНЕ =================== */
+.shot--video{
+  position:relative;overflow:hidden;
+  max-width:460px;width:100%;margin-inline:auto;
+  border:1px solid rgba(216,184,119,.34);
+  box-shadow:0 26px 60px rgba(10,6,4,.45);
+}
+.shot__video{
+  display:block;width:100%;aspect-ratio:4/5;object-fit:cover;object-position:center 58%;
+  background:#160f0c;
+}
+.shot__play{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:clamp(64px,7vw,86px);aspect-ratio:1;border-radius:50%;
+  border:1px solid rgba(246,239,230,.75);background:rgba(20,13,10,.34);
+  backdrop-filter:blur(4px);color:#f6efe6;cursor:pointer;
+  display:grid;place-items:center;transition:.3s;
+}
+.shot__play svg{width:34%;height:auto;margin-left:6%}
+.shot__play::after{
+  content:'';position:absolute;inset:-10px;border-radius:50%;
+  border:1px solid rgba(246,239,230,.28);animation:playPulse 2.8s ease-out infinite;
+}
+@keyframes playPulse{0%{transform:scale(.92);opacity:.7}70%{transform:scale(1.12);opacity:0}100%{opacity:0}}
+.shot__play:hover{background:rgba(216,184,119,.9);color:#241a19;border-color:var(--gold-soft)}
+.shot--video.is-playing .shot__play{opacity:0;pointer-events:none;transform:translate(-50%,-50%) scale(.8)}
+.shot__time{
+  position:absolute;left:16px;bottom:14px;
+  font-size:11px;letter-spacing:.2em;color:var(--gold-soft);
+  background:rgba(18,11,9,.62);padding:6px 12px;
+}
+.shot--video:hover .shot__video{transform:none}
+@media(prefers-reduced-motion:reduce){.shot__play::after{animation:none}}

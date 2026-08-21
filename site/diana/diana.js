@@ -128,6 +128,39 @@ document.addEventListener('DOMContentLoaded', function () {
     Array.prototype.forEach.call(figs, function (el) { io3.observe(el); });
   }());
 
+  // --- Видео о салоне ------------------------------------------------------
+  (function () {
+    var box = document.querySelector('.shot--video');
+    if (!box) return;
+    var video = box.querySelector('video');
+    var play = box.querySelector('.shot__play');
+
+    function start() {
+      video.controls = true;
+      box.classList.add('is-playing');
+      video.play();
+    }
+    play.addEventListener('click', start);
+    video.addEventListener('click', function () {
+      if (!box.classList.contains('is-playing')) start();
+    });
+    video.addEventListener('pause', function () {
+      if (video.currentTime === 0 || video.ended) box.classList.remove('is-playing');
+    });
+    video.addEventListener('ended', function () {
+      video.currentTime = 0;
+      video.controls = false;
+      box.classList.remove('is-playing');
+    });
+    // Длительность подставляем из самого файла — не расходится с видео.
+    video.addEventListener('loadedmetadata', function () {
+      var cap = box.querySelector('.shot__time');
+      if (!cap || !isFinite(video.duration)) return;
+      var m = Math.floor(video.duration / 60), sec = Math.round(video.duration % 60);
+      cap.textContent = m + ':' + (sec < 10 ? '0' : '') + sec;
+    });
+  }());
+
   var here = location.pathname.split('/').pop() || 'index.html';
   document.querySelectorAll('.nav a, .ftr__nav a').forEach(function (a) {
     if (a.getAttribute('href') === here) a.setAttribute('aria-current', 'page');
@@ -258,10 +291,29 @@ document.addEventListener('DOMContentLoaded', function () {
     .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
     .then(function (data) {
       hosts.forEach(function (host) { render(host, data); });
+      updateYmark(data);
     })
     .catch(function () {
       hosts.forEach(function (host) { renderEmpty(host, null); });
     });
+
+  // Плашка рейтинга на первом экране — цифры из того же файла отзывов.
+  function updateYmark(data) {
+    var box = document.querySelector('[data-ymark]');
+    if (!box || !data) return;
+    var r = box.querySelector('[data-ymark-rating]');
+    var c = box.querySelector('[data-ymark-count]');
+    if (r && data.rating) r.textContent = Number(data.rating).toFixed(1).replace('.', ',');
+    if (c && data.count) c.textContent = data.count + ' ' + plural(data.count, 'отзыв', 'отзыва', 'отзывов');
+    if (data.org_url) box.href = data.org_url;
+  }
+
+  function plural(n, one, few, many) {
+    var n10 = n % 10, n100 = n % 100;
+    if (n10 === 1 && n100 !== 11) return one;
+    if (n10 >= 2 && n10 <= 4 && (n100 < 10 || n100 >= 20)) return few;
+    return many;
+  }
 
   function stars(rating) {
     var n = Math.round(Number(rating) || 0);
