@@ -105,7 +105,6 @@ document.addEventListener('DOMContentLoaded', function () {
     '<div class="modal__box">' +
       '<div class="modal__bar">' +
         '<span class="modal__title">Онлайн-запись</span>' +
-        '<a class="modal__new" href="' + BOOKING_URL + '" target="_blank" rel="noopener">В новой вкладке</a>' +
         '<button class="modal__close" type="button">Закрыть</button>' +
       '</div>' +
       '<div class="modal__body">' +
