@@ -1605,3 +1605,7 @@ body.nav-open .hdr{backdrop-filter:none;-webkit-backdrop-filter:none;background:
 .wave::after{display:none}
 .wave--top{transform:translateY(calc(-100% + 2px))}
 .wave--bottom{transform:translateY(calc(100% - 2px)) scaleY(-1)}
+
+
+/* волна: чуть выше и с пологими краями — у самой кромки экрана нет уголков */
+.wave{height:clamp(52px,7vw,116px)}
