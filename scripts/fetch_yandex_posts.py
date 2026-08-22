@@ -133,16 +133,24 @@ def download_photos(items, out_dir):
             if os.path.exists(path):
                 local.append(rel)
                 continue
-            try:
-                req = urllib.request.Request(src, headers={"User-Agent": UA})
-                with urllib.request.urlopen(req, timeout=25) as resp:
-                    data = resp.read()
-                if len(data) > 400:
-                    with open(path, "wb") as f:
-                        f.write(data)
-                    local.append(rel)
-            except Exception as exc:           # noqa: BLE001 — картинка не критична
-                print("картинка не скачалась (%s)" % exc, file=sys.stderr)
+            # В ленте картинки отдаются в размере L (500 px) — для слайдера мелко.
+            # У Яндекса тот же файл доступен крупнее: пробуем от большего к меньшему.
+            data = None
+            for size in ("XXXL", "XXL", "L"):
+                url = re.sub(r"/[A-Za-z]+$", "/" + size, src)
+                try:
+                    req = urllib.request.Request(url, headers={"User-Agent": UA})
+                    with urllib.request.urlopen(req, timeout=25) as resp:
+                        data = resp.read()
+                    if len(data) > 400:
+                        break
+                    data = None
+                except Exception as exc:       # noqa: BLE001 — размер может отсутствовать
+                    print("размер %s не отдался (%s)" % (size, exc), file=sys.stderr)
+            if data:
+                with open(path, "wb") as f:
+                    f.write(data)
+                local.append(rel)
         it["photos"] = local
 
 
@@ -230,7 +238,7 @@ def main():
     with open(out, "w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, indent=2)
         f.write("\n")
-    print("Сохранено новостей: %d → %s" % (len(items), out))
+    print("Сохранено новостей: %d -> %s" % (len(items), out))
     return 0
 
 

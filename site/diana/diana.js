@@ -162,10 +162,13 @@ document.addEventListener('DOMContentLoaded', function () {
   }());
 
   // --- Акции и новости из карточки на Яндекс Картах ------------------------
+  // Показываем крупным слайдером: шесть свежих новостей, листаются
+  // стрелками, точками и обычным свайпом.
   (function () {
     var hosts = document.querySelectorAll('[data-posts]');
     if (!hosts.length) return;
     var FALLBACK = 'https://yandex.ru/maps/org/perfect_ton/64270712446/posts/';
+    var BOOKING = 'https://n99533.yclients.com/company/112132/personal/select-master?o=';
 
     function el(tag, cls, text) {
       var n = document.createElement(tag);
@@ -182,34 +185,34 @@ document.addEventListener('DOMContentLoaded', function () {
       .catch(function () {
         Array.prototype.forEach.call(hosts, function (host) {
           host.textContent = '';
-          var p = el('p', 'posts-empty', 'Свежие новости салона — в карточке на Яндекс Картах.');
-          var btns = el('div', 'btns btns--center');
-          var a = el('a', 'btn btn--ghost', 'Открыть новости');
-          a.href = FALLBACK; a.target = '_blank'; a.rel = 'noopener';
-          btns.appendChild(a);
-          host.appendChild(p); host.appendChild(btns);
+          host.appendChild(el('p', 'posts-empty', 'Свежие акции салона скоро появятся здесь.'));
         });
       });
 
     function renderPosts(host, data) {
       var items = (data && data.items) || [];
-      var limit = parseInt(host.getAttribute('data-limit'), 10);
-      if (limit > 0) items = items.slice(0, limit);
+      var limit = parseInt(host.getAttribute('data-limit'), 10) || 6;
+      items = items.slice(0, limit);
       if (!items.length) return;
 
       host.textContent = '';
-      var grid = el('div', 'posts');
+      var slider = el('div', 'slider');
+      var track = el('div', 'slider__track');
 
       items.forEach(function (it) {
-        var card = el('article', 'post');
+        var photo = it.photos && it.photos[0];
+        var card = el('article', 'post' + (photo ? '' : ' post--text'));
 
-        if (it.photos && it.photos[0]) {
+        if (photo) {
           var img = document.createElement('img');
           img.className = 'post__img';
-          img.src = it.photos[0];
+          img.src = photo;
           img.alt = '';
           img.loading = 'lazy';
-          img.addEventListener('error', function () { img.remove(); });
+          img.addEventListener('error', function () {
+            img.remove();
+            card.classList.add('post--text');
+          });
           card.appendChild(img);
         }
 
@@ -218,7 +221,7 @@ document.addEventListener('DOMContentLoaded', function () {
         body.appendChild(el('h3', 'post__title', it.title || 'Новость салона'));
 
         var full = String(it.text || '').trim();
-        var short = full.length > 260 ? full.slice(0, 240).replace(/\s+\S*$/, '') + '…' : full;
+        var short = full.length > 210 ? full.slice(0, 195).replace(/\s+\S*$/, '') + '…' : full;
         var p = el('p', 'post__text', short);
         body.appendChild(p);
 
@@ -233,20 +236,68 @@ document.addEventListener('DOMContentLoaded', function () {
           body.appendChild(more);
         }
 
+        var cta = el('a', 'btn btn--ghost post__cta', 'Записаться');
+        cta.href = BOOKING; cta.target = '_blank'; cta.rel = 'noopener';
+        body.appendChild(cta);
+
         card.appendChild(body);
-        grid.appendChild(card);
+        track.appendChild(card);
       });
 
-      host.appendChild(grid);
+      slider.appendChild(track);
 
-      var note = el('p', 'posts-note');
-      note.appendChild(document.createTextNode('Источник — карточка салона на Яндекс Картах'
-        + (data.updated ? '. Обновлено: ' + data.updated : '') + '. '));
-      var link = el('a', null, 'Смотреть на Яндексе');
-      link.href = (data && data.org_url) || FALLBACK;
-      link.target = '_blank'; link.rel = 'noopener';
-      note.appendChild(link);
-      host.appendChild(note);
+      if (items.length > 1) {
+        var prev = navButton('prev', 'M15 5l-7 7 7 7');
+        var next = navButton('next', 'M9 5l7 7-7 7');
+        slider.appendChild(prev);
+        slider.appendChild(next);
+
+        var dots = el('div', 'slider__dots');
+        items.forEach(function (_, i) {
+          var dot = el('button', 'slider__dot' + (i ? '' : ' is-active'));
+          dot.type = 'button';
+          dot.setAttribute('aria-label', 'Слайд ' + (i + 1));
+          dot.addEventListener('click', function () { go(i); });
+          dots.appendChild(dot);
+        });
+        slider.appendChild(dots);
+
+        var go = function (i) {
+          var card = track.children[i];
+          if (card) track.scrollTo({ left: card.offsetLeft - track.offsetLeft, behavior: 'smooth' });
+        };
+        prev.addEventListener('click', function () { go(current() - 1); });
+        next.addEventListener('click', function () { go(current() + 1); });
+
+        var current = function () {
+          var w = track.clientWidth || 1;
+          return Math.round(track.scrollLeft / w);
+        };
+        var sync = function () {
+          var i = current();
+          Array.prototype.forEach.call(dots.children, function (d, k) {
+            d.classList.toggle('is-active', k === i);
+          });
+          prev.disabled = i <= 0;
+          next.disabled = i >= items.length - 1;
+        };
+        track.addEventListener('scroll', function () {
+          clearTimeout(track._t);
+          track._t = setTimeout(sync, 90);
+        }, { passive: true });
+        sync();
+      }
+
+      host.appendChild(slider);
+    }
+
+    function navButton(kind, path) {
+      var b = el('button', 'slider__nav slider__nav--' + kind);
+      b.type = 'button';
+      b.setAttribute('aria-label', kind === 'prev' ? 'Предыдущая акция' : 'Следующая акция');
+      b.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + path +
+        '" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      return b;
     }
   }());
 
