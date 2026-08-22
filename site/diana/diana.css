@@ -1422,19 +1422,15 @@ body{overflow-x:hidden;max-width:100%}
 @media(max-width:640px){
   /* нечётные сетки: последняя карточка занимает всю ширину, а не «висит» */
   .svc__card:last-child,
-  .team li:last-child,
   .steps li:last-child{grid-column:1 / -1}
   .svc__card:last-child{display:grid;grid-template-columns:1fr 1fr;align-items:stretch}
   .svc__card:last-child img{height:100%;aspect-ratio:auto}
-  .team li:last-child{text-align:left}
-  .team li:last-child .team__card{
-    display:grid;grid-template-columns:auto minmax(0,1fr);
-    grid-template-areas:"ava name" "ava spec";
-    align-items:center;column-gap:16px;row-gap:4px;justify-items:start;text-align:left;
-  }
-  .team li:last-child .team__ava{grid-area:ava;width:84px;margin:0}
-  .team li:last-child b{grid-area:name;min-height:0;justify-content:flex-start;text-align:left}
-  .team li:last-child span:last-child{grid-area:spec;text-align:left}
+
+  /* Диана — основатель, поэтому её карточка первой строкой во всю ширину;
+     остальные мастера идут парами. Оформление у всех одинаковое. */
+  .team li:first-child{grid-column:1 / -1}
+  .team li:first-child .team__ava{width:clamp(120px,34vw,170px)}
+
   .matgal{grid-template-columns:1fr}
   .steps{grid-template-columns:1fr}
   .leaf{max-width:38vw}
@@ -1444,3 +1440,14 @@ body{overflow-x:hidden;max-width:100%}
 /* Меню на телефоне — поверх всей страницы: у шапки убираем размытие,
    иначе она становится точкой отсчёта для fixed и меню обрезается. */
 body.nav-open .hdr{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(20,13,10,.92)}
+
+
+/* акции: компактнее по высоте на телефоне */
+@media(max-width:860px){
+  .post{grid-template-rows:auto auto;align-content:start}
+  .post__img{aspect-ratio:16/9;max-height:34vh}
+  .post__body{padding:18px 16px 22px}
+  .post__title{margin-bottom:2px}
+  .post__row{margin-top:14px}
+  .post__row .btn{padding:13px 16px}
+}
