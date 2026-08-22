@@ -1451,3 +1451,70 @@ body.nav-open .hdr{backdrop-filter:none;-webkit-backdrop-filter:none;background:
   .post__row{margin-top:14px}
   .post__row .btn{padding:13px 16px}
 }
+
+
+/* =================== ПРОСМОТР ФОТО В ПОЛНОМ РАЗМЕРЕ =================== */
+[data-zoom] img{cursor:zoom-in}
+.lightbox{
+  position:fixed;inset:0;z-index:130;display:flex;align-items:center;justify-content:center;
+  padding:clamp(10px,2.4vw,32px);
+}
+.lightbox[hidden]{display:none}
+.lightbox__back{position:absolute;inset:0;background:rgba(10,6,4,.92);backdrop-filter:blur(8px)}
+.lightbox__fig{position:relative;z-index:1;max-width:100%;max-height:100%;display:flex;flex-direction:column;align-items:center;gap:14px}
+.lightbox__img{
+  max-width:100%;max-height:calc(100vh - 140px);width:auto;height:auto;display:block;
+  border:1px solid rgba(216,184,119,.35);animation:pmodalIn .3s cubic-bezier(.2,.7,.25,1) both;
+}
+.lightbox__cap{
+  font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:rgba(246,239,230,.7);text-align:center;
+}
+.lightbox__close,.lightbox__nav{
+  position:absolute;z-index:2;background:rgba(20,13,10,.7);
+  border:1px solid rgba(216,184,119,.45);color:var(--gold-soft);cursor:pointer;transition:.25s;
+}
+.lightbox__close{
+  top:clamp(10px,2vw,26px);right:clamp(10px,2vw,26px);
+  font:inherit;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;padding:11px 18px;
+}
+.lightbox__nav{
+  top:50%;transform:translateY(-50%);width:clamp(42px,4vw,54px);aspect-ratio:1;border-radius:50%;
+  display:grid;place-items:center;
+}
+.lightbox__nav svg{width:38%;height:auto;fill:none;stroke:currentColor;stroke-width:1.6}
+.lightbox__nav--prev{left:clamp(8px,2vw,26px)}
+.lightbox__nav--next{right:clamp(8px,2vw,26px)}
+.lightbox__close:hover,.lightbox__nav:hover{background:var(--gold-soft);color:#241a19}
+@media(max-width:620px){
+  .lightbox__nav{width:40px;top:auto;bottom:14px;transform:none}
+  .lightbox__nav--prev{left:calc(50% - 52px)}
+  .lightbox__nav--next{right:calc(50% - 52px)}
+  .lightbox__img{max-height:calc(100vh - 190px)}
+}
+
+/* интерьер салона — сетка из настоящих фото */
+.ab-shots{grid-template-columns:repeat(3,1fr)}
+.ab-shots img{aspect-ratio:4/3}
+@media(max-width:720px){.ab-shots{grid-template-columns:1fr 1fr}}
+
+/* воздух вокруг блока «как нас найти», чтобы волна ничего не срезала */
+.ab-place{padding:clamp(70px,9vw,120px) 0 clamp(80px,10vw,130px)}
+
+/* акции: дата не липнет к картинке */
+.post__body{padding-top:clamp(20px,2.4vw,32px)}
+@media(max-width:860px){
+  .post__date{margin-bottom:10px}
+  .post__body{padding-top:20px}
+}
+
+
+/* интерьер — крупным рядом, контакты и карта под ним */
+.ab-place__in{grid-template-columns:repeat(12,1fr);row-gap:clamp(34px,4vw,60px)}
+.ab-place__gallery{grid-column:1 / -1}
+.ab-place__find{grid-column:1 / span 7}
+.ab-map{grid-column:8 / -1;min-height:clamp(240px,22vw,300px)}
+.ab-shots{grid-template-columns:repeat(3,1fr);gap:clamp(12px,1.6vw,20px)}
+@media(max-width:900px){
+  .ab-place__find{grid-column:1 / -1}
+  .ab-map{grid-column:1 / -1}
+}

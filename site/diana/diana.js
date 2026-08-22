@@ -412,6 +412,78 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }());
 
+  // --- Просмотр фотографий в полном размере -------------------------------
+  // Любая картинка внутри [data-zoom] открывается поверх страницы;
+  // соседние снимки листаются стрелками и клавишами.
+  (function () {
+    var groups = document.querySelectorAll('[data-zoom]');
+    if (!groups.length) return;
+
+    var box = null, list = [], index = 0;
+
+    function build() {
+      if (box) return box;
+      box = document.createElement('div');
+      box.className = 'lightbox';
+      box.setAttribute('role', 'dialog');
+      box.setAttribute('aria-modal', 'true');
+      box.hidden = true;
+      box.innerHTML =
+        '<div class="lightbox__back" data-close></div>' +
+        '<button class="lightbox__close" type="button" data-close aria-label="Закрыть">Закрыть</button>' +
+        '<button class="lightbox__nav lightbox__nav--prev" type="button" aria-label="Предыдущее фото">' +
+          '<svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
+        '<button class="lightbox__nav lightbox__nav--next" type="button" aria-label="Следующее фото">' +
+          '<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
+        '<figure class="lightbox__fig"><img class="lightbox__img" alt="" /><figcaption class="lightbox__cap"></figcaption></figure>';
+      document.body.appendChild(box);
+
+      box.addEventListener('click', function (e) {
+        if (e.target.hasAttribute('data-close')) close();
+      });
+      box.querySelector('.lightbox__nav--prev').addEventListener('click', function () { show(index - 1); });
+      box.querySelector('.lightbox__nav--next').addEventListener('click', function () { show(index + 1); });
+      document.addEventListener('keydown', function (e) {
+        if (box.hidden) return;
+        if (e.key === 'Escape') close();
+        if (e.key === 'ArrowLeft') show(index - 1);
+        if (e.key === 'ArrowRight') show(index + 1);
+      });
+      return box;
+    }
+
+    function show(i) {
+      if (!list.length) return;
+      index = (i + list.length) % list.length;
+      var src = list[index];
+      box.querySelector('.lightbox__img').src = src.getAttribute('src');
+      box.querySelector('.lightbox__cap').textContent = src.getAttribute('alt') || '';
+      var many = list.length > 1;
+      box.querySelector('.lightbox__nav--prev').hidden = !many;
+      box.querySelector('.lightbox__nav--next').hidden = !many;
+    }
+
+    function close() {
+      if (!box) return;
+      box.hidden = true;
+      document.body.classList.remove('nav-open');
+    }
+
+    Array.prototype.forEach.call(groups, function (group) {
+      group.addEventListener('click', function (e) {
+        var img = e.target.closest('img');
+        if (!img || !group.contains(img)) return;
+        if (e.target.closest('a, button')) return;     // ссылки работают как раньше
+        build();
+        list = Array.prototype.slice.call(group.querySelectorAll('img'));
+        show(list.indexOf(img));
+        box.hidden = false;
+        document.body.classList.add('nav-open');
+        box.querySelector('.lightbox__close').focus();
+      });
+    });
+  }());
+
   var here = location.pathname.split('/').pop() || 'index.html';
   document.querySelectorAll('.nav a, .ftr__nav a').forEach(function (a) {
     if (a.getAttribute('href') === here) a.setAttribute('aria-current', 'page');
