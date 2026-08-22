@@ -1544,7 +1544,7 @@ body.nav-open .hdr{backdrop-filter:none;-webkit-backdrop-filter:none;background:
 
 
 /* футер начинается тем же тоном, что и блок над ним — без видимой линии */
-.ftr--photo::after{background:linear-gradient(180deg,#241a19,rgba(18,11,9,.86) 14%,rgba(18,11,9,.76))}
+.ftr--photo::after{background:rgba(18,11,9,.78)}
 
 
 /* =================== СТЫКИ: ТОЛЬКО ВОЛНА =================== */
@@ -1711,3 +1711,38 @@ body.nav-open .hdr{backdrop-filter:none;-webkit-backdrop-filter:none;background:
 .sec--wave{position:relative;overflow:visible;border-top:0;--wave:#312322}
 .sec--steps.sec--wave,.sec--posts.sec--wave{--wave:#241a19}
 .sec--wave>.wave--top{color:var(--wave)}
+
+
+/* ---------- кружки соцсетей вне подвала ---------- */
+.soc--lg{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:14px;font-size:0}
+.soc--lg .soc__i{width:54px;height:54px;opacity:.7}
+.soc--lg .soc__i svg{width:24px;height:24px}
+@media(max-width:520px){.soc--lg .soc__i{width:48px;height:48px}}
+
+/* ---------- первый экран: простой затемнённый вариант ----------
+   Через страницу чередуется с «фотополосой»: так внутренние страницы
+   не выглядят под копирку. Разметка та же, меняется только класс. */
+.ab-top--plain .ab-top__left{display:none}
+.ab-top--plain .ab-top__in::before,
+.ab-top--plain .ab-top__in::after{display:none}
+.ab-top--plain .ab-top__right{
+  position:absolute;inset:0;width:100%;height:100%;z-index:0;
+  clip-path:none;background:none;
+}
+.ab-top--plain .ab-top__right img{
+  clip-path:none;transform:none;object-position:center;filter:brightness(.6);
+}
+.ab-top--plain::after{
+  content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(24,16,13,.82),rgba(24,16,13,.45) 45%,rgba(36,26,25,.9));
+}
+.ab-top--plain .ab-top__in{text-align:center}
+.ab-top--plain .ab-top__text{
+  margin:0 auto;max-width:min(720px,88%);padding:clamp(64px,9vw,120px) 0;
+}
+.ab-top--plain .ab-top__text p{max-width:56ch;margin-left:auto;margin-right:auto}
+
+/* текст в «фотополосном» варианте не должен липнуть к золотым линиям */
+@media(min-width:1081px){
+  .ab-top__text{margin-left:calc(clamp(150px,20vw,300px) + 92px - var(--pad))}
+}
