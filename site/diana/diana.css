@@ -1675,3 +1675,13 @@ body.nav-open .hdr{backdrop-filter:none;-webkit-backdrop-filter:none;background:
       linear-gradient(180deg,rgba(20,13,10,.66),rgba(20,13,10,.12) 34%,rgba(20,13,10,.2) 62%,rgba(20,13,10,.72));
   }
 }
+
+
+/* ---------- галерея работ ---------- */
+.works{grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:clamp(10px,1.4vw,18px)}
+.works img{
+  width:100%;aspect-ratio:3/4;object-fit:cover;display:block;
+  border:1px solid var(--line);transition:transform .35s cubic-bezier(.2,.7,.25,1),border-color .25s;
+}
+.works img:hover{transform:scale(1.02);border-color:var(--beige-dim)}
+@media(max-width:520px){.works{grid-template-columns:1fr 1fr}}

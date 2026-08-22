@@ -456,7 +456,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!list.length) return;
       index = (i + list.length) % list.length;
       var src = list[index];
-      box.querySelector('.lightbox__img').src = src.getAttribute('src');
+      box.querySelector('.lightbox__img').src = src.getAttribute('data-full') || src.getAttribute('src');
       box.querySelector('.lightbox__cap').textContent = src.getAttribute('alt') || '';
       var many = list.length > 1;
       box.querySelector('.lightbox__nav--prev').hidden = !many;
