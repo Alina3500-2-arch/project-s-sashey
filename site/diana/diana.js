@@ -267,6 +267,15 @@ document.addEventListener('DOMContentLoaded', function () {
         setFont(size, size > 13 ? 1.6 : 1.5, size > 13 ? 10 : 8);
       }
       if (!fits()) body.classList.add('is-scroll');
+      capMedia(b);
+    }
+
+    // Страховка: картинка не должна вылезать за свой блок ни в одном браузере.
+    function capMedia(b) {
+      var media = b.querySelector('.pmodal__media');
+      var img = media.querySelector('img');
+      if (!img || media.hidden) return;
+      img.style.maxHeight = media.clientHeight + 'px';
     }
 
     function close() {
