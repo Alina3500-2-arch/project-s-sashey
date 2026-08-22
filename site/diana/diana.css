@@ -1585,11 +1585,9 @@ body.nav-open .hdr{backdrop-filter:none;-webkit-backdrop-filter:none;background:
 .wave--top{transform:translateY(calc(-100% + 1.5px))}
 .wave--bottom{transform:translateY(calc(100% - 1.5px)) scaleY(-1)}
 .wave svg{margin:0;height:calc(100% + 1px)}
-.wave::after{
-  content:'';position:absolute;left:0;right:0;bottom:-1px;height:3px;
-  background:var(--cream);
-}
-.wave--bottom::after{bottom:auto;top:-1px}
+/* страховочная полоса была лишней: у нижней волны она переворачивалась
+   вместе с ней и ложилась светлой линией на тёмный блок. Достаточно
+   перекрытия самой волны. */
 
 
 /* мягкая подсветка без видимой кромки: край градиента больше не читается полосой */
@@ -1602,3 +1600,8 @@ body.nav-open .hdr{backdrop-filter:none;-webkit-backdrop-filter:none;background:
 .ab-top::before{
   background:radial-gradient(120% 90% at 78% 40%,rgba(150,102,54,.18),rgba(36,26,25,0) 76%);
 }
+
+
+.wave::after{display:none}
+.wave--top{transform:translateY(calc(-100% + 2px))}
+.wave--bottom{transform:translateY(calc(100% - 2px)) scaleY(-1)}
