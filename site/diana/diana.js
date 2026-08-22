@@ -162,8 +162,8 @@ document.addEventListener('DOMContentLoaded', function () {
   }());
 
   // --- Акции и новости из карточки на Яндекс Картах ------------------------
-  // Показываем крупным слайдером: шесть свежих новостей, листаются
-  // стрелками, точками и обычным свайпом.
+  // В слайде — только фото, дата, заголовок и две кнопки: страница не должна
+  // распухать от длинных текстов. Полный текст открывается в окне поверх сайта.
   (function () {
     var hosts = document.querySelectorAll('[data-posts]');
     if (!hosts.length) return;
@@ -177,6 +177,71 @@ document.addEventListener('DOMContentLoaded', function () {
       return n;
     }
 
+    // ---- окно с полной акцией ------------------------------------------
+    var box = null;
+
+    function ensureBox() {
+      if (box) return box;
+      box = el('div', 'pmodal');
+      box.setAttribute('role', 'dialog');
+      box.setAttribute('aria-modal', 'true');
+      box.hidden = true;
+      box.innerHTML =
+        '<div class="pmodal__back" data-close></div>' +
+        '<div class="pmodal__win">' +
+          '<button class="pmodal__close" type="button" data-close aria-label="Закрыть">Закрыть</button>' +
+          '<div class="pmodal__media"><img alt="" /></div>' +
+          '<div class="pmodal__body">' +
+            '<p class="pmodal__date"></p>' +
+            '<h3 class="pmodal__title"></h3>' +
+            '<div class="pmodal__text"></div>' +
+            '<a class="btn btn--ghost pmodal__cta" target="_blank" rel="noopener">Записаться</a>' +
+          '</div>' +
+        '</div>';
+      document.body.appendChild(box);
+      box.addEventListener('click', function (e) {
+        if (e.target.hasAttribute('data-close')) close();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !box.hidden) close();
+      });
+      return box;
+    }
+
+    function open(item) {
+      var b = ensureBox();
+      var media = b.querySelector('.pmodal__media');
+      var img = media.querySelector('img');
+      if (item.photos && item.photos[0]) {
+        img.src = item.photos[0];
+        media.hidden = false;
+      } else {
+        img.removeAttribute('src');
+        media.hidden = true;
+      }
+      b.querySelector('.pmodal__date').textContent = item.date || '';
+      b.querySelector('.pmodal__title').textContent = item.title || 'Новость салона';
+
+      var text = b.querySelector('.pmodal__text');
+      text.textContent = '';
+      String(item.text || '').split(/\n{2,}/).forEach(function (part) {
+        var p = el('p', null, part.trim());
+        if (p.textContent) text.appendChild(p);
+      });
+
+      b.querySelector('.pmodal__cta').href = BOOKING;
+      b.hidden = false;
+      document.body.classList.add('nav-open');    // блокируем прокрутку под окном
+      b.querySelector('.pmodal__close').focus();
+    }
+
+    function close() {
+      if (!box) return;
+      box.hidden = true;
+      document.body.classList.remove('nav-open');
+    }
+
+    // ---- лента ----------------------------------------------------------
     fetch('data/posts.json', { cache: 'no-cache' })
       .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
       .then(function (data) {
@@ -218,29 +283,32 @@ document.addEventListener('DOMContentLoaded', function () {
 
         var body = el('div', 'post__body');
         if (it.date) body.appendChild(el('p', 'post__date', it.date));
-        body.appendChild(el('h3', 'post__title', it.title || 'Новость салона'));
 
-        var full = String(it.text || '').trim();
-        var short = full.length > 210 ? full.slice(0, 195).replace(/\s+\S*$/, '') + '…' : full;
-        var p = el('p', 'post__text', short);
-        body.appendChild(p);
+        var title = el('button', 'post__title', it.title || 'Новость салона');
+        title.type = 'button';
+        body.appendChild(title);
 
-        if (short !== full) {
-          var more = el('button', 'post__more', 'Читать полностью');
-          more.type = 'button';
-          more.addEventListener('click', function () {
-            var opened = p.textContent === full;
-            p.textContent = opened ? short : full;
-            more.textContent = opened ? 'Читать полностью' : 'Свернуть';
-          });
-          body.appendChild(more);
-        }
-
+        var row = el('div', 'post__row');
+        var more = el('button', 'btn btn--ghost post__more-btn', 'Подробнее');
+        more.type = 'button';
         var cta = el('a', 'btn btn--ghost post__cta', 'Записаться');
         cta.href = BOOKING; cta.target = '_blank'; cta.rel = 'noopener';
-        body.appendChild(cta);
+        row.appendChild(more);
+        row.appendChild(cta);
+        body.appendChild(row);
 
         card.appendChild(body);
+
+        // Открываем окно по заголовку, кнопке и клику по самому слайду —
+        // кроме кнопки записи, у неё своя задача.
+        [title, more].forEach(function (n) {
+          n.addEventListener('click', function (e) { e.stopPropagation(); open(it); });
+        });
+        card.addEventListener('click', function (e) {
+          if (e.target.closest('a')) return;
+          open(it);
+        });
+
         track.appendChild(card);
       });
 
@@ -266,13 +334,13 @@ document.addEventListener('DOMContentLoaded', function () {
           var card = track.children[i];
           if (card) track.scrollTo({ left: card.offsetLeft - track.offsetLeft, behavior: 'smooth' });
         };
-        prev.addEventListener('click', function () { go(current() - 1); });
-        next.addEventListener('click', function () { go(current() + 1); });
-
         var current = function () {
           var w = track.clientWidth || 1;
           return Math.round(track.scrollLeft / w);
         };
+        prev.addEventListener('click', function () { go(current() - 1); });
+        next.addEventListener('click', function () { go(current() + 1); });
+
         var sync = function () {
           var i = current();
           Array.prototype.forEach.call(dots.children, function (d, k) {
