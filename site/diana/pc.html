@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
+<title>ПК-версия — PÉRFECT TON</title>
+<link rel="icon" href="assets/favicon.svg" />
+<style>
+  :root{--graphite:#171614;--cream:#F1E9DC;--green:#A8DC28;--grey:#9F9485;--line:#2A2723;}
+  *{box-sizing:border-box;}
+  html,body{margin:0;background:#0E0D0C;}
+  body{
+    color:var(--cream);
+    font:14px/1.4 Manrope,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+    -webkit-text-size-adjust:100%;
+  }
+
+  /* Панель управления поверх всего */
+  .bar{
+    position:fixed;top:0;left:0;right:0;z-index:10;
+    padding:8px 12px 9px;
+    background:rgba(23,22,20,.94);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .bar .row{display:flex;align-items:center;gap:8px;}
+  .bar .row + .row{margin-top:7px;}
+  .bar .t{color:var(--grey);white-space:nowrap;font-size:12px;}
+  .bar .t b{color:var(--green);font-weight:600;}
+  .widths,.zooms{display:flex;gap:6px;}
+  .zooms{margin-left:auto;}
+  .bar button{
+    appearance:none;cursor:pointer;
+    padding:6px 9px;border-radius:999px;
+    border:1px solid var(--line);background:transparent;
+    color:var(--cream);font:inherit;font-size:11px;line-height:1;
+  }
+  .bar button[aria-pressed="true"]{border-color:var(--green);color:var(--green);}
+  .bar button[disabled]{opacity:.35;}
+  .zooms button{min-width:34px;font-size:14px;}
+  .home{
+    color:var(--green);text-decoration:none;font-size:11px;line-height:1;
+    border:1px solid var(--green);border-radius:999px;padding:6px 9px;white-space:nowrap;
+    margin-left:auto;
+  }
+
+  /* Окно, в котором живёт уменьшенный монитор */
+  .viewport{
+    position:fixed;left:50%;top:var(--barH,40px);
+    width:var(--bandW,100%);height:var(--bandH,240px);
+    transform:translateX(-50%);
+    overflow:hidden;
+    background:var(--graphite);
+    box-shadow:0 18px 50px rgba(0,0,0,.55);
+    touch-action:pan-y;   /* вертикаль листает страницу, горизонталь ловим сами */
+  }
+  .viewport iframe{
+    border:0;display:block;transform-origin:top left;background:var(--graphite);
+    pointer-events:none;   /* прокрутка остаётся внешней; короткие нажатия передаём ниже */
+  }
+
+  /* Подсказка под «монитором» */
+  .hint{
+    position:fixed;left:0;right:0;z-index:5;
+    top:calc(var(--barH,40px) + var(--bandH,240px));
+    padding:14px 18px;
+    color:var(--grey);font-size:12px;line-height:1.55;
+    text-align:center;
+    pointer-events:none;
+  }
+  .hint b{color:var(--cream);font-weight:600;}
+  .hint.is-hidden{display:none;}
+
+  /* Пустышка, которая даёт странице высоту для прокрутки */
+  .spacer{width:1px;}
+</style>
+</head>
+
+<body>
+
+<div class="bar" id="bar">
+  <div class="row">
+    <!-- нажатие по этой надписи показывает цифры о состоянии кадра:
+         с ними можно понять, что не так, по одному скриншоту с телефона -->
+    <span class="t" id="infoWrap" role="button" tabindex="0">ПК · <b id="info">1280</b></span>
+    <a class="home" id="homeLink" href="index.html">Моб.</a>
+  </div>
+  <div class="row">
+    <div class="widths" id="widths">
+      <button data-w="1280" aria-pressed="true">1280</button>
+      <button data-w="1440">1440</button>
+      <button data-w="1920">1920</button>
+    </div>
+    <div class="zooms" id="zooms">
+      <button data-z="-1" id="zOut" aria-label="Мельче">−</button>
+      <button data-z="1" id="zIn" aria-label="Крупнее">+</button>
+    </div>
+  </div>
+</div>
+
+<div class="viewport" id="viewport">
+  <iframe id="frame" title="Предпросмотр ПК-версии"></iframe>
+</div>
+
+<div class="hint" id="hint">
+  Целый экран монитора на телефоне выходит мелким.
+  <b>«+»</b> — крупнее, дальше двигайте картинку пальцем вбок.
+  В <b>горизонтальном</b> положении телефона — вдвое крупнее.
+</div>
+
+<div class="spacer" id="spacer"></div>
+
+<script>
+(function () {
+  var W = 1280;              // ширина «монитора»
+  var RATIO = 900 / 1440;    // высота монитора = 16:10, как у настоящего экрана
+  var ZOOMS = [1, 1.6, 2.4, 3.4];   // множители к масштабу «монитор целиком»
+  var zi = 0;                // текущая ступень увеличения
+
+  // ?page=<файл> — какую страницу грузить внутрь «монитора»,
+  // по умолчанию index.html (основной сайт).
+  var page = (location.search.match(/[?&]page=([^&]+)/) || [])[1] || 'index.html';
+
+  var frame    = document.getElementById('frame');
+  var spacer   = document.getElementById('spacer');
+  var bar      = document.getElementById('bar');
+  var info     = document.getElementById('info');
+  var hint     = document.getElementById('hint');
+  var band     = document.getElementById('viewport');
+  var root     = document.documentElement;
+  var homeLink = document.getElementById('homeLink');
+  if (homeLink) homeLink.href = page;
+
+  // k    — во сколько раз уменьшен монитор;
+  // H    — высота монитора (настоящий экран, 16:10 — от неё зависят vh в вёрстке);
+  // visH — сколько строк монитора реально видно в окошке (при увеличении меньше H);
+  // panX — на сколько пикселей монитора уехали вправо при увеличении.
+  var k = 1, H = 900, innerH = 0, visH = 900, panX = 0, panMax = 0;
+
+  // Во вложенном кадре браузер берёт ширину не из кадра, а из устройства —
+  // из-за этого внутри включалась мобильная вёрстка. Параметр ?w= говорит
+  // сайту разложиться как на мониторе такой ширины.
+  function build() {
+    // v= сбрасывает кэш телефона на прежнюю версию страницы. Если открыли
+    // pc.html со своим ?r=..., он тоже уходит внутрь — чтобы одной ссылкой
+    // можно было пробить кэш и у обёртки, и у самого сайта.
+    var r = (location.search.match(/[?&]r=([^&]+)/) || [])[1];
+    frame.src = page + '?w=' + W + '&v=pc7' + (r ? '&r=' + r : '');
+    // Полное событие load ждёт все картинки и шрифты — «монитор» до тех пор
+    // висел бы в прежнем масштабе. Пересчитываем, как только появится тело.
+    setTimeout(layout, 300);
+    setTimeout(layout, 1200);
+  }
+
+  function layout() {
+    var doc = frame.contentDocument;
+    if (!doc || !doc.body) return;
+
+    H = Math.round(W * RATIO);
+    var barH = bar.offsetHeight;
+    var availW = root.clientWidth;
+    var availH = Math.max(160, window.innerHeight - barH);
+
+    // За единицу берём масштаб «монитор целиком помещается на экране»,
+    // дальше его умножает выбранная ступень увеличения.
+    var fit = Math.min(availW / W, availH / H);
+    k = fit * ZOOMS[zi];
+
+    // Окошко не больше экрана и не больше самого монитора.
+    var bandW = Math.min(availW, Math.round(W * k));
+    var bandH = Math.min(availH, Math.round(H * k));
+    visH = Math.min(H, bandH / k);
+
+    // Вбок можно уехать ровно настолько, насколько монитор шире окошка.
+    panMax = Math.max(0, W - bandW / k);
+    if (panX > panMax) panX = panMax;
+    if (zi === 0) panX = 0;
+
+    root.style.setProperty('--barH', barH + 'px');
+    root.style.setProperty('--bandW', bandW + 'px');
+    root.style.setProperty('--bandH', bandH + 'px');
+
+    innerH = Math.max(
+      doc.body.scrollHeight, doc.body.offsetHeight,
+      doc.documentElement.scrollHeight, doc.documentElement.offsetHeight
+    );
+    frame.style.width = W + 'px';
+    frame.style.height = H + 'px';
+    frame.style.marginLeft = (-Math.round(panX * k)) + 'px';
+    frame.style.transform = 'scale(' + k + ')';
+
+    // Внешняя прокрутка должна ровно покрывать внутреннюю:
+    // outerMax = k * (innerH - visH)
+    var need = Math.max(0, k * (innerH - visH)) + window.innerHeight;
+    spacer.style.height = Math.round(need) + 'px';
+
+    // Подсказка нужна, только пока под «монитором» есть пустое место.
+    hint.classList.toggle('is-hidden', barH + bandH > window.innerHeight - 60);
+
+    info.textContent = W + ' · ' + Math.round(k * 100) + '%';
+    document.getElementById('zOut').disabled = zi === 0;
+    document.getElementById('zIn').disabled = zi === ZOOMS.length - 1;
+    sync();
+  }
+
+  // Чем двигаем страницу внутри кадра: 'body' — прокрутка body (основной
+  // путь), 'win' — прокрутка самого документа, 'transform' — аварийный
+  // сдвиг (если телефон отдал страницу из кэша, без стилей предпросмотра).
+  // Настоящая прокрутка важна принципиально: только она запускает внутри
+  // кадра IntersectionObserver и ленивую загрузку. Пока страница двигалась
+  // трансформацией, отзывы не грузились, а прайс оставался невидимым —
+  // блоки .reveal занимали высоту, но не показывались.
+  var mode = null;
+
+  // Внутри сайта включена плавная прокрутка (scroll-behavior:smooth) — она
+  // нужна ссылкам меню, но здесь превратила бы каждое движение пальца в
+  // догоняющую анимацию. В кадре предпросмотра прокрутка мгновенная.
+  function prepare() {
+    var doc = frame.contentDocument, win = frame.contentWindow;
+    if (!doc || !doc.body) return;
+    doc.documentElement.style.scrollBehavior = 'auto';
+    doc.body.style.scrollBehavior = 'auto';
+
+    doc.body.scrollTop = 1;
+    if (Math.round(doc.body.scrollTop) === 1) { mode = 'body'; doc.body.scrollTop = 0; return; }
+
+    win.scrollTo(0, 1);
+    if (Math.round(win.pageYOffset || doc.documentElement.scrollTop || 0) === 1) {
+      mode = 'win'; win.scrollTo(0, 0); return;
+    }
+    mode = 'transform';
+  }
+
+  function innerY() {
+    return Math.round(Math.max(0, Math.min(window.scrollY / k, innerH - visH)));
+  }
+
+  var syncQueued = false;
+  function apply() {
+    syncQueued = false;
+    var win = frame.contentWindow, doc = frame.contentDocument;
+    if (!win || !doc || !doc.body || !mode) return;
+    var y = innerY();
+    if (mode === 'body') doc.body.scrollTop = y;
+    else if (mode === 'win') win.scrollTo(0, y);
+    else doc.body.style.transform = 'translateY(' + (-y) + 'px)';
+  }
+  // Во время инерционной прокрутки на телефоне событий scroll много —
+  // считаем позицию не чаще кадра отрисовки.
+  function sync() {
+    if (syncQueued) return;
+    syncQueued = true;
+    requestAnimationFrame(apply);
+  }
+
+  // Страховка на случай, если внутри кадра телефон всё же придержит
+  // IntersectionObserver и ленивую загрузку: когда прокрутка остановилась,
+  // сами показываем блоки в кадре и снимаем lazy с их картинок.
+  var settleTimer = null;
+  function settle() {
+    var doc = frame.contentDocument;
+    if (!doc) return;
+    var near = visH * 0.6;
+    [].forEach.call(doc.querySelectorAll('.reveal:not(.seen)'), function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.top < visH + near && r.bottom > -near) el.classList.add('seen');
+    });
+    [].forEach.call(doc.querySelectorAll('img[loading="lazy"]'), function (img) {
+      var r = img.getBoundingClientRect();
+      if (r.top < visH + near && r.bottom > -near) img.setAttribute('loading', 'eager');
+    });
+  }
+  window.addEventListener('scroll', function () {
+    clearTimeout(settleTimer);
+    settleTimer = setTimeout(function () { settle(); diag(); }, 160);
+  }, { passive: true });
+
+  frame.addEventListener('load', function () {
+    prepare();
+    layout();
+    setTimeout(settle, 700);
+    setTimeout(layout, 500);
+    setTimeout(layout, 1600);
+  });
+  window.addEventListener('scroll', sync, { passive: true });
+  window.addEventListener('resize', layout);
+  window.addEventListener('orientationchange', function () { setTimeout(layout, 250); });
+  // На телефоне окно «дышит»: скрывается панель браузера, разворачивается
+  // шторка внутреннего браузера приложения. resize при этом приходит не
+  // всегда, поэтому слушаем и видимую область.
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', function () { layout(); });
+  }
+  // Страница внутри подрастает после загрузки шрифтов и ленивых картинок.
+  // Пересчитываем по факту изменения размера, а не по вечному таймеру:
+  // каждый тик читал scrollHeight тяжёлого документа и подвешивал телефон.
+  if (window.ResizeObserver) {
+    var ro = new ResizeObserver(function () { layout(); });
+    frame.addEventListener('load', function () {
+      var body = frame.contentDocument && frame.contentDocument.body;
+      if (body) ro.observe(body);
+    });
+  } else {
+    var ticks = 0, iv = setInterval(function () {
+      layout();
+      if (++ticks > 8) clearInterval(iv);
+    }, 2000);
+  }
+
+  // iframe не перехватывает жесты, иначе на iPhone перестаёт листаться
+  // длинная ПК-страница. Короткое нажатие переводим в координаты сайта и
+  // запускаем настоящий элемент под пальцем — так вкладки кейса работают,
+  // а вертикальная прокрутка остаётся плавной.
+  band.addEventListener('click', function (e) {
+    if (dragged) return;
+    var doc = frame.contentDocument;
+    if (!doc) return;
+    var rect = this.getBoundingClientRect();
+    var x = (e.clientX - rect.left) / k + panX;
+    var y = (e.clientY - rect.top) / k;
+    var target = doc.elementFromPoint(x, y);
+    var control = target && target.closest('button, a');
+    if (!control) return;
+    if (control.tagName === 'A' && control.href) {
+      if (control.target === '_blank') window.open(control.href, '_blank');
+      else window.location.href = control.href;
+      return;
+    }
+    control.click();
+  });
+
+  // Увеличенный монитор шире экрана — двигаем его пальцем вбок.
+  // Вертикальные движения не трогаем: ими листается страница.
+  var startX = 0, startY = 0, startPan = 0, dragging = false, dragged = false;
+  band.addEventListener('touchstart', function (e) {
+    if (panMax <= 0 || e.touches.length !== 1) return;
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    startPan = panX;
+    dragging = false; dragged = false;
+  }, { passive: true });
+  band.addEventListener('touchmove', function (e) {
+    if (panMax <= 0 || e.touches.length !== 1) return;
+    var dx = e.touches[0].clientX - startX;
+    var dy = e.touches[0].clientY - startY;
+    if (!dragging) {
+      if (Math.abs(dx) < 8 || Math.abs(dx) <= Math.abs(dy)) return;
+      dragging = true; dragged = true;
+    }
+    panX = Math.max(0, Math.min(panMax, startPan - dx / k));
+    frame.style.marginLeft = (-Math.round(panX * k)) + 'px';
+    if (e.cancelable) e.preventDefault();
+  }, { passive: false });
+
+  // Диагностика по нажатию на «ПК ·». Главное здесь — две высоты блока
+  // прайса: offsetHeight (раскладка) и getBoundingClientRect (с учётом
+  // трансформаций). На мониторе они совпадают; если в кадре разошлись —
+  // значит браузер отдаёт скриптам сайта искажённые размеры, и виноват
+  // не сайт, а измерение внутри масштабированного кадра.
+  var diagOn = false;
+  function diag() {
+    if (!diagOn) return;
+    var doc = frame.contentDocument;
+    if (!doc) return;
+    var lv = doc.querySelector('.levels');
+    var imgs = [].slice.call(doc.images);
+    var loaded = imgs.filter(function (i) { return i.complete && i.naturalWidth; }).length;
+    hint.innerHTML =
+      'режим <b>' + mode + '</b> · масштаб <b>' + Math.round(k * 100) + '%</b>' +
+      ' · страница <b>' + innerH + '</b> px<br>' +
+      'прайс: offset <b>' + (lv ? lv.offsetHeight : '—') + '</b> / rect <b>' +
+      (lv ? Math.round(lv.getBoundingClientRect().height) : '—') + '</b>' +
+      ' · картинки <b>' + loaded + '/' + imgs.length + '</b>' +
+      ' · блоки <b>' + doc.querySelectorAll('.reveal.seen').length + '/' +
+      doc.querySelectorAll('.reveal').length + '</b>';
+    hint.classList.remove('is-hidden');
+  }
+  document.getElementById('infoWrap').addEventListener('click', function () {
+    diagOn = !diagOn;
+    if (!diagOn) { location.reload(); return; }
+    diag();
+  });
+
+  document.getElementById('widths').addEventListener('click', function (e) {
+    var btn = e.target.closest('button');
+    if (!btn) return;
+    W = +btn.dataset.w;
+    [].forEach.call(this.querySelectorAll('button'), function (b) {
+      b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+    });
+    panX = 0;
+    window.scrollTo(0, 0);
+    build();
+  });
+
+  // Увеличение не должно терять место, на котором остановились:
+  // запоминаем строку монитора и возвращаемся к ней после пересчёта.
+  document.getElementById('zooms').addEventListener('click', function (e) {
+    var btn = e.target.closest('button');
+    if (!btn || btn.disabled) return;
+    var at = innerY();
+    var next = zi + (+btn.dataset.z);
+    if (next < 0 || next >= ZOOMS.length) return;
+    zi = next;
+    layout();
+    window.scrollTo(0, at * k);
+    sync();
+  });
+
+  build();
+})();
+</script>
+
+</body>
+</html>

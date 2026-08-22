@@ -1161,7 +1161,6 @@ body:not(.is-home) .section{border-top:1px solid var(--line)}
   .ab-band__col--why{border:0;border-top:1px solid rgba(150,110,70,.22);border-bottom:1px solid rgba(150,110,70,.22);padding:22px 0}
   .ab-place__in{grid-template-columns:1fr}
   .ab-shots{grid-template-columns:1fr 1fr}
-  .ab-shots img:nth-child(3){grid-column:1 / -1;aspect-ratio:16/10}
   .ab-call{flex-direction:column;align-items:flex-start}
 }
 
@@ -1380,7 +1379,7 @@ body:not(.is-home) .section{border-top:1px solid var(--line)}
   border:1px solid rgba(216,184,119,.22);transition:.35s;
 }
 .matgal img:hover{transform:translateY(-4px);border-color:var(--gold-soft)}
-@media(max-width:520px){.rule-card{grid-template-columns:1fr}}
+@media(max-width:520px){.rule-card{grid-template-columns:1fr}.rule-card img{height:auto}}
 
 
 /* =================== МОБИЛЬНАЯ ОТЛАДКА =================== */
@@ -1413,7 +1412,7 @@ body{overflow-x:hidden;max-width:100%}
 
   /* материалы: карточка правила — фото сверху, текст под ним */
   .rule-card{grid-template-columns:1fr}
-  .rule-card img{aspect-ratio:16/10}
+  .rule-card img{aspect-ratio:16/10;height:auto}
   .rules{grid-template-columns:1fr}
   .steps{grid-template-columns:1fr 1fr}
   .matgal{grid-template-columns:1fr 1fr}
@@ -1633,7 +1632,7 @@ body.nav-open .hdr{backdrop-filter:none;-webkit-backdrop-filter:none;background:
 /* ---------- мобильный верх «О салоне» ---------- */
 @media(max-width:720px){
   .ab-top{
-    position:relative;padding:clamp(96px,22vw,130px) 0 clamp(34px,8vw,54px);
+    position:relative;padding:clamp(96px,22vw,130px) 0 clamp(86px,20vw,120px);
     background:#241a19;text-align:left;
   }
   .ab-top__left{display:none}          /* узкая полоса на телефоне бесполезна */
@@ -1680,8 +1679,16 @@ body.nav-open .hdr{backdrop-filter:none;-webkit-backdrop-filter:none;background:
 /* ---------- галерея работ ---------- */
 .works{grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:clamp(10px,1.4vw,18px)}
 .works img{
-  width:100%;aspect-ratio:3/4;object-fit:cover;display:block;
+  width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;display:block;
   border:1px solid var(--line);transition:transform .35s cubic-bezier(.2,.7,.25,1),border-color .25s;
 }
 .works img:hover{transform:scale(1.02);border-color:var(--beige-dim)}
 @media(max-width:520px){.works{grid-template-columns:1fr 1fr}}
+
+
+/* ссылка на предпросмотр ПК-версии с телефона */
+.pcv{
+  font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(246,239,230,.5);border:1px solid var(--line);padding:7px 12px;transition:.25s;
+}
+.pcv:hover{color:var(--gold-soft);border-color:var(--gold-soft)}
