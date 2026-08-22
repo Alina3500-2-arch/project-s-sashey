@@ -140,7 +140,7 @@ p{margin:0 0 16px;color:rgba(255,255,255,.82);max-width:64ch}
 .hero::before{
   content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
   background:
-    radial-gradient(56% 50% at 50% 46%,rgba(26,16,12,.74),rgba(26,16,12,.44) 58%,rgba(26,16,12,0) 78%),
+    radial-gradient(58% 52% at 50% 46%,rgba(26,16,12,.9),rgba(26,16,12,.58) 58%,rgba(26,16,12,0) 80%),
     linear-gradient(180deg,rgba(18,11,9,.5),rgba(18,11,9,.06) 26%,rgba(18,11,9,.06) 62%,rgba(18,11,9,.62));
 }
 .hero__in{
