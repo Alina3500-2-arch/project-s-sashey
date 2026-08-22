@@ -999,3 +999,71 @@ body:not(.is-home) .section{border-top:1px solid var(--line)}
 }
 .posts-note a{color:var(--gold-soft);border-bottom:1px solid rgba(216,184,119,.4)}
 .posts-empty{text-align:center;color:rgba(246,239,230,.7)}
+
+
+/* =================== АКЦИИ: КРУПНЫЙ СЛАЙДЕР =================== */
+.slider{position:relative}
+.slider__track{
+  display:flex;gap:clamp(16px,2vw,26px);
+  overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;
+  scrollbar-width:none;-ms-overflow-style:none;padding-bottom:4px;
+}
+.slider__track::-webkit-scrollbar{display:none}
+.post{
+  flex:0 0 100%;scroll-snap-align:center;
+  display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);align-items:center;
+  overflow:hidden;border:1px solid rgba(216,184,119,.28);
+  background:linear-gradient(180deg,rgba(40,28,23,.96),rgba(28,19,16,.96));
+  transition:border-color .3s;
+}
+.post:hover{transform:none;box-shadow:none;border-color:rgba(216,184,119,.45)}
+.post--text{grid-template-columns:1fr}
+.post__img{
+  width:100%;height:auto;aspect-ratio:16/9;      /* родная пропорция — кадр не режем */
+  object-fit:cover;display:block;background:#1a1210;align-self:center;
+}
+.post__body{
+  padding:clamp(24px,3vw,42px);display:flex;flex-direction:column;justify-content:center;
+}
+.post__head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px}
+.post__date{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold-soft);margin:0 0 14px}
+.post__title{
+  font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;
+  font-size:clamp(22px,2.6vw,36px);line-height:1.2;letter-spacing:.03em;color:#f6efe6;margin:0 0 16px;
+}
+.post__text{
+  margin:0;color:rgba(246,239,230,.78);font-size:clamp(14px,1.15vw,16px);
+  line-height:1.75;white-space:pre-line;max-width:none;
+}
+.post__more{
+  margin-top:18px;align-self:flex-start;background:none;border:0;padding:0;cursor:pointer;
+  font:inherit;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-soft);
+  border-bottom:1px solid rgba(216,184,119,.45);
+}
+.post__more:hover{color:#f6efe6;border-bottom-color:#f6efe6}
+.post__cta{margin-top:24px;align-self:flex-start;padding:14px 32px;font-size:11px}
+
+.slider__nav{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:3;
+  width:clamp(40px,3.4vw,52px);aspect-ratio:1;border-radius:50%;
+  border:1px solid rgba(216,184,119,.5);background:rgba(20,13,10,.72);
+  backdrop-filter:blur(6px);color:#f6efe6;cursor:pointer;
+  display:grid;place-items:center;transition:.25s;
+}
+.slider__nav svg{width:38%;height:auto;fill:currentColor}
+.slider__nav:hover{background:var(--gold-soft);color:#241a19;border-color:var(--gold-soft)}
+.slider__nav[disabled]{opacity:.25;pointer-events:none}
+.slider__nav--prev{left:clamp(-8px,-1vw,0px)}
+.slider__nav--next{right:clamp(-8px,-1vw,0px)}
+.slider__dots{display:flex;justify-content:center;gap:10px;margin-top:clamp(20px,2.6vw,30px)}
+.slider__dot{
+  width:8px;height:8px;border-radius:50%;padding:0;cursor:pointer;
+  border:1px solid rgba(216,184,119,.55);background:none;transition:.25s;
+}
+.slider__dot.is-active{background:var(--gold-soft);border-color:var(--gold-soft);transform:scale(1.25)}
+
+@media(max-width:860px){
+  .post{grid-template-columns:1fr}
+  .post__img{min-height:auto;aspect-ratio:16/10}
+  .slider__nav{display:none}
+}
