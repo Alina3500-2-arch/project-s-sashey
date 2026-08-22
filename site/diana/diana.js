@@ -195,7 +195,6 @@ document.addEventListener('DOMContentLoaded', function () {
             '<p class="pmodal__date"></p>' +
             '<h3 class="pmodal__title"></h3>' +
             '<div class="pmodal__text"></div>' +
-            '<a class="btn btn--ghost pmodal__cta" target="_blank" rel="noopener">Записаться</a>' +
           '</div>' +
         '</div>';
       document.body.appendChild(box);
@@ -229,10 +228,45 @@ document.addEventListener('DOMContentLoaded', function () {
         if (p.textContent) text.appendChild(p);
       });
 
-      b.querySelector('.pmodal__cta').href = BOOKING;
       b.hidden = false;
       document.body.classList.add('nav-open');    // блокируем прокрутку под окном
+      fitText(b);
       b.querySelector('.pmodal__close').focus();
+    }
+
+    // Длинные акции не режем и не прячем под прокрутку: сначала пробуем
+    // ужать шрифт, и только если и это не помогло — включаем прокрутку.
+    function fitText(b) {
+      var body = b.querySelector('.pmodal__body');
+      var win = b.querySelector('.pmodal__win');
+      body.classList.remove('is-scroll');
+
+      var fits = function () { return body.scrollHeight <= body.clientHeight + 4; };
+      var setFont = function (px, lh, gap) {
+        body.style.setProperty('--pfs', px.toFixed(1) + 'px');
+        body.style.setProperty('--plh', String(lh));
+        body.style.setProperty('--pgap', gap + 'px');
+      };
+
+      // 1) обычный размер, картинка крупная
+      win.style.setProperty('--pmh', 'min(46vh,420px)');
+      setFont(15, 1.6, 10);
+      if (fits()) return;
+
+      // 2) уступаем высоту картинки тексту — но не прячем её совсем
+      var heights = ['min(38vh,340px)', 'min(30vh,270px)', 'min(24vh,210px)'];
+      for (var h = 0; h < heights.length && !fits(); h++) {
+        win.style.setProperty('--pmh', heights[h]);
+      }
+      if (fits()) return;
+
+      // 3) и только потом ужимаем шрифт
+      var size = 15;
+      while (size > 9.8 && !fits()) {
+        size -= 0.5;
+        setFont(size, size > 13 ? 1.6 : 1.5, size > 13 ? 10 : 8);
+      }
+      if (!fits()) body.classList.add('is-scroll');
     }
 
     function close() {
