@@ -562,7 +562,7 @@ a.rev__name:hover{color:var(--beige);border-bottom-color:var(--beige-dim)}
 }
 .team__card:hover .team__ava{border-color:var(--gold-soft);transform:translateY(-3px)}
 .team__card:hover b{color:var(--gold-soft)}
-.team b{font-weight:400;transition:.25s;min-height:2.9em;display:flex;align-items:flex-start;justify-content:center;text-align:center;font-size:clamp(12px,1.1vw,14px);letter-spacing:.26em;text-transform:uppercase;color:#f4ece1}
+.team b{font-weight:400;transition:.25s;min-height:1.5em;display:flex;align-items:flex-start;justify-content:center;text-align:center;font-size:clamp(12px,1.1vw,14px);letter-spacing:.26em;text-transform:uppercase;color:#f4ece1}
 .team span:last-child{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(246,239,230,.6)}
 
 /* =================== ОТЗЫВЫ =================== */
@@ -1705,3 +1705,9 @@ body.nav-open .hdr{backdrop-filter:none;-webkit-backdrop-filter:none;background:
    но экран чуть ниже: под ним сразу начинается содержимое страницы */
 .ab-top--page{min-height:min(84svh,760px)}
 @media(max-width:720px){.ab-top--page{min-height:0}}
+
+
+/* волна между первым экраном и вторым блоком — одинаково на всех страницах */
+.sec--wave{position:relative;overflow:visible;border-top:0;--wave:#312322}
+.sec--steps.sec--wave,.sec--posts.sec--wave{--wave:#241a19}
+.sec--wave>.wave--top{color:var(--wave)}

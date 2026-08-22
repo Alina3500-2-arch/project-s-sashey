@@ -441,6 +441,27 @@ document.addEventListener('DOMContentLoaded', function () {
       box.addEventListener('click', function (e) {
         if (e.target.hasAttribute('data-close')) close();
       });
+      // Фото листаются пальцем: горизонтальный смах — соседний снимок,
+      // вертикальный вниз — закрыть. Порог небольшой, чтобы жест ловился
+      // и на узком экране, но случайное касание кадр не сдвигало.
+      (function () {
+        var x0 = 0, y0 = 0, t0 = 0, tracking = false;
+        box.addEventListener('touchstart', function (e) {
+          if (e.touches.length !== 1) { tracking = false; return; }
+          x0 = e.touches[0].clientX; y0 = e.touches[0].clientY;
+          t0 = e.timeStamp; tracking = true;
+        }, { passive: true });
+        box.addEventListener('touchend', function (e) {
+          if (!tracking) return;
+          tracking = false;
+          var t = e.changedTouches[0];
+          var dx = t.clientX - x0, dy = t.clientY - y0;
+          if (e.timeStamp - t0 > 700) return;                 // это не смах, а удержание
+          if (Math.abs(dx) > 42 && Math.abs(dx) > Math.abs(dy)) { show(index + (dx < 0 ? 1 : -1)); return; }
+          if (dy > 70 && Math.abs(dy) > Math.abs(dx)) close();
+        }, { passive: true });
+      }());
+
       box.querySelector('.lightbox__nav--prev').addEventListener('click', function () { show(index - 1); });
       box.querySelector('.lightbox__nav--next').addEventListener('click', function () { show(index + 1); });
       document.addEventListener('keydown', function (e) {
