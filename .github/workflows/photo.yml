@@ -1,0 +1,79 @@
+name: Забрать фотографию по ссылке
+
+# Скачивает изображение по прямой ссылке (в том числе с Google Drive),
+# уменьшает под веб и кладёт в site/assets. Нужен потому, что из среды
+# Claude drive.google.com закрыт прокси, а у раннера GitHub сеть открыта.
+#
+# Для Google Drive у файла должен быть доступ «Все, у кого есть ссылку»
+# (хотя бы на время скачивания).
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 'Ссылка на файл (Google Drive или прямая)'
+        required: true
+      name:
+        description: 'Имя файла в site/assets (например sasha-duo-2026.jpg)'
+        required: true
+        default: 'sasha-duo-2026.jpg'
+      max_width:
+        description: 'Максимальная ширина, px'
+        default: '900'
+      quality:
+        description: 'Качество JPEG'
+        default: '86'
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -q pillow
+
+      - name: Скачать
+        run: |
+          URL="${{ inputs.url }}"
+          ID=$(echo "$URL" | grep -oP '(?<=/d/)[^/]+' || true)
+          if [ -z "$ID" ]; then ID=$(echo "$URL" | grep -oP '(?<=[?&]id=)[^&]+' || true); fi
+          if [ -n "$ID" ]; then
+            # большие файлы Drive отдаёт через страницу с подтверждением
+            curl -sSL -c /tmp/ck -o /tmp/probe "https://drive.google.com/uc?export=download&id=$ID"
+            if file /tmp/probe | grep -qi 'html\|text'; then
+              CONF=$(grep -oP '(?<=confirm=)[0-9A-Za-z_]+' /tmp/probe | head -1 || true)
+              curl -sSL -b /tmp/ck -o src.bin "https://drive.google.com/uc?export=download&confirm=${CONF:-t}&id=$ID"
+            else
+              mv /tmp/probe src.bin
+            fi
+          else
+            curl -sSL -o src.bin "$URL"
+          fi
+          ls -lh src.bin; file src.bin
+          if file src.bin | grep -qi 'html\|text'; then
+            echo "::error::Скачался не файл, а страница. Откройте доступ по ссылке («Все, у кого есть ссылка»)."; exit 1; fi
+
+      - name: Уменьшить под веб
+        run: |
+          python3 - <<'PY'
+          from PIL import Image, ImageOps
+          im = ImageOps.exif_transpose(Image.open('src.bin')).convert('RGB')
+          print('исходник', im.size)
+          w = int('${{ inputs.max_width }}')
+          if im.width > w:
+              im = im.resize((w, round(im.height * w / im.width)), Image.LANCZOS)
+          im.save('site/assets/${{ inputs.name }}', quality=int('${{ inputs.quality }}'),
+                  optimize=True, progressive=True)
+          print('результат', im.size)
+          PY
+          ls -l "site/assets/${{ inputs.name }}"
+
+      - name: Закоммитить
+        run: |
+          git config user.name "Claude"; git config user.email "noreply@anthropic.com"
+          git add "site/assets/${{ inputs.name }}"
+          git commit -m "chore(assets): фотография ${{ inputs.name }} с Google Drive" || echo "нечего коммитить"
+          git pull --rebase origin main
+          git push
