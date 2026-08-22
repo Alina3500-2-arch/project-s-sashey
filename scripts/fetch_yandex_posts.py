@@ -154,6 +154,33 @@ def download_photos(items, out_dir):
         it["photos"] = local
 
 
+def drop_orphan_photos(items, out_dir):
+    """Удаляем снимки новостей, которых больше нет в ленте.
+
+    Лента ограничена --limit, старые новости из неё выпадают, а их файлы
+    оставались в data/posts навсегда. Чистим только эту папку и только то,
+    на что не ссылается ни одна сохранённая новость.
+    """
+    if not os.path.isdir(out_dir):
+        return 0
+    used = set()
+    for it in items:
+        for rel in it.get("photos", []):
+            used.add(os.path.basename(rel))
+    dropped = 0
+    for name in os.listdir(out_dir):
+        if not name.lower().endswith(".jpg") or name in used:
+            continue
+        try:
+            os.remove(os.path.join(out_dir, name))
+            dropped += 1
+        except OSError as exc:                 # noqa: BLE001 — файл мог быть занят
+            print("не удалось убрать %s (%s)" % (name, exc), file=sys.stderr)
+    if dropped:
+        print("убрано фото без новостей: %d" % dropped, file=sys.stderr)
+    return dropped
+
+
 def diagnose(html):
     soup = soup_of(html)
     seen = {}
@@ -201,6 +228,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--html", help="разобрать сохранённый HTML вместо запроса к Яндексу")
     ap.add_argument("--limit", type=int, default=12)
+    ap.add_argument("--keep-photos", action="store_true",
+                    help="не удалять снимки новостей, выпавших из ленты")
     ap.add_argument("--debug", action="store_true")
     args = ap.parse_args()
 
@@ -227,7 +256,12 @@ def main():
     items.sort(key=lambda i: date_key(i.get("date")), reverse=True)
     items = items[: args.limit]
     out = os.path.normpath(OUT)
-    download_photos(items, os.path.join(os.path.dirname(out), "posts"))
+    photo_dir = os.path.join(os.path.dirname(out), "posts")
+    download_photos(items, photo_dir)
+    # Чистим после загрузки: если картинка не скачалась, новость останется
+    # без фото, но чужие файлы мы к этому моменту уже не тронем по ошибке.
+    if not args.keep_photos:
+        drop_orphan_photos(items, photo_dir)
 
     payload = {
         "source": "Яндекс Карты",
