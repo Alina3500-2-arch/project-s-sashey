@@ -161,6 +161,95 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }());
 
+  // --- Акции и новости из карточки на Яндекс Картах ------------------------
+  (function () {
+    var hosts = document.querySelectorAll('[data-posts]');
+    if (!hosts.length) return;
+    var FALLBACK = 'https://yandex.ru/maps/org/perfect_ton/64270712446/posts/';
+
+    function el(tag, cls, text) {
+      var n = document.createElement(tag);
+      if (cls) n.className = cls;
+      if (text != null) n.textContent = text;   // текст внешний — только textContent
+      return n;
+    }
+
+    fetch('data/posts.json', { cache: 'no-cache' })
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+      .then(function (data) {
+        Array.prototype.forEach.call(hosts, function (host) { renderPosts(host, data); });
+      })
+      .catch(function () {
+        Array.prototype.forEach.call(hosts, function (host) {
+          host.textContent = '';
+          var p = el('p', 'posts-empty', 'Свежие новости салона — в карточке на Яндекс Картах.');
+          var btns = el('div', 'btns btns--center');
+          var a = el('a', 'btn btn--ghost', 'Открыть новости');
+          a.href = FALLBACK; a.target = '_blank'; a.rel = 'noopener';
+          btns.appendChild(a);
+          host.appendChild(p); host.appendChild(btns);
+        });
+      });
+
+    function renderPosts(host, data) {
+      var items = (data && data.items) || [];
+      var limit = parseInt(host.getAttribute('data-limit'), 10);
+      if (limit > 0) items = items.slice(0, limit);
+      if (!items.length) return;
+
+      host.textContent = '';
+      var grid = el('div', 'posts');
+
+      items.forEach(function (it) {
+        var card = el('article', 'post');
+
+        if (it.photos && it.photos[0]) {
+          var img = document.createElement('img');
+          img.className = 'post__img';
+          img.src = it.photos[0];
+          img.alt = '';
+          img.loading = 'lazy';
+          img.addEventListener('error', function () { img.remove(); });
+          card.appendChild(img);
+        }
+
+        var body = el('div', 'post__body');
+        if (it.date) body.appendChild(el('p', 'post__date', it.date));
+        body.appendChild(el('h3', 'post__title', it.title || 'Новость салона'));
+
+        var full = String(it.text || '').trim();
+        var short = full.length > 260 ? full.slice(0, 240).replace(/\s+\S*$/, '') + '…' : full;
+        var p = el('p', 'post__text', short);
+        body.appendChild(p);
+
+        if (short !== full) {
+          var more = el('button', 'post__more', 'Читать полностью');
+          more.type = 'button';
+          more.addEventListener('click', function () {
+            var opened = p.textContent === full;
+            p.textContent = opened ? short : full;
+            more.textContent = opened ? 'Читать полностью' : 'Свернуть';
+          });
+          body.appendChild(more);
+        }
+
+        card.appendChild(body);
+        grid.appendChild(card);
+      });
+
+      host.appendChild(grid);
+
+      var note = el('p', 'posts-note');
+      note.appendChild(document.createTextNode('Источник — карточка салона на Яндекс Картах'
+        + (data.updated ? '. Обновлено: ' + data.updated : '') + '. '));
+      var link = el('a', null, 'Смотреть на Яндексе');
+      link.href = (data && data.org_url) || FALLBACK;
+      link.target = '_blank'; link.rel = 'noopener';
+      note.appendChild(link);
+      host.appendChild(note);
+    }
+  }());
+
   var here = location.pathname.split('/').pop() || 'index.html';
   document.querySelectorAll('.nav a, .ftr__nav a').forEach(function (a) {
     if (a.getAttribute('href') === here) a.setAttribute('aria-current', 'page');

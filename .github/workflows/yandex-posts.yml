@@ -1,0 +1,57 @@
+name: Обновление акций и новостей с Яндекс Карт
+
+# Раз в неделю забираем новости карточки салона в site/diana/data/posts.json.
+# Если Яндекс показал капчу или сменил вёрстку — шаг падает мягко,
+# прошлые акции остаются на месте, раздел не пустеет.
+
+on:
+  schedule:
+    - cron: '20 4 * * 1'      # понедельник, 07:20 по Москве — после отзывов
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: yandex-posts
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Установить зависимости
+        run: |
+          pip install --quiet playwright beautifulsoup4
+          python -m playwright install --with-deps chromium
+
+      - name: Забрать новости
+        id: fetch
+        continue-on-error: true
+        run: python3 scripts/fetch_yandex_posts.py --debug
+
+      - name: Закоммитить, если что-то изменилось
+        if: steps.fetch.outcome == 'success'
+        run: |
+          if [ -z "$(git status --porcelain site/diana/data)" ]; then
+            echo "Новости не менялись — коммит не нужен."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A site/diana/data
+          git commit -m "diana: обновление акций и новостей с Яндекс Карт"
+          git push
+
+      - name: Сообщить, если автообновление не прошло
+        if: steps.fetch.outcome != 'success'
+        run: |
+          echo "::warning::Не удалось обновить новости (капча или изменившаяся вёрстка)."
+          echo "На сайте остались прошлые акции. Обновить вручную:"
+          echo "  python3 scripts/fetch_yandex_posts.py --debug"
