@@ -1381,3 +1381,66 @@ body:not(.is-home) .section{border-top:1px solid var(--line)}
 }
 .matgal img:hover{transform:translateY(-4px);border-color:var(--gold-soft)}
 @media(max-width:520px){.rule-card{grid-template-columns:1fr}}
+
+
+/* =================== МОБИЛЬНАЯ ОТЛАДКА =================== */
+/* страницу не должно таскать вбок ни на одном экране */
+html{overflow-x:hidden}
+body{overflow-x:hidden;max-width:100%}
+.wave{left:0;right:0}
+
+@media(max-width:900px){
+  /* меню-лайтбокс: один столбец, без «расползания» на колонки */
+  .nav{
+    flex-wrap:nowrap;gap:clamp(14px,3.4vh,22px);
+    padding:clamp(78px,12vh,110px) var(--pad) clamp(30px,6vh,48px);
+    overflow-y:auto;justify-content:flex-start;
+  }
+  .nav a:not(.nav__cta){font-size:clamp(14px,4vw,17px);letter-spacing:.24em}
+  .hdr .nav .nav__cta{margin-top:6px;padding:14px 30px}
+  .nav__close{top:18px;right:var(--pad)}
+}
+
+@media(max-width:860px){
+  /* акции: фото сверху, текст под ним, кнопки в столбик */
+  .post{grid-template-columns:1fr}
+  .post__img{min-height:0;aspect-ratio:16/10;padding:8px}
+  .post__body{padding:20px 18px 24px}
+  .post__title{font-size:clamp(19px,5.4vw,24px)}
+  .post__row{flex-direction:column;align-items:stretch;gap:10px;margin-top:18px}
+  .post__row .btn{width:100%;text-align:center;padding:14px 18px;letter-spacing:.18em}
+  .slider__dots{margin-top:18px}
+
+  /* материалы: карточка правила — фото сверху, текст под ним */
+  .rule-card{grid-template-columns:1fr}
+  .rule-card img{aspect-ratio:16/10}
+  .rules{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr 1fr}
+  .matgal{grid-template-columns:1fr 1fr}
+}
+
+@media(max-width:640px){
+  /* нечётные сетки: последняя карточка занимает всю ширину, а не «висит» */
+  .svc__card:last-child,
+  .team li:last-child,
+  .steps li:last-child{grid-column:1 / -1}
+  .svc__card:last-child{display:grid;grid-template-columns:1fr 1fr;align-items:stretch}
+  .svc__card:last-child img{height:100%;aspect-ratio:auto}
+  .team li:last-child{text-align:left}
+  .team li:last-child .team__card{
+    display:grid;grid-template-columns:auto minmax(0,1fr);
+    grid-template-areas:"ava name" "ava spec";
+    align-items:center;column-gap:16px;row-gap:4px;justify-items:start;text-align:left;
+  }
+  .team li:last-child .team__ava{grid-area:ava;width:84px;margin:0}
+  .team li:last-child b{grid-area:name;min-height:0;justify-content:flex-start;text-align:left}
+  .team li:last-child span:last-child{grid-area:spec;text-align:left}
+  .matgal{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr}
+  .leaf{max-width:38vw}
+}
+
+
+/* Меню на телефоне — поверх всей страницы: у шапки убираем размытие,
+   иначе она становится точкой отсчёта для fixed и меню обрезается. */
+body.nav-open .hdr{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(20,13,10,.92)}
